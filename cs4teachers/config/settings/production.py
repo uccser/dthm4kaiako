@@ -20,3 +20,5 @@ DATABASES = {
     "default": env.db("DATABASE_URL"),  # noqa: F405
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

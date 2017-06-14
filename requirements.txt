@@ -1,0 +1,6 @@
+# Production dependencies go here
+# This file is at root level for Heroku to detect project as Python
+-r requirements/base.txt
+
+gunicorn==19.7.1
+whitenoise==3.3.0
