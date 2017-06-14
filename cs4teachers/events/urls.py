@@ -12,4 +12,10 @@ urlpatterns = [
         views.IndexView.as_view(),
         name="index"
     ),
+    # eg: /events/cs4hs-2017/
+    url(
+        r"^(?P<event_slug>[-\w]+)/$",
+        views.EventView.as_view(),
+        name="event"
+    ),
 ]

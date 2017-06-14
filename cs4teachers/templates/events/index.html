@@ -16,7 +16,9 @@
       {% for event in events %}
         <tr class="align-middle">
           <td>
-            {{ event.name }}
+            <a href="{% url 'events:event' event.slug %}">
+              {{ event.name }}
+            </a>
           </td>
           <td>
             {{ event.start_date|date:"D j M, Y" }}

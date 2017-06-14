@@ -17,3 +17,11 @@ class IndexView(generic.ListView):
             Queryset of Topic objects ordered by name.
         """
         return Event.objects.filter(is_published=True).order_by("start_date")
+
+
+class EventView(generic.DetailView):
+    """View for a specific event."""
+
+    model = Event
+    template_name = "events/event.html"
+    slug_url_kwarg = "event_slug"
