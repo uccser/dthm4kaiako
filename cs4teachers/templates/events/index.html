@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock title %}
+{% block page_heading %}Events{% endblock page_heading %}
+
+{% block content %}
+  <table class="table table-responsive">
+    <thead class="thead-default">
+      <tr>
+        <th>Event</th>
+        <th>Start date</th>
+        <th>End date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+        <tr class="align-middle">
+          <td>
+            {{ event.name }}
+          </td>
+          <td>
+            {{ event.start_date|date:"D j M, Y" }}
+          </td>
+          <td>
+            {{ event.end_date|date:"D j M, Y" }}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

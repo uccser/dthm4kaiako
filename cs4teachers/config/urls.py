@@ -11,6 +11,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r"", include("general.urls", namespace="general")),
+    url(r"^events/", include("events.urls", namespace="events")),
     url(r"^admin/", include(admin.site.urls)),
 ]
 
