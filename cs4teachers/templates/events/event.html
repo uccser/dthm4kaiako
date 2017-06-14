@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.name }}{% endblock title %}
+{% block page_heading %}{{ event.name }}{% endblock page_heading %}
+
+{% block content %}
+  <p class="lead">{{ event.start_date }} to {{ event.end_date }}</p>
+
+  {{ event.description }}
+{% endblock content %}

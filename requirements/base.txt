@@ -1,0 +1,13 @@
+# Base dependencies go here
+
+# Django
+django==1.11.2
+
+# Configuration
+django-environ==0.4.3
+
+# Python-PostgreSQL Database Adapter
+psycopg2==2.7.1
+
+# Web serving
+gunicorn==19.7.1
