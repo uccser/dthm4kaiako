@@ -22,3 +22,6 @@ DATABASES = {
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
