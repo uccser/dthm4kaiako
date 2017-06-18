@@ -6,8 +6,8 @@ from django.utils.text import slugify
 class Event(models.Model):
     """Model for event in database."""
 
-    slug = models.SlugField(unique=True)
-    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=150, unique=True)
+    name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
@@ -31,9 +31,9 @@ class Event(models.Model):
 class Location(models.Model):
     """Model for location of session."""
 
-    slug = models.SlugField(unique=True)
-    name = models.CharField(max_length=300)
-    description = models.TextField(null=True)
+    slug = models.SlugField(max_length=150, unique=True)
+    name = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
     address = models.TextField()
 
     def save(self, *args, **kwargs):
@@ -67,10 +67,10 @@ class Sponsor(models.Model):
 
 class Resource(models.Model):
     """Model for resource used in sessions."""
-    slug = models.SlugField(unique=True)
-    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=150, unique=True)
+    name = models.CharField(max_length=150)
     url = models.URLField()
-    description = models.TextField(null=True)
+    description = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         """Set slug of object as name upon creation."""
@@ -90,27 +90,29 @@ class Resource(models.Model):
 class Session(models.Model):
     """Model for session of event."""
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=350, unique=True)
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        related_name="sessions"
+        related_name="sessions",
     )
-    name = models.CharField(max_length=300)
-    description = models.TextField()
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
     locations = models.ManyToManyField(
         Location,
-        related_name="sessions"
+        related_name="sessions",
+        blank=True,
     )
     resources = models.ManyToManyField(
         Resource,
-        related_name="sessions"
+        related_name="sessions",
+        blank=True,
     )
 
     def save(self, *args, **kwargs):
         """Set slug of object as name upon creation."""
         if not self.id:
-            self.slug = slugify(self.name)
+            self.slug = "{}-{}".format(self.event.slug, slugify(self.name))
         super(Session, self).save(*args, **kwargs)
 
     def __str__(self):
