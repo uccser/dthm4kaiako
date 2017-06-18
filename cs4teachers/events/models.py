@@ -90,7 +90,7 @@ class Resource(models.Model):
 class Session(models.Model):
     """Model for session of event."""
 
-    slug = models.SlugField(max_length=350, unique=True)
+    slug = models.SlugField(max_length=200)
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
@@ -98,6 +98,8 @@ class Session(models.Model):
     )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    start_datetime = models.DateTimeField()
+    end_datetime = models.DateTimeField()
     locations = models.ManyToManyField(
         Location,
         related_name="sessions",
@@ -112,7 +114,7 @@ class Session(models.Model):
     def save(self, *args, **kwargs):
         """Set slug of object as name upon creation."""
         if not self.id:
-            self.slug = "{}-{}".format(self.event.slug, slugify(self.name))
+            self.slug = slugify(self.name)
         super(Session, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -122,3 +124,6 @@ class Session(models.Model):
             Name of session (str).
         """
         return self.name
+
+    class Meta:
+        unique_together = ("event", "slug",)

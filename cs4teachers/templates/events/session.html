@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ session.name }}{% endblock title %}
+{% block page_heading %}{{ session.name }}{% endblock page_heading %}
+
+{% block content %}
+  <p class="lead">{{ session.start_datetime }} to {{ session.end_datetime }}</p>
+
+  {% if session.locations.all %}
+    <h3>Location{{ session.locations.count|pluralize }}</h3>
+    <ul class="unstyled">
+      {% for location in session.locations %}
+        <li>{{ location.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if session.description %}
+    <h3>Description</h3>
+    {{ session.description }}
+  {% endif %}
+
+  {% if session.resources.all %}
+    <h3>Resource{{ session.resources.count|pluralize }}</h3>
+    <ul class="unstyled">
+      {% for resource in session.resources %}
+        <li>{{ resource.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock content %}

@@ -25,3 +25,13 @@ class EventView(generic.DetailView):
     model = Event
     template_name = "events/event.html"
     slug_url_kwarg = "event_slug"
+
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super(EventView, self).get_context_data(**kwargs)
+        context["sessions"] = self.object.sessions.order_by("start_datetime", "end_datetime")

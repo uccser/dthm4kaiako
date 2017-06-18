@@ -6,5 +6,21 @@
 {% block content %}
   <p class="lead">{{ event.start_date }} to {{ event.end_date }}</p>
 
-  {{ event.description }}
+  {% if event.description %}
+    <h3>Description</h3>
+    {{ event.description }}
+  {% endif %}
+
+  {% if sessions %}
+    <h3>Session{{ sessions|pluralize }}</h3>
+    <ul class="unstyled">
+      {% for session in sessions %}
+        <li>
+          <a href="{% url 'events:session' event.slug session.slug %}">
+            {{ session.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 {% endblock content %}
