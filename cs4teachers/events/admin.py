@@ -3,9 +3,10 @@
 from django.contrib import admin
 from events.models import (
     Event,
-    Session,
     Location,
+    Session,
     Sponsor,
+    Resource,
 )
 
 
@@ -23,6 +24,11 @@ class SessionInline(admin.StackedInline):
 
 class LocationAdmin(admin.ModelAdmin):
     exclude = ("slug",)
+
+
+class ResourceAdmin(admin.ModelAdmin):
+    exclude = ("slug",)
+    list_display = ("name", "url")
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -55,4 +61,5 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Event, EventAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(Location, LocationAdmin)
+admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Sponsor)
