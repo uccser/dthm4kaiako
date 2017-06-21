@@ -9,9 +9,13 @@ class Event(models.Model):
     slug = models.SlugField(max_length=150, unique=True)
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
     is_published = models.BooleanField(default=False)
+
+    def start_datetime(self):
+        return self.sessions.earliest("start_datetime").start_datetime
+
+    def end_datetime(self):
+        return self.sessions.latest("end_datetime").end_datetime
 
     def save(self, *args, **kwargs):
         """Set slug of object as name upon creation."""

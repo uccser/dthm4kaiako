@@ -21,10 +21,10 @@
             </a>
           </td>
           <td>
-            {{ event.start_date|date:"D j M, Y" }}
+            {{ event.start_datetime|date:"D j M, Y" }}
           </td>
           <td>
-            {{ event.end_date|date:"D j M, Y" }}
+            {{ event.end_datetime|date:"D j M, Y" }}
           </td>
         </tr>
       {% endfor %}

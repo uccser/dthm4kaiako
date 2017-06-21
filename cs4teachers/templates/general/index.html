@@ -19,7 +19,7 @@
               <a href="{% url 'events:event' event.slug %}">
                 {{ event.name }}
               </a>
-              ({{ event.start_date|date:"j M" }} to {{ event.end_date|date:" j M" }})
+              ({{ event.start_datetime|date:"j M" }} to {{ event.end_datetime|date:" j M" }})
             </li>
           {% endfor %}
         </ul>

@@ -20,6 +20,7 @@ class SessionAdmin(admin.ModelAdmin):
 class SessionInline(admin.StackedInline):
     model = Session
     extra = 5
+    exclude = ("slug",)
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -40,12 +41,6 @@ class EventAdmin(admin.ModelAdmin):
             }
         ),
         (
-            "Date information",
-            {
-                "fields": ["start_date", "end_date"]
-            }
-        ),
-        (
             "Visibility",
             {
                 "fields": ["is_published"]
@@ -53,7 +48,7 @@ class EventAdmin(admin.ModelAdmin):
         ),
     ]
     inlines = [SessionInline]
-    list_display = ("name", "start_date", "end_date")
+    list_display = ("name",)
     list_filter = ("is_published",)
     search_fields = ["name"]
 

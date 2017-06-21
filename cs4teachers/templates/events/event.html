@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}{{ event.name }}{% endblock title %}
+
 {% block page_heading %}{{ event.name }}{% endblock page_heading %}
 
 {% block content %}
-  <p class="lead">{{ event.start_date }} to {{ event.end_date }}</p>
+  <p class="lead">{{ event.start_datetime }} to {{ event.end_datetime }}</p>
 
   {% if event.description %}
     <h3>Description</h3>
-    {{ event.description }}
+    {{ event.description|linebreaks }}
   {% endif %}
 
   {% if sessions %}

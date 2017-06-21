@@ -16,5 +16,5 @@ class GeneralIndexView(TemplateView):
         """
         # Call the base implementation first to get a context
         context = super(GeneralIndexView, self).get_context_data(**kwargs)
-        context["upcoming_events"] = Event.objects.filter(is_published=True).order_by("start_date")[:5]
+        context["upcoming_events"] = Event.objects.filter(is_published=True).order_by("name")[:5]
         return context

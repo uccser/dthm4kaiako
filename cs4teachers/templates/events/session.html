@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}{{ session.name }}{% endblock title %}
-{% block page_heading %}{{ session.name }}{% endblock page_heading %}
+
+{% block page_heading %}
+  {{ session.name }} <small class="text-muted">{{ event.name }}</small>
+{% endblock page_heading %}
 
 {% block content %}
   <p class="lead">{{ session.start_datetime }} to {{ session.end_datetime }}</p>
 
-  {% if session.locations.all %}
-    <h3>Location{{ session.locations.count|pluralize }}</h3>
+  {% if locations %}
+    <h3>Location{{ locations.count|pluralize }}</h3>
     <ul class="unstyled">
-      {% for location in session.locations %}
+      {% for location in locations %}
         <li>{{ location.name }}</li>
       {% endfor %}
     </ul>
@@ -17,13 +20,13 @@
 
   {% if session.description %}
     <h3>Description</h3>
-    {{ session.description }}
+    {{ session.description|linebreaks }}
   {% endif %}
 
-  {% if session.resources.all %}
-    <h3>Resource{{ session.resources.count|pluralize }}</h3>
+  {% if resources %}
+    <h3>Resource{{ resources.count|pluralize }}</h3>
     <ul class="unstyled">
-      {% for resource in session.resources %}
+      {% for resource in resources %}
         <li>{{ resource.name }}</li>
       {% endfor %}
     </ul>
