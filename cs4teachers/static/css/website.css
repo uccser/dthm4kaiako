@@ -1,3 +1,24 @@
 body {
   padding-top: 3rem;
 }
+
+#welcome-jumbotron {
+  background-image: url(../img/panorama-cs4hs-2015.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 0;
+}
+
+.navbar {
+  background-color: #0a83bb;
+}
+
+footer {
+  margin-top: 3rem;
+  border-top: 1px solid #eee;
+}
+
+.logo {
+  display: block;
+  height: 3rem;
+}

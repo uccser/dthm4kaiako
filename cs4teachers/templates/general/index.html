@@ -1,28 +1,31 @@
 {% extends "base.html" %}
 
 {% block body_container %}
-  <div class="jumbotron">
+  <div id="welcome-jumbotron" class="jumbotron">
     <div class="container text-center">
-      <h1 class="display-4">Computer Science for teachers</h1>
-      <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      <h1 class="display-3">Computer Science for teachers</h1>
     </div>
   </div>
 
   <div class="container">
     <div class="row">
-      <div class="col-md-12 text-center">
+      <div class="col-12 col-md-10 offset-md-1 text-center">
+        <p>
+          Professional development events either held by or attended by the University of Canterbury Computer Science Education Research Group (creators of <a href="http://csunplugged.org/">CS Unplugged</a> and the <a href="http://www.csfieldguide.org.nz/">CS Field Guide</a>).
+        </p>
+        <p>
+          We also list related event that also offer proffesional development opportunities.
+        </p>
+
         <h2>Upcoming events</h2>
-        <ul>
           {% for event in upcoming_events %}
-            <li class="list-unstyled">
+            <div class="d-block">
               <a href="{% url 'events:event' event.slug %}">
                 {{ event.name }}
               </a>
               ({{ event.start_datetime|date:"j M" }} to {{ event.end_datetime|date:" j M" }})
-            </li>
+            </div>
           {% endfor %}
-        </ul>
       </div>
     </div>
   </div>
