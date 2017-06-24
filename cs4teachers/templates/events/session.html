@@ -13,7 +13,7 @@
     <h3>Location{{ locations.count|pluralize }}</h3>
     <ul class="unstyled">
       {% for location in locations %}
-        <li>{{ location.name }}</li>
+        <li><a href="{% url 'events:location' location.slug %}">{{ location.name }}</a></li>
       {% endfor %}
     </ul>
   {% endif %}

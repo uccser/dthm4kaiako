@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from events.models import (
     Event,
     Session,
+    Location,
 )
 
 
@@ -46,7 +47,9 @@ class EventView(generic.DetailView):
             Dictionary of context data.
         """
         context = super(EventView, self).get_context_data(**kwargs)
-        context["sessions"] = self.object.sessions.order_by("start_datetime", "end_datetime")
+        sessions = self.object.sessions.order_by("start_datetime", "end_datetime")
+        context["sessions"] = sessions
+        context["locations"] = Location.objects.filter(sessions__in=sessions).order_by("name").distinct()
         return context
 
 
@@ -80,3 +83,12 @@ class SessionView(generic.DetailView):
         context["locations"] = self.object.locations.order_by("name")
         context["resources"] = self.object.resources.order_by("name")
         return context
+
+
+class LocationView(generic.DetailView):
+    """View for a specific location."""
+
+    model = Location
+    template_name = "events/location.html"
+    slug_url_kwarg = "location_slug"
+    context_object_name = "location"
