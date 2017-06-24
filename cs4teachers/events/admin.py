@@ -15,12 +15,14 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = ("name", "event")
     search_fields = ["name", "event"]
     list_filter = ("event",)
+    filter_vertical = ("resources", "locations",)
 
 
 class SessionInline(admin.StackedInline):
     model = Session
     extra = 5
     exclude = ("slug",)
+    filter_vertical = ("resources", "locations",)
 
 
 class LocationAdmin(admin.ModelAdmin):
