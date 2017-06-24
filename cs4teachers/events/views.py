@@ -1,10 +1,12 @@
 """Views for the events application."""
 
 from django.views import generic
+from django.db.models import BooleanField, DateField, Value
 from django.db.models.aggregates import Max, Min
 from django.shortcuts import get_object_or_404
 from events.models import (
     Event,
+    ThirdPartyEvent,
     Session,
 )
 
@@ -21,13 +23,31 @@ class IndexView(generic.ListView):
         Returns:
             Queryset of Topic objects ordered by name.
         """
-        return Event.objects.filter(
+        events = Event.objects.filter(
             is_published=True
         ).annotate(
-            start_datetime=Min("sessions__start_datetime"),
-            end_datetime=Max("sessions__end_datetime"),
-        ).order_by(
-            "start_datetime"
+            third_party=Value(False, output_field=BooleanField()),
+            start_date=Min("sessions__start_datetime", output_field=DateField()),
+            end_date=Max("sessions__end_datetime", output_field=DateField()),
+        ).only(
+            "slug",
+            "name",
+        )
+
+        third_party_events = ThirdPartyEvent.objects.filter(
+            is_published=True
+        ).annotate(
+            third_party=Value(True, output_field=BooleanField()),
+        ).only(
+            "slug",
+            "name",
+            "start_date",
+            "end_date",
+        )
+
+        return events.union(third_party_events).order_by(
+            "start_date",
+            "end_date"
         )
 
 

@@ -19,6 +19,9 @@
             <a href="{% url 'events:event' event.slug %}">
               {{ event.name }}
             </a>
+            {% if event.third_party %}
+              {% include "events/third-party-badge.html" %}
+            {% endif %}
           </td>
           <td>
             {{ event.start_datetime|date:"D j M, Y" }}

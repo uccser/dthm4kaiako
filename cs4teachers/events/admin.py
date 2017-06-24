@@ -3,6 +3,7 @@
 from django.contrib import admin
 from events.models import (
     Event,
+    ThirdPartyEvent,
     Location,
     Session,
     Sponsor,
@@ -53,7 +54,35 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
+class ThirdPartyEventAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    "name",
+                    "url",
+                    "start_date",
+                    "end_date",
+                    "description",
+                    "locations",
+                ]
+            }
+        ),
+        (
+            "Visibility",
+            {
+                "fields": ["is_published"]
+            }
+        ),
+    ]
+    list_display = ("name",)
+    list_filter = ("is_published",)
+    search_fields = ["name"]
+
+
 admin.site.register(Event, EventAdmin)
+admin.site.register(ThirdPartyEvent, ThirdPartyEventAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Resource, ResourceAdmin)

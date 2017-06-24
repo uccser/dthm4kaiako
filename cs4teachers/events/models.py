@@ -3,13 +3,21 @@
 from django.db import models
 from django.utils.text import slugify
 
-class Event(models.Model):
-    """Model for event in database."""
+
+class EventBase(models.Model):
+    """Abstract base class for event models."""
 
     slug = models.SlugField(max_length=150, unique=True)
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     is_published = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class Event(EventBase):
+    """Model for event in database."""
 
     def start_datetime(self):
         return self.sessions.earliest("start_datetime").start_datetime
@@ -131,3 +139,30 @@ class Session(models.Model):
 
     class Meta:
         unique_together = ("event", "slug",)
+
+
+class ThirdPartyEvent(EventBase):
+    """Model for third party event in database."""
+
+    url = models.URLField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    locations = models.ManyToManyField(
+        Location,
+        related_name="third_party_events",
+        blank=True,
+    )
+
+    def save(self, *args, **kwargs):
+        """Set slug of object as name upon creation."""
+        if not self.id:
+            self.slug = slugify(self.name)
+        super(ThirdPartyEvent, self).save(*args, **kwargs)
+
+    def __str__(self):
+        """Text representation of Event object.
+
+        Returns:
+            Name of event (str).
+        """
+        return self.name
