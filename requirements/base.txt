@@ -8,3 +8,6 @@ django-environ==0.4.3
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.7.1
+
+# Static files
+whitenoise==3.3.0
