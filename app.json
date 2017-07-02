@@ -1,0 +1,27 @@
+{
+  "name": "cs4teachers",
+  "scripts": {
+  },
+  "env": {
+    "DJANGO_SECRET_KEY": {
+      "required": true
+    },
+    "DJANGO_SETTINGS_MODULE": {
+      "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql",
+    "sendgrid"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
