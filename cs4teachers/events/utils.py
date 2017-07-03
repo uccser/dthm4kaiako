@@ -1,6 +1,6 @@
 """Utility functions for the events application."""
 
-
+from datetime import datetime
 from django.db.models import BooleanField, DateField, Value
 from django.db.models.aggregates import Max, Min
 from events.models import (
@@ -39,6 +39,8 @@ def retrieve_all_events(upcoming=False):
         start_date=Min("sessions__start_datetime", output_field=DateField()),
         end_date=Max("sessions__end_datetime", output_field=DateField()),
     )
+    if upcoming:
+        events.filter(end_date__gte=datetime.today())
 
     for event in events:
         all_events.append(GenericEvent(
@@ -51,6 +53,8 @@ def retrieve_all_events(upcoming=False):
     third_party_events = ThirdPartyEvent.objects.filter(
         is_published=True
     )
+    if upcoming:
+        third_party_events.filter(end_date__gte=datetime.today())
 
     for event in third_party_events:
         all_events.append(GenericEvent(

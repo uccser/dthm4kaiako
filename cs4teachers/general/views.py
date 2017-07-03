@@ -1,7 +1,8 @@
 """Views for the general application."""
 
 from django.views.generic import TemplateView
-from events.models import Event
+from events.utils import retrieve_all_events
+
 
 class GeneralIndexView(TemplateView):
     """View for the homepage that renders from a template."""
@@ -16,5 +17,5 @@ class GeneralIndexView(TemplateView):
         """
         # Call the base implementation first to get a context
         context = super(GeneralIndexView, self).get_context_data(**kwargs)
-        context["upcoming_events"] = Event.objects.filter(is_published=True).order_by("name")[:5]
+        context["upcoming_events"] = retrieve_all_events(upcoming=True)
         return context
