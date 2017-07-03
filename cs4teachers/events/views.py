@@ -1,12 +1,13 @@
 """Views for the events application."""
 
 from django.views import generic
-from django.db.models.aggregates import Max, Min
 from django.shortcuts import get_object_or_404
+from events.utils import retrieve_all_events
 from events.models import (
     Event,
     Session,
     Location,
+    ThirdPartyEvent,
 )
 
 
@@ -22,14 +23,7 @@ class IndexView(generic.ListView):
         Returns:
             Queryset of Topic objects ordered by name.
         """
-        return Event.objects.filter(
-            is_published=True
-        ).annotate(
-            start_datetime=Min("sessions__start_datetime"),
-            end_datetime=Max("sessions__end_datetime"),
-        ).order_by(
-            "start_datetime"
-        )
+        return retrieve_all_events()
 
 
 class EventView(generic.DetailView):
@@ -92,3 +86,22 @@ class LocationView(generic.DetailView):
     template_name = "events/location.html"
     slug_url_kwarg = "location_slug"
     context_object_name = "location"
+
+
+class ThirdPartyEventView(generic.DetailView):
+    """View for a specific third party event."""
+
+    model = ThirdPartyEvent
+    template_name = "events/third-party-event.html"
+    slug_url_kwarg = "event_slug"
+    context_object_name = "event"
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the third party event view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super(ThirdPartyEventView, self).get_context_data(**kwargs)
+        context["locations"] = self.object.locations.order_by("name")
+        return context

@@ -24,6 +24,12 @@ urlpatterns = [
         views.LocationView.as_view(),
         name="location"
     ),
+    # eg: /events/third-party/wellington-cs4hs-2017/
+    url(
+        r"^third-party/(?P<event_slug>[-\w]+)/$",
+        views.ThirdPartyEventView.as_view(),
+        name="third_party_event"
+    ),
     # eg: /events/cs4hs-2017/welcome
     url(
         r"^(?P<event_slug>[-\w]+)/(?P<session_slug>[-\w]+)/$",

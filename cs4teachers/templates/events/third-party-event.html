@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.name }}{% endblock title %}
+
+{% block page_heading %}{{ event.name }}{% endblock page_heading %}
+
+{% block content_container %}
+  <div class="col-12">
+    <p class="lead">{{ event.start_date|date:"l j F, Y" }} to {{ event.end_date|date:"l j F, Y" }}</p>
+    <p class="lead">More details: <a href="{{ event.url }}">{{ event.url }}</a></p>
+  </div>
+
+  <div class="col-12 col-md-6">
+    {% if event.description %}
+      <h3>Description</h3>
+      {{ event.description|linebreaks }}
+    {% endif %}
+  </div>
+
+  <div class="col-12 col-md-6">
+    {% if locations %}
+      <h3>Location{{ locations.count|pluralize }}</h3>
+      <ul class="unstyled">
+        {% for location in locations %}
+          <li>{{ location.name }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock content_container %}
