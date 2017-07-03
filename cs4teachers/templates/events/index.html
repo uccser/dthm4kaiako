@@ -16,9 +16,12 @@
       {% for event in events %}
         <tr class="align-middle">
           <td>
-            <a href="{% url 'events:event' event.slug %}">
+            <a href="{{ event.absolute_url }}">
               {{ event.name }}
             </a>
+            {% if event.third_party %}
+              {% include "events/third-party-badge.html" %}
+            {% endif %}
           </td>
           <td>
             {{ event.start_date|date:"D j M, Y" }}

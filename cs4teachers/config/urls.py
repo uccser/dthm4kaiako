@@ -9,6 +9,8 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
+admin.site.site_header = "cs4teachers"
 urlpatterns = [
     url(r"", include("general.urls", namespace="general")),
     url(r"^events/", include("events.urls", namespace="events")),

@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'events:index' %}">Events</a>
+              <a class="nav-link" href="{% url 'events:index' %}">All Events</a>
             </li>
           </ul>
         </div>
@@ -44,10 +44,9 @@
       </div>
     {% endblock body_container %}
 
-    <hr>
-
     <footer>
       <div class="container">
+        <img src="{% static 'img/uc-computer-science-education-logo.png' %}" class="logo my-2">
         <p>
           <strong>cs4teachers</strong> is a project by the <a href="http://www.cosc.canterbury.ac.nz/research/RG/CSE/">Computer Science Education Research Group</a> at the <a href="http://www.canterbury.ac.nz/">University of Canterbury</a>, New Zealand.
         </p>

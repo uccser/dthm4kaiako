@@ -6,7 +6,8 @@
 
 {% block content_container %}
   <div class="col-12">
-    <p class="lead">{{ event.start_datetime|date:"fA l j F, Y" }} to {{ event.end_datetime|date:"fA l j F, Y" }}</p>
+    <p class="lead">{{ event.start_date|date:"l j F, Y" }} to {{ event.end_date|date:"l j F, Y" }}</p>
+    <p class="lead">More details: <a href="{{ event.url }}">{{ event.url }}</a></p>
   </div>
 
   <div class="col-12 col-md-6">
@@ -14,27 +15,14 @@
       <h3>Description</h3>
       {{ event.description|linebreaks }}
     {% endif %}
+  </div>
 
+  <div class="col-12 col-md-6">
     {% if locations %}
       <h3>Location{{ locations.count|pluralize }}</h3>
       <ul class="unstyled">
         {% for location in locations %}
-          <li><a href="{% url 'events:location' location.slug %}">{{ location.name }}</a></li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </div>
-
-  <div class="col-12 col-md-6">
-    {% if sessions %}
-      <h3>Schedule</h3>
-      <ul class="unstyled">
-        {% for session in sessions %}
-          <li>
-            <a href="{% url 'events:session' event.slug session.slug %}">
-              {{ session.name }}
-            </a>
-          </li>
+          <li>{{ location.name }}</li>
         {% endfor %}
       </ul>
     {% endif %}

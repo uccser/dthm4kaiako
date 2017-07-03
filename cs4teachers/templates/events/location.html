@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ location.name }}{% endblock title %}
+
+{% block page_heading %}{{ location.name }}{% endblock page_heading %}
+
+{% block content %}
+  <address>{{ location.address|linebreaks }}</address>
+
+  {% if location.description %}
+    <h3>Description</h3>
+    {{ location.description|linebreaks }}
+  {% endif %}
+{% endblock content %}
