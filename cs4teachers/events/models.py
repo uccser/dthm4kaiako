@@ -1,6 +1,7 @@
 """Models for the events application."""
 
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -24,6 +25,9 @@ class Event(EventBase):
 
     def end_datetime(self):
         return self.sessions.latest("end_datetime").end_datetime
+
+    def get_absolute_url(self):
+        return reverse("events:event", kwargs={"event_slug": self.slug})
 
     def save(self, *args, **kwargs):
         """Set slug of object as name upon creation."""
@@ -158,6 +162,9 @@ class ThirdPartyEvent(EventBase):
         if not self.id:
             self.slug = slugify(self.name)
         super(ThirdPartyEvent, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("events:third_party_event", kwargs={"event_slug": self.slug})
 
     def __str__(self):
         """Text representation of Event object.

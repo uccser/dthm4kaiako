@@ -1,13 +1,12 @@
 """Views for the events application."""
 
 from django.views import generic
-from django.db.models import BooleanField, DateField, Value
-from django.db.models.aggregates import Max, Min
 from django.shortcuts import get_object_or_404
+from events.utils import retrieve_all_events
 from events.models import (
     Event,
-    ThirdPartyEvent,
     Session,
+    ThirdPartyEvent,
 )
 
 
@@ -23,32 +22,7 @@ class IndexView(generic.ListView):
         Returns:
             Queryset of Topic objects ordered by name.
         """
-        events = Event.objects.filter(
-            is_published=True
-        ).annotate(
-            third_party=Value(False, output_field=BooleanField()),
-            start_date=Min("sessions__start_datetime", output_field=DateField()),
-            end_date=Max("sessions__end_datetime", output_field=DateField()),
-        ).only(
-            "slug",
-            "name",
-        )
-
-        third_party_events = ThirdPartyEvent.objects.filter(
-            is_published=True
-        ).annotate(
-            third_party=Value(True, output_field=BooleanField()),
-        ).only(
-            "slug",
-            "name",
-            "start_date",
-            "end_date",
-        )
-
-        return events.union(third_party_events).order_by(
-            "start_date",
-            "end_date"
-        )
+        return retrieve_all_events()
 
 
 class EventView(generic.DetailView):
@@ -99,4 +73,23 @@ class SessionView(generic.DetailView):
         context["event"] = self.object.event
         context["locations"] = self.object.locations.order_by("name")
         context["resources"] = self.object.resources.order_by("name")
+        return context
+
+
+class ThirdPartyEventView(generic.DetailView):
+    """View for a specific third party event."""
+
+    model = ThirdPartyEvent
+    template_name = "events/third-party-event.html"
+    slug_url_kwarg = "event_slug"
+    context_object_name = "event"
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the third party event view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super(ThirdPartyEventView, self).get_context_data(**kwargs)
+        context["locations"] = self.object.locations.order_by("name")
         return context
