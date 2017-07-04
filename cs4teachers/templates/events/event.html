@@ -10,7 +10,7 @@
 
     {% if event.description %}
       <h3>Description</h3>
-      {{ event.description|linebreaks }}
+      {{ event.description|safe|linebreaks }}
     {% endif %}
 
     {% if locations %}
@@ -51,7 +51,7 @@
                 {{ session.name }}
               </a>
             </h4>
-            {{ session.description|linebreaks }}
+            {{ session.description|safe|linebreaks }}
           </div>
 
           <div class="col-md-3">

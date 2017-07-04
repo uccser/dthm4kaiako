@@ -20,7 +20,7 @@
 
   {% if session.description %}
     <h3>Description</h3>
-    {{ session.description|linebreaks }}
+    {{ session.description|safe|linebreaks }}
   {% endif %}
 
   {% if resources %}
