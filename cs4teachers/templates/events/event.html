@@ -6,18 +6,20 @@
 
 {% block content_container %}
   <div class="col-12">
-    <p class="lead">{{ event.start_datetime|date:"fA l j F, Y" }} to {{ event.end_datetime|date:"fA l j F, Y" }}</p>
+    <p class="mb-0"><strong>Starts:</strong> {{ event.start_datetime|date:"fA l j F, Y" }}</p>
+    <p class="mb-0"><strong>Ends:</strong> {{ event.end_datetime|date:"fA l j F, Y" }}</p>
+    <p><strong>Location:</strong> <a href="{% url 'events:location' event.location.slug %}">{{ event.location.name }}</a></p>
 
     {% if event.description %}
       <h3>Description</h3>
       {{ event.description|safe|linebreaks }}
     {% endif %}
 
-    {% if locations %}
-      <h3>Location{{ locations.count|pluralize }}</h3>
-      <ul class="unstyled">
-        {% for location in locations %}
-          <li><a href="{% url 'events:location' location.slug %}">{{ location.name }}</a></li>
+    {% if sponsors %}
+      <h3>Sponsor{{ sponsors.count|pluralize }}</h3>
+      <ul class="list-unstyled">
+        {% for sponsor in sponsors %}
+          <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
