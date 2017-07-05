@@ -42,7 +42,8 @@ class EventView(generic.DetailView):
             Dictionary of context data.
         """
         context = super(EventView, self).get_context_data(**kwargs)
-        context["sessions"] = self.object.sessions.order_by("start_datetime", "end_datetime").prefetch_related("locations")
+        context["sessions"] = self.object.sessions.order_by(
+            "start_datetime", "end_datetime").prefetch_related("locations")
         context["sponsors"] = self.object.sponsors.order_by("name")
         return context
 

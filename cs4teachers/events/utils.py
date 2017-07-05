@@ -1,7 +1,7 @@
 """Utility functions for the events application."""
 
 from datetime import datetime
-from django.db.models import BooleanField, DateField, Value
+from django.db.models import DateField
 from django.db.models.aggregates import Max, Min
 from events.models import (
     Event,
@@ -10,8 +10,18 @@ from events.models import (
 
 
 class GenericEvent:
+    """Object combining common attributes of Event and ThirdPartyEvent classes."""
 
     def __init__(self, name, absolute_url, start_date, end_date, third_party=False):
+        """Construct GenericEvent object.
+
+        Args:
+            name: The name of the vent (str).
+            absolute_url: The URL of the event page (str).
+            start_date: Date the event starts (date).
+            end_date: Date the event ends (date).
+            third_party: True if event is a third party event, otherwise False.
+        """
         self.name = name
         self.absolute_url = absolute_url
         self.start_date = start_date
@@ -67,4 +77,4 @@ def retrieve_all_events(upcoming=False):
             True,
         ))
 
-    return sorted(all_events, key = lambda x: (x.start_date, x.end_date))
+    return sorted(all_events, key=lambda x: (x.start_date, x.end_date))
