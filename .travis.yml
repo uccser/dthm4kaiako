@@ -1,0 +1,19 @@
+language: python
+python:
+  - "3.6"
+services:
+  - postgresql
+env:
+  - DJANGO_SETTINGS_MODULE=config.settings.production
+install: pip install -r requirements/testing.txt
+script:
+  - python cs4teachers/manage.py migrate
+  - python cs4teachers/manage.py collectstatic --no-input --clear
+  - flake8
+  - pydocstyle --count --explain
+notifications:
+  email: false
+  slack:
+    rooms: deptfunstuff:abJKvzApk5SKtcEyAgtswXAv
+    on_success: change
+    on_failure: change
