@@ -24,6 +24,7 @@ class Location(models.Model):
 
 class Sponsor(models.Model):
     """Model for sponsor of event."""
+
     name = models.CharField(max_length=200)
     url = models.URLField()
 
@@ -45,6 +46,8 @@ class EventBase(models.Model):
     is_published = models.BooleanField(default=False)
 
     class Meta:
+        """Meta attributes of the class."""
+
         abstract = True
 
 
@@ -62,12 +65,27 @@ class Event(EventBase):
     )
 
     def start_datetime(self):
+        """Retrieve start datetime of event from earliest session.
+
+        Returns:
+            Datetime object of event start.
+        """
         return self.sessions.earliest("start_datetime").start_datetime
 
     def end_datetime(self):
+        """Retrieve end datetime of event from latest session.
+
+        Returns:
+            Datetime object of event end.
+        """
         return self.sessions.latest("end_datetime").end_datetime
 
     def get_absolute_url(self):
+        """Return URL of object on website.
+
+        Returns:
+            URL as a string.
+        """
         return reverse("events:event", kwargs={"event_slug": self.slug})
 
     def __str__(self):
@@ -81,6 +99,7 @@ class Event(EventBase):
 
 class Resource(models.Model):
     """Model for resource used in sessions."""
+
     slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     url = models.URLField()
@@ -128,6 +147,8 @@ class Session(models.Model):
         return self.name
 
     class Meta:
+        """Meta attributes of the class."""
+
         unique_together = ("event", "slug",)
 
 
@@ -144,6 +165,11 @@ class ThirdPartyEvent(EventBase):
     )
 
     def get_absolute_url(self):
+        """Return URL of object on website.
+
+        Returns:
+            URL as a string.
+        """
         return reverse("events:third_party_event", kwargs={"event_slug": self.slug})
 
     def __str__(self):
