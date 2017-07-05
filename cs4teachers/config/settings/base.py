@@ -82,7 +82,7 @@ USE_I18N = False
 USE_L10N = False
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = True
+USE_TZ = False
 
 TIME_FORMAT = "fA"
 
