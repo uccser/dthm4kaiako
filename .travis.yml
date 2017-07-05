@@ -1,0 +1,26 @@
+dist: trusty
+sudo: required
+language: python
+python:
+  - "3.6"
+services:
+  - postgresql
+addons:
+  postgresql: "9.6"
+env:
+  - DJANGO_SETTINGS_MODULE=config.settings.testing
+install: pip install -r requirements/testing.txt
+before_script:
+  - psql -c 'create database cs4teachers;' -U postgres
+script:
+  - python cs4teachers/manage.py migrate
+  - python cs4teachers/manage.py collectstatic --no-input --clear
+  - python cs4teachers/manage.py test --pattern "test_*.py" -v 3
+  - flake8
+  - pydocstyle --count --explain
+notifications:
+  email: false
+  slack:
+    rooms: deptfunstuff:abJKvzApk5SKtcEyAgtswXAv
+    on_success: change
+    on_failure: change

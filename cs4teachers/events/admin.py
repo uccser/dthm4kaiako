@@ -12,6 +12,8 @@ from events.models import (
 
 
 class SessionAdmin(admin.ModelAdmin):
+    """Admin interface for Session model."""
+
     exclude = ("slug",)
     list_display = ("name", "event")
     search_fields = ["name", "event"]
@@ -20,6 +22,8 @@ class SessionAdmin(admin.ModelAdmin):
 
 
 class SessionInline(admin.StackedInline):
+    """Admin interface for Session model when displayed inline."""
+
     model = Session
     extra = 5
     exclude = ("slug",)
@@ -27,15 +31,21 @@ class SessionInline(admin.StackedInline):
 
 
 class LocationAdmin(admin.ModelAdmin):
+    """Admin interface for Location model."""
+
     exclude = ("slug",)
 
 
 class ResourceAdmin(admin.ModelAdmin):
+    """Admin interface for Resource model."""
+
     exclude = ("slug",)
     list_display = ("name", "url")
 
 
 class EventAdmin(admin.ModelAdmin):
+    """Admin interface for Event model."""
+
     fieldsets = [
         (
             None,
@@ -58,6 +68,8 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class ThirdPartyEventAdmin(admin.ModelAdmin):
+    """Admin interface for ThirdPartyEvent model."""
+
     fieldsets = [
         (
             None,
@@ -68,7 +80,7 @@ class ThirdPartyEventAdmin(admin.ModelAdmin):
                     "start_date",
                     "end_date",
                     "description",
-                    "locations",
+                    "location",
                 ]
             }
         ),
