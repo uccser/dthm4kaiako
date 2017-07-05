@@ -1,7 +1,7 @@
 # Base dependencies go here
 
 # Django
-django==1.11.2
+django==1.11.3
 django-autoslug==1.9.3
 
 # Configuration
