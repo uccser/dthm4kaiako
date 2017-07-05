@@ -6,37 +6,68 @@
 
 {% block content_container %}
   <div class="col-12">
-    <p class="lead">{{ event.start_datetime|date:"fA l j F, Y" }} to {{ event.end_datetime|date:"fA l j F, Y" }}</p>
-  </div>
+    <p class="mb-0"><strong>Starts:</strong> {{ event.start_datetime|date:"fA l j F, Y" }}</p>
+    <p class="mb-0"><strong>Ends:</strong> {{ event.end_datetime|date:"fA l j F, Y" }}</p>
+    <p><strong>Location:</strong> <a href="{% url 'events:location' event.location.slug %}">{{ event.location.name }}</a></p>
 
-  <div class="col-12 col-md-6">
     {% if event.description %}
       <h3>Description</h3>
-      {{ event.description|linebreaks }}
+      {{ event.description|safe|linebreaks }}
     {% endif %}
 
-    {% if locations %}
-      <h3>Location{{ locations.count|pluralize }}</h3>
-      <ul class="unstyled">
-        {% for location in locations %}
-          <li><a href="{% url 'events:location' location.slug %}">{{ location.name }}</a></li>
+    {% if sponsors %}
+      <h3>Sponsor{{ sponsors.count|pluralize }}</h3>
+      <ul class="list-unstyled">
+        {% for sponsor in sponsors %}
+          <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
-  </div>
 
-  <div class="col-12 col-md-6">
     {% if sessions %}
       <h3>Schedule</h3>
-      <ul class="unstyled">
-        {% for session in sessions %}
-          <li>
-            <a href="{% url 'events:session' event.slug session.slug %}">
-              {{ session.name }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+
+      {% for session in sessions %}
+        {% ifchanged session.start_datetime|date:"d" %}
+          <h3 class="text-center">{{ session.start_datetime|date:"l j F, Y" }}</h3>
+        {% endifchanged %}
+
+        <div class="row">
+          {% ifchanged session.start_datetime|time session.end_datetime|time %}
+            <div class="col-12 mb-2 schedule-line"></div>
+            <div class="col-md-3 text-center text-md-right">
+              <h4>
+                {{ session.start_datetime|time }}
+                <br class="hidden-sm-down">
+                <small class="text-muted">until {{ session.end_datetime|time }}</small>
+              </h4>
+            </div>
+          {% else %}
+            <div class="col-12 offset-md-3 col-md-9 mb-2 schedule-line-thin"></div>
+            <div class="col-md-3"></div>
+          {% endifchanged %}
+
+          <div class="col-md-6">
+            <h4>
+              <a href="{% url 'events:session' event.slug session.slug %}">
+                {{ session.name }}
+              </a>
+            </h4>
+            {{ session.description|safe|linebreaks }}
+          </div>
+
+          <div class="col-md-3">
+            {% if session.locations.all %}
+              <h5>Location{{ session.locations.count|pluralize }}</h5>
+              <ul class="list-unstyled">
+                {% for location in session.locations.all %}
+                  <li><a href="{% url 'events:location' location.slug %}">{{ location.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
     {% endif %}
   </div>
 {% endblock content_container %}

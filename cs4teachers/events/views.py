@@ -8,6 +8,7 @@ from events.models import (
     Session,
     Location,
     ThirdPartyEvent,
+    Resource,
 )
 
 
@@ -41,9 +42,8 @@ class EventView(generic.DetailView):
             Dictionary of context data.
         """
         context = super(EventView, self).get_context_data(**kwargs)
-        sessions = self.object.sessions.order_by("start_datetime", "end_datetime")
-        context["sessions"] = sessions
-        context["locations"] = Location.objects.filter(sessions__in=sessions).order_by("name").distinct()
+        context["sessions"] = self.object.sessions.order_by("start_datetime", "end_datetime").prefetch_related("locations")
+        context["sponsors"] = self.object.sponsors.order_by("name")
         return context
 
 
@@ -105,3 +105,12 @@ class ThirdPartyEventView(generic.DetailView):
         context = super(ThirdPartyEventView, self).get_context_data(**kwargs)
         context["locations"] = self.object.locations.order_by("name")
         return context
+
+
+class ResourceList(generic.ListView):
+    """View for all resources."""
+
+    model = Resource
+    ordering = "name"
+    context_object_name = "resources"
+    template_name = "events/resources.html"

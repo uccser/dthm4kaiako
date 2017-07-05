@@ -2,61 +2,16 @@
 
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
-
-
-class EventBase(models.Model):
-    """Abstract base class for event models."""
-
-    slug = models.SlugField(max_length=150, unique=True)
-    name = models.CharField(max_length=150, unique=True)
-    description = models.TextField()
-    is_published = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-
-class Event(EventBase):
-    """Model for event in database."""
-
-    def start_datetime(self):
-        return self.sessions.earliest("start_datetime").start_datetime
-
-    def end_datetime(self):
-        return self.sessions.latest("end_datetime").end_datetime
-
-    def get_absolute_url(self):
-        return reverse("events:event", kwargs={"event_slug": self.slug})
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Event, self).save(*args, **kwargs)
-
-    def __str__(self):
-        """Text representation of Event object.
-
-        Returns:
-            Name of event (str).
-        """
-        return self.name
+from autoslug import AutoSlugField
 
 
 class Location(models.Model):
     """Model for location of session."""
 
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     address = models.TextField()
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Location, self).save(*args, **kwargs)
 
     def __str__(self):
         """Text representation of Location object.
@@ -81,18 +36,55 @@ class Sponsor(models.Model):
         return self.name
 
 
+class EventBase(models.Model):
+    """Abstract base class for event models."""
+
+    slug = AutoSlugField(populate_from="name")
+    name = models.CharField(max_length=150, unique=True)
+    description = models.TextField()
+    is_published = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class Event(EventBase):
+    """Model for event in database."""
+
+    location = models.ForeignKey(
+        Location,
+        related_name="events",
+        null=True,
+    )
+    sponsors = models.ManyToManyField(
+        Sponsor,
+        related_name="events",
+    )
+
+    def start_datetime(self):
+        return self.sessions.earliest("start_datetime").start_datetime
+
+    def end_datetime(self):
+        return self.sessions.latest("end_datetime").end_datetime
+
+    def get_absolute_url(self):
+        return reverse("events:event", kwargs={"event_slug": self.slug})
+
+    def __str__(self):
+        """Text representation of Event object.
+
+        Returns:
+            Name of event (str).
+        """
+        return self.name
+
+
 class Resource(models.Model):
     """Model for resource used in sessions."""
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     url = models.URLField()
     description = models.TextField(blank=True)
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Resource, self).save(*args, **kwargs)
 
     def __str__(self):
         """Text representation of Resource object.
@@ -106,7 +98,7 @@ class Resource(models.Model):
 class Session(models.Model):
     """Model for session of event."""
 
-    slug = models.SlugField(max_length=200)
+    slug = AutoSlugField(populate_from="name", unique_with=["event__slug"])
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
@@ -127,12 +119,6 @@ class Session(models.Model):
         blank=True,
     )
 
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Session, self).save(*args, **kwargs)
-
     def __str__(self):
         """Text representation of Session object.
 
@@ -151,17 +137,11 @@ class ThirdPartyEvent(EventBase):
     url = models.URLField()
     start_date = models.DateField()
     end_date = models.DateField()
-    locations = models.ManyToManyField(
+    location = models.ForeignKey(
         Location,
         related_name="third_party_events",
-        blank=True,
+        null=True,
     )
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(ThirdPartyEvent, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("events:third_party_event", kwargs={"event_slug": self.slug})

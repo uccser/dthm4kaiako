@@ -82,7 +82,36 @@ USE_I18N = False
 USE_L10N = False
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = True
+USE_TZ = False
+
+TIME_FORMAT = "fA"
+
+DATETIME_INPUT_FORMATS = [
+    "%d/%m/%Y %H:%M:%S",
+    "%d/%m/%Y %H:%M:%S.%f",
+    "%d/%m/%Y %H:%M",
+    "%d/%m/%Y",
+    "%d/%m/%y %H:%M:%S",
+    "%d/%m/%y %H:%M:%S.%f",
+    "%d/%m/%y %H:%M",
+    "%d/%m/%y",
+    "%d-%m-%Y %H:%M:%S",
+    "%d-%m-%Y %H:%M:%S.%f",
+    "%d-%m-%Y %H:%M",
+    "%d-%m-%Y",
+]
+
+DATE_INPUT_FORMATS = [
+    "%d/%m/%Y",
+    "%d/%m/%y",
+    "%d-%m-%Y",
+    "%d-%m-%y",
+]
+
+TIME_INPUT_FORMATS = [
+    "%H:%M:%S",
+    "%H:%M",
+]
 
 # TEMPLATE CONFIGURATION
 # ----------------------------------------------------------------------------

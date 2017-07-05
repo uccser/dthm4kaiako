@@ -40,7 +40,7 @@ class EventAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["name", "description"]
+                "fields": ["name", "description", "location", "sponsors"]
             }
         ),
         (
@@ -54,6 +54,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ("name",)
     list_filter = ("is_published",)
     search_fields = ["name"]
+    filter_vertical = ("sponsors",)
 
 
 class ThirdPartyEventAdmin(admin.ModelAdmin):

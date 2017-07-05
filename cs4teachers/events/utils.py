@@ -33,14 +33,22 @@ def retrieve_all_events(upcoming=False):
         List of event objects (list).
     """
     all_events = []
+    today = datetime.today()
+
     events = Event.objects.filter(
         is_published=True
     ).annotate(
         start_date=Min("sessions__start_datetime", output_field=DateField()),
         end_date=Max("sessions__end_datetime", output_field=DateField()),
     )
+
+    third_party_events = ThirdPartyEvent.objects.filter(
+        is_published=True
+    )
+
     if upcoming:
-        events.filter(end_date__gte=datetime.today())
+        events = events.filter(end_date__gte=today)
+        third_party_events = third_party_events.filter(end_date__gte=today)
 
     for event in events:
         all_events.append(GenericEvent(
@@ -49,12 +57,6 @@ def retrieve_all_events(upcoming=False):
             event.start_date.date(),
             event.end_date.date(),
         ))
-
-    third_party_events = ThirdPartyEvent.objects.filter(
-        is_published=True
-    )
-    if upcoming:
-        third_party_events.filter(end_date__gte=datetime.today())
 
     for event in third_party_events:
         all_events.append(GenericEvent(

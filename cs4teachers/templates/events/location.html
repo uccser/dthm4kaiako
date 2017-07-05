@@ -9,6 +9,6 @@
 
   {% if location.description %}
     <h3>Description</h3>
-    {{ location.description|linebreaks }}
+    {{ location.description|safe|linebreaks }}
   {% endif %}
 {% endblock content %}

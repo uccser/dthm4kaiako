@@ -22,3 +22,11 @@ footer {
   display: block;
   height: 3rem;
 }
+
+.schedule-line {
+  border-top: 2px solid #e0e0e0;
+}
+
+.schedule-line-thin {
+  border-top: 1px solid #e0e0e0;
+}
