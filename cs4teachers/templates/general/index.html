@@ -31,12 +31,15 @@
           <div class="row">
             {% for event in upcoming_events %}
               <div class="col-6 text-right">
-                {% if event.start_date|date:"M" == event.end_date|date:"M" %}
-                  {{ event.start_date|date:"j" }}
-                {% else %}
-                  {{ event.start_date|date:"j M" }}
+                {% if event.start_date|date:"j" != event.end_date|date:"j" %}
+                  {% if event.start_date|date:"F" == event.end_date|date:"F" %}
+                    {{ event.start_date|date:"j" }}
+                  {% else %}
+                    {{ event.start_date|date:"j F" }}
+                  {% endif %}
+                  to
                 {% endif %}
-                to {{ event.end_date|date:" j M" }}
+                {{ event.end_date|date:" j F" }}
               </div>
               <div class="col-6 text-left">
                 <a href="{{ event.absolute_url }}">{{ event.name }}</a>
