@@ -80,7 +80,7 @@ class ThirdPartyEventAdmin(admin.ModelAdmin):
                     "start_date",
                     "end_date",
                     "description",
-                    "locations",
+                    "location",
                 ]
             }
         ),
