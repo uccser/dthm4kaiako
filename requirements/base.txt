@@ -2,6 +2,7 @@
 
 # Django
 django==1.11.2
+django-autoslug==1.9.3
 
 # Configuration
 django-environ==0.4.3
