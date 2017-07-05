@@ -4,7 +4,7 @@ python:
 services:
   - postgresql
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
 env:
   - DJANGO_SETTINGS_MODULE=config.settings.testing
 install: pip install -r requirements/testing.txt
