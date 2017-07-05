@@ -2,22 +2,16 @@
 
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+from autoslug import AutoSlugField
 
 
 class Location(models.Model):
     """Model for location of session."""
 
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     address = models.TextField()
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Location, self).save(*args, **kwargs)
 
     def __str__(self):
         """Text representation of Location object.
@@ -45,7 +39,7 @@ class Sponsor(models.Model):
 class EventBase(models.Model):
     """Abstract base class for event models."""
 
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     is_published = models.BooleanField(default=False)
@@ -76,12 +70,6 @@ class Event(EventBase):
     def get_absolute_url(self):
         return reverse("events:event", kwargs={"event_slug": self.slug})
 
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Event, self).save(*args, **kwargs)
-
     def __str__(self):
         """Text representation of Event object.
 
@@ -93,16 +81,10 @@ class Event(EventBase):
 
 class Resource(models.Model):
     """Model for resource used in sessions."""
-    slug = models.SlugField(max_length=150, unique=True)
+    slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     url = models.URLField()
     description = models.TextField(blank=True)
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Resource, self).save(*args, **kwargs)
 
     def __str__(self):
         """Text representation of Resource object.
@@ -116,7 +98,7 @@ class Resource(models.Model):
 class Session(models.Model):
     """Model for session of event."""
 
-    slug = models.SlugField(max_length=200)
+    slug = AutoSlugField(populate_from="name", unique_with=["event__slug"])
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
@@ -136,12 +118,6 @@ class Session(models.Model):
         related_name="sessions",
         blank=True,
     )
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Session, self).save(*args, **kwargs)
 
     def __str__(self):
         """Text representation of Session object.
@@ -166,12 +142,6 @@ class ThirdPartyEvent(EventBase):
         related_name="third_party_events",
         null=True,
     )
-
-    def save(self, *args, **kwargs):
-        """Set slug of object as name upon creation."""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(ThirdPartyEvent, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("events:third_party_event", kwargs={"event_slug": self.slug})
