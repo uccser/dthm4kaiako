@@ -8,6 +8,7 @@ from events.models import (
     Session,
     Location,
     ThirdPartyEvent,
+    Resource,
 )
 
 
@@ -104,3 +105,12 @@ class ThirdPartyEventView(generic.DetailView):
         context = super(ThirdPartyEventView, self).get_context_data(**kwargs)
         context["locations"] = self.object.locations.order_by("name")
         return context
+
+
+class ResourceList(generic.ListView):
+    """View for all resources."""
+
+    model = Resource
+    ordering = "name"
+    context_object_name = "resources"
+    template_name = "events/resources.html"
