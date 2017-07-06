@@ -35,7 +35,9 @@ DJANGO_APPS = [
     "django.contrib.admin",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "django_google_maps",
+]
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
@@ -212,3 +214,5 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.BCryptPasswordHasher",
 ]
+
+GOOGLE_MAPS_API_KEY = "AIzaSyBy7T00JYsCeF8HaHrGLSKePJxxjMdWMrQ"

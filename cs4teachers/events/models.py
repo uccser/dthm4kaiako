@@ -3,6 +3,7 @@
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
+from django_google_maps import fields as map_fields
 
 
 class Location(models.Model):
@@ -11,7 +12,8 @@ class Location(models.Model):
     slug = AutoSlugField(populate_from="name")
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
-    address = models.TextField()
+    address = map_fields.AddressField(max_length=200)
+    geolocation = map_fields.GeoLocationField(max_length=100)
 
     def __str__(self):
         """Text representation of Location object.
