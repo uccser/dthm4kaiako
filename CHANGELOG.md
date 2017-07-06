@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+- Fix typo on homepage
+- Add favicon ([fixes #11](https://github.com/uccser/cs4teachers/issues/11))
+- Display locations with Google Maps ([fixes #20](https://github.com/uccser/cs4teachers/issues/20))
+- Add version number context processor and display version on website
+
 ## 0.2.0
 
 - Update django from 1.11.2 to 1.11.3
