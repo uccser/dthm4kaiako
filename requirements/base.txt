@@ -13,3 +13,6 @@ psycopg2==2.7.1
 
 # Password storage
 argon2-cffi==16.3.0
+
+# Maps
+django-google-maps==0.7.0
