@@ -9,6 +9,8 @@ from events.models import (
     Sponsor,
     Resource,
 )
+from django_google_maps import widgets as map_widgets
+from django_google_maps import fields as map_fields
 
 
 class SessionAdmin(admin.ModelAdmin):
@@ -34,6 +36,9 @@ class LocationAdmin(admin.ModelAdmin):
     """Admin interface for Location model."""
 
     exclude = ("slug",)
+    formfield_overrides = {
+        map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
+    }
 
 
 class ResourceAdmin(admin.ModelAdmin):

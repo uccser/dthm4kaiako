@@ -11,4 +11,11 @@
     <h3>Description</h3>
     {{ location.description|safe|linebreaks }}
   {% endif %}
+
+  {% include "generic/map-element.html" %}
+
 {% endblock content %}
+
+{% block scripts %}
+  {% include "generic/map-script.html" %}
+{% endblock scripts %}

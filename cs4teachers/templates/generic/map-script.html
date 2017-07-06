@@ -1,0 +1,22 @@
+<script>
+function initMap() {
+  var location = {
+    lat: {{ location.geolocation.lat }},
+    lng: {{ location.geolocation.lon }}
+  };
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: {{ map_zoom|default:16 }},
+    center: {
+      lat: {{ map_lat|default:location.geolocation.lat }},
+      lng: {{ map_lng|default:location.geolocation.lon }}
+    }
+  });
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+}
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy7T00JYsCeF8HaHrGLSKePJxxjMdWMrQ&callback=initMap">
+</script>
