@@ -97,16 +97,6 @@ class ThirdPartyEventView(generic.DetailView):
     slug_url_kwarg = "event_slug"
     context_object_name = "event"
 
-    def get_context_data(self, **kwargs):
-        """Provide the context data for the third party event view.
-
-        Returns:
-            Dictionary of context data.
-        """
-        context = super(ThirdPartyEventView, self).get_context_data(**kwargs)
-        context["locations"] = self.object.locations.order_by("name")
-        return context
-
 
 class ResourceList(generic.ListView):
     """View for all resources."""
