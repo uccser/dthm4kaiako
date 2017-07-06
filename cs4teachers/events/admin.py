@@ -40,6 +40,7 @@ class LocationAdmin(admin.ModelAdmin):
         map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
     }
 
+
 class ResourceAdmin(admin.ModelAdmin):
     """Admin interface for Resource model."""
 

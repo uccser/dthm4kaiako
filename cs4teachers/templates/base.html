@@ -26,8 +26,8 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'general:home' %}">cs4teachers <span class="badge badge-warning">alpha</span></a>
-
+        <a class="navbar-brand mr-1" href="{% url 'general:home' %}">cs4teachers</a>
+        <a href="https://github.com/uccser/cs4teachers/releases" class="badge badge-warning">alpha {{ VERSION_NUMBER }}</a>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -63,6 +63,9 @@
         </p>
         <p>
           This website is open source on <a href="https://github.com/uccser/cs4teachers">GitHub</a>.
+        </p>
+        <p>
+          <small><a href="https://github.com/uccser/cs4teachers/releases">{{ VERSION_NUMBER }}</a></small>
         </p>
       </div>
     </footer>
