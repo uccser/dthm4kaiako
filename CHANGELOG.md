@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- Fix third party event page bug ([fixes #37](https://github.com/uccser/cs4teachers/issues/37))
+- Fix navbar layout on mobile devices ([fixes #38](https://github.com/uccser/cs4teachers/issues/38))
+- Display third party URL link as button for consistency
+
 ## 0.3.0
 
 - Fix typo on homepage
