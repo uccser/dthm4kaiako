@@ -30,3 +30,12 @@ footer {
 .schedule-line-thin {
   border-top: 1px solid #e0e0e0;
 }
+
+/* Fixes #38 */
+/* This fix will be implemented in Bootstrap 4 Beta 1 */
+@media (max-width: 576px) {
+  nav > .container {
+      margin-left: 0;
+      margin-right: 0;
+  }
+}
