@@ -9,7 +9,7 @@ from django_google_maps import fields as map_fields
 class Location(models.Model):
     """Model for location of session."""
 
-    slug = AutoSlugField(populate_from="name")
+    slug = AutoSlugField(unique=True, populate_from="name")
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     address = map_fields.AddressField(max_length=200)
@@ -42,8 +42,8 @@ class Sponsor(models.Model):
 class EventBase(models.Model):
     """Abstract base class for event models."""
 
-    slug = AutoSlugField(populate_from="name")
-    name = models.CharField(max_length=150, unique=True)
+    slug = AutoSlugField(unique=True, populate_from="name")
+    name = models.CharField(max_length=150)
     description = models.TextField()
     is_published = models.BooleanField(default=False)
 
@@ -102,7 +102,7 @@ class Event(EventBase):
 class Resource(models.Model):
     """Model for resource used in sessions."""
 
-    slug = AutoSlugField(populate_from="name")
+    slug = AutoSlugField(unique=True, populate_from="name")
     name = models.CharField(max_length=150)
     url = models.URLField()
     description = models.TextField(blank=True)
@@ -119,7 +119,7 @@ class Resource(models.Model):
 class Session(models.Model):
     """Model for session of event."""
 
-    slug = AutoSlugField(populate_from="name", unique_with=["event__slug"])
+    slug = AutoSlugField(unique_with=["event__slug"], populate_from="name")
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
@@ -147,11 +147,6 @@ class Session(models.Model):
             Name of session (str).
         """
         return self.name
-
-    class Meta:
-        """Meta attributes of the class."""
-
-        unique_together = ("event", "slug",)
 
 
 class ThirdPartyEvent(EventBase):
