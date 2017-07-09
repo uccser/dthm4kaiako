@@ -43,7 +43,7 @@ class EventBase(models.Model):
     """Abstract base class for event models."""
 
     slug = AutoSlugField(populate_from="name")
-    name = models.CharField(max_length=150, unique=True)
+    name = models.CharField(max_length=150)
     description = models.TextField()
     is_published = models.BooleanField(default=False)
 
@@ -147,11 +147,6 @@ class Session(models.Model):
             Name of session (str).
         """
         return self.name
-
-    class Meta:
-        """Meta attributes of the class."""
-
-        unique_together = ("event", "slug",)
 
 
 class ThirdPartyEvent(EventBase):
