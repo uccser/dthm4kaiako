@@ -1,5 +1,6 @@
 # Local development dependencies go here
 -r base.txt
+-r testing.txt
 
 # Debugging Tools
 django-debug-toolbar==1.8
