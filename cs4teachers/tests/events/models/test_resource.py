@@ -21,12 +21,12 @@ class ResourceModelTest(BaseTest):
         )
 
     def test_resource_slug_unique(self):
-        resource_a = self.event_data.create_resource(1)
-        resource_b = self.event_data.create_resource(1)
-        resource_c = self.event_data.create_resource(1)
-        query_result = Resource.objects.get(slug="resource-1")
-        query_result = Resource.objects.get(slug="resource-1-2")
-        query_result = Resource.objects.get(slug="resource-1-3")
+        self.event_data.create_resource(1)
+        self.event_data.create_resource(1)
+        self.event_data.create_resource(1)
+        Resource.objects.get(slug="resource-1")
+        Resource.objects.get(slug="resource-1-2")
+        Resource.objects.get(slug="resource-1-3")
 
     def test_resource_name(self):
         self.event_data.create_resource(1)
@@ -54,5 +54,4 @@ class ResourceModelTest(BaseTest):
 
     def test_resource_str(self):
         resource = self.event_data.create_resource(1)
-        query_result = Resource.objects.get(slug="resource-1")
         self.assertEqual(resource.__str__(), "Resource 1")

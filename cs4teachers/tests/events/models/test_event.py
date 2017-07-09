@@ -24,9 +24,9 @@ class EventModelTest(BaseTest):
         )
 
     def test_event_slug_unique(self):
-        event_a = self.event_data.create_event(1, self.location)
-        event_b = self.event_data.create_event(1, self.location)
-        event_c = self.event_data.create_event(1, self.location)
-        query_result = Event.objects.get(slug="event-1")
-        query_result = Event.objects.get(slug="event-1-2")
-        query_result = Event.objects.get(slug="event-1-3")
+        self.event_data.create_event(1, self.location)
+        self.event_data.create_event(1, self.location)
+        self.event_data.create_event(1, self.location)
+        Event.objects.get(slug="event-1")
+        Event.objects.get(slug="event-1-2")
+        Event.objects.get(slug="event-1-3")

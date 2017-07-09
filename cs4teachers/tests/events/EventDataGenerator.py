@@ -2,11 +2,8 @@
 
 from events.models import (
     Event,
-    Session,
     Location,
-    Sponsor,
     Resource,
-    ThirdPartyEvent,
 )
 
 
