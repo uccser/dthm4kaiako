@@ -4,37 +4,5 @@
 {% block page_heading %}Events{% endblock page_heading %}
 
 {% block content %}
-  <table class="table table-responsive">
-    <thead class="thead-default">
-      <tr>
-        <th>Event</th>
-        <th>Location</th>
-        <th>Start date</th>
-        <th>End date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for event in events %}
-        <tr class="align-middle">
-          <td>
-            <a href="{{ event.absolute_url }}">
-              {{ event.name }}
-            </a>
-            {% if event.third_party %}
-              {% include "events/third-party-badge.html" %}
-            {% endif %}
-          </td>
-          <td>
-            {{ event.location.name }}
-          </td>
-          <td>
-            {{ event.start_date|date:"D j M, Y" }}
-          </td>
-          <td>
-            {{ event.end_date|date:"D j M, Y" }}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% include 'events/events-table.html' %}
 {% endblock content %}

@@ -17,5 +17,5 @@ class GeneralIndexView(TemplateView):
         """
         # Call the base implementation first to get a context
         context = super(GeneralIndexView, self).get_context_data(**kwargs)
-        context["upcoming_events"] = retrieve_all_events(upcoming=True)
+        context["events"] = retrieve_all_events(upcoming=True)
         return context
