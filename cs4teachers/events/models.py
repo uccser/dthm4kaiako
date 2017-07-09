@@ -64,6 +64,7 @@ class Event(EventBase):
     sponsors = models.ManyToManyField(
         Sponsor,
         related_name="events",
+        blank=True,
     )
 
     def start_datetime(self):
