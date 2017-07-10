@@ -15,6 +15,14 @@ class Location(models.Model):
     address = map_fields.AddressField(max_length=200)
     geolocation = map_fields.GeoLocationField(max_length=100)
 
+    def get_absolute_url(self):
+        """Return URL of object on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse("events:location", kwargs={"location_slug": self.slug})
+
     def __str__(self):
         """Text representation of Location object.
 
@@ -24,11 +32,31 @@ class Location(models.Model):
         return self.name
 
 
+class LocationImage(models.Model):
+    """Model for image of location model."""
+
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="images/locations/")
+    location = models.ForeignKey(
+        Location,
+        related_name="images",
+    )
+
+    def __str__(self):
+        """Text representation of LocationImage object.
+
+        Returns:
+            Name of image (str).
+        """
+        return self.name
+
+
 class Sponsor(models.Model):
     """Model for sponsor of event."""
 
     name = models.CharField(max_length=200)
     url = models.URLField()
+    logo = models.ImageField(upload_to="images/sponsors/", null=True, blank=True)
 
     def __str__(self):
         """Text representation of Sponsor object.
@@ -100,6 +128,25 @@ class Event(EventBase):
         return self.name
 
 
+class EventImage(models.Model):
+    """Model for image of event model."""
+
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="images/events/")
+    location = models.ForeignKey(
+        Event,
+        related_name="images",
+    )
+
+    def __str__(self):
+        """Text representation of EventImage object.
+
+        Returns:
+            Name of image (str).
+        """
+        return self.name
+
+
 class Resource(models.Model):
     """Model for resource used in sessions."""
 
@@ -107,6 +154,7 @@ class Resource(models.Model):
     name = models.CharField(max_length=150)
     url = models.URLField()
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="images/resources/", null=True, blank=True)
 
     def __str__(self):
         """Text representation of Resource object.
@@ -128,6 +176,7 @@ class Session(models.Model):
     )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="images/sessions/", null=True, blank=True)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     locations = models.ManyToManyField(
