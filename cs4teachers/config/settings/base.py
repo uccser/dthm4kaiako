@@ -37,6 +37,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "django_google_maps",
+    "grappelli",
 ]
 
 # Apps specific for this project go here.
@@ -46,7 +47,7 @@ LOCAL_APPS = [
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -146,6 +147,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "config.context_processors.version_number.version_number",
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -216,3 +218,10 @@ PASSWORD_HASHERS = [
 ]
 
 GOOGLE_MAPS_API_KEY = "AIzaSyBy7T00JYsCeF8HaHrGLSKePJxxjMdWMrQ"
+
+
+# GRAPPELLISETTINGS
+# ------------------------------------------------------------------------------
+# See http://django-grappelli.readthedocs.io/en/latest/customization.html
+
+GRAPPELLI_ADMIN_TITLE = "cs4teachers admin"
