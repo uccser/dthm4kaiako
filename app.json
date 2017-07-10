@@ -11,6 +11,12 @@
     },
     "DATABASE_URL": {
       "required": true
+    },
+    "GS_PROJECT_ID": {
+      "required": true
+    },
+    "GS_CREDENTIALS": {
+      "required": true
     }
   },
   "formation": {
