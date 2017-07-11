@@ -21,3 +21,6 @@ django-google-maps==0.7.0
 
 # Images
 Pillow==4.2.1
+
+# Storage
+google-cloud-storage==1.2.0
