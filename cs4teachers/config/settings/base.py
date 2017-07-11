@@ -153,6 +153,9 @@ TEMPLATES = [
     },
 ]
 
+# Move to prod only when working
+DEFAULT_FILE_STORAGE = "config.storage.GoogleCloudStorage"
+
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
@@ -225,6 +228,3 @@ GOOGLE_MAPS_API_KEY = "AIzaSyBy7T00JYsCeF8HaHrGLSKePJxxjMdWMrQ"
 # See http://django-grappelli.readthedocs.io/en/latest/customization.html
 
 GRAPPELLI_ADMIN_TITLE = "cs4teachers admin"
-
-
-DEFAULT_FILE_STORAGE = "config.storage.GoogleCloudStorage"

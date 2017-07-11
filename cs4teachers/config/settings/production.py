@@ -49,12 +49,6 @@ INSTALLED_APPS += ["gunicorn", ]  # noqa: F405
 
 # Static Assets
 # ------------------------
-INSTALLED_APPS += ["storages", ]  # noqa: F405
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-GS_BUCKET_NAME = "cs4teachers-static"
-GS_PROJECT_ID = env("GS_PROJECT_ID")  # noqa: F405
-GS_CREDENTIALS = env("GS_CREDENTIALS")  # noqa: F405
-
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 LOGGING = {
