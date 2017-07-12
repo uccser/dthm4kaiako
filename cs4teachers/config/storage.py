@@ -1,9 +1,15 @@
+from .google_cloud_file import GoogleCloudFile
 from django.conf import settings
 from django.core.files.storage import Storage
 from google.cloud.storage.client import Client
+from google.cloud.exceptions import GoogleCloudError
 from google.oauth2 import service_account
+import mimetypes
 import environ
 import json
+
+
+logger = logging.getLogger(__name__)
 
 
 class GoogleCloudStorage(Storage):
@@ -21,15 +27,25 @@ class GoogleCloudStorage(Storage):
         return client.bucket("cs4teachers-static")
 
     def _open(self, name, mode="rb"):
-        return
+        return GoogleCloudFile(name, mode, self.bucket)
 
     def exists(self, name):
-        return False
+        blob = self.bucket.blob(name)
+        return blob.exists()
 
     def _save(self, name, content):
-        blob = self.bucket.blob(name)
-        blob.upload_from_file(content)
-        return blob.public_url
+        mimetype = mimetypes.guess_type(name)[0]
+        try:
+            blob = self.bucket.blob(name)
+            blob.upload_from_file(content, content_type=mimetype)
+            blob.reload()
+            return blob.public_url
+
+        except GoogleCloudError as e:
+            message = "Upload of file {} failed with error: {}"
+            message.format(name, e)
+            logger.error(message)
+            return None
 
     def url(self, name):
         # return "/media/{}".format(name)
