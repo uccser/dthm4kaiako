@@ -4,10 +4,10 @@ from django.core.files.storage import Storage
 from google.cloud.storage.client import Client
 from google.cloud.exceptions import GoogleCloudError
 from google.oauth2 import service_account
-import mimetypes
 import environ
+import logging
 import json
-
+import mimetypes
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +20,8 @@ class GoogleCloudStorage(Storage):
         self.bucket = self.retrieve_bucket()
 
     def retrieve_bucket(self):
-        project = self.env.read_env("GOOGLE_PROJECT")
-        service_account_file = json.load(self.env.read_env("GOOGLE_APPLICATION_CREDENTIALS"))
+        project = self.env("GOOGLE_PROJECT")
+        service_account_file = json.loads(self.env("GOOGLE_APPLICATION_CREDENTIALS"))
         credentials = service_account.Credentials.from_service_account_info(service_account_file)
         client = Client(project=project, credentials=credentials)
         return client.bucket("cs4teachers-static")
@@ -38,7 +38,6 @@ class GoogleCloudStorage(Storage):
         try:
             blob = self.bucket.blob(name)
             blob.upload_from_file(content, content_type=mimetype)
-            blob.reload()
             return blob.public_url
 
         except GoogleCloudError as e:

@@ -5,8 +5,8 @@ from google.cloud.storage.blob import Blob
 from google.cloud.exceptions import NotFound
 from tempfile import SpooledTemporaryFile
 import io
+import logging
 import mimetypes
-
 
 logger = logging.getLogger(__name__)
 
