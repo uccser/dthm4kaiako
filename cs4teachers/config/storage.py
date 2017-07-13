@@ -1,5 +1,4 @@
 from .google_cloud_file import GoogleCloudFile
-from django.conf import settings
 from django.core.files.storage import Storage
 from google.cloud.storage.client import Client
 from google.cloud.exceptions import GoogleCloudError

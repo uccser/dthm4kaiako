@@ -4,7 +4,7 @@ from django.utils.encoding import force_bytes
 from google.cloud.storage.blob import Blob
 from google.cloud.exceptions import NotFound
 from tempfile import SpooledTemporaryFile
-import io
+import os
 import logging
 import mimetypes
 
@@ -24,20 +24,16 @@ class GoogleCloudFile(File):
         """
         self.name = name
         self.mode = mode
-        self.storage = storage
-
         self._mimetype = mimetypes.guess_type(name)[0]
         self._is_dirty = False
         self._file = None
         self._blob = bucket.get_blob(name)
-
         if not self.blob and "w" in mode:
-            self.blob = Blob(self.name, storage.bucket)
+            self.blob = Blob(self.name, bucket)
         elif not self.blob and "r" in mode:
             message = "{} file was not found."
             message.format(name)
             raise NotFound(message=message)
-
         self.open(mode)
 
     @property
@@ -79,7 +75,7 @@ class GoogleCloudFile(File):
 
     file = property(_get_file, _set_file)
 
-    def open(mode=None):
+    def open(self, mode=None):
         """Open or reopen the file.
 
         Args:
