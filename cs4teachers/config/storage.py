@@ -46,7 +46,6 @@ class GoogleCloudStorage(Storage):
             return None
 
     def url(self, name):
-        # return "/media/{}".format(name)
         pass
 
     def delete(self, name):
