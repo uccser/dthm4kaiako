@@ -51,9 +51,6 @@ def retrieve_all_events(upcoming=False, series=None):
 
     events = Event.objects.filter(
         is_published=True
-    ).annotate(
-        start_date=Min("sessions__start_datetime", output_field=DateField()),
-        end_date=Max("sessions__end_datetime", output_field=DateField()),
     )
 
     third_party_events = ThirdPartyEvent.objects.filter(
@@ -73,8 +70,8 @@ def retrieve_all_events(upcoming=False, series=None):
             event.name,
             event.get_absolute_url(),
             event.location,
-            event.start_date.date(),
-            event.end_date.date(),
+            event.start_date,
+            event.end_date,
             event.series,
         ))
 
