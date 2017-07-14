@@ -18,6 +18,12 @@ urlpatterns = [
         views.ResourceList.as_view(),
         name="resources"
     ),
+    # eg: /events/series/
+    url(
+        r"^series/$",
+        views.SeriesList.as_view(),
+        name="series_list"
+    ),
     # eg: /events/cs4hs-2017/
     url(
         r"^(?P<event_slug>[-\w]+)/$",

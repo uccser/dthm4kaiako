@@ -28,6 +28,15 @@ class IndexView(generic.ListView):
         return retrieve_all_events()
 
 
+class SeriesList(generic.ListView):
+    """View for all series."""
+
+    model = Series
+    ordering = "name"
+    context_object_name = "series_list"
+    template_name = "events/series_list.html"
+
+
 class SeriesView(generic.DetailView):
     """View for a event series."""
 
