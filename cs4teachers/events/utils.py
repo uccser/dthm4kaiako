@@ -33,15 +33,15 @@ class GenericEvent:
         self.third_party = third_party
 
 
-def retrieve_all_events(upcoming=False):
+def retrieve_all_events(upcoming=False, series=None):
     """Retrieve both events and third party events.
 
     These are returned in sorted order by start datetime,
     then end datetime.
 
     Args:
-        upcoming (bool): If True, only return events after the current datetime.
-            Default is False.
+        upcoming (bool): If True, only return events after the current datetime. Default is False.
+        series (Series): If given, only return events for the given series.
 
     Returns:
         List of event objects (list).
@@ -63,6 +63,10 @@ def retrieve_all_events(upcoming=False):
     if upcoming:
         events = events.filter(end_date__gte=today)
         third_party_events = third_party_events.filter(end_date__gte=today)
+
+    if series:
+        events = events.filter(series=series)
+        third_party_events = []
 
     for event in events:
         all_events.append(GenericEvent(

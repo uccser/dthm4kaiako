@@ -25,6 +25,14 @@
   </div>
 
   <div class="col-12 col-md-6">
+    {% if event.series %}
+      <div class="card mb-3">
+        <div class="card-block p-2">
+          This event is part of the {{ event.series.name }} series, <a href="{% url 'events:series' event.series.slug %}">click here for more information</a>.
+        </div>
+      </div>
+    {% endif %}
+
     {% if event.description %}
       <h3>Description</h3>
       {{ event.description|safe|linebreaks }}

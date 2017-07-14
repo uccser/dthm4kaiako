@@ -24,7 +24,13 @@ urlpatterns = [
         views.EventView.as_view(),
         name="event"
     ),
-    # eg: /events/erskine-315/
+    # eg: /events/series/cs4ps/
+    url(
+        r"^series/(?P<series_slug>[-\w]+)/$",
+        views.SeriesView.as_view(),
+        name="series"
+    ),
+    # eg: /events/location/erskine-315/
     url(
         r"^location/(?P<location_slug>[-\w]+)/$",
         views.LocationView.as_view(),
