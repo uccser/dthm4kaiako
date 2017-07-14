@@ -12,7 +12,7 @@ from events.models import (
 class GenericEvent:
     """Object combining common attributes of Event and ThirdPartyEvent classes."""
 
-    def __init__(self, name, absolute_url, location, start_date, end_date, third_party=False):
+    def __init__(self, name, absolute_url, location, start_date, end_date, series=None, third_party=False):
         """Construct GenericEvent object.
 
         Args:
@@ -21,6 +21,7 @@ class GenericEvent:
             location: Location object of the event (Location).
             start_date: Date the event starts (date).
             end_date: Date the event ends (date).
+            series: Series of the event if applicaable (Series).
             third_party: True if event is a third party event, otherwise False.
         """
         self.name = name
@@ -28,6 +29,7 @@ class GenericEvent:
         self.location = location
         self.start_date = start_date
         self.end_date = end_date
+        self.series = series
         self.third_party = third_party
 
 
@@ -69,6 +71,7 @@ def retrieve_all_events(upcoming=False):
             event.location,
             event.start_date.date(),
             event.end_date.date(),
+            event.series,
         ))
 
     for event in third_party_events:
@@ -78,6 +81,7 @@ def retrieve_all_events(upcoming=False):
             event.location,
             event.start_date,
             event.end_date,
+            None,
             True,
         ))
 
