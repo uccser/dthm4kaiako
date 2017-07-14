@@ -23,7 +23,15 @@
       <h3>Sponsor{{ sponsors.count|pluralize }}</h3>
       <ul class="list-unstyled">
         {% for sponsor in sponsors %}
-          <li><a href="{{ sponsor.url }}">{{ sponsor.name }}</a></li>
+          <li>
+            <a href="{{ sponsor.url }}">
+              {% if sponsor.logo %}
+                <img src="{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
+              {% else %}
+                {{ sponsor.name }}
+              {% endif %}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     {% endif %}

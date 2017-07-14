@@ -14,11 +14,13 @@ admin.site.site_header = "cs4teachers"
 urlpatterns = [
     url(r"", include("general.urls", namespace="general")),
     url(r"^events/", include("events.urls", namespace="events")),
+    url(r"^grappelli/", include("grappelli.urls")),
     url(r"^admin/", include(admin.site.urls)),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
+    from django.conf.urls.static import static
     urlpatterns += [
         url(r"^__debug__/", include(debug_toolbar.urls)),
-    ]
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

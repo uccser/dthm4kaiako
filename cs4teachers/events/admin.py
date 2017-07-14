@@ -8,6 +8,8 @@ from events.models import (
     Session,
     Sponsor,
     Resource,
+    LocationImage,
+    EventImage,
 )
 from django_google_maps import widgets as map_widgets
 from django_google_maps import fields as map_fields
@@ -37,7 +39,7 @@ class LocationAdmin(admin.ModelAdmin):
 
     exclude = ("slug",)
     formfield_overrides = {
-        map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
+        map_fields.AddressField: {"widget": map_widgets.GoogleMapsAddressWidget},
     }
 
 
@@ -107,3 +109,5 @@ admin.site.register(Session, SessionAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Sponsor)
+admin.site.register(LocationImage)
+admin.site.register(EventImage)
