@@ -1,8 +1,6 @@
 """Utility functions for the events application."""
 
 from datetime import datetime, date
-from django.db.models import DateField
-from django.db.models.aggregates import Max, Min
 from events.models import (
     Event,
     ThirdPartyEvent,
