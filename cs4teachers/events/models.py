@@ -148,7 +148,10 @@ class Event(EventBase):
         Returns:
             Name of event (str).
         """
-        return self.name
+        if self.series:
+            return "{}: {}".format(self.series.name, self.name)
+        else:
+            return self.name
 
 
 class EventImage(models.Model):
