@@ -31,20 +31,8 @@ class GenericEvent:
         self.end_date = end_date
         self.series = series
         self.third_party = third_party
-        self.days_difference = self.calculate_days_difference()
+        self.days_difference = calculate_days_difference(self)
 
-    def calculate_days_difference(self):
-        today = date.today()
-        # If event is on now
-        if today >= self.start_date and today <= self.end_date:
-            days_difference = 0
-        # Otherwise, next upcoming event
-        elif today > self.end_date:
-            days_difference = (self.end_date - today).days
-        # Otherwise, latest event
-        else:
-            days_difference = (self.start_date - today).days
-        return days_difference
 
 def retrieve_all_events(upcoming=False, series=None):
     """Retrieve both events and third party events.
@@ -100,3 +88,28 @@ def retrieve_all_events(upcoming=False, series=None):
         ))
 
     return sorted(all_events, key=lambda x: (x.start_date, x.end_date))
+
+
+def calculate_days_difference(event):
+    """Return the number of days difference from today for an event.
+
+    Args:
+        event (BaseEvent): Event to compare to today.
+
+    Returns:
+        Integer of difference:
+            Positive if in future.
+            Zero if event is occuring now.
+            Negative if in past.
+    """
+    today = date.today()
+    # If event is on now
+    if today >= event.start_date and today <= event.end_date:
+        days_difference = 0
+    # Otherwise, next upcoming event
+    elif today > event.end_date:
+        days_difference = (event.end_date - today).days
+    # Otherwise, latest event
+    else:
+        days_difference = (event.start_date - today).days
+    return days_difference
