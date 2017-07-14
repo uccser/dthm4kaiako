@@ -4,6 +4,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from events.utils import retrieve_all_events
 from events.models import (
+    Series,
     Event,
     Session,
     Location,
@@ -25,6 +26,34 @@ class IndexView(generic.ListView):
             Queryset of Topic objects ordered by name.
         """
         return retrieve_all_events()
+
+
+class SeriesList(generic.ListView):
+    """View for all series."""
+
+    model = Series
+    ordering = "name"
+    context_object_name = "series_list"
+    template_name = "events/series_list.html"
+
+
+class SeriesView(generic.DetailView):
+    """View for a event series."""
+
+    model = Series
+    template_name = "events/series.html"
+    slug_url_kwarg = "series_slug"
+    context_object_name = "series"
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the session view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super(SeriesView, self).get_context_data(**kwargs)
+        context["events"] = retrieve_all_events(series=self.object)
+        return context
 
 
 class EventView(generic.DetailView):

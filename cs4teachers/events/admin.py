@@ -6,6 +6,7 @@ from events.models import (
     ThirdPartyEvent,
     Location,
     Session,
+    Series,
     Sponsor,
     Resource,
     LocationImage,
@@ -57,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["name", "description", "location", "sponsors"]
+                "fields": ["name", "description", "series", "location", "sponsors"]
             }
         ),
         (
@@ -68,7 +69,7 @@ class EventAdmin(admin.ModelAdmin):
         ),
     ]
     inlines = [SessionInline]
-    list_display = ("name",)
+    list_display = ("name", "series", "location", "start_datetime", "end_datetime")
     list_filter = ("is_published",)
     search_fields = ["name"]
     filter_vertical = ("sponsors",)
@@ -108,6 +109,7 @@ admin.site.register(ThirdPartyEvent, ThirdPartyEventAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Resource, ResourceAdmin)
+admin.site.register(Series)
 admin.site.register(Sponsor)
 admin.site.register(LocationImage)
 admin.site.register(EventImage)

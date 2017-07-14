@@ -40,6 +40,10 @@ footer {
   }
 }
 
+.img-inline {
+  height: 1em;
+  vertical-align: text-top;
+}
 .img-sponsor-logo {
   height: 2rem;
 }

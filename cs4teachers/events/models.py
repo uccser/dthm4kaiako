@@ -51,6 +51,23 @@ class LocationImage(models.Model):
         return self.name
 
 
+class Series(models.Model):
+    """Model for event series."""
+
+    slug = AutoSlugField(unique=True, populate_from="name")
+    name = models.CharField(max_length=150)
+    logo = models.ImageField(upload_to="images/series/", null=True, blank=True)
+    description = models.TextField()
+
+    def __str__(self):
+        """Text representation of Series object.
+
+        Returns:
+            Name of series (str).
+        """
+        return self.name
+
+
 class Sponsor(models.Model):
     """Model for sponsor of event."""
 
@@ -89,6 +106,12 @@ class Event(EventBase):
         related_name="events",
         null=True,
     )
+    series = models.ForeignKey(
+        Series,
+        related_name="events",
+        null=True,
+        blank=True,
+    )
     sponsors = models.ManyToManyField(
         Sponsor,
         related_name="events",
@@ -125,7 +148,10 @@ class Event(EventBase):
         Returns:
             Name of event (str).
         """
-        return self.name
+        if self.series:
+            return "{}: {}".format(self.series.name, self.name)
+        else:
+            return self.name
 
 
 class EventImage(models.Model):

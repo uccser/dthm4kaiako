@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}{{ event.name }}{% endblock title %}
 
-{% block page_heading %}{{ event.name }}{% endblock page_heading %}
+{% block page_heading %}
+  {% if event.series %}
+    {% if event.series.logo %}
+      <img src="{% get_media_prefix %}{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
+    {% else %}
+      {{ event.series.name }}:
+    {% endif %}
+  {% endif %}
+  {{ event.name }}
+{% endblock page_heading %}
 
 {% block content_container %}
   <div class="col-12">
@@ -14,6 +25,14 @@
   </div>
 
   <div class="col-12 col-md-6">
+    {% if event.series %}
+      <div class="card mb-3">
+        <div class="card-block p-2">
+          This event is part of the {{ event.series.name }} series, <a href="{% url 'events:series' event.series.slug %}">click here for more information</a>.
+        </div>
+      </div>
+    {% endif %}
+
     {% if event.description %}
       <h3>Description</h3>
       {{ event.description|safe|linebreaks }}
@@ -26,7 +45,7 @@
           <li>
             <a href="{{ sponsor.url }}">
               {% if sponsor.logo %}
-                <img src="{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
+                <img src="{% get_media_prefix %}{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
               {% else %}
                 {{ sponsor.name }}
               {% endif %}

@@ -18,13 +18,25 @@ urlpatterns = [
         views.ResourceList.as_view(),
         name="resources"
     ),
+    # eg: /events/series/
+    url(
+        r"^series/$",
+        views.SeriesList.as_view(),
+        name="series_list"
+    ),
     # eg: /events/cs4hs-2017/
     url(
         r"^(?P<event_slug>[-\w]+)/$",
         views.EventView.as_view(),
         name="event"
     ),
-    # eg: /events/erskine-315/
+    # eg: /events/series/cs4ps/
+    url(
+        r"^series/(?P<series_slug>[-\w]+)/$",
+        views.SeriesView.as_view(),
+        name="series"
+    ),
+    # eg: /events/location/erskine-315/
     url(
         r"^location/(?P<location_slug>[-\w]+)/$",
         views.LocationView.as_view(),
