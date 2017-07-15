@@ -47,3 +47,8 @@ footer {
 .img-sponsor-logo {
   height: 2rem;
 }
+
+/* This fix should not be required in later versions of Bootstrap 4 */
+.table-responsive {
+  display: table !important;
+}
