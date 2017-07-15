@@ -1,5 +1,6 @@
 """Create test data of event models."""
 
+from datetime import date
 from events.models import (
     Event,
     Location,
@@ -10,18 +11,28 @@ from events.models import (
 class EventDataGenerator:
     """Class for generating test data for events."""
 
-    def create_event(self, number, location=None, is_published=True):
+    def create_event(self, number, location=None, start_date=None, end_date=None, is_published=True):
         """Create event object.
 
         Args:
             number: Identifier of the event (int).
+            location: Location of the event (Location).
+            start_date: Date of the event start (Date).
+            end_date: Date of the event end (Date).
+            is_published: Boolean if event is public (bool).
 
         Returns:
             Event object.
         """
+        if start_date is None:
+            start_date = date.today()
+        if end_date is None:
+            end_date = date.today()
         event = Event(
             name="Event {}".format(number),
             description="Description for Event {}".format(number),
+            start_date=start_date,
+            end_date=end_date,
             location=location,
             is_published=is_published,
         )
