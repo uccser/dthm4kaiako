@@ -58,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["name", "description", "series", "location", "sponsors"]
+                "fields": ["name", "description", "start_date", "end_date", "series", "location", "sponsors"]
             }
         ),
         (
@@ -69,7 +69,7 @@ class EventAdmin(admin.ModelAdmin):
         ),
     ]
     inlines = [SessionInline]
-    list_display = ("name", "series", "location", "start_datetime", "end_datetime")
+    list_display = ("name", "series", "location", "start_date", "end_date")
     list_filter = ("is_published",)
     search_fields = ["name"]
     filter_vertical = ("sponsors",)

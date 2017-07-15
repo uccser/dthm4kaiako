@@ -1,5 +1,6 @@
 """Models for the events application."""
 
+import operator
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
@@ -59,6 +60,18 @@ class Series(models.Model):
     logo = models.ImageField(upload_to="images/series/", null=True, blank=True)
     description = models.TextField()
 
+    def find_closest_event(self):
+        from events.utils import calculate_days_difference
+        events = self.events.filter(is_published=True)
+        closest_event = None
+        for event in events:
+            event.days_difference = calculate_days_difference(event)
+            if closest_event is None or (event.days_difference >= 0 and event.days_difference < closest_event.days_difference):
+                closest_event = event
+            elif closest_event is None or (event.days_difference < 0 and event.days_difference > closest_event.days_difference):
+                closest_event = event
+        return closest_event
+
     def __str__(self):
         """Text representation of Series object.
 
@@ -90,6 +103,8 @@ class EventBase(models.Model):
     slug = AutoSlugField(unique=True, populate_from="name")
     name = models.CharField(max_length=150)
     description = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     is_published = models.BooleanField(default=False)
 
     class Meta:
@@ -117,22 +132,6 @@ class Event(EventBase):
         related_name="events",
         blank=True,
     )
-
-    def start_datetime(self):
-        """Retrieve start datetime of event from earliest session.
-
-        Returns:
-            Datetime object of event start.
-        """
-        return self.sessions.earliest("start_datetime").start_datetime
-
-    def end_datetime(self):
-        """Retrieve end datetime of event from latest session.
-
-        Returns:
-            Datetime object of event end.
-        """
-        return self.sessions.latest("end_datetime").end_datetime
 
     def get_absolute_url(self):
         """Return URL of object on website.
@@ -229,8 +228,6 @@ class ThirdPartyEvent(EventBase):
     """Model for third party event in database."""
 
     url = models.URLField()
-    start_date = models.DateField()
-    end_date = models.DateField()
     location = models.ForeignKey(
         Location,
         related_name="third_party_events",
