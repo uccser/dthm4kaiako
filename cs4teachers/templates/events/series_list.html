@@ -20,7 +20,18 @@
           </div>
           <div class="card-block">
             {{ series.description|safe|linebreaks }}
-            <a href="{% url 'events:series' series.slug %}" class="btn btn-primary">View events for this series</a>
+            <a href="{% url 'events:series' series.slug %}" class="btn btn-primary">View events in this series</a>
+          </div>
+          <div class="card-footer text-muted">
+            {% with closest_event=series.find_closest_event %}
+              {% if closest_event.days_difference == 0 %}
+                Event happening now!
+              {% elif closest_event.days_difference > 0 %}
+                {{ closest_event.start_date|timeuntil }} until the next event
+              {% elif closest_event.days_difference < 0 %}
+                {{ closest_event.end_date|timesince }} since the last event
+              {% endif %}
+            {% endwith %}
           </div>
         </div>
       </div>

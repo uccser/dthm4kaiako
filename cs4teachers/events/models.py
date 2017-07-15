@@ -1,5 +1,6 @@
 """Models for the events application."""
 
+import operator
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
@@ -58,6 +59,18 @@ class Series(models.Model):
     name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to="images/series/", null=True, blank=True)
     description = models.TextField()
+
+    def find_closest_event(self):
+        from events.utils import calculate_days_difference
+        events = self.events.filter(is_published=True)
+        closest_event = None
+        for event in events:
+            event.days_difference = calculate_days_difference(event)
+            if closest_event is None or (event.days_difference >= 0 and event.days_difference < closest_event.days_difference):
+                closest_event = event
+            elif closest_event is None or (event.days_difference < 0 and event.days_difference > closest_event.days_difference):
+                closest_event = event
+        return closest_event
 
     def __str__(self):
         """Text representation of Series object.

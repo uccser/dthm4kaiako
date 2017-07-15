@@ -58,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["name", "description", "series", "location", "sponsors"]
+                "fields": ["name", "description", "start_date", "end_date", "series", "location", "sponsors"]
             }
         ),
         (
