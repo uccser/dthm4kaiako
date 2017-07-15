@@ -43,7 +43,7 @@
       <ul class="list-unstyled">
         {% for sponsor in sponsors %}
           <li>
-            <a href="{{ sponsor.url }}">
+            <a href="{{ sponsor.url }}" target="_blank">
               {% if sponsor.logo %}
                 <img src="{% get_media_prefix %}{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
               {% else %}

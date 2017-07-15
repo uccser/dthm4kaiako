@@ -30,7 +30,7 @@
       <h3>Resource{{ resources.count|pluralize }}</h3>
       <ul class="unstyled">
         {% for resource in resources %}
-          <li><a href="{{ resource.url }}">{{ resource.name }}</a></li>
+          <li><a href="{{ resource.url }}" target="_blank">{{ resource.name }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
