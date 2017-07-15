@@ -1,6 +1,5 @@
 """Models for the events application."""
 
-import operator
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
@@ -61,14 +60,28 @@ class Series(models.Model):
     description = models.TextField()
 
     def find_closest_event(self):
+        """Find the closest event of the series.
+
+        Chooses the first event to match one of the following rules:
+        1. Event currently occuring.
+        2. Closest event in future.
+        3. Closest event in past.
+
+        Returns:
+            Event object, or None if no events.
+        """
         from events.utils import calculate_days_difference
         events = self.events.filter(is_published=True)
         closest_event = None
         for event in events:
             event.days_difference = calculate_days_difference(event)
-            if closest_event is None or (event.days_difference >= 0 and event.days_difference < closest_event.days_difference):
+            if closest_event is None or (
+                event.days_difference >= 0 and event.days_difference < closest_event.days_difference
+            ):
                 closest_event = event
-            elif closest_event is None or (event.days_difference < 0 and event.days_difference > closest_event.days_difference):
+            elif closest_event is None or (
+                event.days_difference < 0 and event.days_difference > closest_event.days_difference
+            ):
                 closest_event = event
         return closest_event
 
