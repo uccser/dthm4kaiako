@@ -93,7 +93,7 @@
             {{ session.description|safe|linebreaks }}
 
             {% if session.resources.count > 0 %}
-              <p>{{ session.resources.count }} resource{{ session.resources.count|pluralize }} are available.
+              <p>{{ session.resources.count }} resource{{ session.resources.count|pluralize }} are available for this session.</p>
             {% endif %}
           </div>
 
