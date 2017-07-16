@@ -56,6 +56,7 @@ class Series(models.Model):
 
     slug = AutoSlugField(unique=True, populate_from="name")
     name = models.CharField(max_length=150)
+    subtitle = models.CharField(max_length=150, blank=True)
     logo = models.ImageField(upload_to="images/series/", null=True, blank=True)
     description = models.TextField()
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+- Fix bug where series logo was prefixed with local media location ([fixes #58](https://github.com/uccser/cs4teachers/issues/58))
+- Add and display series subtitle
+- Format event resource count on schedule to stand out from description
+
 ## 0.4.1
 
 - Fix bug where admin interface does not allow changing object containing image ([fixes #56](https://github.com/uccser/cs4teachers/issues/56))

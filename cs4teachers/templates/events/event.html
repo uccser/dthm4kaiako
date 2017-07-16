@@ -7,7 +7,7 @@
 {% block page_heading %}
   {% if event.series %}
     {% if event.series.logo %}
-      <img src="{% get_media_prefix %}{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
+      <img src="{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
     {% else %}
       {{ event.series.name }}:
     {% endif %}
@@ -93,7 +93,7 @@
             {{ session.description|safe|linebreaks }}
 
             {% if session.resources.count > 0 %}
-              <p>{{ session.resources.count }} resource{{ session.resources.count|pluralize }} are available for this session.</p>
+              <p><span class="badge badge-default">Includes {{ session.resources.count }} resource{{ session.resources.count|pluralize }}</span></p>
             {% endif %}
           </div>
 

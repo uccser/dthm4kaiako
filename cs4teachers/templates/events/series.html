@@ -6,10 +6,11 @@
 
 {% block page_heading %}
   {% if series.logo %}
-    <img src="{% get_media_prefix %}{{ series.logo }}" class="img-inline" alt="{{ series.name }}">
+    <img src="{{ series.logo }}" class="img-inline" alt="{{ series.name }}">
   {% else %}
     {{ series.name }}
   {% endif %}
+  <small class="text-muted">{{ series.subtitle }}</small>
 {% endblock page_heading %}
 
 {% block content %}
