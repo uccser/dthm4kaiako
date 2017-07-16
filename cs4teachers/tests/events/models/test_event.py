@@ -40,7 +40,6 @@ class EventModelTest(BaseTest):
         Event.objects.get(slug="event-1-2")
         Event.objects.get(slug="event-1-3")
 
-
     def test_event_with_series_slug_unique(self):
         series = self.event_data.create_series(1)
         self.event_data.create_event(1, series=series, location=self.location)
