@@ -182,7 +182,7 @@ class EventImage(models.Model):
 
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="images/events/")
-    location = models.ForeignKey(
+    event = models.ForeignKey(
         Event,
         related_name="images",
     )

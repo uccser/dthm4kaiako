@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+- Fix bug where admin interface does not allow changing object containing image ([fixes #56](https://github.com/uccser/cs4teachers/issues/56))
+- Fix name of EventImage to Event relationship ([fixes #55](https://github.com/uccser/cs4teachers/issues/55))
+- Fix bug where sponsor logo was prefixed with local media location
+
 ## 0.4.0
 
 - Allow event to be part of series ([fixes #44](https://github.com/uccser/cs4teachers/issues/44))
