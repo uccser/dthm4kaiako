@@ -52,3 +52,7 @@ footer {
 .table-responsive {
   display: table !important;
 }
+
+.card-block-med-height {
+  min-height: 10em;
+}

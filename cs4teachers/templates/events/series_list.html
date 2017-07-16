@@ -9,7 +9,7 @@
 {% block content %}
   <div class="row">
     {% for series in series_list %}
-      <div class="col-12 col-md-6 col-lg-4">
+      <div class="col-12 col-md-6 col-lg-4 mb-2">
         <div class="card text-center">
           <div class="card-header h1">
             {% if series.logo %}
@@ -18,7 +18,7 @@
               {{ series.name }}
             {% endif %}
           </div>
-          <div class="card-block">
+          <div class="card-block card-block-med-height">
             {{ series.subtitle }}
             <a href="{% url 'events:series' series.slug %}" class="btn btn-primary">View events in this series</a>
           </div>
