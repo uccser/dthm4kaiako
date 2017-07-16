@@ -26,29 +26,9 @@
           <p class="mb-0">In the future we plan to add the ability for you to be able to register for events directly on this site with a login, and edit your registration as you wish.</p>
         </div>
 
-        {% if upcoming_events %}
+        {% if events %}
           <h2>Upcoming events</h2>
-          <div class="row">
-            {% for event in upcoming_events %}
-              <div class="col-6 text-right">
-                {% if event.start_date|date:"j" != event.end_date|date:"j" %}
-                  {% if event.start_date|date:"F" == event.end_date|date:"F" %}
-                    {{ event.start_date|date:"j" }}
-                  {% else %}
-                    {{ event.start_date|date:"j F" }}
-                  {% endif %}
-                  to
-                {% endif %}
-                {{ event.end_date|date:" j F" }}
-              </div>
-              <div class="col-6 text-left">
-                <a href="{{ event.absolute_url }}">{{ event.name }}</a>
-                {% if event.third_party %}
-                  {% include "events/third-party-badge.html" %}
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
+          {% include 'events/events-table.html' %}
         {% endif %}
 
         <p class="mt-5">

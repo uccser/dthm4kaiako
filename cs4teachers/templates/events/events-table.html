@@ -1,0 +1,46 @@
+{% load static %}
+
+<table class="table table-responsive text-left">
+  <thead class="thead-default">
+    <tr>
+      <th>Date</th>
+      <th>Event</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for event in events %}
+      <tr>
+        <td class="align-middle">
+          {% if event.start_date|date:"j" != event.end_date|date:"j" %}
+            {% if event.start_date|date:"F" == event.end_date|date:"F" %}
+              {{ event.start_date|date:"j" }}
+            {% else %}
+              {{ event.start_date|date:"j F" }}
+            {% endif %}
+            to
+          {% endif %}
+          {{ event.end_date|date:" j F, Y" }}
+        </td>
+        <td class="align-middle">
+          <a href="{{ event.absolute_url }}">
+            {% if event.series %}
+              {% if event.series.logo %}
+                <img src="{% get_media_prefix %}{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
+              {% else %}
+                {{ event.series.name }}:
+              {% endif %}
+            {% endif %}
+            {{ event.name }}
+          </a>
+          {% if event.third_party %}
+            {% include "events/third-party-badge.html" %}
+          {% endif %}
+        </td>
+        <td class="align-middle">
+          {{ event.location.name }}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

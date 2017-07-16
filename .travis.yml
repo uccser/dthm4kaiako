@@ -15,9 +15,13 @@ before_script:
 script:
   - python cs4teachers/manage.py migrate
   - python cs4teachers/manage.py collectstatic --no-input --clear
-  - python cs4teachers/manage.py test --pattern "test_*.py" -v 3
+  - coverage run cs4teachers/manage.py test tests --settings=config.settings.testing -v=3
   - flake8
   - pydocstyle --count --explain
+after_success:
+  - coverage xml -i
+  - coverage report -m --skip-covered
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   email: false
   slack:

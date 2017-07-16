@@ -3,10 +3,12 @@
 # Django
 django==1.11.3
 django-autoslug==1.9.3
+django-grappelli==2.10.1
 
 # Configuration
 django-environ==0.4.3
 whitenoise==3.3.0
+django-storages==1.6.3
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.7.1
@@ -16,3 +18,9 @@ argon2-cffi==16.3.0
 
 # Maps
 django-google-maps==0.7.0
+
+# Images
+Pillow==4.2.1
+
+# Storage
+google-cloud-storage==1.2.0

@@ -1,0 +1,10 @@
+[run]
+branch = True
+source =
+    config
+    general
+    events
+omit =
+    # Omit migration files
+    */migrations/*
+    */wsgi.py

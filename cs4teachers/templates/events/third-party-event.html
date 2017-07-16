@@ -5,6 +5,14 @@
 {% block page_heading %}{{ event.name }}{% endblock page_heading %}
 
 {% block content_container %}
+  <div class="col-12">
+    <div class="alert alert-warning" role="alert">
+      <p class="mb-0">
+        <strong>Warning!</strong> We cannot guarantee the information for this event is accurate, please visit the event's website below for the latest information.
+      </p>
+    </div>
+  </div>
+
   <div class="col-12 col-md-6">
     <p class="mb-0"><strong>Starts:</strong> {{ event.start_date|date:"l j F, Y" }}</p>
     <p class="mb-0"><strong>Ends:</strong> {{ event.end_date|date:"l j F, Y" }}</p>
@@ -14,7 +22,7 @@
     <a href="{{ event.url }}" class="btn btn-primary btn-lg" role="button">View event website</a>
   </div>
 
-  <div class="col-12 col-md-6">
+  <div class="col-12">
     {% if event.description %}
       <h3>Description</h3>
       {{ event.description|safe|linebreaks }}

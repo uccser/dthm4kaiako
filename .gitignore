@@ -53,6 +53,7 @@ coverage.xml
 # Django stuff:
 *.log
 staticfiles/
+media/
 
 # Flask stuff:
 instance/

@@ -46,7 +46,6 @@ CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 INSTALLED_APPS += ["gunicorn", ]  # noqa: F405
 
-
 # Static Assets
 # ------------------------
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -66,3 +65,6 @@ LOGGING = {
         }
     }
 }
+
+# Use Google Cloud Platform for storage
+DEFAULT_FILE_STORAGE = "config.storage.GoogleCloudStorage"

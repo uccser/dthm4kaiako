@@ -6,8 +6,11 @@ from events.models import (
     ThirdPartyEvent,
     Location,
     Session,
+    Series,
     Sponsor,
     Resource,
+    LocationImage,
+    EventImage,
 )
 from django_google_maps import widgets as map_widgets
 from django_google_maps import fields as map_fields
@@ -37,7 +40,7 @@ class LocationAdmin(admin.ModelAdmin):
 
     exclude = ("slug",)
     formfield_overrides = {
-        map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
+        map_fields.AddressField: {"widget": map_widgets.GoogleMapsAddressWidget},
     }
 
 
@@ -55,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["name", "description", "location", "sponsors"]
+                "fields": ["name", "description", "start_date", "end_date", "series", "location", "sponsors"]
             }
         ),
         (
@@ -66,7 +69,7 @@ class EventAdmin(admin.ModelAdmin):
         ),
     ]
     inlines = [SessionInline]
-    list_display = ("name",)
+    list_display = ("name", "series", "location", "start_date", "end_date")
     list_filter = ("is_published",)
     search_fields = ["name"]
     filter_vertical = ("sponsors",)
@@ -106,4 +109,7 @@ admin.site.register(ThirdPartyEvent, ThirdPartyEventAdmin)
 admin.site.register(Session, SessionAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Resource, ResourceAdmin)
+admin.site.register(Series)
 admin.site.register(Sponsor)
+admin.site.register(LocationImage)
+admin.site.register(EventImage)
