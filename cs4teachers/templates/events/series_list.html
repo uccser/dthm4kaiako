@@ -19,7 +19,7 @@
             {% endif %}
           </div>
           <div class="card-block card-block-med-height">
-            {{ series.subtitle }}
+            <p>{{ series.subtitle }}</p>
             <a href="{% url 'events:series' series.slug %}" class="btn btn-primary">View events in this series</a>
           </div>
           <div class="card-footer text-muted">

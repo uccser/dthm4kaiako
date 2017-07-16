@@ -45,7 +45,7 @@ footer {
   vertical-align: text-top;
 }
 .img-sponsor-logo {
-  height: 2rem;
+  height: 4rem;
 }
 
 /* This fix should not be required in later versions of Bootstrap 4 */
@@ -54,5 +54,5 @@ footer {
 }
 
 .card-block-med-height {
-  min-height: 10em;
+  min-height: 9em;
 }

@@ -9,6 +9,7 @@ from events.models import (
     Location,
     Sponsor,
     Resource,
+    ThirdPartyEvent,
 )
 
 
@@ -116,3 +117,32 @@ class EventDataGenerator:
         )
         sponsor.save()
         return sponsor
+
+    def create_third_party_event(self, number, location=None, start_date=None, end_date=None, is_published=True):
+        """Create third party event object.
+
+        Args:
+            number: Identifier of the event (int).
+            location: Location of the event (Location).
+            start_date: Date of the event start (Date).
+            end_date: Date of the event end (Date).
+            is_published: Boolean if event is public (bool).
+
+        Returns:
+            ThirdPartyEvent object.
+        """
+        if start_date is None:
+            start_date = date.today()
+        if end_date is None:
+            end_date = date.today()
+        third_party_event = ThirdPartyEvent(
+            name="Third Party Event {}".format(number),
+            description="Description for Third Party Event {}".format(number),
+            start_date=start_date,
+            end_date=end_date,
+            location=location,
+            url="https://www.{}.com/".format(number),
+            is_published=is_published,
+        )
+        third_party_event.save()
+        return third_party_event
