@@ -93,3 +93,11 @@ class GoogleCloudStorage(Storage):
         """
         blob = self.bucket.blob(name)
         blob.delete()
+
+    def url(self, name):
+        """Return URL where the file referenced by name can be accessed.
+
+        Args:
+            name (str): Name of file to delete.
+        """
+        return self.bucket.blob(name).public_url
