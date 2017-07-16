@@ -4,6 +4,7 @@ from datetime import date
 from unittest.mock import MagicMock
 from django.core.files import File
 from events.models import (
+    Series,
     Event,
     Location,
     Sponsor,
@@ -14,7 +15,26 @@ from events.models import (
 class EventDataGenerator:
     """Class for generating test data for events."""
 
-    def create_event(self, number, location=None, start_date=None, end_date=None, is_published=True):
+    def create_series(self, number):
+        """Create series object.
+
+        Args:
+            number: Identifier of the series (int).
+
+        Returns:
+            Series object.
+        """
+        logo = MagicMock(spec=File, name="ImageMock")
+        logo.name = "Logo for Series {}".format(number)
+        series = Series(
+            name="Series {}".format(number),
+            description="Description for Series {}".format(number),
+            logo=logo,
+        )
+        series.save()
+        return series
+
+    def create_event(self, number, series=None, location=None, start_date=None, end_date=None, is_published=True):
         """Create event object.
 
         Args:
@@ -33,6 +53,7 @@ class EventDataGenerator:
             end_date = date.today()
         event = Event(
             name="Event {}".format(number),
+            series=series,
             description="Description for Event {}".format(number),
             start_date=start_date,
             end_date=end_date,

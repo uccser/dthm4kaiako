@@ -113,7 +113,18 @@ class Sponsor(models.Model):
 class EventBase(models.Model):
     """Abstract base class for event models."""
 
-    slug = AutoSlugField(unique=True, populate_from="name")
+    def create_slug(self):
+        """Create slug for event.
+
+        Returns:
+            String of slug.
+        """
+        if self.series:
+            return "{}-{}".format(self.series.slug, self.name)
+        else:
+            return self.name
+
+    slug = AutoSlugField(unique=True, populate_from=create_slug)
     name = models.CharField(max_length=150)
     description = models.TextField()
     start_date = models.DateField()
