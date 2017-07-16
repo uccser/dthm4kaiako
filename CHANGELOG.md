@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0
+
+- Allow event to be part of series ([fixes #44](https://github.com/uccser/cs4teachers/issues/44))
+- Do not require sponsor for an event ([fixes #41](https://github.com/uccser/cs4teachers/issues/41))
+- Allow media uploads for objects ([fixes #45](https://github.com/uccser/cs4teachers/issues/45))
+- Add start and end date fields directly to event model ([fixes #52](https://github.com/uccser/cs4teachers/issues/52))
+- Add warning to third party event page ([fixes #42](https://github.com/uccser/cs4teachers/issues/42))
+- Show third party event description as full width ([fixes #40](https://github.com/uccser/cs4teachers/issues/40))
+- Display resource count for each session on event page ([fixes #51](https://github.com/uccser/cs4teachers/issues/51))
+- Open resources and sponsors in new tab ([fixes #48](https://github.com/uccser/cs4teachers/issues/48))
+- Remove restriction of unique event names ([fixes #43](https://github.com/uccser/cs4teachers/issues/43))
+- Add test suite and code coverage ([fixes #29](https://github.com/uccser/cs4teachers/issues/29))
+
 ## 0.3.1
 
 - Fix third party event page bug ([fixes #37](https://github.com/uccser/cs4teachers/issues/37))
