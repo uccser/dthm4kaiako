@@ -97,7 +97,7 @@ class Series(models.Model):
 class Sponsor(models.Model):
     """Model for sponsor of event."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(unique=True, max_length=200)
     url = models.URLField()
     logo = models.ImageField(upload_to="images/sponsors/", null=True, blank=True)
 

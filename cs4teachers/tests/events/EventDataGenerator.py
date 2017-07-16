@@ -1,9 +1,12 @@
 """Create test data of event models."""
 
 from datetime import date
+from unittest.mock import MagicMock
+from django.core.files import File
 from events.models import (
     Event,
     Location,
+    Sponsor,
     Resource,
 )
 
@@ -73,3 +76,22 @@ class EventDataGenerator:
         )
         resource.save()
         return resource
+
+    def create_sponsor(self, number):
+        """Create sponsor object.
+
+        Args:
+            number: Identifier of the sponsor (int).
+
+        Returns:
+            Sponsor object.
+        """
+        logo = MagicMock(spec=File, name="ImageMock")
+        logo.name = "Logo for Sponsor {}".format(number)
+        sponsor = Sponsor(
+            name="Sponsor {}".format(number),
+            url="https://www.{}.com/".format(number),
+            logo=logo,
+        )
+        sponsor.save()
+        return sponsor
