@@ -42,7 +42,7 @@
       <h3>Sponsor{{ sponsors.count|pluralize }}</h3>
       <ul class="list-unstyled">
         {% for sponsor in sponsors %}
-          <li>
+          <li class="my-2">
             <a href="{{ sponsor.url }}" target="_blank">
               {% if sponsor.logo %}
                 <img src="{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
