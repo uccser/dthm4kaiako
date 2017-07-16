@@ -7,7 +7,7 @@
 {% block page_heading %}
   {% if event.series %}
     {% if event.series.logo %}
-      <img src="{% get_media_prefix %}{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
+      <img src="{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
     {% else %}
       {{ event.series.name }}:
     {% endif %}
