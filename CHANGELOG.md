@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3
+
+- Fix bug where ThirdPartyEvents cannot be created as they do not contain a series attribute ([fixes #62](https://github.com/uccser/cs4teachers/issues/62))
+- Alter design of series cards to contain subtitle formatting ([fixes #61](https://github.com/uccser/cs4teachers/issues/61))
+- Increase size of sponsor logos to be clearer
+
 ## 0.4.2
 
 - Fix bug where series logo was prefixed with local media location ([fixes #58](https://github.com/uccser/cs4teachers/issues/58))
