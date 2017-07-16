@@ -120,7 +120,7 @@ class EventBase(models.Model):
         Returns:
             String of slug.
         """
-        if self.series:
+        if hasattr(self, "series") and self.series:
             return "{}-{}".format(self.series.slug, self.name)
         else:
             return self.name
