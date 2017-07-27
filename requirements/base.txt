@@ -8,7 +8,7 @@ django-grappelli==2.10.1
 # Configuration
 django-environ==0.4.3
 whitenoise==3.3.0
-django-storages==1.6.3
+django-storages==1.6.4
 
 # Python-PostgreSQL Database Adapter
 psycopg2==2.7.1
