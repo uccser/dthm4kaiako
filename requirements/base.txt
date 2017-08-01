@@ -1,7 +1,7 @@
 # Base dependencies go here
 
 # Django
-django==1.11.3
+django==1.11.4
 django-autoslug==1.9.3
 django-grappelli==2.10.1
 
