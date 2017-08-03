@@ -38,6 +38,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "django_google_maps",
+    "tinymce",
     "grappelli",
 ]
 
@@ -221,8 +222,24 @@ PASSWORD_HASHERS = [
 GOOGLE_MAPS_API_KEY = "AIzaSyBy7T00JYsCeF8HaHrGLSKePJxxjMdWMrQ"
 
 
-# GRAPPELLISETTINGS
+# GRAPPELLI SETTINGS
 # ------------------------------------------------------------------------------
 # See http://django-grappelli.readthedocs.io/en/latest/customization.html
 
 GRAPPELLI_ADMIN_TITLE = "cs4teachers admin"
+
+
+# TINYMCE SETTINGS
+# ------------------------------------------------------------------------------
+# See http://django-tinymce.readthedocs.io/en/latest/installation.html#configuration
+
+TINYMCE_JS_URL = "/staticfiles/tinymce/tinymce.min.js"
+TINYMCE_JS_ROOT = "/staticfiles/tinymce"
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "modern",
+    "relative_urls": False,
+    "branding": False,
+    "height": 200,
+    "plugins": "code",
+}
+TINYMCE_INCLUDE_JQUERY = False
