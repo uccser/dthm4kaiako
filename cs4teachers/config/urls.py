@@ -14,6 +14,7 @@ admin.site.site_header = "cs4teachers"
 urlpatterns = [
     url(r"", include("general.urls", namespace="general")),
     url(r"^events/", include("events.urls", namespace="events")),
+    url(r"^pages/", include("django.contrib.flatpages.urls")),
     url(r"^grappelli/", include("grappelli.urls")),
     url(r"^admin/", include(admin.site.urls)),
 ]
