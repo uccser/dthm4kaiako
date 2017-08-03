@@ -99,7 +99,7 @@ class ThirdPartyEventAdmin(admin.ModelAdmin):
             }
         ),
     ]
-    list_display = ("name",)
+    list_display = ("name", "location", "start_date", "end_date")
     list_filter = ("is_published",)
     search_fields = ["name"]
 
