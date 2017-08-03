@@ -92,7 +92,7 @@
           <div class="col-md-6">
             <h4>
               <a href="{% url 'events:session' event.slug session.slug %}">
-                {{ session.name }}
+                {{ session.name|safe }}
               </a>
             </h4>
             {{ session.description|safe|linebreaks }}
