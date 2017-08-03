@@ -2,7 +2,12 @@
 
 {% load static %}
 
-{% block title %}{{ event.name }}{% endblock title %}
+{% block title %}
+  {% if event.series.logo %}
+    {{ event.series.name }}:
+  {% endif %}
+  {{ event.name }}
+{% endblock title %}
 
 {% block page_heading %}
   {% if event.series %}
