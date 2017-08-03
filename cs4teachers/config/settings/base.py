@@ -234,7 +234,6 @@ GRAPPELLI_ADMIN_TITLE = "cs4teachers admin"
 # See http://django-tinymce.readthedocs.io/en/latest/installation.html#configuration
 
 TINYMCE_JS_URL = "/staticfiles/tinymce/tinymce.min.js"
-TINYMCE_JS_ROOT = "/staticfiles/tinymce"
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "modern",
     "relative_urls": False,
