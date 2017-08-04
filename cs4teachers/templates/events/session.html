@@ -23,7 +23,7 @@
 
     {% if session.description %}
       <h3>Description</h3>
-      {{ session.description|safe|linebreaks }}
+      {{ session.description|safe }}
     {% endif %}
 
     {% if resources %}

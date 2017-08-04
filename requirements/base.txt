@@ -1,17 +1,17 @@
 # Base dependencies go here
 
 # Django
-django==1.11.3
+django==1.11.4
 django-autoslug==1.9.3
 django-grappelli==2.10.1
 
 # Configuration
 django-environ==0.4.3
 whitenoise==3.3.0
-django-storages==1.6.3
+django-storages==1.6.5
 
 # Python-PostgreSQL Database Adapter
-psycopg2==2.7.1
+psycopg2==2.7.3
 
 # Password storage
 argon2-cffi==16.3.0
@@ -24,3 +24,6 @@ Pillow==4.2.1
 
 # Storage
 google-cloud-storage==1.2.0
+
+# Text editor
+django-tinymce==2.6.0

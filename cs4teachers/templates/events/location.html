@@ -9,7 +9,7 @@
 
   {% if location.description %}
     <h3>Description</h3>
-    {{ location.description|safe|linebreaks }}
+    {{ location.description|safe }}
   {% endif %}
 
   {% include "generic/map-element.html" %}

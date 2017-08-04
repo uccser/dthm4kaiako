@@ -16,6 +16,7 @@ urlpatterns = [
     url(r"^events/", include("events.urls", namespace="events")),
     url(r"^grappelli/", include("grappelli.urls")),
     url(r"^admin/", include(admin.site.urls)),
+    url(r"^tinymce/", include("tinymce.urls")),
 ]
 
 if settings.DEBUG:
