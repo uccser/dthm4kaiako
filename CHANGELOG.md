@@ -1,12 +1,17 @@
 # Changelog
 
+## 0.5.1
+
+- Align series logo correctly with text on event page
+- Select and delete excess TinyMCE plugins ([fixes #80](https://github.com/uccser/cs4teachers/issues/80))
+
 ## 0.5.0
 
-- Display event title correctly for series event (fixes #77)
-- Display location of event on complete NZ map (fixes #76)
-- Add flat pages (fixes #75)
-- Allow HTML in event session titles and descriptions, using TinyMCE (fixes #73)
-- Add UC logo to homepage frontend (fixes #64)
+- Display event title correctly for series event ([fixes #77](https://github.com/uccser/cs4teachers/issues/77))
+- Display location of event on complete NZ map ([fixes #76](https://github.com/uccser/cs4teachers/issues/76))
+- Add flat pages ([fixes #75](https://github.com/uccser/cs4teachers/issues/75))
+- Allow HTML in event session titles and descriptions, using TinyMCE ([fixes #73](https://github.com/uccser/cs4teachers/issues/73))
+- Add UC logo to homepage frontend ([fixes #64](https://github.com/uccser/cs4teachers/issues/64))
 - Align series image with text correctly
 
 ## 0.4.3
