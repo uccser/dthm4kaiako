@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.2
+
+- Update favicon to be readable ([fixes #46](https://github.com/uccser/cs4teachers/issues46))
+- Add TinyMCE editor for session inline forms on admin site ([fixes #83](https://github.com/uccser/cs4teachers/issues83))
+
 ## 0.5.1
 
 - Align series logo correctly with text on event page
