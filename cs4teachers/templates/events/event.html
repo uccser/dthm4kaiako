@@ -12,7 +12,7 @@
 {% block page_heading %}
   {% if event.series %}
     {% if event.series.logo %}
-      <img src="{{ event.series.logo }}" class="img-inline align-text-top" alt="{{ event.series.name }}">
+      <img src="{{ event.series.logo }}" class="img-inline align-top" alt="{{ event.series.name }}">
     {% else %}
       {{ event.series.name }}:
     {% endif %}
