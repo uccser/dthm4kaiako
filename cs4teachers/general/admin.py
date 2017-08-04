@@ -14,5 +14,6 @@ class PageAdmin(FlatPageAdmin):
         models.TextField: {'widget': TinyMCE()},
     }
 
+
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, PageAdmin)
