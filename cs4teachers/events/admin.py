@@ -37,6 +37,9 @@ class SessionInline(admin.StackedInline):
     model = Session
     extra = 5
     exclude = ("slug",)
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
     filter_vertical = ("resources", "locations",)
 
 
