@@ -42,7 +42,6 @@ footer {
 
 .img-inline {
   height: 1em;
-  vertical-align: text-top;
 }
 .img-sponsor-logo {
   height: 4rem;
@@ -55,4 +54,9 @@ footer {
 
 .card-block-med-height {
   min-height: 9em;
+}
+
+.link-no-underline:hover,
+.link-no-underline:focus {
+  text-decoration: none;
 }

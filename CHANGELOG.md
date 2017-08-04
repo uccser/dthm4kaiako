@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+- Display event title correctly for series event (fixes #77)
+- Display location of event on complete NZ map (fixes #76)
+- Add flat pages (fixes #75)
+- Allow HTML in event session titles and descriptions, using TinyMCE (fixes #73)
+- Add UC logo to homepage frontend (fixes #64)
+- Align series image with text correctly
+
 ## 0.4.3
 
 - Fix bug where ThirdPartyEvents cannot be created as they do not contain a series attribute ([fixes #62](https://github.com/uccser/cs4teachers/issues/62))

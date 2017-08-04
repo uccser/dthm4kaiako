@@ -23,15 +23,15 @@
           {{ event.end_date|date:" j F, Y" }}
         </td>
         <td class="align-middle">
-          <a href="{{ event.absolute_url }}">
+          <a href="{{ event.absolute_url }}" class="link-no-underline">
             {% if event.series %}
               {% if event.series.logo %}
-                <img src="{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
+                <img src="{{ event.series.logo }}" class="img-inline align-middle" alt="{{ event.series.name }}">
               {% else %}
-                {{ event.series.name }}:
+                <span class="align-middle">{{ event.series.name }}:</span>
               {% endif %}
             {% endif %}
-            {{ event.name }}
+            <span class="align-middle">{{ event.name }}</span>
           </a>
           {% if event.third_party %}
             {% include "events/third-party-badge.html" %}
