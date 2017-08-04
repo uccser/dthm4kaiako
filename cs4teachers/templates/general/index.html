@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block body_container %}
   <div id="welcome-jumbotron" class="jumbotron">
     <div class="container text-center">
+      <img src="{% static 'img/uc-computer-science-education-logo.png' %}" class="img-fluid mb-3">
       <h1 class="display-3">Computer Science for teachers</h1>
     </div>
   </div>
