@@ -239,6 +239,18 @@ TINYMCE_DEFAULT_CONFIG = {
     "relative_urls": False,
     "branding": False,
     "height": 200,
-    "plugins": "code",
+    "plugins": [
+        "advlist",
+        "autolink",
+        "autoresize",
+        "autosave",
+        "code",
+        "hr",
+        "link",
+        "lists",
+        "searchreplace",
+        "table",
+        "textcolor",
+    ],
 }
 TINYMCE_INCLUDE_JQUERY = False
