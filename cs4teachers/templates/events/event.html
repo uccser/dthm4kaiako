@@ -29,7 +29,7 @@
     {% endif %}
   </div>
 
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-md-7">
     {% if event.series %}
       <div class="card mb-3">
         <div class="card-block p-2">
@@ -61,8 +61,10 @@
     {% endif %}
   </div>
 
-  <div class="col-12 col-md-6">
-    {% include "generic/map-element.html" %}
+  <div class="col-12 col-md-5">
+    {% with ratio='1by1' %}
+      {% include "generic/map-element.html" %}
+    {% endwith %}
   </div>
 
   <div class="col-12">
@@ -119,7 +121,7 @@
 {% endblock content_container %}
 
 {% block scripts %}
-  {% with location=event.location %}
+  {% with location=event.location map_zoom=5 map_lat=-41.3 map_lng=173.3 %}
     {% include "generic/map-script.html" %}
   {% endwith %}
 {% endblock scripts %}
