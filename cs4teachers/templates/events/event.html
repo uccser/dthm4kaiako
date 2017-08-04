@@ -40,7 +40,7 @@
 
     {% if event.description %}
       <h3>Description</h3>
-      {{ event.description|safe|linebreaks }}
+      {{ event.description|safe }}
     {% endif %}
 
     {% if sponsors %}
@@ -95,7 +95,7 @@
                 {{ session.name|safe }}
               </a>
             </h4>
-            {{ session.description|safe|linebreaks }}
+            {{ session.description|safe }}
 
             {% if session.resources.count > 0 %}
               <p><span class="badge badge-default">Includes {{ session.resources.count }} resource{{ session.resources.count|pluralize }}</span></p>

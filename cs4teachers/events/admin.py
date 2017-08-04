@@ -1,6 +1,7 @@
 """Administration configuration for the events application."""
 
 from django.contrib import admin
+from django.db import models
 from events.models import (
     Event,
     ThirdPartyEvent,
@@ -14,12 +15,16 @@ from events.models import (
 )
 from django_google_maps import widgets as map_widgets
 from django_google_maps import fields as map_fields
+from tinymce.widgets import TinyMCE
 
 
 class SessionAdmin(admin.ModelAdmin):
     """Admin interface for Session model."""
 
     exclude = ("slug",)
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
     list_display = ("name", "event")
     search_fields = ["name", "event"]
     list_filter = ("event",)
@@ -41,6 +46,7 @@ class LocationAdmin(admin.ModelAdmin):
     exclude = ("slug",)
     formfield_overrides = {
         map_fields.AddressField: {"widget": map_widgets.GoogleMapsAddressWidget},
+        models.TextField: {'widget': TinyMCE()},
     }
 
 
@@ -48,6 +54,9 @@ class ResourceAdmin(admin.ModelAdmin):
     """Admin interface for Resource model."""
 
     exclude = ("slug",)
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
     list_display = ("name", "url")
 
 
@@ -69,6 +78,9 @@ class EventAdmin(admin.ModelAdmin):
         ),
     ]
     inlines = [SessionInline]
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
     list_display = ("name", "series", "location", "start_date", "end_date")
     list_filter = ("is_published",)
     search_fields = ["name"]
@@ -99,6 +111,9 @@ class ThirdPartyEventAdmin(admin.ModelAdmin):
             }
         ),
     ]
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
     list_display = ("name", "location", "start_date", "end_date")
     list_filter = ("is_published",)
     search_fields = ["name"]
