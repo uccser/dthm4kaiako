@@ -23,7 +23,7 @@ django-google-maps==0.7.0
 Pillow==4.2.1
 
 # Storage
-google-cloud-storage==1.2.0
+google-cloud-storage==1.3.0
 
 # Text editor
 django-tinymce==2.6.0
