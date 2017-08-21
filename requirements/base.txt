@@ -6,7 +6,7 @@ django-autoslug==1.9.3
 django-grappelli==2.10.1
 
 # Configuration
-django-environ==0.4.3
+django-environ==0.4.4
 whitenoise==3.3.0
 django-storages==1.6.5
 
