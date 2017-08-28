@@ -125,7 +125,7 @@ class EventBase(models.Model):
         else:
             return self.name
 
-    slug = AutoSlugField(unique=True, populate_from=create_slug)
+    slug = AutoSlugField(unique=True, populate_from=create_slug, editable=True, blank=True)
     name = models.CharField(max_length=150)
     description = models.TextField()
     start_date = models.DateField()
