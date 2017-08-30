@@ -61,8 +61,18 @@ class EventView(generic.DetailView):
 
     model = Event
     template_name = "events/event.html"
-    slug_url_kwarg = "event_slug"
     context_object_name = "event"
+
+    def get_object(self, **kwargs):
+        """Retrieve object for the event view.
+
+        Returns:
+            Event object, or raises 404 error if not found.
+        """
+        return get_object_or_404(
+            self.model.objects.filter(is_published=True).select_related(),
+            slug=self.kwargs.get("event_slug", None),
+        )
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the session view.

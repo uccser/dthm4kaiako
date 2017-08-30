@@ -79,6 +79,13 @@ class EventAdmin(admin.ModelAdmin):
                 "fields": ["is_published"]
             }
         ),
+        (
+            "Advanced",
+            {
+                "fields": ["slug"],
+                "classes": ("grp-collapse", "grp-closed")
+            }
+        ),
     ]
     inlines = [SessionInline]
     formfield_overrides = {
