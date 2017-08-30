@@ -1,9 +1,15 @@
 # Changelog
 
+## 0.5.3
+
+- Allow manual configuration of slug values ([fixes #14](https://github.com/uccser/cs4teachers/issues/14))
+- Fix email address in footer ([fixes #93](https://github.com/uccser/cs4teachers/issues/93))
+- Fix displaying events if not public ([fixes #94](https://github.com/uccser/cs4teachers/issues/94))
+
 ## 0.5.2
 
-- Update favicon to be readable ([fixes #46](https://github.com/uccser/cs4teachers/issues46))
-- Add TinyMCE editor for session inline forms on admin site ([fixes #83](https://github.com/uccser/cs4teachers/issues83))
+- Update favicon to be readable ([fixes #46](https://github.com/uccser/cs4teachers/issues/46))
+- Add TinyMCE editor for session inline forms on admin site ([fixes #83](https://github.com/uccser/cs4teachers/issues/83))
 
 ## 0.5.1
 
