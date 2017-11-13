@@ -3,4 +3,4 @@
 -r testing.txt
 
 # Debugging Tools
-django-debug-toolbar==1.8
+django-debug-toolbar==1.9
