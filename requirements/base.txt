@@ -26,4 +26,4 @@ Pillow==4.2.1
 google-cloud-storage==1.4.0
 
 # Text editor
-django-tinymce==2.6.0
+django-tinymce==2.7.0
