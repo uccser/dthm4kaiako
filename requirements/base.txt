@@ -17,7 +17,7 @@ psycopg2==2.7.3.1
 argon2-cffi==16.3.0
 
 # Maps
-django-google-maps==0.7.0
+django-google-maps==0.8.0
 
 # Images
 Pillow==4.2.1
