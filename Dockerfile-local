@@ -1,0 +1,20 @@
+FROM uccser/django:1.11.11
+
+# Add metadata to Docker image
+LABEL maintainer="csse-education-research@canterbury.ac.nz"
+
+# Set terminal to be noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV DJANGO_PRODUCTION=False
+EXPOSE 8080
+
+# Copy and create virtual environment
+COPY requirements /requirements
+
+# Install dependencies
+RUN /docker_venv/bin/pip3 install -r /requirements/local.txt
+
+RUN mkdir /cs4teachers/
+RUN mkdir /cs4teachers/cs4teachers/
+WORKDIR /cs4teachers/cs4teachers/

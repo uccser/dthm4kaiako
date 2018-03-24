@@ -8,18 +8,18 @@ Django settings for local development environment.
 
 from .base import *  # noqa: F403
 
-# DEBUG
-# ----------------------------------------------------------------------------
-DEBUG = env.bool("DJANGO_DEBUG", default=True)  # noqa: F405
-TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG  # noqa: F405
-
 # DATABASE CONFIGURATION
 # ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///cs4teachers"),  # noqa: F405
+    "default": env.db("DATABASE_URL"),  # noqa: F405
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# DEBUG
+# ----------------------------------------------------------------------------
+DEBUG = env.bool("DJANGO_DEBUG", default=True)  # noqa: F405
+TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG  # noqa: F405
 
 # SECRET CONFIGURATION
 # ----------------------------------------------------------------------------
@@ -41,11 +41,24 @@ CACHES = {
 MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware", ]  # noqa: F405
 INSTALLED_APPS += ["debug_toolbar", ]  # noqa: F405
 INTERNAL_IPS = ["127.0.0.1"]
+
+
+def show_django_debug_toolbar(request):
+    """Show Django Debug Toolbar in every request when running locally.
+
+    Args:
+        request: The request object.
+    """
+    return True
+
+
 DEBUG_TOOLBAR_CONFIG = {
     "DISABLE_PANELS": [
         "debug_toolbar.panels.redirects.RedirectsPanel",
     ],
     "SHOW_TEMPLATE_CONTEXT": True,
+    "SHOW_TOOLBAR_CALLBACK": show_django_debug_toolbar,
+
 }
 
 # TESTING
