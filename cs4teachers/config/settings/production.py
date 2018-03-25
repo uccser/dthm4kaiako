@@ -13,11 +13,28 @@ from .base import *  # noqa: F403
 # Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
 SECRET_KEY = env("DJANGO_SECRET_KEY")  # noqa: F405
 
+# SECURITY WARNING: App Engine"s security features ensure that it is safe to
+# have ALLOWED_HOSTS = ["*"] when the app is deployed. If you deploy a Django
+# app not on App Engine, make sure to set an appropriate host here.
+# See https://docs.djangoproject.com/en/dev/ref/settings/
+ALLOWED_HOSTS = ["*"]
+
+if env("DEPLOYMENT", default=None) == "prod":  # noqa: F405
+    PREPEND_WWW = True
+else:
+    PREPEND_WWW = False
+
 # DATABASE CONFIGURATION
 # ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    "default": env.db("DATABASE_URL"),  # noqa: F405
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "cs4teachers",
+        "USER": env("GOOGLE_CLOUD_SQL_DATABASE_USERNAME"),  # noqa: F405
+        "PASSWORD": env("GOOGLE_CLOUD_SQL_DATABASE_PASSWORD"),  # noqa: F405
+        "HOST": "/cloudsql/" + env("GOOGLE_CLOUD_SQL_CONNECTION_NAME"),  # noqa: F405
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -35,6 +52,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # set this to 60 seconds and then to 518400 when you can prove it works
 SECURE_HSTS_SECONDS = 60
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)  # noqa: F405
 SECURE_CONTENT_TYPE_NOSNIFF = env.bool("DJANGO_SECURE_CONTENT_TYPE_NOSNIFF", default=True)  # noqa: F405
 SECURE_BROWSER_XSS_FILTER = True
@@ -44,7 +62,6 @@ SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)  # no
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
-INSTALLED_APPS += ["gunicorn", ]  # noqa: F405
 
 # Static Assets
 # ------------------------

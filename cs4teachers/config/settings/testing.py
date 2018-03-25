@@ -8,9 +8,9 @@ from .base import *  # noqa: F403
 # ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///cs4teachers"),  # noqa: F405
+    "default": env.db("DATABASE_URL"),  # noqa: F405
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # DEBUG
 # ----------------------------------------------------------------------------
@@ -54,4 +54,9 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [  # noqa: F405
         "django.template.loaders.filesystem.Loader",
         "django.template.loaders.app_directories.Loader",
     ], ],
+]
+# Your local stuff: Below this line define 3rd party library settings
+# ----------------------------------------------------------------------------
+INSTALLED_APPS += [  # noqa: F405
+    "test_without_migrations",
 ]

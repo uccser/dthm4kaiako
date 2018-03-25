@@ -1,30 +1,27 @@
-dist: trusty
 sudo: required
+services:
+  - docker
 language: python
 python:
-  - "3.6"
-services:
-  - postgresql
-addons:
-  postgresql: "9.6"
-env:
-  - DJANGO_SETTINGS_MODULE=config.settings.testing
-install: pip install -r requirements/testing.txt
-before_script:
-  - psql -c 'create database cs4teachers;' -U postgres
-script:
-  - python cs4teachers/manage.py migrate
-  - python cs4teachers/manage.py collectstatic --no-input --clear
-  - coverage run cs4teachers/manage.py test tests --settings=config.settings.testing -v=3
-  - flake8
-  - pydocstyle --count --explain
-after_success:
-  - coverage xml -i
-  - coverage report -m --skip-covered
-  - bash <(curl -s https://codecov.io/bash)
+  - '3.6'
+before_install:
+  # See https://github.com/travis-ci/travis-ci/issues/7940
+  - sudo rm -f /etc/boto.cfg
+install:
+  - sudo docker --version
+  - sudo docker-compose --version
+jobs:
+  include:
+    - stage: test
+      script: ./helper ci test_suite
+    - script: ./helper ci test_backwards
+      if: type = pull_request
+    - script: ./helper ci style
 notifications:
   email: false
   slack:
     rooms: deptfunstuff:abJKvzApk5SKtcEyAgtswXAv
     on_success: change
     on_failure: change
+stages:
+  - name: test

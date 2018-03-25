@@ -1,17 +1,15 @@
-# Base dependencies go here
+# Wheel 0.25+ needed to install certain packages on CPython 3.5+
+# like Pillow and psycopg2
+# See http://bitly.com/wheel-building-fails-CPython-35
+# Verified bug on Python 3.5.1
+wheel==0.30.0
 
 # Django
-django==1.11.5
 django-autoslug==1.9.3
 django-grappelli==2.10.1
 
 # Configuration
-django-environ==0.4.4
-whitenoise==3.3.1
 django-storages==1.6.5
-
-# Python-PostgreSQL Database Adapter
-psycopg2==2.7.3.1
 
 # Password storage
 argon2-cffi==16.3.0
