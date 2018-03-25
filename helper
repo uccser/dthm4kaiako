@@ -160,11 +160,15 @@ dev_shell() {
 }
 defhelp -dev shell "Open shell to Django folder."
 
-# Run shell
 dev_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
 }
 defhelp -dev createsuperuser "Create superuser in Django system."
+
+dev_sampledata() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'password')"
+}
+defhelp -dev sampledata "Add sample data to website."
 
 # Reboot Django Docker container
 dev_reboot_django() {
@@ -275,10 +279,6 @@ ci_test_backwards() {
   dev_static
   dev_collect_static
   dev_test_backwards
-}
-
-ci_load_content() {
-  cmd_update
 }
 
 cmd_ci() {

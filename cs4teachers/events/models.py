@@ -1,9 +1,12 @@
 """Models for the events application."""
 
+from os.path import join
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
 from django_google_maps import fields as map_fields
+
+UPLOAD_BASE_PATH = "uploads/events"
 
 
 class Location(models.Model):
@@ -36,7 +39,7 @@ class LocationImage(models.Model):
     """Model for image of location model."""
 
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="images/locations/")
+    image = models.ImageField(upload_to=join(UPLOAD_BASE_PATH, "locations/images/"))
     location = models.ForeignKey(
         Location,
         related_name="images",
@@ -57,7 +60,7 @@ class Series(models.Model):
     slug = AutoSlugField(unique=True, populate_from="name")
     name = models.CharField(max_length=150)
     subtitle = models.CharField(max_length=150, blank=True)
-    logo = models.ImageField(upload_to="images/series/", null=True, blank=True)
+    logo = models.ImageField(upload_to=join(UPLOAD_BASE_PATH, "series/logos/"), null=True, blank=True)
     description = models.TextField()
 
     def find_closest_event(self):
@@ -100,7 +103,7 @@ class Sponsor(models.Model):
 
     name = models.CharField(unique=True, max_length=200)
     url = models.URLField()
-    logo = models.ImageField(upload_to="images/sponsors/", null=True, blank=True)
+    logo = models.ImageField(upload_to=join(UPLOAD_BASE_PATH, "sponsors/logos/"), null=True, blank=True)
 
     def __str__(self):
         """Text representation of Sponsor object.
@@ -182,7 +185,7 @@ class EventImage(models.Model):
     """Model for image of event model."""
 
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="images/events/")
+    image = models.ImageField(upload_to=join(UPLOAD_BASE_PATH, "events/images/"))
     event = models.ForeignKey(
         Event,
         related_name="images",
@@ -204,7 +207,7 @@ class Resource(models.Model):
     name = models.CharField(max_length=150)
     url = models.URLField()
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to="images/resources/", null=True, blank=True)
+    image = models.ImageField(upload_to=join(UPLOAD_BASE_PATH, "resources/images/"), null=True, blank=True)
 
     def __str__(self):
         """Text representation of Resource object.
@@ -226,7 +229,7 @@ class Session(models.Model):
     )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to="images/sessions/", null=True, blank=True)
+    image = models.ImageField(join(UPLOAD_BASE_PATH, "sessions/images/"), null=True, blank=True)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     locations = models.ManyToManyField(

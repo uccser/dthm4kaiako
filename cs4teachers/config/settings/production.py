@@ -63,10 +63,6 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 
-# Static Assets
-# ------------------------
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -83,5 +79,13 @@ LOGGING = {
     }
 }
 
-# Use Google Cloud Platform for storage
-DEFAULT_FILE_STORAGE = "config.storage.GoogleCloudStorage"
+
+# Static and media files
+# ------------------------
+INSTALLED_APPS += [  # noqa: F405
+    "storages",
+]
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = env("GOOGLE_CLOUD_STORAGE_BUCKET_NAME")
+GS_FILE_OVERWRITE = False
+STATIC_URL = "https://storage.googleapis.com/" + env("GOOGLE_CLOUD_STORAGE_BUCKET_NAME") + "/static/"  # noqa: F405

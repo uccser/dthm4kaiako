@@ -8,8 +8,8 @@ wheel==0.30.0
 django-autoslug==1.9.3
 django-grappelli==2.11.1
 
-# Configuration
-django-storages==1.6.5
+# Required for ImageField on models
+Pillow==5.0.0
 
 # Password storage
 argon2-cffi==18.1.0
