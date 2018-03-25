@@ -257,6 +257,16 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_INCLUDE_JQUERY = False
 
+# ADMIN
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#admins
+ADMINS = [
+    ("University of Canterbury Computer Science Research Group",
+     "csse-education-research@canterbury.ac.nz"),
+]
+# https://docs.djangoproject.com/en/dev/ref/settings/#managers
+MANAGERS = ADMINS
+
 # OTHER SETTINGS
 # ------------------------------------------------------------------------------
 DJANGO_PRODUCTION = env.bool("DJANGO_PRODUCTION")
