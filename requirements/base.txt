@@ -18,7 +18,7 @@ argon2-cffi==18.1.0
 django-google-maps==0.10.1
 
 # Storage
-google-cloud-storage==1.4.0
+google-cloud-storage==1.8.0
 
 # Text editor
 django-tinymce==2.7.0
