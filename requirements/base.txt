@@ -12,7 +12,7 @@ django-grappelli==2.11.1
 django-storages==1.6.5
 
 # Password storage
-argon2-cffi==16.3.0
+argon2-cffi==18.1.0
 
 # Maps
 django-google-maps==0.7.0
