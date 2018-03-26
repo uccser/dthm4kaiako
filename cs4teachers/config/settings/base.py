@@ -41,6 +41,10 @@ THIRD_PARTY_APPS = [
     "django_google_maps",
     "tinymce",
     "grappelli",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 # Apps specific for this project go here.
@@ -150,7 +154,6 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "config.context_processors.version_number.version_number",
-                "django.template.context_processors.request",
             ],
         },
     },
@@ -266,6 +269,17 @@ ADMINS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
+
+# ALLAUTH
+# ------------------------------------------------------------------------------
+# https://django-allauth.readthedocs.io/en/latest/installation.html
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+LOGIN_REDIRECT_URL = "/"
 
 # OTHER SETTINGS
 # ------------------------------------------------------------------------------

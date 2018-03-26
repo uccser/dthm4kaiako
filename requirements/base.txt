@@ -11,6 +11,9 @@ django-grappelli==2.11.1
 # Required for ImageField on models
 Pillow==5.0.0
 
+# Users
+django-allauth==0.35.0
+
 # Password storage
 argon2-cffi==18.1.0
 
