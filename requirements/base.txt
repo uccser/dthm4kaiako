@@ -15,7 +15,7 @@ Pillow==5.0.0
 django-allauth==0.35.0
 
 # Password storage
-argon2-cffi==18.1.0
+argon2-cffi==18.2.0
 
 # Maps
 django-google-maps==0.10.1
