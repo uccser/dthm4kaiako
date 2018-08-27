@@ -12,7 +12,7 @@ django-grappelli==2.11.1
 Pillow==5.0.0
 
 # Users
-django-allauth==0.35.0
+django-allauth==0.37.1
 
 # Password storage
 argon2-cffi==18.1.0
