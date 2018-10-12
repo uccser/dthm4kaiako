@@ -24,4 +24,4 @@ django-google-maps==0.10.1
 django-tinymce==2.7.0
 
 # Email
-django-anymail==2.0
+django-anymail==4.3
