@@ -21,7 +21,7 @@ argon2-cffi==18.1.0
 django-google-maps==0.10.1
 
 # Text editor
-django-tinymce==2.7.0
+django-tinymce==2.8.0
 
 # Email
 django-anymail==2.0
