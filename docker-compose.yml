@@ -2,7 +2,7 @@ version: '3'
 services:
   postgres:
     restart: always
-    image: postgres:9.6.8
+    image: postgres:9.6.11
     # Set port to non-standard value to not use Travis CI Postgres server.
     command: postgres -p 5434
 
@@ -10,14 +10,15 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-local
-    command: /cs4teachers/cs4teachers/docker-development-entrypoint.sh
+    command: /dthm4kaiako/dthm4kaiako/docker-development-entrypoint.sh
     volumes:
-      - .:/cs4teachers
+      - .:/dthm4kaiako
     environment:
       - PORT=8080
       - USE_DOCKER=yes
       - DATABASE_URL=postgres://postgres@postgres:5434/postgres
       - DJANGO_SETTINGS_MODULE=config.settings.local
+      - INCLUDE_INCONTEXT_L10N=False
     depends_on:
       - postgres
 
@@ -26,7 +27,7 @@ services:
       context: .
       dockerfile: ./infrastructure/nginx/Dockerfile
     volumes:
-      - ./cs4teachers/:/app/
+      - ./dthm4kaiako/:/app/
       - /app/node_modules
     depends_on:
       - django
