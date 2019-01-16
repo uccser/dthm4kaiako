@@ -153,7 +153,7 @@ cmd_createsuperuser() {
 defhelp -dev createsuperuser "Create superuser in Django system."
 
 cmd_sampledata() {
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'password')"
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'password')"
 }
 defhelp -dev sampledata "Add sample data to website."
 
