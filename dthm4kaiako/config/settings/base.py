@@ -2,6 +2,9 @@
 
 import os.path
 import environ
+from datetime import datetime
+import pytz
+
 
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
 ROOT_DIR = environ.Path(__file__) - 3
@@ -238,7 +241,8 @@ MANAGERS = ADMINS
 
 # django-allauth
 # ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
+# ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
+ACCOUNT_ALLOW_REGISTRATION = False
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -251,6 +255,13 @@ ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 
-# Your stuff...
+# markdownx
 # ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = False
+timezone = pytz.timezone(TIME_ZONE)
+MARKDOWNX_MEDIA_PATH = datetime.now(timezone).strftime('markdown/%Y/%m/%d')
+MARKDOWNX_UPLOAD_MAX_SIZE = 25 * 1024 * 1024  # 25 MB
+MARKDOWNX_UPLOAD_CONTENT_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+]
