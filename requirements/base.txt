@@ -13,5 +13,5 @@ django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
 
 # Django REST Framework
-djangorestframework==3.9.0  # https://github.com/encode/django-rest-framework
+djangorestframework==3.9.1  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
