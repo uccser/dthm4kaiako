@@ -6,4 +6,4 @@ plugins =
 branch = True
 
 [report]
-fail_under=20
+fail_under = 20

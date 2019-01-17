@@ -195,7 +195,7 @@ defhelp -dev test_specific 'Run specific test suite. Pass in parameter of Python
 cmd_test_coverage() {
   echo "Displaying test suite coverage..."
   docker-compose exec django /docker_venv/bin/coverage xml -i
-  docker-compose exec django /docker_venv/bin/coverage report -m --skip-covered
+  docker-compose exec django /docker_venv/bin/coverage report -m
 }
 defhelp -dev test_coverage 'Display code coverage report.'
 
