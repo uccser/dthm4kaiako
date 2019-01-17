@@ -180,14 +180,14 @@ defhelp -dev style 'Run style checks.'
 # Run test suite
 cmd_test_suite() {
   echo "Running test suite..."
-  docker-compose exec django /docker_venv/bin/coverage run --rcfile=/dthm4kaiako/.coveragerc ./manage.py test --settings=config.settings.test --pattern "test_*.py" -v 3
+  docker-compose exec django /docker_venv/bin/coverage run --rcfile=/dthm4kaiako/.coveragerc -m pytest --ds=config.settings.test
 }
 defhelp -dev test_suite 'Run test suite with code coverage.'
 
 # Run specific test suite
 cmd_test_specific() {
   echo "Running specific test suite..."
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py test --settings=config.settings.test "${1}" -v 3
+  docker-compose exec django /docker_venv/bin/pytest --ds=config.settings.test "${1}"
 }
 defhelp -dev test_specific 'Run specific test suite. Pass in parameter of Python test module.'
 
@@ -198,13 +198,6 @@ cmd_test_coverage() {
   docker-compose exec django /docker_venv/bin/coverage report -m --skip-covered
 }
 defhelp -dev test_coverage 'Display code coverage report.'
-
-# Run test suite backwards for CI testing
-cmd_test_backwards() {
-  echo "Running test suite backwards..."
-  docker-compose exec django /docker_venv/bin/python3 ./manage.py test --settings=config.settings.test --pattern "test_*.py" --reverse -v 0
-}
-defhelp -dev test_backwards 'Run test suite backwards.'
 
 # Delete all untagged dangling Docker images
 cmd_clean() {

@@ -14,8 +14,6 @@ jobs:
   include:
     - stage: test
       script: ./dev ci test_suite
-    - script: ./dev ci test_backwards
-      if: type = pull_request
     - script: ./dev ci style
 notifications:
   email: false
