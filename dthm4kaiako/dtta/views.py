@@ -1,3 +1,5 @@
+"""Views for DTTA application."""
+
 from django.views import generic
 from django.utils import timezone
 from dtta.models import NewsArticle

@@ -1,3 +1,5 @@
+"""Settings for local environment, built upon base settings."""
+
 from .base import *  # noqa
 from .base import env
 

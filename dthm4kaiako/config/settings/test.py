@@ -1,5 +1,6 @@
-"""
-With these settings, tests run faster.
+"""Settings for tesing environment, built upon base settings.
+
+Tests run faster with these settings.
 """
 
 from .base import *  # noqa

@@ -1,10 +1,12 @@
-from typing import Any, Sequence
+"""Module for factories for tesing user application."""
 
+from typing import Any, Sequence
 from django.contrib.auth import get_user_model
 from factory import DjangoModelFactory, Faker, post_generation
 
 
 class UserFactory(DjangoModelFactory):
+    """Factory for generating users."""
 
     username = Faker("user_name")
     email = Faker("email")
@@ -12,6 +14,7 @@ class UserFactory(DjangoModelFactory):
 
     @post_generation
     def password(self, create: bool, extracted: Sequence[Any], **kwargs):
+        """Create password for user."""
         password = Faker(
             "password",
             length=42,
@@ -25,5 +28,7 @@ class UserFactory(DjangoModelFactory):
         self.set_password(password)
 
     class Meta:
+        """Metadata for UserFactory class."""
+
         model = get_user_model()
         django_get_or_create = ["username"]

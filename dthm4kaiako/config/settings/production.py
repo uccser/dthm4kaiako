@@ -1,3 +1,5 @@
+"""Settings for production environment, built upon base settings."""
+
 from .base import *  # noqa
 from .base import env
 
@@ -84,10 +86,14 @@ from storages.backends.s3boto3 import S3Boto3Storage  # noqa E402
 
 
 class StaticRootS3Boto3Storage(S3Boto3Storage):
+    """Data for storing static files with django-storages."""
+
     location = 'static'
 
 
 class MediaRootS3Boto3Storage(S3Boto3Storage):
+    """Data for storing media files with django-storages."""
+
     location = 'media'
     file_overwrite = False
 

@@ -1,3 +1,5 @@
+"""URL routing for DTTA application."""
+
 from django.urls import path
 from . import views
 
