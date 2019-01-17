@@ -33,7 +33,7 @@
             <div class="navbar-nav w-100">
               <a class="nav-item nav-link disabled" href="#">Resources</a>
               <a class="nav-item nav-link disabled" href="#">Events</a>
-              <a class="nav-item nav-link" href="#">DTTA</a>
+              <a class="nav-item nav-link" href="{% url 'dtta:index' %}">DTTA</a>
               <a class="nav-item nav-link disabled mr-auto" href="#" tabindex="-1" aria-disabled="true">About</a>
               {% if request.user.is_authenticated %}
                 {# URL provided by django-allauth/account/urls.py #}
@@ -60,7 +60,7 @@
       {% endif %}
 
       {% block content %}
-      <h1>Hello, world!</h1>
+        <h1>Hello, world!</h1>
       {% endblock content %}
 
     </div> <!-- /container -->
