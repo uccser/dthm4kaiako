@@ -1,6 +1,8 @@
 [run]
 include = */dthm4kaiako/*
 omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
 branch = True
 
 [report]
