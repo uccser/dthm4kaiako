@@ -1,4 +1,6 @@
-FROM uccser/django:1.11.11
+# This Dockerfile is based off the Google App Engine Python runtime image
+# https://github.com/GoogleCloudPlatform/python-runtime
+FROM uccser/django:2.1.5
 
 # Add metadata to Docker image
 LABEL maintainer="csse-education-research@canterbury.ac.nz"
@@ -8,13 +10,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV DJANGO_PRODUCTION=True
 
 EXPOSE 8080
-RUN mkdir /cs4teachers
-WORKDIR /cs4teachers
+RUN mkdir /dthm4kaiako
+WORKDIR /dthm4kaiako
 
 # Copy and install Python dependencies
 COPY requirements /requirements
 RUN /docker_venv/bin/pip3 install -r /requirements/production.txt
 
-ADD ./cs4teachers /cs4teachers/
-
-CMD /cs4teachers/docker-production-entrypoint.sh
+ADD ./dthm4kaiako /dthm4kaiako/
+CMD /docker_venv/bin/gunicorn -c gunicorn.conf.py -b :8080 config.wsgi

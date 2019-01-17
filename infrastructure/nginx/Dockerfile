@@ -8,7 +8,7 @@ RUN apt-get update \
        libgif-dev \
     && rm -rf /var/lib/apt/lists/*
 
-ADD cs4teachers/package.json /app/
+ADD dthm4kaiako/package.json /app/
 RUN npm install
-ADD ./cs4teachers/ /app/
+ADD ./dthm4kaiako/ /app/
 ADD infrastructure/nginx/nginx.conf /etc/nginx/nginx.conf

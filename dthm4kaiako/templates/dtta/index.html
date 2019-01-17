@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load markdown %}
+
+{% block content %}
+    <h1>DTTA</h1>
+
+    <p class="lead">
+        The Digital Technologies Teachers Aotearoa is an association with the goal of advocating for our subjects.
+        The aim of the association is to create a community of teachers where we can share resources, communicate and speak with one voice to get our subject area recognised and supported.
+    </p>
+
+    {% if latest_news_articles %}
+        <h2>Latest news</h2>
+        {% for news_article in latest_news_articles %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ news_article.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ news_article.datetime }}</h6>
+                    {{ news_article.content|markdown|truncatewords_html:30 }}
+                    <a href="{% url 'dtta:news_article' news_article.pk %}" class="btn btn-outline-primary">Read more...</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

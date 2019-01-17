@@ -13,10 +13,8 @@ install:
 jobs:
   include:
     - stage: test
-      script: ./helper ci test_suite
-    - script: ./helper ci test_backwards
-      if: type = pull_request
-    - script: ./helper ci style
+      script: ./dev ci test_suite
+    - script: ./dev ci style
 notifications:
   email: false
   slack:
