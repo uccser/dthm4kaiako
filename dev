@@ -181,6 +181,7 @@ defhelp -dev style 'Run style checks.'
 cmd_test_suite() {
   echo "Running test suite..."
   docker-compose exec django /docker_venv/bin/coverage run --rcfile=/dthm4kaiako/.coveragerc -m pytest --ds=config.settings.test
+  # docker-compose exec django /docker_venv/bin/mypy /dthm4kaiako/dthm4kaiako/
 }
 defhelp -dev test_suite 'Run test suite with code coverage.'
 
