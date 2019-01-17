@@ -56,12 +56,6 @@ defhelp start 'Start development environment (this also runs the update command)
 cmd_end() {
   echo "Stopping systems... (takes roughly 10 to 20 seconds)"
   docker-compose down
-  echo
-  echo "Deleting system volumes..."
-  volumes=($(docker volume ls -qf dangling=true ))
-  for volume in "${volumes[@]}"; do
-      docker volume rm "${volume}"
-  done
 }
 defhelp end 'Stop development environment.'
 
@@ -199,34 +193,6 @@ cmd_test_coverage() {
   docker-compose exec django /docker_venv/bin/coverage report -m
 }
 defhelp -dev test_coverage 'Display code coverage report.'
-
-# Delete all untagged dangling Docker images
-cmd_clean() {
-  echo "If the following commands return an argument not found error,"
-  echo "this is because there is nothing to delete for clean up."
-
-  echo
-  echo "Deleting unused volumes..."
-
-  unused_volumes=($(docker volume ls -qf dangling=true))
-  for vol in "${unused_volumes[@]}"; do
-      docker volume rm "${vol}"
-  done
-
-  echo
-  echo "Deleting exited containers..."
-  exited_containers=($(docker ps --filter status=dead --filter status=exited -aq))
-  for container in "${exited_containers[@]}"; do
-      docker rm -v "${container}"
-  done
-  echo
-  echo "Deleting dangling images..."
-  dangling_images=($(docker images -f "dangling=true" -q))
-  if [[ ${#dangling_images[@]} -gt 0 ]]; then
-      docker rmi "${dangling_images[@]}"
-  fi
-}
-defhelp clean 'Delete unused Docker files.'
 
 # Delete all Docker containers and images
 cmd_wipe() {

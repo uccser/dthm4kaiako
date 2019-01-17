@@ -1,8 +1,18 @@
 version: '3'
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
 services:
   postgres:
     restart: always
-    image: postgres:9.6.11
+    build:
+      context: .
+      dockerfile: ./infrastructure/postgres/Dockerfile
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
     # Set port to non-standard value to not use Travis CI Postgres server.
     command: postgres -p 5434
 
