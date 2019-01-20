@@ -15,7 +15,7 @@ source ./dthm4kaiako/load-prod-envs.sh
 
 # Authenticate with gcloud tool using the decrypted service account credentials.
 # See: https://cloud.google.com/sdk/gcloud/reference/auth/activate-service-account
-gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+gcloud auth activate-service-account --key-file ./dthm4kaiako/${GOOGLE_APPLICATION_CREDENTIALS}
 
 # Create empty SSH keys with an empty passphrase, for Google Cloud SDK to
 # copy files to a VM for building the Docker image.
