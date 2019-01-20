@@ -11,7 +11,7 @@ source ./infrastructure/prod-deploy/load-prod-deploy-config-envs.sh
 ./infrastructure/prod-deploy/decrypt-prod-secrets.sh
 
 # Load environment variables.
-source ./load-prod-envs.sh
+source ./dthm4kaiako/load-prod-envs.sh
 
 # Authenticate with gcloud tool using the decrypted service account credentials.
 # See: https://cloud.google.com/sdk/gcloud/reference/auth/activate-service-account
