@@ -1,12 +1,27 @@
 .navbar {
     padding-top: 0;
     padding-bottom: 0;
+    .navbar-brand {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($brand-colour, 10%);
+    }
 }
 
 #primary-navbar {
     background-color: $brand-colour !important;
 }
 
-.nav-link:hover {
-    background-color: lighten($brand-colour, 10%);
+#navbarPrimaryContent .dtta-navbar:hover,
+#navbarPrimaryContent .dtta-navbar.active {
+    background-color: $dtta-brand-colour-dark !important;
+}
+#dtta-navbar {
+    background-color: $dtta-brand-colour-dark !important;
+    .nav-link:hover {
+        background-color: lighten($dtta-brand-colour-dark, 10%);
+    }
 }

@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'markdownx',
+    'django_activeurl'
 ]
 LOCAL_APPS = [
     'users.apps.UsersAppConfig',
@@ -265,3 +266,12 @@ MARKDOWNX_UPLOAD_CONTENT_TYPES = [
     'image/png',
     'image/svg+xml',
 ]
+
+# django-activeurl
+# ------------------------------------------------------------------------------
+ACTIVE_URL_KWARGS = {
+    'css_class': 'active',
+    'parent_tag': 'self',
+    'menu': 'yes',
+    'ignore_params': 'no'
+}
