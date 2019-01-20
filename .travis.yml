@@ -15,23 +15,23 @@ jobs:
     - stage: test
       script: ./dev ci test_suite
     - script: ./dev ci style
-    - stage: production deployment
-        name: "Deploy application"
-        script: skip
-        deploy:
-          - provider: script
-            script: bash ./infrastructure/prod-deploy/deploy-app.sh
-            skip_cleanup: true
-            on:
-              branch: issue/177  # For testing purposes
-      - script: skip
-        name: "Update content"
-        deploy:
-          - provider: script
-            script: bash ./infrastructure/prod-deploy/update-content.sh
-            skip_cleanup: true
-            on:
-              branch: issue/177  # For testing purposes
+    - stage: deployment
+      script: skip
+      name: "Deploy application"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/prod-deploy/deploy-app.sh
+          skip_cleanup: true
+          on:
+            branch: issue/177  # For testing purposes
+    - script: skip
+      name: "Update content"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/prod-deploy/update-content.sh
+          skip_cleanup: true
+          on:
+            branch: issue/177  # For testing purposes
 notifications:
   email: false
   slack:
