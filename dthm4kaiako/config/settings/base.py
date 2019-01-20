@@ -258,7 +258,7 @@ SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 # markdownx
 # ------------------------------------------------------------------------------
 timezone = pytz.timezone(TIME_ZONE)
-MARKDOWNX_MEDIA_PATH = datetime.now(timezone).strftime('markdown/%Y/%m/%d')
+MARKDOWNX_MEDIA_PATH = os.path.join(MEDIA_URL, datetime.now(timezone).strftime('%Y/%m/%d'))
 MARKDOWNX_UPLOAD_MAX_SIZE = 25 * 1024 * 1024  # 25 MB
 MARKDOWNX_UPLOAD_CONTENT_TYPES = [
     'image/jpeg',

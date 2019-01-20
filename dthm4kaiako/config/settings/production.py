@@ -2,34 +2,32 @@
 
 from .base import *  # noqa
 from .base import env
+from google.oauth2 import service_account
 
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['dthm4kaiako.ac.nz'])
+# SECURITY WARNING: App Engine's security features ensure that it is safe to
+# have ALLOWED_HOSTS = ['*'] when the app is deployed. If you deploy a Django
+# app not on App Engine, make sure to set an appropriate host here.
+# See https://docs.djangoproject.com/en/1.10/ref/settings/
+ALLOWED_HOSTS = ['*']
 
 # DATABASES
 # ------------------------------------------------------------------------------
-DATABASES['default'] = env.db('DATABASE_URL')  # noqa F405
-DATABASES['default']['ATOMIC_REQUESTS'] = True  # noqa F405
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
-
-# CACHES
-# ------------------------------------------------------------------------------
-CACHES = {
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+DATABASES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            # Mimicing memcache behavior.
-            # http://niwinz.github.io/django-redis/latest/#_memcached_exceptions_behavior
-            'IGNORE_EXCEPTIONS': True,
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dthm4kaiako',
+        'USER': env('GOOGLE_CLOUD_SQL_DATABASE_USERNAME'),  # noqa: F405
+        'PASSWORD': env('GOOGLE_CLOUD_SQL_DATABASE_PASSWORD'),  # noqa: F405
+        'HOST': '/cloudsql/' + env('GOOGLE_CLOUD_SQL_CONNECTION_NAME'),  # noqa: F405
     }
 }
+DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
 
 # SECURITY
 # ------------------------------------------------------------------------------
@@ -56,51 +54,21 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool('DJANGO_SECURE_CONTENT_TYPE_NOSNIFF', def
 # ------------------------------------------------------------------------------
 # https://django-storages.readthedocs.io/en/latest/#installation
 INSTALLED_APPS += ['storages']  # noqa F405
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID')
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY')
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME')
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_QUERYSTRING_AUTH = False
-# DO NOT change these unless you know what you're doing.
-_AWS_EXPIRY = 60 * 60 * 24 * 7
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': f'max-age={_AWS_EXPIRY}, s-maxage={_AWS_EXPIRY}, must-revalidate',
-}
+# https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
+GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
+GS_DEFAULT_ACL = 'publicRead'
+GS_FILE_OVERWRITE = False
 
-# STATIC
-# ------------------------
-
-STATICFILES_STORAGE = 'config.settings.production.StaticRootS3Boto3Storage'
-STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
-
-# MEDIA
+# STATIC and MEDIA
 # ------------------------------------------------------------------------------
 
-# region http://stackoverflow.com/questions/10390244/
-# Full-fledge class: https://stackoverflow.com/a/18046120/104731
-from storages.backends.s3boto3 import S3Boto3Storage  # noqa E402
+STATICFILES_STORAGE = 'config.storages.StaticRootGoogleCloudStorage'
+STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_NAME') + '/static/'  # noqa: F405
 
-
-class StaticRootS3Boto3Storage(S3Boto3Storage):
-    """Data for storing static files with django-storages."""
-
-    location = 'static'
-
-
-class MediaRootS3Boto3Storage(S3Boto3Storage):
-    """Data for storing media files with django-storages."""
-
-    location = 'media'
-    file_overwrite = False
-
-
-# endregion
-DEFAULT_FILE_STORAGE = 'config.settings.production.MediaRootS3Boto3Storage'
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+DEFAULT_FILE_STORAGE = 'config.storages.MediaRootGoogleCloudStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+MEDIA_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_NAME') + '/media/'  # noqa: F405
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -130,29 +98,22 @@ EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[dthm4kaiako]
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
-ADMIN_URL = env('DJANGO_ADMIN_URL')
+# ADMIN_URL = env('DJANGO_ADMIN_URL')
 
 # Anymail (Mailgun)
 # ------------------------------------------------------------------------------
 # https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
-INSTALLED_APPS += ['anymail']  # noqa F405
-EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-# https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
-ANYMAIL = {
-    'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
-    'MAILGUN_SENDER_DOMAIN': env('MAILGUN_DOMAIN')
-}
+# INSTALLED_APPS += ['anymail']  # noqa F405
+# EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+# # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
+# ANYMAIL = {
+#     'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
+#     'MAILGUN_SENDER_DOMAIN': env('MAILGUN_DOMAIN')
+# }
 
 # Gunicorn
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ['gunicorn']  # noqa F405
-
-# Collectfast
-# ------------------------------------------------------------------------------
-# https://github.com/antonagestam/collectfast#installation
-INSTALLED_APPS = ['collectfast'] + INSTALLED_APPS  # noqa F405
-AWS_PRELOAD_METADATA = True
-
 
 # LOGGING
 # ------------------------------------------------------------------------------
