@@ -11,6 +11,11 @@
     }
 }
 
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, .75);
+}
+
 #primary-navbar {
     background-color: $brand-colour !important;
 }
@@ -19,6 +24,8 @@
 #navbarPrimaryContent .dtta-navbar.active {
     background-color: $dtta-brand-colour-dark !important;
 }
+
+// DTTA
 #dtta-navbar {
     background-color: $dtta-brand-colour-dark !important;
     .nav-link:hover {
