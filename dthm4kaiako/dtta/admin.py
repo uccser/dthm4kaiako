@@ -6,6 +6,8 @@ from markdownx.admin import MarkdownxModelAdmin
 
 
 class NewsArticleAdmin(MarkdownxModelAdmin):
+    """Configuration for display news articles in admin."""
+
     list_display = ('title', 'datetime')
 
 
