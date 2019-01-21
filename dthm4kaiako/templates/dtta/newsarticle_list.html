@@ -8,7 +8,12 @@
     {% if news_articles %}
         <ul>
             {% for news_article in news_articles %}
-                <a href="{% url 'dtta:news_article' news_article.pk %}">{{ news_article.title }}</a>
+                <li>
+                    {{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}:
+                    <a href="{% url 'dtta:news_article' news_article.pk %}">
+                        {{ news_article.title }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     {% else %}
