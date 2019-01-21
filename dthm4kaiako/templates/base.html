@@ -34,7 +34,7 @@
             <div class="navbar-nav w-100">
               <a class="nav-item nav-link disabled" href="#">Resources</a>
               <a class="nav-item nav-link disabled" href="#">Events</a>
-              <a class="nav-item nav-link dtta-navbar" href="{% url 'dtta:index' %}">DTTA</a>
+              <a class="nav-item nav-link dtta-navbar" href="{% url 'dtta:home' %}">DTTA</a>
               <a class="nav-item nav-link disabled mr-auto" href="#" tabindex="-1" aria-disabled="true">About</a>
               {% if request.user.is_authenticated %}
                 {# URL provided by django-allauth/account/urls.py #}
@@ -92,7 +92,7 @@
           </a>
         </div>
         <div class="col-12 col-sm-6 col-md-4">
-          <a href="{% url 'dtta:index' %}">
+          <a href="{% url 'dtta:home' %}">
             <img class="img-fluid px-3" src="{% static 'img/logos/dtta-logo.png' %}">
           </a>
         </div>
@@ -134,7 +134,7 @@
                 </a>
               </li>
               <li>
-                <a href="{% url 'dtta:index' %}">
+                <a href="{% url 'dtta:home' %}">
                   {% trans "DTTA" %}
                 </a>
               </li>
@@ -176,7 +176,7 @@
       <div class="container py-3 footer-statement text-center">
         <p>
           <small>
-            {% url 'dtta:index' as dtta_homepage %}
+            {% url 'dtta:home' as dtta_homepage %}
             {% blocktrans trimmed %}
             DTHM for kaiako is a project by the <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">Computer
               Science Education Research Group</a> at the <a href="http://www.canterbury.ac.nz/">University of Canterbury</a>, the <a href="{{ dtta_homepage }}">Digital Technologies Teachers Aotearoa</a> association, and <a href="https://www.facebook.com/aateasolutions/">AATEA Solutions</a>.
