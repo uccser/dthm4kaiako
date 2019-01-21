@@ -5,10 +5,10 @@ from django.utils import timezone
 from dtta.models import NewsArticle
 
 
-class IndexView(generic.base.TemplateView):
+class HomeView(generic.base.TemplateView):
     """View for DTTA homepage."""
 
-    template_name = 'dtta/index.html'
+    template_name = 'dtta/home.html'
 
 
 class AboutView(generic.base.TemplateView):

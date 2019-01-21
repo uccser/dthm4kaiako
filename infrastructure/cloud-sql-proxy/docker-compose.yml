@@ -4,7 +4,7 @@ services:
     image: gcr.io/cloudsql-docker/gce-proxy:1.11
     volumes:
       - .:/dthm4kaiako
-    command: /cloud_sql_proxy -instances=${GOOGLE_CLOUD_SQL_CONNECTION_NAME}=tcp:0.0.0.0:5432 -credential_file=/dthm4kaiako/${GOOGLE_APPLICATION_CREDENTIALS}
+    command: /cloud_sql_proxy -instances=${GOOGLE_CLOUD_SQL_CONNECTION_NAME}=tcp:0.0.0.0:5432 -credential_file=/dthm4kaiako/dthm4kaiako/${GOOGLE_APPLICATION_CREDENTIALS}
 
   django:
     build:
