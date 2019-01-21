@@ -23,7 +23,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/deploy-app.sh
           skip_cleanup: true
           on:
-            branch: issue/177  # For testing purposes
+            branch: develop
     - script: skip
       name: "Update content"
       deploy:
@@ -31,7 +31,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/update-content.sh
           skip_cleanup: true
           on:
-            branch: issue/177  # For testing purposes
+            branch: develop
 notifications:
   email: false
   slack:
