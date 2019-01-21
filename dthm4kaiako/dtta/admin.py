@@ -4,4 +4,11 @@ from django.contrib import admin
 from dtta.models import NewsArticle
 from markdownx.admin import MarkdownxModelAdmin
 
-admin.site.register(NewsArticle, MarkdownxModelAdmin)
+
+class NewsArticleAdmin(MarkdownxModelAdmin):
+    """Configuration for display news articles in admin."""
+
+    list_display = ('title', 'datetime')
+
+
+admin.site.register(NewsArticle, NewsArticleAdmin)
