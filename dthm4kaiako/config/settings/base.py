@@ -68,7 +68,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
-    'markdownx',
+    'martor',
     'django_activeurl'
 ]
 LOCAL_APPS = [
@@ -196,9 +196,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.version_number.version_number',
             ],
-            'libraries': {
-                'markdown': 'config.filters.markdown',
-            },
         },
     },
 ]
@@ -217,7 +214,8 @@ FIXTURE_DIRS = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-CSRF_COOKIE_HTTPONLY = True
+# Set to false for Martor
+CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-browser-xss-filter
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
@@ -256,16 +254,51 @@ ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 
-# markdownx
+# martor (Markdown)
 # ------------------------------------------------------------------------------
-timezone = pytz.timezone(TIME_ZONE)
-MARKDOWNX_MEDIA_PATH = os.path.join(MEDIA_URL, datetime.now(timezone).strftime('%Y/%m/%d'))
-MARKDOWNX_UPLOAD_MAX_SIZE = 25 * 1024 * 1024  # 25 MB
-MARKDOWNX_UPLOAD_CONTENT_TYPES = [
-    'image/jpeg',
-    'image/png',
-    'image/svg+xml',
+# Input: string boolean, `true/false`
+MARTOR_ENABLE_CONFIGS = {
+    'imgur': 'true',     # to enable/disable imgur/custom uploader.
+    'mention': 'false',  # to enable/disable mention
+    'jquery': 'true',    # to include/revoke jquery (require for admin default django)
+    'living': 'true',   # to enable/disable live updates in preview
+}
+
+# To setup the martor editor with label or not (default is False)
+MARTOR_ENABLE_LABEL = False
+
+# Safe Mode
+MARTOR_MARKDOWN_SAFE_MODE = True
+
+# Markdownify
+MARTOR_MARKDOWNIFY_FUNCTION = 'martor.utils.markdownify'  # default
+MARTOR_MARKDOWNIFY_URL = '/martor/markdownify/'  # default
+
+# Markdown extensions (default)
+MARTOR_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.extra',
+    'markdown.extensions.nl2br',
+    'markdown.extensions.smarty',
+    'markdown.extensions.fenced_code',
+
+    # Custom markdown extensions.
+    'martor.extensions.urlize',
+    'martor.extensions.del_ins',    # ~~strikethrough~~ and ++underscores++
+    'martor.extensions.emoji',      # to parse markdown emoji
+    'martor.extensions.mdx_video',  # to parse embed/iframe video
 ]
+
+# Markdown Extensions Configs
+MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
+
+# Markdown urls
+timezone = pytz.timezone(TIME_ZONE)
+MARTOR_UPLOAD_PATH = os.path.join(MEDIA_URL, datetime.now(timezone).strftime('%Y/%m/%d'))
+MARTOR_UPLOAD_URL = 'martor/uploader/'
+MARKDOWNX_UPLOAD_MAX_SIZE = 10 * 1024 * 1024  # 10 MB
+
+# Markdown Extensions
+MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://assets-cdn.github.com/images/icons/emoji/'  # default
 
 # django-activeurl
 # ------------------------------------------------------------------------------

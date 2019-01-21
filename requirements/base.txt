@@ -11,6 +11,9 @@ django-allauth==0.38.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
+martor==1.3.5  # https://github.com/agusmakmun/django-markdown-editor
+Markdown==2.6.1
+requests==2.21.0
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
 
 # Django REST Framework

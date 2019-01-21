@@ -1,6 +1,6 @@
 {% extends "dtta/base.html" %}
 
-{% load static markdown %}
+{% load static martortags %}
 
 {% block page_heading %}
     <img class="logo-header img-fluid mx-auto d-block m-3" src="{% static 'img/logos/dtta-logo.png' %}">
@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ news_article.title }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ news_article.datetime }}</h6>
-                    {{ news_article.content|markdown|truncatewords_html:30 }}
+                    {{ news_article.content|safe_markdown|truncatewords_html:30 }}
                     <a href="{% url 'dtta:news_article' news_article.pk %}" class="btn btn-outline-primary">Read more...</a>
                 </div>
             </div>

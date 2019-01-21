@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
-
+from config.views import markdown_uploader
 
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 urlpatterns = [
@@ -16,7 +16,8 @@ urlpatterns = [
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
-    path('markdownx/', include('markdownx.urls')),
+    path('martor/', include('martor.urls')),
+    path('martor/uploader/', markdown_uploader, name='markdown_uploader_page')
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

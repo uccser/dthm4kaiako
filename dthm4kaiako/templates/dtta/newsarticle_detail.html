@@ -1,9 +1,9 @@
 {% extends "dtta/base.html" %}
 
-{% load markdown %}
+{% load martortags %}
 
 {% block content %}
     <h1>{{ news_article.title }}</h1>
     <h2><small class="text-muted">{{ news_article.datetime }}</small></h2>
-    {{ news_article.content|markdown }}
+    {{ news_article.content|safe_markdown }}
 {% endblock content %}

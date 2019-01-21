@@ -1,7 +1,14 @@
 """Module for admin configuration for the DTTA application."""
 
+from django.db import models
 from django.contrib import admin
 from dtta.models import NewsArticle
-from markdownx.admin import MarkdownxModelAdmin
+from martor.widgets import AdminMartorWidget
 
-admin.site.register(NewsArticle, MarkdownxModelAdmin)
+class NewsArticleAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMartorWidget},
+    }
+
+
+admin.site.register(NewsArticle, NewsArticleAdmin)
