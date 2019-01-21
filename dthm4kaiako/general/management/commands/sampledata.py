@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from tests.dtta.factories import NewsArticleFactory
 
+
 class Command(management.base.BaseCommand):
     """Required command class for the custom Django sampledata command."""
 
