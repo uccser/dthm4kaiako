@@ -1,0 +1,34 @@
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+    .navbar-brand {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($brand-colour, 10%);
+    }
+}
+
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, .75);
+}
+
+#primary-navbar {
+    background-color: $brand-colour !important;
+}
+
+#navbarPrimaryContent .dtta-navbar:hover,
+#navbarPrimaryContent .dtta-navbar.active {
+    background-color: $dtta-brand-colour-dark !important;
+}
+
+// DTTA
+#dtta-navbar {
+    background-color: $dtta-brand-colour-dark !important;
+    .nav-link:hover {
+        background-color: lighten($dtta-brand-colour-dark, 10%);
+    }
+}

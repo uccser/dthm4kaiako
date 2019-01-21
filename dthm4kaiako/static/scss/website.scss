@@ -1,3 +1,18 @@
+@import "core-variables";
+@import "navbar";
+@import "homepage";
+@import "footer";
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+body {
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+.logo-header {
+  max-height: 10rem;
+}
+
 ////////////////////////////////
 		//Variables//
 ////////////////////////////////
@@ -28,8 +43,4 @@ $red: #b94a48;
   background-color: $pink;
   border-color: $dark-pink;
   color: $red;
-}
-
-body {
-  padding-top: 4.5rem;
 }

@@ -15,6 +15,23 @@ jobs:
     - stage: test
       script: ./dev ci test_suite
     - script: ./dev ci style
+    - stage: deployment
+      script: skip
+      name: "Deploy application"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/prod-deploy/deploy-app.sh
+          skip_cleanup: true
+          on:
+            branch: develop
+    - script: skip
+      name: "Update content"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/prod-deploy/update-content.sh
+          skip_cleanup: true
+          on:
+            branch: develop
 notifications:
   email: false
   slack:

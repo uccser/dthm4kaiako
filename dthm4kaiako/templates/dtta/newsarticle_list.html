@@ -1,0 +1,22 @@
+{% extends "dtta/base.html" %}
+
+{% block page_heading %}
+    <h1>News articles</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {% if news_articles %}
+        <ul>
+            {% for news_article in news_articles %}
+                <li>
+                    {{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}:
+                    <a href="{% url 'dtta:news_article' news_article.pk %}">
+                        {{ news_article.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No news articles available.</p>
+    {% endif %}
+{% endblock content %}
