@@ -1,7 +1,7 @@
 """Models for DTTA application."""
 
 from django.db import models
-from markdownx.models import MarkdownxField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class NewsArticle(models.Model):
@@ -9,4 +9,4 @@ class NewsArticle(models.Model):
 
     title = models.CharField(max_length=200)
     datetime = models.DateTimeField()
-    content = MarkdownxField()
+    content = RichTextUploadingField()
