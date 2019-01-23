@@ -9,6 +9,9 @@
     .navbar-brand:hover {
         background-color: lighten($brand-colour, 10%);
     }
+    .navbar-logo {
+        height: 2rem;
+    }
 }
 
 

@@ -328,7 +328,7 @@ CKEDITOR_CONFIGS = {
 # ------------------------------------------------------------------------------
 ACTIVE_URL_KWARGS = {
     'css_class': 'active',
-    'parent_tag': 'self',
+    'parent_tag': 'li',
     'menu': 'yes',
     'ignore_params': 'no'
 }

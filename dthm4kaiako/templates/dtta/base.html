@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block secondary_navbar %}
     <nav id="dtta-navbar" class="navbar navbar-expand-md navbar-dark">
       <div class="container">
@@ -8,12 +10,32 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
+        <a class="navbar-brand" href="{% url 'dtta:home' %}">
+          <img class="d-inline-block align-top navbar-logo" src="{% static 'img/logos/dtta-logo-white-text-without-subtitle.png' %}">
+        </a>
+
         <div class="collapse navbar-collapse" id="navbarSecondaryContent">
-          <div class="navbar-nav w-100">
-            <a class="nav-item nav-link" href="{% url 'dtta:about' %}">About</a>
-            <a class="nav-item nav-link" href="{% url 'dtta:membership' %}">Membership</a>
-            <a class="nav-item nav-link" href="{% url 'dtta:news_article_list' %}">News</a>
-          </div>
+          <ul class="navbar-nav w-100">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dtta:about' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dtta:membership' %}">Membership</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dtta:news_article_list' %}">News</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dttaCurriculumLinks" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Curricula
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dttaCurriculumLinks">
+                <a class="dropdown-item" href="http://nzcurriculum.tki.org.nz/The-New-Zealand-Curriculum/Technology">Digital Technologies</a>
+                <a class="dropdown-item" href="http://hangaraumatihiko.tki.org.nz/">Hangarau Matihiko</a>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
