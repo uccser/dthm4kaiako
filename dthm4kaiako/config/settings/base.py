@@ -106,6 +106,8 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'markdownx',
+    'ckeditor',
+    'ckeditor_uploader',
     'django_activeurl'
 ]
 LOCAL_APPS = [
@@ -294,16 +296,33 @@ ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 
-# markdownx
+# ckeditor
 # ------------------------------------------------------------------------------
 timezone = pytz.timezone(TIME_ZONE)
-MARKDOWNX_MEDIA_PATH = os.path.join(MEDIA_URL, datetime.now(timezone).strftime('%Y/%m/%d'))
-MARKDOWNX_UPLOAD_MAX_SIZE = 25 * 1024 * 1024  # 25 MB
-MARKDOWNX_UPLOAD_CONTENT_TYPES = [
-    'image/jpeg',
-    'image/png',
-    'image/svg+xml',
-]
+CKEDITOR_UPLOAD_PATH = datetime.now(timezone).strftime('%Y/%m/%d')
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'clipboard_defaultContentType': 'text',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            # 'devtools',  # Used for development
+            'a11yhelp',
+            'uploadimage',
+            'image2',
+            'div',
+            'autolink',
+            'autogrow',
+            'clipboard',
+            'codesnippet',
+            'pastefromword',
+            'widget',
+            'dialog',
+            'dialogui',
+        ]),
+    }
+}
 
 # django-activeurl
 # ------------------------------------------------------------------------------
