@@ -91,7 +91,7 @@
             <img class="img-fluid py-5" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
           </a>
         </div>
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6 col-md-4{% block logo_reorder %}{% endblock logo_reorder %}">
           <a href="{% url 'dtta:home' %}">
             <img class="img-fluid px-3" src="{% static 'img/logos/dtta-logo.png' %}">
           </a>
