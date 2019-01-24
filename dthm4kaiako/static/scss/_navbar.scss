@@ -34,4 +34,8 @@
     .nav-link:hover {
         background-color: lighten($dtta-brand-colour-dark, 10%);
     }
+    .dropdown-item:hover {
+        background-color: lighten($dtta-brand-colour-dark, 10%);
+        color: $white;
+    }
 }
