@@ -31,6 +31,9 @@
 // DTTA
 #dtta-navbar {
     background-color: $dtta-brand-colour-dark !important;
+    .navbar-logo {
+        filter: drop-shadow(0px 0px 2px darken($dtta-brand-colour-dark, 5%));
+    }
     .nav-link:hover,
     .navbar-brand:hover {
         background-color: lighten($dtta-brand-colour-dark, 10%);
