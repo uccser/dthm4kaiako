@@ -23,7 +23,7 @@
     background-color: $brand-colour !important;
 }
 
-#navbarPrimaryContent .dtta-navbar:hover,
+#navbarPrimaryContent .dtta-navbar .nav-link:hover,
 #navbarPrimaryContent .dtta-navbar.active {
     background-color: $dtta-brand-colour-dark !important;
 }
@@ -31,7 +31,8 @@
 // DTTA
 #dtta-navbar {
     background-color: $dtta-brand-colour-dark !important;
-    .nav-link:hover {
+    .nav-link:hover,
+    .navbar-brand:hover {
         background-color: lighten($dtta-brand-colour-dark, 10%);
     }
     .dropdown-item:hover {
