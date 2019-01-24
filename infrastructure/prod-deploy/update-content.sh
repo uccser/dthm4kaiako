@@ -14,5 +14,3 @@ source ./dthm4kaiako/load-prod-envs.sh
 # Start the system and run the migrate and collect_static system commands.
 ./dev start
 ./dev migrate
-./dev static_prod
-./dev collect_static
