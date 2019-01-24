@@ -17,7 +17,7 @@ jobs:
     - script: ./dev ci style
     - stage: deployment
       script: skip
-      name: "Deploy application"
+      name: "Deploy app to Google App Engine"
       deploy:
         - provider: script
           script: bash ./infrastructure/prod-deploy/deploy-app.sh
@@ -25,13 +25,21 @@ jobs:
           on:
             branch: develop
     - script: skip
-      name: "Update content"
+      name: "Update Google Cloud SQL database"
       deploy:
         - provider: script
           script: bash ./infrastructure/prod-deploy/update-content.sh
           skip_cleanup: true
           on:
             branch: develop
+    - script: skip
+      name: "Copy static files to Google Storage Bucket"
+      deploy:
+        - provider: script
+          script: bash ./infrastructure/prod-deploy/deploy-static-files.sh
+          skip_cleanup: true
+          on:
+            branch: master
 notifications:
   email: false
   slack:
