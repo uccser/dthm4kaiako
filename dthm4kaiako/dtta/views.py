@@ -13,6 +13,17 @@ class HomeView(generic.base.TemplateView):
 
     template_name = 'dtta/home.html'
 
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the DTTA index view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now).order_by('-datetime')[:5]
+        return context
+
 
 class AboutView(generic.base.TemplateView):
     """View for DTTA about page."""

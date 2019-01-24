@@ -13,16 +13,14 @@
     </p>
 
     {% if latest_news_articles %}
-        <h2>Latest news</h2>
+        <h3>Latest news</h3>
         {% for news_article in latest_news_articles %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{ news_article.title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ news_article.datetime }}</h6>
-                    {{ news_article.content|markdown|truncatewords_html:30 }}
-                    <a href="{% url 'dtta:news_article' news_article.pk %}" class="btn btn-outline-primary">Read more...</a>
-                </div>
-            </div>
+            <p class="mb-1">
+                <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }} -</span>
+                <a href="{% url 'dtta:news_article' news_article.pk %}">
+                    {{ news_article.title }}
+                </a>
+            </p>
         {% endfor %}
     {% endif %}
 {% endblock content %}
