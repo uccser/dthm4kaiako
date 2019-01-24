@@ -235,6 +235,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.version_number.version_number',
+                'config.context_processors.dtta_flat_pages.dtta_flat_pages',
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',

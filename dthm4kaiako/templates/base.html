@@ -31,23 +31,35 @@
 
         <div class="collapse navbar-collapse" id="navbarPrimaryContent">
           {% activeurl %}
-            <div class="navbar-nav w-100">
-              <a class="nav-item nav-link disabled" href="#">Resources</a>
-              <a class="nav-item nav-link disabled" href="#">Events</a>
-              <a class="nav-item nav-link dtta-navbar" href="{% url 'dtta:home' %}">DTTA</a>
-              <a class="nav-item nav-link disabled mr-auto" href="#" tabindex="-1" aria-disabled="true">About</a>
+            <ul class="navbar-nav w-100">
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Resources</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Events</a>
+              </li>
+              <li class="nav-item dtta-navbar">
+                <a class="nav-link" href="{% url 'dtta:home' %}">DTTA</a>
+              </li>
+              <li class="nav-item mr-auto">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">About</a>
+              </li>
               {% if request.user.is_authenticated %}
+              {# URL provided by django-allauth/account/urls.py #}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+                </li>
                 {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-item nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+                </li>
               {% else %}
                 {# URL provided by django-allauth/account/urls.py #}
                 <!-- <a id="sign-up-link" class="nav-item nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a> -->
                 {# URL provided by django-allauth/account/urls.py #}
                 <!-- <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a> -->
               {% endif %}
-            </div>
+            </ul>
           {% endactiveurl %}
         </div>
       </div>

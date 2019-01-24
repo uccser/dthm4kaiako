@@ -2,7 +2,10 @@
 
 from django.views import generic
 from django.utils import timezone
-from dtta.models import NewsArticle
+from dtta.models import (
+    Page,
+    NewsArticle,
+)
 
 
 class HomeView(generic.base.TemplateView):
@@ -21,6 +24,13 @@ class MembershipView(generic.base.TemplateView):
     """View for DTTA membership page."""
 
     template_name = 'dtta/membership.html'
+
+
+class PageDetailView(generic.DetailView):
+    """View for DTTA flat page."""
+
+    model = Page
+    context_object_name = 'page'
 
 
 class NewsArticleListView(generic.ListView):
