@@ -17,6 +17,9 @@ rm -r staticfiles/
 # Decrypt secret files archive that contain credentials.
 ./infrastructure/prod-deploy/decrypt-prod-secrets.sh
 
+# Load environment variables.
+source ./dthm4kaiako/load-prod-envs.sh
+
 # Authenticate with gcloud tool using the decrypted service account credentials.
 # See: https://cloud.google.com/sdk/gcloud/reference/auth/activate-service-account
 gcloud auth activate-service-account --key-file ./dthm4kaiako/${GOOGLE_APPLICATION_CREDENTIALS}
