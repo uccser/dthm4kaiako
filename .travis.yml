@@ -39,7 +39,7 @@ jobs:
           script: bash ./infrastructure/prod-deploy/deploy-static-files.sh
           skip_cleanup: true
           on:
-            branch: master
+            branch: develop
 notifications:
   email: false
   slack:
