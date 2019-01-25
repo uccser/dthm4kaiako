@@ -13,6 +13,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     path('about/', TemplateView.as_view(template_name='pages/about.html'), name='about',),
     path(settings.ADMIN_URL, admin.site.urls),
+    path('resources/', include('resources.urls', namespace='resources')),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),

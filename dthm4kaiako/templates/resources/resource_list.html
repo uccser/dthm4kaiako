@@ -1,0 +1,21 @@
+{% extends "resources/base.html" %}
+
+{% block page_heading %}
+    <h1>Resources</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {% if resources %}
+        <ul>
+            {% for resource in resources %}
+                <li>
+                    <a href="{{ resource.get_absolute_url }}">
+                        {{ resource }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No resources available.</p>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "resources/base.html" %}
+
+{% block page_heading %}
+    <h1>{{ resource.name }}</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {{ resource.description|safe }}
+
+    <ul class="list-unstyled">
+        <li>
+            <strong>Resource added:</strong> {{ resource.datetime_added }}
+        </li>
+        <li>
+            <strong>Resource last updated:</strong> {{ resource.datetime_updated }}
+        </li>
+    </ul>
+{% endblock content %}

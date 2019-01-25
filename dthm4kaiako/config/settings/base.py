@@ -113,6 +113,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
+    'resources.apps.ResourcesAppConfig',
     'dtta.apps.DttaAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
