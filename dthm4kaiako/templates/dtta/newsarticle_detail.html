@@ -1,0 +1,7 @@
+{% extends "dtta/base.html" %}
+
+{% block content %}
+    <h1>{{ news_article.title }}</h1>
+    <h2><small class="text-muted">{{ news_article.datetime }}</small></h2>
+    {{ news_article.content|safe }}
+{% endblock content %}

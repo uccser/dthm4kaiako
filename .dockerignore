@@ -1,0 +1,6 @@
+dthm4kaiako/build/*
+dthm4kaiako/temp/*
+dthm4kaiako/node_modules/*
+**/__pycache__/**
+**/.mypy_cache__/**
+**/.pytest_cache__/**

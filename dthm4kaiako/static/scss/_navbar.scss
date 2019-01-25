@@ -1,0 +1,48 @@
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+    .navbar-brand {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($brand-colour, 10%);
+    }
+    .navbar-logo {
+        height: 2rem;
+    }
+    .navbar-toggler {
+        border: 0;
+    }
+}
+
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, .75);
+}
+
+#primary-navbar {
+    background-color: $brand-colour !important;
+}
+
+#navbarPrimaryContent .dtta-navbar .nav-link:hover,
+#navbarPrimaryContent .dtta-navbar.active {
+    background-color: $dtta-brand-colour-dark !important;
+}
+
+// DTTA
+#dtta-navbar {
+    background-color: $dtta-brand-colour-dark !important;
+    .navbar-logo {
+        filter: drop-shadow(0px 0px 2px darken($dtta-brand-colour-dark, 5%));
+    }
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($dtta-brand-colour-dark, 10%);
+    }
+    .dropdown-item:hover {
+        background-color: lighten($dtta-brand-colour-dark, 10%);
+        color: $white;
+    }
+}

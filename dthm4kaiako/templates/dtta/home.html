@@ -1,0 +1,26 @@
+{% extends "dtta/base.html" %}
+
+{% load static markdown %}
+
+{% block page_heading %}
+    <img class="logo-header img-fluid mx-auto d-block m-3" src="{% static 'img/logos/dtta-logo.png' %}">
+{% endblock page_heading %}
+
+{% block content %}
+    <p class="lead">
+        The Digital Technologies Teachers Aotearoa is an association with the goal of advocating for our subjects.
+        The aim of the association is to create a community of teachers where we can share resources, communicate and speak with one voice to get our subject area recognised and supported.
+    </p>
+
+    {% if latest_news_articles %}
+        <h3>Latest news</h3>
+        {% for news_article in latest_news_articles %}
+            <p class="mb-1">
+                <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }} -</span>
+                <a href="{% url 'dtta:news_article' news_article.pk %}">
+                    {{ news_article.title }}
+                </a>
+            </p>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

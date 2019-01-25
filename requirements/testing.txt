@@ -1,9 +1,0 @@
-# Testing development dependencies go here
--r base.txt
-
-# Check Python style
-flake8==3.4.1
-pydocstyle==2.0.0
-
-# Coverage Tools
-coverage==4.4.1

@@ -1,0 +1,13 @@
+{% extends "dtta/base.html" %}
+
+{% block page_heading %}
+    <h1>{{ page.title }}</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {{ page.content|safe }}
+
+    <p>
+        This page was published on {{ page.date }}.
+    </p>
+{% endblock content %}

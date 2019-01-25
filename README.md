@@ -1,9 +1,19 @@
-# Computer Science for Teachers
+# DTHM for kaiako
 
-This system runs the website for listing [UCCSER](http://www.canterbury.ac.nz/engineering/schools/csse/computer-science-education/) cs4teachers (Computer Science for Teachers) events.
-These events are for training New Zealand teachers for teaching Computer Science within primary and secondary schools.
+[![Build Status](https://travis-ci.org/uccser/dthm4kaiako.svg?branch=develop)](https://travis-ci.org/uccser/dthm4kaiako)
+
+A website for Digital Technology & Hangarau Matihiko educators in New Zealand.
 
 ## License
 
-The project is licensed under the
-[MIT license](https://opensource.org/licenses/MIT) (`LICENSE` file).
+This repository is licensed under the [MIT license](https://opensource.org/licenses/MIT) (`LICENSE` file).
+
+## Sponsors
+
+A massive thank you to the following companies for supporting this project:
+
+<p>
+  <a href="https://www.google.com/">
+    <img src="dthm4kaiako/static/img/logos/google-logo-colour.png" alt="Google" width="150">
+  </a>
+</p>
