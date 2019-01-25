@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0
+
+This release completely rewrites the project as a website for all NZ DTHM educators.
+Adding a resource and community hub to the event website was planned in the initial design, however due to new DTHM curricula, a full redesign and rename was appropriate.
+
+- Project based off `cookiecutter-django` and our Docker setup for Google Cloud Platform deployments.
+- Uses Django 2.1 to set us up for easy adoption of Django 2.2 LTS when released in a few months.
+- Framework setup for resource, event, and DTTA hubs.
+- Includes basic pages for DTTA pages.
+
 ## 0.5.3
 
 - Allow manual configuration of slug values ([fixes #14](https://github.com/uccser/dthm4kaiako/issues/14))
