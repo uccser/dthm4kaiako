@@ -6,5 +6,6 @@ from . import views
 app_name = 'resources'
 urlpatterns = [
     path('', views.ResourceListView.as_view(), name='home'),
-    re_path(r'^resource/(?P<pk>\d+)/((?P<slug>[-\w]+)/)?$', views.ResourceDetailView.as_view(), name='resource'),
+    path('resource/<int:pk>/', views.ResourceDetailView.as_view(), name='resource'),
+    path('resource/<int:pk>/<slug:slug>/', views.ResourceDetailView.as_view(), name='resource'),
 ]

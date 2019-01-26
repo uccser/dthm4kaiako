@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.urls import reverse
+from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -9,6 +10,7 @@ class Resource(models.Model):
     """Model for a resource."""
 
     name = models.CharField(max_length=200)
+    slug = AutoSlugField(populate_from='name', always_update=True, null=True)
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
@@ -19,7 +21,7 @@ class Resource(models.Model):
         Returns:
             URL as a string.
         """
-        return reverse("resources:resource", kwargs={"pk": self.pk})
+        return reverse("resources:resource", kwargs={'pk': self.pk, 'slug': self.slug})
 
     def __str__(self):
         """Text representation of object.

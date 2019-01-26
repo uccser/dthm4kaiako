@@ -1,6 +1,7 @@
 """Views for resource application."""
 
 from django.views import generic
+from config.mixins import RedirectToCosmeticURLMixin
 from resources.models import (
     Resource,
 )
@@ -13,7 +14,7 @@ class ResourceListView(generic.ListView):
     context_object_name = 'resources'
 
 
-class ResourceDetailView(generic.DetailView):
+class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     """View for a resource."""
 
     model = Resource
