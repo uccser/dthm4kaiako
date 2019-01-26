@@ -1,7 +1,7 @@
 """Views for resource application."""
 
 from django.views import generic
-from config.mixins import RedirectToCosmeticURLMixin
+from utils.mixins import RedirectToCosmeticURLMixin
 from resources.models import (
     Resource,
 )

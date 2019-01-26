@@ -15,4 +15,20 @@
             <strong>Resource last updated:</strong> {{ resource.datetime_updated }}
         </li>
     </ul>
+
+    {% if resource.components %}
+        <h2>Components</h2>
+        <ul>
+            {% for component in resource.components.all %}
+                <li>
+                    {{ component.get_component_type_display }}:
+                    {% if component.url %}
+                        <a href="{{ component.url }}">{{ component.name }}</a>
+                    {% else %}
+                        {{ component.name }} (Download to be implemented)
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock content %}

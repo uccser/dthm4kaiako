@@ -2,8 +2,7 @@
 
 import os.path
 import environ
-from datetime import datetime
-import pytz
+from utils.get_upload_filepath import get_upload_path_for_date
 
 
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
@@ -300,8 +299,7 @@ SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 # ckeditor
 # ------------------------------------------------------------------------------
-timezone = pytz.timezone(TIME_ZONE)
-CKEDITOR_UPLOAD_PATH = datetime.now(timezone).strftime('%Y/%m/%d')
+CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default': {
