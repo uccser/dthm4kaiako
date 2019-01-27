@@ -1,7 +1,18 @@
 #welcome-jumbotron {
-  background-color: #1a538d;
+  background-color: #2c4864;
   color: #fff !important;
   padding: 1.5rem;
+
+  svg {
+    width: 100%;
+    max-height: 5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .badge {
+    font-size: 1rem;
+  }
 
   .alert {
     color: #ffffff;
