@@ -6,6 +6,7 @@
   "dependencies": {
     "bootstrap": "4.2.1",
     "details-element-polyfill": "2.3.0",
+    "fuse.js": "3.3.0",
     "popper.js": "1.14.6",
     "jquery": "3.3.1"
   },

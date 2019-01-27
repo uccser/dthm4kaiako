@@ -34,7 +34,7 @@
           aria-controls="navbarPrimaryContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand mr-1" href="{% url 'home' %}">
+        <a class="navbar-brand mr-1" href="{% url 'general:home' %}">
           {% include 'svg/logo.html' %}
         </a>
 
@@ -51,7 +51,7 @@
                 <a class="nav-link" href="{% url 'dtta:home' %}">DTTA</a>
               </li>
               <li class="nav-item mr-auto">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">About</a>
+                <a class="nav-link" href="{% url 'general:about' %}">About</a>
               </li>
               {% if request.user.is_authenticated %}
               {# URL provided by django-allauth/account/urls.py #}
@@ -194,6 +194,16 @@
             <p class="mb-1 font-weight-bold">{% trans "Help" %}</p>
             <ul class="list-unstyled list-unstyled-i18n">
               <li>
+                <a href="{% url 'general:about' %}">
+                  {% trans "About" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'general:faq' %}">
+                  {% trans "FAQ" %}
+                </a>
+              </li>
+              <li>
                 <a href="#">
                   {% trans "Feedback" %}
                 </a>
@@ -230,5 +240,7 @@
     {% block modal %}{% endblock modal %}
 
     <script src="{% static 'js/website.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
   </body>
 </html>

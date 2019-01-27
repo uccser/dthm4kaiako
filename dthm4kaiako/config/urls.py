@@ -4,20 +4,20 @@ from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from config.views import health_check
 
 
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    path('about/', TemplateView.as_view(template_name='pages/about.html'), name='about',),
+    path('', include('general.urls', namespace='general')),
     path(settings.ADMIN_URL, admin.site.urls),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('_ah/health', health_check),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
