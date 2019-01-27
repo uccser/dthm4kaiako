@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1>Frequently Asked Questions</h1>
+{% endblock page_heading %}
+
+
+{% block content %}
+<p class="mb-4">
+    If your question is not answered below, please send an email to <a href="mailto:jack.morgan@kiatakatu.ac.nz">jack.morgan@kiatakatu.ac.nz</a>
+    with your question so we can add to this page.
+</p>
+
+<div class="form-row align-items-center mb-4">
+    <div class="col mb-1">
+        <input type="text" class="form-control" id="faq-search" placeholder="Enter search terms">
+    </div>
+    <div class="col-12 col-sm-3 mb-1">
+        <button id="clear-search" type="button" class="btn btn-outline-danger">
+            Clear search terms
+        </button>
+    </div>
+</div>
+
+<div id="faq-search-results">
+</div>
+
+<div id="faq-all">
+    <div class="faq">
+        <h5>Why was this website built?</h5>
+        <p>
+            This website was built as a supporting tool for authors of the Kia Takatū ā-Matihiko content.
+            It incorporates features and practices that we have found useful over our many years of developing content,
+            especially on projects with large amounts of content produced on short time frames.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>How do I understand the different stages of pīkau development?</h5>
+        <p>
+            Have a read of <a href="{% url 'pikau:docs' %}#understanding-pipeline">"Understanding the pīkau creation
+                pipeline"</a>.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>Where is a template file for a blank pīkau?</h5>
+        <p>
+            The template file is linked for the <a href="{% url 'pikau:docs' %}#creating">"Creating a pīkau on Google
+                Drive"</a> section.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>Which tags relate to the outcomes of the Self Review Tool?</h5>
+        <p>
+            The tags relating to the Self Review Tool (SRT) are listed in the <a href="{% url 'pikau:docs' %}#planning">"Planning
+                a pīkau"</a> section.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>Where can I view an flowchart or diagram of all pīkau and how they are connected?</h5>
+        <p>
+            This is available on the <a href="{% url 'pikau:pathways' %}">pīkau pathways</a> page.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>How can I see coverage of pīkau against progress outcomes?</h5>
+        <p>
+            A heatmap of this data is available on the <a href="{% url 'pikau:progress_outcome_list' %}">progress
+                outcomes page</a>.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>
+            How do I write pīkau content on Google Drive?<br>
+            What formatting styles are available on iQualify?
+        </h5>
+        <p>
+            Information on formatting (on both Google Drive and iQualify) can be found in the <a href="{% url 'pikau:docs' %}#writing">"Writing
+                pīkau content on Google Drive"</a> section.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>Is the content open source? </h5>
+        <p>
+            Yes, for completed content.
+            When content is completed and ready for release, the raw content is stored within the <a href="https://github.com/uccser/kia-takatu-a-matihiko">open
+                source repository for this website on GitHub</a>. The pīkau content is stored within <code>pikau/content/</code>.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>The website requires a login?</h5>
+        <p>
+            At the moment we are restricting access to specific pages to project authors, though raw data for completed
+            content can still be accessed (see question above).
+            Access to pages may be changed once the project is completed.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>It would be great if you could add a feature to the website that...</h5>
+        <p>
+            Please let me know any ideas or feature requests you have at <a href="mailto:jack.morgan@kiatakatu.ac.nz">jack.morgan@kiatakatu.ac.nz</a>.
+            This website is built to assist you, so I would love to improve it in any way possible.
+        </p>
+    </div>
+
+    <div class="faq">
+        <h5>I have found a bug on the website!</h5>
+        <p>
+            Please send an email to <a href="mailto:jack.morgan@kiatakatu.ac.nz">jack.morgan@kiatakatu.ac.nz</a>
+            explaining the bug you found.
+            If it's an interface issue then please attach a screenshot.
+        </p>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/fuse.min.js' %}"></script>
+<script src="{% static 'js/faq.js' %}"></script>
+{% endblock scripts %}
