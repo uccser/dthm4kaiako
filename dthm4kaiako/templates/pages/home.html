@@ -3,9 +3,9 @@
 {% load static %}
 
 {% block body_container %}
-    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid">
+    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-5">
         <div class="row">
-            <div class="col-12 col-md-8 offset-md-2 mt-4 text-center">
+            <div class="col-12 text-center">
                 {% include 'svg/logo.html' %}
                 <div class="mb-4">
                     <a href="https://github.com/uccser/dthm4kaiako/releases" class="badge badge-warning">
@@ -13,8 +13,69 @@
                     </a>
                 </div>
                 <p class="lead">
-                    A website for all New Zealand Digital Technology educators, where we aim to inform and equip you for teaching the Digital Technologies & Hangarau Matihiko curricula.
+                    A website for New Zealand Digital Technology and Hangarau Matihiko educators.
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="media mb-4">
+                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-versions-100.png' %}">
+                    <div class="media-body">
+                        <h4 class="mt-0">Resources</h4>
+                        <p>
+                            Find resources for teaching Digital Technologies & Hangarau Matihiko curricula.
+                            At a later date, we will also have the abilty for you to share your own resources.
+                        </p>
+                        <a class="btn btn-secondary disabled" href="#" role="button">
+                            Coming soon
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="media mb-4">
+                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-classroom-100.png' %}">
+                    <div class="media-body">
+                        <h4 class="mt-0">Events</h4>
+                        <p>
+                            Find and register for professional development events throughout New Zealand.
+                        </p>
+                        <a class="btn btn-secondary disabled" href="#" role="button">
+                            Coming soon
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="media my-4">
+                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-user-groups-100.png' %}">
+                    <div class="media-body">
+                        <h4 class="mt-0">Community</h4>
+                        <p>
+                            Join the Digital Technologies Teachers Aotearoa association, which is a community of teachers who share resources, communicate and speak with one voice for their subject area.
+                        </p>
+                        </p>
+                        <a class="btn btn-secondary" href="{% url 'dtta:home' %}">
+                            View DTTA homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="media my-4">
+                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-faq-100.png' %}">
+                    <div class="media-body">
+                        <h4 class="mt-0">Frequently Asked Questions</h4>
+                        <p>Have a question about the website? Have a look for the answer within the FAQ.</p>
+                        <a class="btn btn-secondary disabled" href="#" role="button">
+                            Coming soon
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
