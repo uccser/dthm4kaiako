@@ -13,8 +13,10 @@ install:
 jobs:
   include:
     - stage: test
+      name: "Run test suite"
       script: ./dev ci test_suite
     - script: ./dev ci style
+      name: "Run style checker"
     - stage: deployment
       script: skip
       name: "Deploy app to Google App Engine"
