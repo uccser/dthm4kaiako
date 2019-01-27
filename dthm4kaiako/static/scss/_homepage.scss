@@ -1,7 +1,13 @@
 #welcome-jumbotron {
-  background-color: #1a538d;
+  background-color: #2c4864;
   color: #fff !important;
   padding: 1.5rem;
+
+  svg {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 
   .alert {
     color: #ffffff;

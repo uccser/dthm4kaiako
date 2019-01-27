@@ -5,22 +5,16 @@
 {% block body_container %}
     <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid">
         <div class="row">
-            <div class="col-12 col-md-8 offset-md-2 text-center">
-                <h1 class="display-3">DTHM for kaiako</h1>
+            <div class="col-12 col-md-8 offset-md-2 mt-4 text-center">
+                {% include 'svg/logo.html' %}
+                <div class="mb-4">
+                    <a href="https://github.com/uccser/dthm4kaiako/releases" class="badge badge-warning">
+                        Alpha {{ VERSION_NUMBER }}
+                    </a>
+                </div>
                 <p class="lead">
                     A website for all New Zealand Digital Technology educators, where we aim to inform and equip you for teaching the Digital Technologies & Hangarau Matihiko curricula.
                 </p>
-                <div class="alert text-center" role="alert">
-                    <h4 class="alert-heading">Heads up!</h4>
-                    <p>
-                        This website is in development so please bear with us as we add and fine tune features.
-                        We have released this website as early as possible as we believe this website will be useful for educators of the DTHM curriculum.
-                    </p>
-                    <p class="mb-0">
-                        We have been planning this website for over two years and have many great things planned.
-                        We hope you will join us in making this a great resource for all New Zealand educators.
-                    </p>
-                </div>
             </div>
         </div>
     </div>

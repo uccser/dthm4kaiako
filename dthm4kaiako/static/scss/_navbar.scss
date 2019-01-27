@@ -4,10 +4,14 @@
     .navbar-brand {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+        svg {
+            height: 1rem;
+            width: auto;
+        }
     }
     .nav-link:hover,
     .navbar-brand:hover {
-        background-color: lighten($brand-colour, 10%);
+        background-color: $brand-colour-light;
     }
     .navbar-logo {
         height: 2rem;
@@ -23,7 +27,7 @@
 }
 
 #primary-navbar {
-    background-color: $brand-colour !important;
+    background-color: $brand-colour-dark !important;
 }
 
 #navbarPrimaryContent .dtta-navbar .nav-link:hover,
