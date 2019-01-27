@@ -1,10 +1,15 @@
+// DTHM for kaiako
 $brand-colour: #2c4864;
 $brand-colour-light: lighten($brand-colour, 5%);
 $brand-colour-dark: darken($brand-colour, 5%);
 $brand-colour-darker: darken($brand-colour, 10%);
-$text-color: #000;
-$white: #fff;
 
 // DTTA
 $dtta-brand-colour: #d31f25;
 $dtta-brand-colour-dark: #a21015;
+
+// Bootstrap
+// See: https://getbootstrap.com/docs/4.2/getting-started/theming/
+$theme-colors: (
+  "primary": $brand-colour
+);
