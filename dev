@@ -147,6 +147,12 @@ cmd_shell() {
 }
 defhelp shell "Open shell to Django folder."
 
+# Run shell
+cmd_django_shell() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py shell
+}
+defhelp django_shell "Open Django shell."
+
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
 }
