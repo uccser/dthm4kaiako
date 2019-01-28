@@ -43,6 +43,14 @@ class PageDetailView(generic.DetailView):
     model = Page
     context_object_name = 'page'
 
+    def get_queryset(self):
+        """Only show published pages.
+
+        Returns:
+            Pages filtered by published boolean.
+        """
+        return Page.objects.filter(published=True)
+
 
 class NewsArticleListView(generic.ListView):
     """View for listing DTTA news articles."""
