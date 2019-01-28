@@ -39,7 +39,12 @@ class ResourceComponent(models.Model):
     """Model for a resource component."""
 
     # Constants
-    DATA_FIELDS = ['url', 'file_obj', 'image']
+    DATA_FIELDS = [
+        'component_url',
+        'component_file',
+        'component_image',
+        'component_resource',
+    ]
     TYPE_OTHER = 0
     TYPE_DOCUMENT = 10
     TYPE_IMAGE = 20
@@ -55,26 +60,37 @@ class ResourceComponent(models.Model):
         (TYPE_WEBSITE, _('Website')),
     )
 
-    # Attributes
+    # Attributes - General
     name = models.CharField(max_length=300)
     resource = models.ForeignKey(
         Resource,
         on_delete=models.CASCADE,
         related_name='components',
     )
-    url = models.URLField(blank=True)
-    file_obj = models.FileField(null=True, blank=True, upload_to=get_resource_upload_path)
-    image = models.ImageField(null=True, blank=True, upload_to=get_resource_upload_path)
     component_type = models.PositiveSmallIntegerField(
         choices=COMPONENT_TYPE_CHOICES,
         default=TYPE_OTHER,
     )
+    datetime_added = models.DateTimeField(auto_now_add=True)
+    datetime_updated = models.DateTimeField(auto_now=True)
+
+    # Attributes - Components (only 1 can be filled)
+    component_url = models.URLField(blank=True)
+    component_file = models.FileField(null=True, blank=True, upload_to=get_resource_upload_path)
+    component_image = models.ImageField(null=True, blank=True, upload_to=get_resource_upload_path)
+    component_resource = models.ForeignKey(
+        Resource,
+        on_delete=models.CASCADE,
+        related_name='component_of',
+        blank=True,
+        null=True,
+    )
 
     def save(self, *args, **kwargs):
         """Determine the value for 'component_type', then save object."""
-        if self.url:
+        if self.component_url:
             self.component_type = self.TYPE_WEBSITE
-        elif self.image:
+        elif self.component_image:
             self.component_type = self.TYPE_IMAGE
         super().save(*args, **kwargs)
 

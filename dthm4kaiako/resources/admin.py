@@ -11,12 +11,13 @@ class ResourceComponentInline(admin.StackedInline):
     """Inline view for resource component objects."""
 
     model = ResourceComponent
+    fk_name = 'resource'
     fieldsets = (
         (None, {
             'fields': ('name', )
         }),
         ('Item', {
-            'fields': ('url', 'file_obj', 'image'),
+            'fields': ('component_url', 'component_file', 'component_image', 'component_resource'),
             'description': 'Only one of the following fields must be filled for each component.'
         }),
     )
