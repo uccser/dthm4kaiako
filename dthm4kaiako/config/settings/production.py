@@ -60,7 +60,7 @@ GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
 GS_FILE_OVERWRITE = False
 
-STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME') + '/static/'  # noqa: F405
+STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME') + '/static/'  # noqa: F405,E501
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
