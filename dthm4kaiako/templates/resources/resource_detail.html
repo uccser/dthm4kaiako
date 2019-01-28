@@ -1,0 +1,48 @@
+{% extends "resources/base.html" %}
+
+{% block page_heading %}
+    <h1>{{ resource.name }}</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {{ resource.description|safe }}
+
+    <ul class="list-unstyled">
+        <li>
+            <strong>Resource added:</strong> {{ resource.datetime_added }}
+        </li>
+        <li>
+            <strong>Resource last updated:</strong> {{ resource.datetime_updated }}
+        </li>
+    </ul>
+
+    {% if resource.components %}
+        <h2>Components</h2>
+        <ul>
+            {% for component in resource.components.all %}
+                <li>
+                    {{ component.get_component_type_display }}:
+                    {% if component.component_url %}
+                        <a href="{{ component.url }}">{{ component.name }}</a>
+                    {% elif component.component_resource %}
+                        <a href="{{ component.component_resource.get_absolute_url }}">{{ component.name }}</a>
+                    {% else %}
+                        {{ component.name }} (Download to be implemented)
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if resource.component_of.exists %}
+        <h2>Components of</h2>
+        <p>This resource is also a component of the following resources:</p>
+        <ul>
+            {% for component in resource.component_of.all %}
+                <li>
+                    <a href="{{ component.resource.get_absolute_url }}">{{ component.resource.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock content %}

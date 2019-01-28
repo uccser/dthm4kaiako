@@ -12,6 +12,7 @@ admin.site.site_header = 'dthm4kaiako.ac.nz'
 urlpatterns = [
     path('', include('general.urls', namespace='general')),
     path(settings.ADMIN_URL, admin.site.urls),
+    path('resources/', include('resources.urls', namespace='resources')),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),
