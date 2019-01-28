@@ -14,6 +14,7 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool('DJANGO_DEBUG', False)
+DJANGO_PRODUCTION = env.bool('DJANGO_PRODUCTION')
 
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -234,6 +235,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'config.context_processors.deployed.deployed',
                 'config.context_processors.version_number.version_number',
                 'config.context_processors.dtta_flat_pages.dtta_flat_pages',
             ],

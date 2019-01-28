@@ -11,6 +11,7 @@ class PageAdmin(admin.ModelAdmin):
     """Configuration for display DTTA flat pages in admin."""
 
     list_display = ('title', 'date')
+    ordering = ('order_number', )
 
 
 class NewsArticleAdmin(admin.ModelAdmin):

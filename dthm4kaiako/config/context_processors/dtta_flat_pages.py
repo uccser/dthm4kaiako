@@ -9,5 +9,5 @@ def dtta_flat_pages(request):
     Returns:
         Dictionary containing version number to add to context.
     """
-    pages = Page.objects.order_by('order_number')
+    pages = Page.objects.filter(published=True).order_by('order_number')
     return {"DTTA_FLAT_PAGES": pages}

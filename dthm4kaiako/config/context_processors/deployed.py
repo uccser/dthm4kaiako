@@ -1,0 +1,17 @@
+"""Context processor for checking if in deployed environment."""
+
+from django.conf import settings
+
+
+def deployed(request):
+    """Return a dictionary containing boolean if deployed environment.
+
+    Args:
+        request (Request): The HTTP request.
+
+    Returns:
+        Dictionary containing deployed boolean to add to context.
+    """
+    return {
+        "DEPLOYED": settings.DJANGO_PRODUCTION
+    }
