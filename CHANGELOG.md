@@ -1,10 +1,14 @@
 # Changelog
 
+## 0.8.0
+
+- Add basic resource hub ([fixes #198](https://github.com/uccser/dthm4kaiako/issues/198))
+- Separate static and file files to different Google Cloud Storage buckets.
+
 ## 0.7.0
 
 - Add new look to website including logo and brand colours ([fixes #191](https://github.com/uccser/dthm4kaiako/issues/191) [#192](https://github.com/uccser/dthm4kaiako/issues/192) [#193](https://github.com/uccser/dthm4kaiako/issues/193))
 - Add about, FAQ, and contact us pages ([fixes #200](https://github.com/uccser/dthm4kaiako/issues/200))
-- Add basic resource hub ([fixes #198](https://github.com/uccser/dthm4kaiako/issues/198))
 - Load third party static files from NPM ([fixes #202](https://github.com/uccser/dthm4kaiako/issues/202))
 - Fix bug where unpublished DTTA pages are shown ([fixes #215](https://github.com/uccser/dthm4kaiako/issues/215))
 - Add Google Analytics ([fixes #205](https://github.com/uccser/dthm4kaiako/issues/205))
