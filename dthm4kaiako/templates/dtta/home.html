@@ -12,15 +12,33 @@
         The aim of the association is to create a community of teachers where we can share resources, communicate and speak with one voice to get our subject area recognised and supported.
     </p>
 
+    <div class="row">
+        <div class="col-12 col-md-6 my-4">
+            <a href="{% url 'dtta:about' %}" class="btn btn-block btn-dtta">
+                Find out more about DTTA
+            </a>
+        </div>
+        <div class="col-12 col-md-6 my-4">
+            <a href="{% url 'dtta:membership' %}" class="btn btn-block btn-dtta">
+                Read about joining DTTA
+            </a>
+        </div>
+        <div class="col-12 my-4">
+            <h3>Latest news</h3>
+            {% for news_article in latest_news_articles %}
+                <p class="mb-1">
+                    <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }} -</span>
+                    <a href="{% url 'dtta:news_article' news_article.pk %}">
+                        {{ news_article.title }}
+                    </a>
+                </p>
+            {% endfor %}
+            <a href="{% url 'dtta:news_article_list' %}" class="btn btn-dtta my-3">View all news articles</a>
+        </div>
+
+    </div>
+
     {% if latest_news_articles %}
-        <h3>Latest news</h3>
-        {% for news_article in latest_news_articles %}
-            <p class="mb-1">
-                <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }} -</span>
-                <a href="{% url 'dtta:news_article' news_article.pk %}">
-                    {{ news_article.title }}
-                </a>
-            </p>
-        {% endfor %}
+
     {% endif %}
 {% endblock content %}
