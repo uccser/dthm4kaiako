@@ -13,6 +13,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # app not on App Engine, make sure to set an appropriate host here.
 # See https://docs.djangoproject.com/en/1.10/ref/settings/
 ALLOWED_HOSTS = ['*']
+PREPEND_WWW = True
 
 # DATABASES
 # ------------------------------------------------------------------------------
