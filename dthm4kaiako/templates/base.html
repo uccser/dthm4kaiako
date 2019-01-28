@@ -11,6 +11,18 @@
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    {% if DEPLOYED %}
+      <!-- Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133342557-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133342557-1');
+      </script>
+    {% endif %}
+
     <!-- Favicon (created by realfavicongenerator.net) -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">

@@ -57,11 +57,7 @@ INSTALLED_APPS += ['storages']  # noqa F405
 # https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
 GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
-GS_DEFAULT_ACL = 'publicRead'
 GS_FILE_OVERWRITE = False
-
-# STATIC and MEDIA
-# ------------------------------------------------------------------------------
 
 STATICFILES_STORAGE = 'config.storages.StaticRootGoogleCloudStorage'
 STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_NAME') + '/static/'  # noqa: F405
