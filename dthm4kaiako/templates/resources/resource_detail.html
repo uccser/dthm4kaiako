@@ -26,8 +26,14 @@
                         <a href="{{ component.url }}">{{ component.name }}</a>
                     {% elif component.component_resource %}
                         <a href="{{ component.component_resource.get_absolute_url }}">{{ component.name }}</a>
-                    {% else %}
-                        {{ component.name }} (Download to be implemented)
+                    {% elif component.component_file %}
+                        <a href="{{ component.component_file.url }}" target="_blank" download>
+                            {{ component.name }} ({{ component.component_file.size|filesizeformat }})
+                        </a>
+                    {% elif component.component_image %}
+                        <a href="{{ component.component_image.url }}" target="_blank" download>
+                            {{ component.name }} ({{ component.component_image.size|filesizeformat }})
+                        </a>
                     {% endif %}
                 </li>
             {% endfor %}
