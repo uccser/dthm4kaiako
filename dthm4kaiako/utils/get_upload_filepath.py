@@ -32,4 +32,4 @@ def get_resource_upload_path(component, filename):
     Returns:
         String of path and filename for upload.
     """
-    return join('resources`', str(component.resource.pk), filename)
+    return join('resources', str(component.resource.pk), filename)
