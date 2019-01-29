@@ -21,7 +21,6 @@ class ResourceComponentInline(admin.StackedInline):
             'description': 'Only one of the following fields must be filled for each component.'
         }),
     )
-    extra = 3
 
 
 class ResourceAdmin(admin.ModelAdmin):
