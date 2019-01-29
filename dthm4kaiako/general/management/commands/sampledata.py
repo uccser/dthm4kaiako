@@ -3,7 +3,11 @@
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from tests.dtta.factories import NewsArticleFactory
+from tests.dtta.factories import (
+    NewsArticleFactory,
+    PageFactory,
+    RelatedLinkFactory,
+)
 
 
 class Command(management.base.BaseCommand):
@@ -27,5 +31,6 @@ class Command(management.base.BaseCommand):
         User.objects.create_superuser('admin', 'admin@example.com', 'password')
 
         # DTTA
-        # News Articles
         NewsArticleFactory.create_batch(size=100)
+        PageFactory.create_batch(size=5)
+        RelatedLinkFactory.create_batch(size=10)
