@@ -1,7 +1,12 @@
 {% extends "dtta/base.html" %}
 
-{% block content %}
+{% block page_heading %}
     <h1>{{ news_article.title }}</h1>
-    <h2><small class="text-muted">{{ news_article.datetime }}</small></h2>
-    {{ news_article.content|safe }}
-{% endblock content %}
+    <h2><small class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</small></h2>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 col-md-10 col-lg-8">
+        {{ news_article.content|safe }}
+    </div>
+{% endblock content_container %}
