@@ -26,12 +26,16 @@
         <div class="col-12 col-md-6 my-4">
             <h3>Latest news</h3>
             {% for news_article in latest_news_articles %}
-                <p class="mb-1">
-                    <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }} -</span>
-                    <a href="{% url 'dtta:news_article' news_article.pk %}">
-                        {{ news_article.title }}
-                    </a>
-                </p>
+                <div class="row mb-2 no-gutters">
+                    <div class="col-auto mr-3">
+                        <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</span>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'dtta:news_article' news_article.pk %}">
+                            {{ news_article.title }}
+                        </a>
+                    </div>
+                </div>
             {% endfor %}
             <a href="{% url 'dtta:news_article_list' %}" class="btn btn-dtta my-3">View all news articles</a>
         </div>
