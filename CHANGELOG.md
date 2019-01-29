@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.1
+
+- Add DTTA related links for DTTA homepage backend frontend ([fixes #218](https://github.com/uccser/dthm4kaiako/issues/218))
+- Update formatting of DTTA news article listings and articles.
+- Correct path for resource media uploads.
+- Add download link for uploaded resource files.
+
 ## 0.8.0
 
 - Add basic resource hub ([fixes #198](https://github.com/uccser/dthm4kaiako/issues/198))
