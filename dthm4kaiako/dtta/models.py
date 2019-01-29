@@ -38,7 +38,6 @@ class NewsArticle(models.Model):
         return self.title
 
 
-
 class RelatedLink(models.Model):
     """Model for a related link for DTTA homepage."""
 
