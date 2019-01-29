@@ -23,7 +23,7 @@
                 <li>
                     {{ component.get_component_type_display }}:
                     {% if component.component_url %}
-                        <a href="{{ component.url }}">{{ component.name }}</a>
+                        <a href="{{ component.component_url }}">{{ component.name }}</a>
                     {% elif component.component_resource %}
                         <a href="{{ component.component_resource.get_absolute_url }}">{{ component.name }}</a>
                     {% elif component.component_file %}
