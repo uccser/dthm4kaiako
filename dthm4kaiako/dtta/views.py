@@ -5,6 +5,7 @@ from django.utils import timezone
 from dtta.models import (
     Page,
     NewsArticle,
+    RelatedLink,
 )
 
 
@@ -22,6 +23,7 @@ class HomeView(generic.base.TemplateView):
         context = super().get_context_data(**kwargs)
         now = timezone.now()
         context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now).order_by('-datetime')[:5]
+        context['related_links'] = RelatedLink.objects.order_by('order_number')
         return context
 
 

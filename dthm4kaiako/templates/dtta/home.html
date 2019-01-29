@@ -23,7 +23,7 @@
                 Read about joining DTTA
             </a>
         </div>
-        <div class="col-12 my-4">
+        <div class="col-12 col-md-6 my-4">
             <h3>Latest news</h3>
             {% for news_article in latest_news_articles %}
                 <p class="mb-1">
@@ -35,7 +35,18 @@
             {% endfor %}
             <a href="{% url 'dtta:news_article_list' %}" class="btn btn-dtta my-3">View all news articles</a>
         </div>
-
+        <div class="col-12 col-md-6 my-4">
+            <h3>Related links</h3>
+            <ul>
+                {% for related_link in related_links %}
+                    <li>
+                        <a href="{{ related_link.url }}" target="_blank">
+                            {{ related_link.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     {% if latest_news_articles %}

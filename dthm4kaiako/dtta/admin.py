@@ -4,6 +4,7 @@ from django.contrib import admin
 from dtta.models import (
     Page,
     NewsArticle,
+    RelatedLink,
 )
 
 
@@ -20,5 +21,13 @@ class NewsArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'datetime')
 
 
+class RelatedLinkAdmin(admin.ModelAdmin):
+    """Configuration for display news articles in admin."""
+
+    list_display = ('name', 'url', 'order_number')
+    ordering = ('order_number', )
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(NewsArticle, NewsArticleAdmin)
+admin.site.register(RelatedLink, RelatedLinkAdmin)
