@@ -31,7 +31,7 @@
                         <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</span>
                     </div>
                     <div class="col">
-                        <a href="{% url 'dtta:news_article' news_article.pk %}">
+                        <a href="{{ news_article.get_absolute_url }}">
                             {{ news_article.title }}
                         </a>
                     </div>

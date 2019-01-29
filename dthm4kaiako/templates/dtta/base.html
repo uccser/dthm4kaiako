@@ -43,7 +43,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dttaPlanningLinks">
                   {% for page in DTTA_FLAT_PAGES %}
-                    <a class="dropdown-item" href="{% url 'dtta:page' page.pk %}">{{ page.title }}</a>
+                    <a class="dropdown-item" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                   {% endfor %}
                 </div>
               </li>

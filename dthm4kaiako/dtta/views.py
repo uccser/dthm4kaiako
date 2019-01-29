@@ -2,6 +2,7 @@
 
 from django.views import generic
 from django.utils import timezone
+from utils.mixins import RedirectToCosmeticURLMixin
 from dtta.models import (
     Page,
     NewsArticle,
@@ -39,7 +40,7 @@ class MembershipView(generic.base.TemplateView):
     template_name = 'dtta/membership.html'
 
 
-class PageDetailView(generic.DetailView):
+class PageDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     """View for DTTA flat page."""
 
     model = Page
@@ -62,7 +63,7 @@ class NewsArticleListView(generic.ListView):
     queryset = NewsArticle.objects.filter(datetime__lte=timezone.now()).order_by('-datetime')
 
 
-class NewsArticleDetailView(generic.DetailView):
+class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     """View for DTTA news article."""
 
     model = NewsArticle
