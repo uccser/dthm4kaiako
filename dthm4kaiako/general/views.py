@@ -28,8 +28,7 @@ class ContactView(FormView):
     success_url = reverse_lazy('general:contact-success')
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
+        """Send email if form is valid."""
         form.send_email()
         return super().form_valid(form)
 

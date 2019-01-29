@@ -19,6 +19,7 @@ class ContactForm(forms.Form):
     cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
 
     def send_email(self):
+        """Send email if form is valid."""
         name = self.cleaned_data['name']
         subject = self.cleaned_data['subject']
         from_email = self.cleaned_data['from_email']
@@ -37,6 +38,7 @@ class ContactForm(forms.Form):
             )
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
