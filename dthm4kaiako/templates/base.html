@@ -68,7 +68,7 @@
               {% if request.user.is_authenticated %}
               {# URL provided by django-allauth/account/urls.py #}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+                  <a class="nav-link" href="{% url 'users:detail' request.user.pk  %}">Kia ora {{ request.user.get_short_name }}</a>
                 </li>
                 {# URL provided by django-allauth/account/urls.py #}
                 <li class="nav-item">
@@ -76,9 +76,9 @@
                 </li>
               {% else %}
                 {# URL provided by django-allauth/account/urls.py #}
-                <!-- <a id="sign-up-link" class="nav-item nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a> -->
+                <a id="sign-up-link" class="nav-item nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
                 {# URL provided by django-allauth/account/urls.py #}
-                <!-- <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a> -->
+                <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
               {% endif %}
             </ul>
           {% endactiveurl %}
@@ -88,15 +88,23 @@
     {% block secondary_navbar %}
     {% endblock secondary_navbar %}
 
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
 
     {% block body_container %}
-      <div id="page-header" class="my-3">
-        <div class="container">
+    {% if messages %}
+      <div class="container">
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div id="page-header" class="my-3">
+      <div class="container">
           {% block page_heading %}
           {% endblock page_heading %}
         </div>

@@ -12,31 +12,27 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     """View for a single user."""
 
     model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
 
 
 class UserListView(LoginRequiredMixin, ListView):
     """View for a list of users."""
 
     model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
     model = User
-    fields = ["name"]
+    fields = ['first_name', 'last_name']
 
     def get_success_url(self):
         """URL to route to on successful update."""
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        return reverse("users:detail", kwargs={"pk": self.request.user.pk})
 
     def get_object(self):
         """Object to perform update with."""
-        return User.objects.get(username=self.request.user.username)
+        return User.objects.get(pk=self.request.user.pk)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -46,4 +42,4 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         """URL to redirect to."""
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        return reverse("users:detail", kwargs={"pk": self.request.user.pk})

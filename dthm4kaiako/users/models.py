@@ -1,7 +1,7 @@
 """Models for user application."""
 
-from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -9,10 +9,16 @@ from django.utils.translation import ugettext_lazy as _
 class User(AbstractUser):
     """User of website."""
 
-    # First Name and Last Name do not cover name patterns
-    # around the globe.
-    name = CharField(_("Name of User"), blank=True, max_length=255)
+    username = models.CharField(max_length=6, null=True, blank=True)
+    first_name = models.CharField(max_length=50, verbose_name="first name")
+    last_name = models.CharField(max_length=150, verbose_name="last name")
+
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['first_name']
 
     def get_absolute_url(self):
         """Return URL for user's webpage."""
-        return reverse("users:detail", kwargs={"username": self.username})
+        return reverse("users:detail", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return self.first_name

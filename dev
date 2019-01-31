@@ -243,7 +243,7 @@ defhelp wipe 'Delete all Docker containers and images.'
 
 # View logs
 cmd_logs() {
-  docker-compose logs
+  docker-compose logs django
 }
 defhelp logs 'View logs.'
 

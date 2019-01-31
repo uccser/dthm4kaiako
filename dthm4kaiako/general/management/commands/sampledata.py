@@ -29,8 +29,9 @@ class Command(management.base.BaseCommand):
         User = get_user_model()
         User.objects.filter(email='admin@example.com').delete()
         User.objects.create_superuser('admin', 'admin@example.com', 'password')
+        User.objects.create_user('user', email='user@example.com', password='password', first_name='Alex', last_name='Doe')
 
         # DTTA
-        NewsArticleFactory.create_batch(size=100)
+        NewsArticleFactory.create_batch(size=20)
         PageFactory.create_batch(size=5)
         RelatedLinkFactory.create_batch(size=10)

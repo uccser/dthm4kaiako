@@ -100,6 +100,7 @@ DJANGO_APPS = [
     'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
+    'anymail',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -285,17 +286,17 @@ MANAGERS = ADMINS
 
 # django-allauth
 # ------------------------------------------------------------------------------
-# ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
-ACCOUNT_ALLOW_REGISTRATION = False
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_ALLOW_REGISTRATION = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 
