@@ -14,12 +14,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
 
 
-class UserListView(LoginRequiredMixin, ListView):
-    """View for a list of users."""
-
-    model = User
-
-
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
