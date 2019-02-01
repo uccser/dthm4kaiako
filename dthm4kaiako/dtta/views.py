@@ -68,3 +68,4 @@ class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
     model = NewsArticle
     context_object_name = 'news_article'
+    queryset = NewsArticle.objects.filter(datetime__lte=timezone.localtime())
