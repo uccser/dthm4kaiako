@@ -39,7 +39,13 @@ class NewsArticleAudience(models.Model):
 
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=True)
-    colour = models.CharField(max_length=20)
+    colour = models.CharField(
+        max_length=20,
+        help_text=(
+            "Available colours: 'red', 'pink', 'orange', 'yellow', 'green',"
+            "'teal', 'cyan', 'blue', 'indigo', 'purple', 'gray', 'gray-dark'."
+        )
+    )
 
     def __str__(self):
         """Text representation of object.
@@ -49,13 +55,23 @@ class NewsArticleAudience(models.Model):
         """
         return self.name
 
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name']
+
 
 class NewsArticleSource(models.Model):
     """Model for a source of a news article published by DTTA."""
 
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=True)
-    logo = models.ImageField(null=True, blank=True, upload_to=get_dtta_news_article_source_upload_path)
+    logo = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=get_dtta_news_article_source_upload_path,
+        help_text="Logo will be displayed instead of name if provided."
+    )
     website = models.URLField(blank=True)
 
     def __str__(self):

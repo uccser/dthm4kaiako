@@ -60,7 +60,8 @@ class NewsArticleListView(generic.ListView):
 
     model = NewsArticle
     context_object_name = 'news_articles'
-    queryset = NewsArticle.objects.filter(datetime__lte=timezone.localtime()).order_by('-datetime')
+    queryset = NewsArticle.objects.filter(datetime__lte=timezone.localtime()).order_by(
+        '-datetime').prefetch_related('audiences').select_related('source')
 
 
 class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
