@@ -4,7 +4,7 @@
   }
   .resource-component:hover,
   .resource-component:focus {
-    background-color: #28a74514;
+    background-color: rgba($resources-brand-colour, .15);
     text-decoration: none;
   }
 }
