@@ -3,6 +3,9 @@
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from tests.resources.factories import (
+    ResourceFactory,
+)
 from tests.dtta.factories import (
     NewsArticleFactory,
     PageFactory,
@@ -29,6 +32,9 @@ class Command(management.base.BaseCommand):
         User = get_user_model()
         User.objects.filter(email='admin@example.com').delete()
         User.objects.create_superuser('admin', 'admin@example.com', 'password')
+
+        # Resources
+        ResourceFactory.create_batch(size=50)
 
         # DTTA
         NewsArticleFactory.create_batch(size=100)
