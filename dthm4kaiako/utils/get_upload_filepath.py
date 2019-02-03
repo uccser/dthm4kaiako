@@ -33,3 +33,18 @@ def get_resource_upload_path(component, filename):
         String of path and filename for upload.
     """
     return join('resources', str(component.resource.pk), filename)
+
+
+def get_dtta_news_article_source_upload_path(source, filename):
+    """Create upload path for a DTTA news source logo.
+
+    Required by model ImageField.
+
+    Args:
+        source (NewsArticleSource): News article source object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('dtta', 'news-article-source', str(source.slug), filename)

@@ -1,23 +1,42 @@
 {% extends "dtta/base.html" %}
 
+{% load static humanize %}
+
 {% block page_heading %}
     <h1>News articles</h1>
 {% endblock page_heading %}
 
 {% block content %}
     {% if news_articles %}
-        {% for news_article in news_articles %}
-            <div class="row mb-2 no-gutters">
-                <div class="col-auto mr-3">
-                    <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</span>
-                </div>
-                <div class="col">
-                    <a href="{{ news_article.get_absolute_url }}">
-                        {{ news_article.title }}
-                    </a>
-                </div>
-            </div>
-        {% endfor %}
+        <div class="list-group list-group-flush">
+            {% for news_article in news_articles %}
+                <a href="{{ news_article.get_absolute_url }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <strong>{{ news_article.title }}</strong>
+                        <span class="text-right">{{ news_article.datetime|date|naturalday }}</span>
+                    </div>
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <div class="text-muted">
+                            {% if news_article.source %}
+                                &#8212;
+                                {% if news_article.source.logo %}
+                                    <img src="{{ news_article.source.logo.url }}" class="img-inline">
+                                {% else %}
+                                    {{ news_article.source.name }}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% for audience in news_article.audiences.all %}
+                                <span class="badge badge-pill badge-{{ audience.colour }}">
+                                    {{ audience.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     {% else %}
         <p>No news articles available.</p>
     {% endif %}

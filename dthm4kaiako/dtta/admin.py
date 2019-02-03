@@ -4,6 +4,8 @@ from django.contrib import admin
 from dtta.models import (
     Page,
     NewsArticle,
+    NewsArticleAudience,
+    NewsArticleSource,
     RelatedLink,
 )
 
@@ -30,4 +32,6 @@ class RelatedLinkAdmin(admin.ModelAdmin):
 
 admin.site.register(Page, PageAdmin)
 admin.site.register(NewsArticle, NewsArticleAdmin)
+admin.site.register(NewsArticleAudience)
+admin.site.register(NewsArticleSource)
 admin.site.register(RelatedLink, RelatedLinkAdmin)

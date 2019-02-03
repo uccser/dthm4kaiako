@@ -59,6 +59,18 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
   @extend .btn-danger;
   background-color: $dtta-brand-colour;
 }
+
+// Create badge CSS rules off colour names
+@each $color, $value in $colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+}
+
+.img-inline {
+    max-height: 1.5rem;
+}
+
 ////////////////////////////////
 		//Variables//
 ////////////////////////////////
