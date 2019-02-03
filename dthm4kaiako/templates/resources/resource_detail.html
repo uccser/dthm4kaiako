@@ -1,5 +1,7 @@
 {% extends "resources/base.html" %}
 
+{% load static %}
+
 {% block page_heading %}
     <h1>{{ resource.name }}</h1>
 {% endblock page_heading %}
@@ -16,28 +18,42 @@
         </li>
     </ul>
 
-    {% if resource.components %}
+    {% if components %}
         <h2>Components</h2>
-        <ul>
-            {% for component in resource.components.all %}
-                <li>
-                    {{ component.get_component_type_display }}:
-                    {% if component.component_url %}
-                        <a href="{{ component.component_url }}">{{ component.name }}</a>
-                    {% elif component.component_resource %}
-                        <a href="{{ component.component_resource.get_absolute_url }}">{{ component.name }}</a>
-                    {% elif component.component_file %}
-                        <a href="{{ component.component_file.url }}" target="_blank" download>
-                            {{ component.name }} ({{ component.component_file.size|filesizeformat }})
-                        </a>
-                    {% elif component.component_image %}
-                        <a href="{{ component.component_image.url }}" target="_blank" download>
-                            {{ component.name }} ({{ component.component_image.size|filesizeformat }})
-                        </a>
-                    {% endif %}
-                </li>
+        <p class="text-muted">
+            Click any of the components below to access them.
+        </p>
+
+        <div id="resource-components" class="list-group mb-3">
+            <!-- TODO: Recreate with flexboxes for mobile devices -->
+            {% for component in components %}
+                <a
+                {% if component.component_url %}
+                    href="{{ component.component_url }}" target="_blank"
+                {% elif component.component_resource %}
+                    href="{{ component.component_resource.get_absolute_url }}"
+                {% elif component.component_file %}
+                    href="{{ component.component_file.url }}" download
+                {% endif %}
+                class="list-group-item list-group-item-action">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static component.icon_path %}" class="img-component-type mr-3">
+                        <strong class="flex-grow-1">
+                            {{ component.name }}
+                        </strong>
+                        <small class="text-muted">
+                            {% if component.component_url %}
+                                {{ component.component_url|truncatechars:40 }}
+                            {% elif component.component_resource %}
+                                {{ component.component_resource.components.count }} components
+                            {% elif component.component_file %}
+                                {{ component.component_file.size|filesizeformat }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </a>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 
     {% if resource.component_of.exists %}

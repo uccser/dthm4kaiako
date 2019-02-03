@@ -19,3 +19,13 @@ class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
     model = Resource
     context_object_name = 'resource'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the resource detail view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['components'] = self.object.components.order_by('name')
+        return context
