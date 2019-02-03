@@ -12,6 +12,7 @@ class ResourceListView(generic.ListView):
 
     model = Resource
     context_object_name = 'resources'
+    ordering = 'name'
 
 
 class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
