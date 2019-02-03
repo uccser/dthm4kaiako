@@ -6,74 +6,87 @@
     <h1>{{ resource.name }}</h1>
 {% endblock page_heading %}
 
-{% block content %}
-    {{ resource.description|safe }}
+{% block content_container %}
+    <div class="col-12 col-md-6">
+        <h3 class="h4 pb-1 border-bottom">Description</h3>
+        {{ resource.description|safe }}
+    </div>
+    <div class="col-12 col-md-6">
+        <h3 class="h4 pb-1 border-bottom">Information</h3>
+        <ul class="list-unstyled">
+            <li>
+                <strong>Resource added:</strong> {{ resource.datetime_added|timesince }} ago <small class="text-muted">({{ resource.datetime_added }})</small>
+            </li>
+            <li>
+                <strong>Resource last updated:</strong> {{ resource.datetime_updated|timesince }} ago <small class="text-muted">({{ resource.datetime_updated }})</small>
+            </li>
+        </ul>
+    </div>
 
-    <ul class="list-unstyled">
-        <li>
-            <strong>Resource added:</strong> {{ resource.datetime_added }}
-        </li>
-        <li>
-            <strong>Resource last updated:</strong> {{ resource.datetime_updated }}
-        </li>
-    </ul>
-
-    {% if components %}
-        <h2>Components</h2>
+    <div class="col-12">
+        {% if components %}
+        <h2 class="pb-1 border-bottom">Components</h2>
         <p class="text-muted">
             Click any of the components below to access them.
         </p>
 
-        <div id="resource-components" class="container">
+        <div class="container resource-components mb-3">
             {% for component in components %}
-                <a
-                {% if component.component_url %}
-                    href="{{ component.component_url }}" target="_blank"
-                {% elif component.component_resource %}
-                    href="{{ component.component_resource.get_absolute_url }}"
-                {% elif component.component_file %}
-                    href="{{ component.component_file.url }}" download
-                {% endif %}
+            <a {% if component.component_url %} href="{{ component.component_url }}" target="_blank"
+               {% elif component.component_resource %} href="{{ component.component_resource.get_absolute_url }}"
+               {% elif component.component_file %} href="{{ component.component_file.url }}" download
+               {% endif %}
                 class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
-                    <div class="col-12 col-md-auto">
-                        <img src="{% static component.icon_path %}" class="img-component-type">
-                    </div>
+                <div class="col-12 col-md-auto">
+                    <img src="{% static component.icon_path %}" class="img-component-type">
+                </div>
+                <div class="col-12 col-md-auto flex-grow-1">
+                    <strong>
+                        {{ component.name }}
+                    </strong>
+                    <br>
+                    <small class="text-muted">
+                        {% if component.component_url %}
+                            {{ component.component_url|truncatechars:70 }}
+                        {% elif component.component_file %}
+                            {{ component.filename }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="col-12 col-md-auto">
+                    <small class="text-muted">
+                        {% if component.component_resource %}
+                            {{ component.component_resource.components.count }} components
+                        {% elif component.component_file %}
+                            {{ component.component_file.size|filesizeformat }}
+                        {% endif %}
+                    </small>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if components_of %}
+            <h2 class="pb-1 border-bottom">Components of</h2>
+            <p>This resource is also a component of the following resources:</p>
+
+            <div class="container resource-components">
+                {% for component in components_of %}
+                <a href="{{ component.component_resource.get_absolute_url }}" class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
                     <div class="col-12 col-md-auto flex-grow-1">
                         <strong>
                             {{ component.name }}
                         </strong>
-                        <br>
-                        <small class="text-muted">
-                            {% if component.component_url %}
-                                {{ component.component_url|truncatechars:70 }}
-                            {% elif component.component_file %}
-                                {{ component.filename }}
-                            {% endif %}
-                        </small>
                     </div>
                     <div class="col-12 col-md-auto">
                         <small class="text-muted">
-                            {% if component.component_resource %}
-                                {{ component.component_resource.components.count }} components
-                            {% elif component.component_file %}
-                                {{ component.component_file.size|filesizeformat }}
-                            {% endif %}
+                            {{ component.component_resource.components.count }} components
                         </small>
                     </div>
                 </a>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if resource.component_of.exists %}
-        <h2>Components of</h2>
-        <p>This resource is also a component of the following resources:</p>
-        <ul>
-            {% for component in resource.component_of.all %}
-                <li>
-                    <a href="{{ component.resource.get_absolute_url }}">{{ component.resource.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock content %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content_container %}

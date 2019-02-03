@@ -28,4 +28,5 @@ class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         """
         context = super().get_context_data(**kwargs)
         context['components'] = self.object.components.order_by('name')
+        context['components_of'] = self.object.component_of.order_by('name')
         return context
