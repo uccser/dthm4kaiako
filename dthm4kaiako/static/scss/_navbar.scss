@@ -7,6 +7,7 @@
         svg {
             height: 1rem;
             width: auto;
+            vertical-align: baseline;
         }
     }
     .nav-link:hover,
@@ -33,6 +34,26 @@
 #navbarPrimaryContent .dtta-navbar .nav-link:hover,
 #navbarPrimaryContent .dtta-navbar.active {
     background-color: $dtta-brand-colour-dark !important;
+}
+
+#navbarPrimaryContent .resource-navbar .nav-link:hover,
+#navbarPrimaryContent .resource-navbar.active {
+    background-color: $resources-brand-colour !important;
+}
+
+// TODO: Could remove repetition of secondary toolbar colours with mixin
+
+// Resources
+#resources-navbar {
+    background-color: $resources-brand-colour;
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($resources-brand-colour, 5%);
+    }
+    .dropdown-item:hover {
+        background-color: lighten($resources-brand-colour, 5%);
+        color: $white;
+    }
 }
 
 // DTTA
