@@ -42,14 +42,10 @@
 @import "footer";
 @import "resources";
 
-@import url('https://fonts.googleapis.com/css?family=Biryani:900|Open+Sans:400,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
 body {
   font-family: 'Open Sans', sans-serif !important;
-}
-
-h1, h2, h3, h4, h5, h6, .navbar-brand {
-  font-family: 'Biryani', sans-serif;
 }
 
 .logo-header {
