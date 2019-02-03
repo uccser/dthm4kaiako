@@ -45,7 +45,7 @@
                         <br>
                         <small class="text-muted">
                             {% if component.component_url %}
-                                {{ component.component_url }}
+                                {{ component.component_url|truncatechars:70 }}
                             {% elif component.component_file %}
                                 {{ component.filename }}
                             {% endif %}
