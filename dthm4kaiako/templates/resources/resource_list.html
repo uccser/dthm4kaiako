@@ -4,18 +4,38 @@
     <h1>Resources</h1>
 {% endblock page_heading %}
 
-{% block content %}
+{% block content_container %}
     {% if resources %}
-        <ul>
-            {% for resource in resources %}
-                <li>
-                    <a href="{{ resource.get_absolute_url }}">
-                        {{ resource }}
+        <div class="col-12">
+            <p>
+                The following resources are available, currently sorted alphabetically
+                We will be adding the ability to search and filter resources at a later date.
+            </p>
+        </div>
+        <div id="resources" class="col-12">
+            <div class="row">
+                {% for resource in resources %}
+                    <a href="{{ resource.get_absolute_url }}" class="col-12 col-md-6 col-lg-4 resource align-items-center border rounded mb-2 p-2 text-center text-md-left">
+                        <div class="row">
+                            <div class="col-12 col-md-auto flex-grow-1">
+                                <span class="h5 mb-0">
+                                    {{ resource.name }}
+                                </span>
+                                <br>
+                                <small class="text-muted">
+                                    Contains {{ resource.components.count }} component{{ resource.components.count|pluralize }}
+                                </small>
+                            </div>
+                            <div class="col-12 col-md-auto">
+                                <small class="text-muted">
+                                </small>
+                            </div>
+                        </div>
                     </a>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+        </div>
     {% else %}
         <p>No resources available.</p>
     {% endif %}
-{% endblock content %}
+{% endblock content_container %}

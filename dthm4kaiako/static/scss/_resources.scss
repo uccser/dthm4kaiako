@@ -1,10 +1,22 @@
+$hover-alpha: .1;
+
+// List view page
+#resources {
+  .resource:hover,
+  .resource:focus {
+    background-color: rgba($resources-brand-colour, $hover-alpha);
+    text-decoration: none;
+  }
+}
+
+// Detail view page
 .resource-components {
   .img-component-type {
     height: 50px;
   }
   .resource-component:hover,
   .resource-component:focus {
-    background-color: rgba($resources-brand-colour, .15);
+    background-color: rgba($resources-brand-colour, $hover-alpha);
     text-decoration: none;
   }
 }
