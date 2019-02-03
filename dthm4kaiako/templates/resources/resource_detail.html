@@ -24,8 +24,7 @@
             Click any of the components below to access them.
         </p>
 
-        <div id="resource-components" class="list-group mb-3">
-            <!-- TODO: Recreate with flexboxes for mobile devices -->
+        <div id="resource-components" class="container">
             {% for component in components %}
                 <a
                 {% if component.component_url %}
@@ -35,16 +34,26 @@
                 {% elif component.component_file %}
                     href="{{ component.component_file.url }}" download
                 {% endif %}
-                class="list-group-item list-group-item-action">
-                    <div class="d-flex align-items-center">
-                        <img src="{% static component.icon_path %}" class="img-component-type mr-3">
-                        <strong class="flex-grow-1">
+                class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
+                    <div class="col-12 col-md-auto">
+                        <img src="{% static component.icon_path %}" class="img-component-type">
+                    </div>
+                    <div class="col-12 col-md-auto flex-grow-1">
+                        <strong>
                             {{ component.name }}
                         </strong>
+                        <br>
                         <small class="text-muted">
                             {% if component.component_url %}
-                                {{ component.component_url|truncatechars:40 }}
-                            {% elif component.component_resource %}
+                                {{ component.component_url }}
+                            {% elif component.component_file %}
+                                {{ component.filename }}
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <small class="text-muted">
+                            {% if component.component_resource %}
                                 {{ component.component_resource.components.count }} components
                             {% elif component.component_file %}
                                 {{ component.component_file.size|filesizeformat }}

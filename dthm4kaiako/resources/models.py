@@ -1,6 +1,6 @@
 """Models for resources application."""
 
-from os.path import join
+from os.path import join, basename
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
@@ -132,6 +132,17 @@ class ResourceComponent(models.Model):
             String of path to icon file.
         """
         return join(ICON_PATH, self.COMPONENT_TYPE_DATA[self.component_type]['icon'])
+
+    def filename(self):
+        """Return filename of file component.
+
+        Returns:
+            Filename of file component as string, otherwise None.
+        """
+        filename = None
+        if self.component_file:
+            filename = basename(self.component_file.name)
+        return filename
 
     def save(self, *args, **kwargs):
         """Determine the value for 'component_type', then save object."""
