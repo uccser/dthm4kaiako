@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0
+
+- Enable user registration.
+- Improve visual design of resource hub. ([fixes #226](https://github.com/uccser/dthm4kaiako/issues/226))
+- Improve detection of resource component types.
+- Add source and audience tags to DTTA news articles. ([fixes #217](https://github.com/uccser/dthm4kaiako/issues/217))
+- Add contact us page.
+- Enable limited API for resources. ([fixes #249](https://github.com/uccser/dthm4kaiako/issues/249))
+
 ## 0.8.2
 
 - Fix bug where resource URL component doesn't link correctly. ([fixes #221](https://github.com/uccser/dthm4kaiako/issues/221))
