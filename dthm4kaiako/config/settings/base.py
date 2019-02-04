@@ -334,3 +334,10 @@ ACTIVE_URL_KWARGS = {
     'menu': 'yes',
     'ignore_params': 'no'
 }
+
+# django-rest-framework
+# ------------------------------------------------------------------------------
+REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10
+}
