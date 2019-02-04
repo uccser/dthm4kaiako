@@ -31,4 +31,3 @@ class UserFactory(DjangoModelFactory):
         """Metadata for UserFactory class."""
 
         model = get_user_model()
-        django_get_or_create = ['id']

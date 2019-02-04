@@ -14,4 +14,4 @@ class UserAdmin(auth_admin.UserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ["email", "is_superuser"]
+    list_display = ['email', 'first_name', 'last_name', 'is_superuser']

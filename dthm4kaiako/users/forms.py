@@ -2,19 +2,24 @@
 
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 
 User = get_user_model()
 
 
 class SignupForm(ModelForm):
+    """Sign up for user registration."""
 
     class Meta:
+        """Metadata for SignupForm class."""
+
         model = get_user_model()
         fields = ['first_name', 'last_name']
 
     def signup(self, request, user):
+        """Extra logic when a user signs up.
+
+        Required by django-allauth.
+        """
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.save()
@@ -27,7 +32,7 @@ class UserChangeForm(forms.UserChangeForm):
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = ('email',)
+        fields = ('email', 'last_name')
 
 
 class UserCreationForm(forms.UserCreationForm):
@@ -37,4 +42,4 @@ class UserCreationForm(forms.UserCreationForm):
         """Metadata for UserCreationForm class."""
 
         model = User
-        fields = ('email',)
+        fields = ('email', 'first_name', 'last_name')

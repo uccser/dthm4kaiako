@@ -32,7 +32,13 @@ class Command(management.base.BaseCommand):
         User = get_user_model()
 
         # Create admin account
-        admin = User.objects.create_superuser('admin', 'admin@example.com', 'password', first_name='Admin', last_name='Account')
+        admin = User.objects.create_superuser(
+            'admin',
+            'admin@example.com',
+            'password',
+            first_name='Admin',
+            last_name='Account'
+        )
         EmailAddress.objects.create(
             user=admin,
             email=admin.email,
@@ -41,7 +47,13 @@ class Command(management.base.BaseCommand):
         )
 
         # Create user account
-        alex = User.objects.create_user('user', 'user@example.com', password='password', first_name='Alex', last_name='Doe')
+        alex = User.objects.create_user(
+            'user',
+            'user@example.com',
+            password='password',
+            first_name='Alex',
+            last_name='Doe'
+        )
         EmailAddress.objects.create(
             user=alex,
             email=alex.email,
