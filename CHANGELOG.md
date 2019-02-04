@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+- Fix bug where resource component types were not detected correctly. ([fixes #253](https://github.com/uccser/dthm4kaiako/issues/253))
+- Add missing spacing element for resource list page.
+- Fix issue in production secrets.
+
 ## 0.9.0
 
 - Enable user registration.
