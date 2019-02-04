@@ -78,7 +78,10 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
+ANYMAIL = {
+    'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
+}
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 DEFAULT_FROM_EMAIL = env(
     'DJANGO_DEFAULT_FROM_EMAIL',
     default='dthm4kaiako <noreply@dthm4kaiako.ac.nz>'
@@ -86,7 +89,7 @@ DEFAULT_FROM_EMAIL = env(
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
-EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[dthm4kaiako]')
+EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[dthm4kaiako] ')
 
 # ADMIN
 # ------------------------------------------------------------------------------

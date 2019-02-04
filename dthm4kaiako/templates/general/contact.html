@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block page_heading %}
     <h1>Contact Us</h1>
 {% endblock page_heading %}
 
 {% block content %}
     <p>
-        Have a question, comment, or other feedback? Please contact us at <a href="mailto:csse-education-research@canterbury.ac.nz">csse-education-research@canterbury.ac.nz</a>.
+        Have a question, comment, or other feedback? Please let us know.
     </p>
 
-    <p>
-        We aim to respond within 10 working days.
-    </p>
+    {% crispy form %}
 {% endblock content %}

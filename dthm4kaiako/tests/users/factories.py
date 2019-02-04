@@ -8,9 +8,9 @@ from factory import DjangoModelFactory, Faker, post_generation
 class UserFactory(DjangoModelFactory):
     """Factory for generating users."""
 
-    username = Faker("user_name")
     email = Faker("email")
-    name = Faker("name")
+    first_name = Faker("first_name")
+    last_name = Faker("last_name")
 
     @post_generation
     def password(self, create: bool, extracted: Sequence[Any], **kwargs):
@@ -31,4 +31,3 @@ class UserFactory(DjangoModelFactory):
         """Metadata for UserFactory class."""
 
         model = get_user_model()
-        django_get_or_create = ["username"]

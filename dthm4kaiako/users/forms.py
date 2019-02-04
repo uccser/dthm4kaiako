@@ -1,10 +1,28 @@
 """Forms for user application."""
 
+from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 
 User = get_user_model()
+
+
+class SignupForm(ModelForm):
+    """Sign up for user registration."""
+
+    class Meta:
+        """Metadata for SignupForm class."""
+
+        model = get_user_model()
+        fields = ['first_name', 'last_name']
+
+    def signup(self, request, user):
+        """Extra logic when a user signs up.
+
+        Required by django-allauth.
+        """
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
 
 
 class UserChangeForm(forms.UserChangeForm):
@@ -14,27 +32,14 @@ class UserChangeForm(forms.UserChangeForm):
         """Metadata for UserChangeForm class."""
 
         model = User
+        fields = ('email', 'last_name')
 
 
 class UserCreationForm(forms.UserCreationForm):
     """Form class for creating user."""
 
-    error_message = forms.UserCreationForm.error_messages.update(
-        {"duplicate_username": _("This username has already been taken.")}
-    )
-
     class Meta(forms.UserCreationForm.Meta):
         """Metadata for UserCreationForm class."""
 
         model = User
-
-    def clean_username(self):
-        """Check username does not already exist."""
-        username = self.cleaned_data["username"]
-
-        try:
-            User.objects.get(username=username)
-        except User.DoesNotExist:
-            return username
-
-        raise ValidationError(self.error_messages["duplicate_username"])
+        fields = ('email', 'first_name', 'last_name')
