@@ -1,8 +1,11 @@
+"""Serializers for resource models."""
+
 from rest_framework import serializers
 from resources.models import Resource, ResourceComponent
 
 
 class ResourceComponentSerializer(serializers.ModelSerializer):
+    """Serializer for resource components."""
 
     class Meta:
         """Meta settings for serializer."""
@@ -18,6 +21,7 @@ class ResourceComponentSerializer(serializers.ModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
+    """Serializer for resources."""
 
     components = ResourceComponentSerializer(many=True, read_only=True)
 

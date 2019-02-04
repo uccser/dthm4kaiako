@@ -22,6 +22,7 @@ class ResourceFactory(DjangoModelFactory):
 
     @post_generation
     def create_components(self, create, extracted, **kwargs):
+        """Create components for resource."""
         FAKER = faker.Faker()
         number_of_components = random.randint(0, 9)
         for i in range(number_of_components):
