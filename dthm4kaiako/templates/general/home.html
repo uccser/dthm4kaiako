@@ -4,6 +4,18 @@
 
 {% block body_container %}
     <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-5">
+        {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-12 text-center">
                 {% include 'svg/logo.html' %}
@@ -19,11 +31,11 @@
         </div>
     </div>
 
-    <div class="container mt-5">
+    <div id="call-to-actions" class="container mt-5">
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="media mb-4">
-                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-versions-100.png' %}">
+                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-versions-100-blue.png' %}">
                     <div class="media-body">
                         <h4 class="mt-0">Resources</h4>
                         <p>

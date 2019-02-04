@@ -4,11 +4,13 @@ from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
 from config.views import health_check
 
-
+admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
+
 urlpatterns = [
     path('', include('general.urls', namespace='general')),
     path(settings.ADMIN_URL, admin.site.urls),
@@ -18,6 +20,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    # path('api/', include('rest_framework.urls')),
     path('_ah/health', health_check),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT

@@ -3,10 +3,12 @@ python-slugify==2.0.1  # https://github.com/un33k/python-slugify
 Pillow==5.4.1  # https://github.com/python-pillow/Pillow
 argon2-cffi==19.1.0  # https://github.com/hynek/argon2_cffi
 redis>=2.10.6, < 3  # pyup: < 3 # https://github.com/antirez/redis
+filetype==1.0.3  # https://github.com/h2non/filetype.py
 
 # Django
 # ------------------------------------------------------------------------------
 django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
+django-anymail[mailgun]==5.0  # https://github.com/anymail/django-anymail
 django-allauth==0.38.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
@@ -18,3 +20,4 @@ django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
 # Django REST Framework
 djangorestframework==3.9.1  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
+django-filter==2.1.0  # https://github.com/carltongibson/django-filter/
