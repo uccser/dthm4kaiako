@@ -4,6 +4,9 @@ from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
+from tests.resources.factories import (
+    ResourceFactory,
+)
 from tests.dtta.factories import (
     NewsArticleFactory,
     PageFactory,
@@ -45,6 +48,9 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
+
+        # Resources
+        ResourceFactory.create_batch(size=50)
 
         # DTTA
         NewsArticleFactory.create_batch(size=20)

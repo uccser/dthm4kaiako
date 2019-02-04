@@ -17,7 +17,7 @@ class ResourceComponentInline(admin.StackedInline):
             'fields': ('name', )
         }),
         ('Item', {
-            'fields': ('component_url', 'component_file', 'component_image', 'component_resource'),
+            'fields': ('component_url', 'component_file', 'component_resource'),
             'description': 'Only one of the following fields must be filled for each component.'
         }),
     )

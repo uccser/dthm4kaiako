@@ -40,7 +40,7 @@
       <![endif]-->
   </head>
   <body>
-    <nav id="primary-navbar" class="navbar navbar-expand-md navbar-dark bg-primary">
+    <nav id="primary-navbar" class="navbar navbar-expand-md navbar-dark">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarPrimaryContent"
           aria-controls="navbarPrimaryContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,7 @@
         <div class="collapse navbar-collapse" id="navbarPrimaryContent">
           {% activeurl %}
             <ul class="navbar-nav w-100">
-              <li class="nav-item">
+              <li class="nav-item resource-navbar">
                 <a class="nav-link" href="{% url 'resources:home' %}">Resources</a>
               </li>
               <li class="nav-item">
@@ -117,10 +117,6 @@
               {% endblock content %}
             </div>
           {% endblock content_container %}
-          <div class="col-12 order-md-12">
-            {% block end_content %}
-            {% endblock end_content %}
-          </div>
         </div>
       </div>
     {% endblock body_container %}

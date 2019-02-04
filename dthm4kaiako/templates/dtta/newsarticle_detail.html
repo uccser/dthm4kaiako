@@ -2,7 +2,24 @@
 
 {% block page_heading %}
     <h1>{{ news_article.title }}</h1>
-    <h2><small class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</small></h2>
+
+    <p><strong>Date:</strong> {{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</p>
+
+    {% if news_article.source %}
+        <p><strong>Source:</strong>
+            {% if news_article.source.website %}
+                <a href="{{ news_article.source.website }}" target="_blank">
+            {% endif %}
+            {% if news_article.source.logo %}
+                <img src="{{ news_article.source.logo.url }}" class="img-inline">
+            {% else %}
+                {{ news_article.source.name }}
+            {% endif %}
+            {% if news_article.source.website %}
+                </a>
+            {% endif %}
+        </p>
+    {% endif %}
 {% endblock page_heading %}
 
 {% block content_container %}

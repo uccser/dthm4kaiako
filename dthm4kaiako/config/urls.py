@@ -20,6 +20,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    # path('api/', include('rest_framework.urls')),
     path('_ah/health', health_check),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
