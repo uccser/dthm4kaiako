@@ -1,12 +1,13 @@
 """Forms for general website pages."""
 
 from django import forms
+from django.conf import settings
 from django.core.mail import send_mail, mail_managers
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 SUBJECT_TEMPLATE = "[dthm4kaiako] - {}"
-MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {}"
+MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {}\n{}"
 
 
 class ContactForm(forms.Form):
@@ -26,13 +27,13 @@ class ContactForm(forms.Form):
         message = self.cleaned_data['message']
         mail_managers(
             SUBJECT_TEMPLATE.format(subject),
-            MESSAGE_TEMPLATE.format(message, name),
+            MESSAGE_TEMPLATE.format(message, name, from_email),
         )
         if self.cleaned_data.get('cc_sender'):
             send_mail(
                 SUBJECT_TEMPLATE.format(subject),
                 MESSAGE_TEMPLATE.format(message, name),
-                from_email,
+                settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,
             )
