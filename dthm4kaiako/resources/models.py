@@ -151,13 +151,13 @@ class ResourceComponent(models.Model):
             self.component_type = self.TYPE_WEBSITE
         elif self.component_resource:
             self.component_type = self.TYPE_RESOURCE
-        elif filetype.image(self.component_file):
+        elif filetype.image(self.component_file.open()):
             self.component_type = self.TYPE_IMAGE
-        elif filetype.video(self.component_file):
+        elif filetype.video(self.component_file.open()):
             self.component_type = self.TYPE_VIDEO
-        elif filetype.audio(self.component_file):
+        elif filetype.audio(self.component_file.open()):
             self.component_type = self.TYPE_AUDIO
-        elif filetype.archive(self.component_file):
+        elif filetype.archive(self.component_file.open()):
             # TODO: Move PDF detection to document type.
             self.component_type = self.TYPE_ARCHIVE
         # TODO: Check for document types, possibly by extension.
