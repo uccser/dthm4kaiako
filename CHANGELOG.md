@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2
+
+- Fix bug where contact form doesn't send copy to sender.
+
 ## 0.9.1
 
 - Fix bug where resource component types were not detected correctly. ([fixes #253](https://github.com/uccser/dthm4kaiako/issues/253))
