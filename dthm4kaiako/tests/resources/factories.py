@@ -24,16 +24,26 @@ class ResourceFactory(DjangoModelFactory):
     def create_components(self, create, extracted, **kwargs):
         """Create components for resource."""
         FAKER = faker.Faker()
-        number_of_components = random.randint(0, 9)
+        number_of_components = random.randint(1, 9)
         for i in range(number_of_components):
 
             component_name = FAKER.sentence()
             component_type = random.choice(list(ResourceComponent.COMPONENT_TYPE_DATA))
+            resource_count = Resource.objects.count()
+
             if component_type == ResourceComponent.TYPE_WEBSITE:
                 ResourceComponent.objects.create(
                     name=component_name,
                     resource=self,
                     component_url=FAKER.url(),
+                )
+            elif component_type == ResourceComponent.TYPE_RESOURCE and resource_count >= 2:
+                resources = list(Resource.objects.exclude(pk=self.pk))
+                resource_component = resources[random.randint(0, len(resources) - 1)]
+                ResourceComponent.objects.create(
+                    name=resource_component.name,
+                    resource=self,
+                    component_resource=resource_component,
                 )
             # TODO: Implement all types of components
             else:
