@@ -72,16 +72,16 @@
             <p>This resource is also a component of the following resources:</p>
 
             <div class="container resource-components">
-                {% for component in components_of %}
-                <a href="{{ component.component_resource.get_absolute_url }}" class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
+                {% for component_of in components_of %}
+                <a href="{{ component_of.resource.get_absolute_url }}" class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
                     <div class="col-12 col-md-auto flex-grow-1">
                         <strong>
-                            {{ component.name }}
+                            {{ component_of.resource.name }}
                         </strong>
                     </div>
                     <div class="col-12 col-md-auto">
                         <small class="text-muted">
-                            {{ component.component_resource.components.count }} components
+                            {{ component_of.resource.components.count }} component{{ component_of.resource.components.count|pluralize }}
                         </small>
                     </div>
                 </a>
