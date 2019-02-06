@@ -1,7 +1,7 @@
 """Views for DTTA application."""
 
 from django.views import generic
-from django.utils import timezone
+from django.utils.timezone import now
 from utils.mixins import RedirectToCosmeticURLMixin
 from dtta.models import (
     Page,
@@ -22,8 +22,7 @@ class HomeView(generic.base.TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        now = timezone.localtime()
-        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now).order_by('-datetime')[:5]
+        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now()).order_by('-datetime')[:5]
         context['related_links'] = RelatedLink.objects.order_by('order_number')
         return context
 
@@ -60,7 +59,7 @@ class NewsArticleListView(generic.ListView):
 
     model = NewsArticle
     context_object_name = 'news_articles'
-    queryset = NewsArticle.objects.filter(datetime__lte=timezone.localtime()).order_by(
+    queryset = NewsArticle.objects.filter(datetime__lte=now()).order_by(
         '-datetime').prefetch_related('audiences').select_related('source')
 
 
@@ -69,4 +68,4 @@ class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
     model = NewsArticle
     context_object_name = 'news_article'
-    queryset = NewsArticle.objects.filter(datetime__lte=timezone.localtime())
+    queryset = NewsArticle.objects.filter(datetime__lte=now())
