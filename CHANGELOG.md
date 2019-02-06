@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.3
+
+- Fix bug where DTTA news articles are filtered by the wrong timezone. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
+- Fix bug where Rresource 'component of' links do not link correctly. ([fixes #261](https://github.com/uccser/dthm4kaiako/issues/261))
+- Fix date within FAQ question.
+- Update dependencies:
+    - Update flake8 from 3.7.4 to 3.7.5.
+    - Update sphinx from 1.8.3 to 1.8.4.
+
 ## 0.9.2
 
 - Fix bug where contact form doesn't send copy to sender.
