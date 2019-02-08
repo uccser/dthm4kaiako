@@ -59,8 +59,15 @@ class NewsArticleListView(generic.ListView):
 
     model = NewsArticle
     context_object_name = 'news_articles'
-    queryset = NewsArticle.objects.filter(datetime__lte=now()).order_by(
-        '-datetime').prefetch_related('audiences').select_related('source')
+
+    def get_queryset(self):
+        """Only show articles before or equal to the current datetime.
+
+        Returns:
+            News articles filtered by current datetime.
+        """
+        return NewsArticle.objects.filter(datetime__lte=now()).order_by(
+            '-datetime').prefetch_related('audiences').select_related('source')
 
 
 class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
@@ -68,4 +75,11 @@ class NewsArticleDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
     model = NewsArticle
     context_object_name = 'news_article'
-    queryset = NewsArticle.objects.filter(datetime__lte=now())
+
+    def get_queryset(self):
+        """Only show articles before or equal to the current datetime.
+
+        Returns:
+            News articles filtered by current datetime.
+        """
+        return NewsArticle.objects.filter(datetime__lte=now())
