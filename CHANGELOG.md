@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.4
+
+- Fix bug where DTTA news articles added after server start aren not available. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
+
 ## 0.9.3
 
 - Fix bug where DTTA news articles are filtered by the wrong timezone. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
