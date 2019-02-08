@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.9.4
+
+- Fix bug where DTTA news articles added after server start are not available. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
+
 ## 0.9.3
 
-- Fix bug where DTTA news articles are filtered by the wrong timezone. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
+- Fix bug where DTTA news articles are filtered by the wrong timezone.
 - Fix bug where Rresource 'component of' links do not link correctly. ([fixes #261](https://github.com/uccser/dthm4kaiako/issues/261))
 - Fix date within FAQ question.
 - Update dependencies:
