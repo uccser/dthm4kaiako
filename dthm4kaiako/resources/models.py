@@ -66,12 +66,12 @@ class ResourceComponent(models.Model):
     TYPE_SPREADSHEET = 90
     COMPONENT_TYPE_DATA = {
         TYPE_OTHER: {
-            "icon": "icons8-file-100.png",
-            "text": _('Other'),
+            'icon': 'icons8-file-100.png',
+            'text': _('Other'),
         },
         TYPE_DOCUMENT: {
-            "icon": "icons8-document-100.png",
-            "text": _('Document'),
+            'icon': 'icons8-document-100.png',
+            'text': _('Document'),
             'extensions': {
                 'doc',
                 'docx',
@@ -85,21 +85,22 @@ class ResourceComponent(models.Model):
                 'md',
                 'markdown',
                 'rst',
+                'epub',
             },
             'mimetypes': {
                 'application/vnd.google-apps.document',
             },
         },
         TYPE_PDF: {
-            "icon": "icons8-pdf-100.png",
-            "text": _('PDF'),
+            'icon': 'icons8-pdf-100.png',
+            'text': _('PDF'),
             'extensions': {
                 'pdf',
             }
         },
         TYPE_SPREADSHEET: {
-            "icon": "icons8-file-spreadsheet-100.png",
-            "text": _('Spreadsheet'),
+            'icon': 'icons8-file-spreadsheet-100.png',
+            'text': _('Spreadsheet'),
             'extensions': {
                 'xlr',
                 'xls',
@@ -111,23 +112,23 @@ class ResourceComponent(models.Model):
             },
         },
         TYPE_IMAGE: {
-            "icon": "icons8-image-file-100.png",
-            "text": _('Image'),
+            'icon': 'icons8-image-file-100.png',
+            'text': _('Image'),
             'mimetypes': {
                 'application/vnd.google-apps.drawing',
                 'application/vnd.google-apps.photo',
             },
         },
         TYPE_SLIDESHOW: {
-            "icon": "icons8-image-file-100.png",
-            "text": _('Slideshow'),
+            'icon': 'icons8-image-file-100.png',
+            'text': _('Slideshow'),
             'mimetypes': {
                 'application/vnd.google-apps.presentation',
             },
         },
         TYPE_VIDEO: {
-            "icon": "icons8-video-file-100.png",
-            "text": _('Video'),
+            'icon': 'icons8-video-file-100.png',
+            'text': _('Video'),
             'url_regexes': {
                 '^(http(s)?://)?((w){3}.)?youtu(be|.be)?(.com)?/.+',
                 '^(http(s)?://)?((w){3}.|player.)?vimeo(.com)?/.+',
@@ -137,20 +138,20 @@ class ResourceComponent(models.Model):
             },
         },
         TYPE_WEBSITE: {
-            "icon": "icons8-website-100.png",
-            "text": _('Website'),
+            'icon': 'icons8-website-100.png',
+            'text': _('Website'),
         },
         TYPE_AUDIO: {
-            "icon": "icons8-audio-file-100.png",
-            "text": _('Audio'),
+            'icon': 'icons8-audio-file-100.png',
+            'text': _('Audio'),
         },
         TYPE_ARCHIVE: {
-            "icon": "icons8-zipped-file-100.png",
-            "text": _('Archive'),
+            'icon': 'icons8-zipped-file-100.png',
+            'text': _('Archive'),
         },
         TYPE_RESOURCE: {
-            "icon": "icons8-versions-100.png",
-            "text": _('Resource'),
+            'icon': 'icons8-versions-100.png',
+            'text': _('Resource'),
         },
     }
     choices = []
@@ -269,8 +270,6 @@ class ResourceComponent(models.Model):
                 )
         if self.component_resource == self.resource:
             raise ValidationError(_('Cannot set a resource to be a component of itself.'))
-
-
 
     def __str__(self):
         """Text representation of object.
