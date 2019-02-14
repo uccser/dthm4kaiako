@@ -15,10 +15,16 @@
         <h3 class="h4 pb-1 border-bottom">Information</h3>
         <ul class="list-unstyled">
             <li>
-                <strong>Resource added:</strong> {{ resource.datetime_added|timesince }} ago <small class="text-muted">({{ resource.datetime_added }})</small>
+                <strong>Resource added:</strong>
+                <span title="{{ resource.datetime_added }}">
+                    {{ resource.datetime_added|timesince }} ago
+                </span>
             </li>
             <li>
-                <strong>Resource last updated:</strong> {{ resource.datetime_updated|timesince }} ago <small class="text-muted">({{ resource.datetime_updated }})</small>
+                <strong>Resource last updated:</strong>
+                <span title="{{ resource.datetime_updated }}">
+                    {{ resource.datetime_updated|timesince }} ago
+                </span>
             </li>
         </ul>
     </div>
