@@ -31,13 +31,7 @@ class ResourceFactory(DjangoModelFactory):
             component_type = random.choice(list(ResourceComponent.COMPONENT_TYPE_DATA))
             resource_count = Resource.objects.count()
 
-            if component_type == ResourceComponent.TYPE_WEBSITE:
-                ResourceComponent.objects.create(
-                    name=component_name,
-                    resource=self,
-                    component_url=FAKER.url(),
-                )
-            elif component_type == ResourceComponent.TYPE_RESOURCE and resource_count >= 2:
+            if component_type == ResourceComponent.TYPE_RESOURCE and resource_count >= 2:
                 resources = list(Resource.objects.exclude(pk=self.pk))
                 resource_component = resources[random.randint(0, len(resources) - 1)]
                 ResourceComponent.objects.create(
@@ -46,7 +40,7 @@ class ResourceFactory(DjangoModelFactory):
                     component_resource=resource_component,
                 )
             # TODO: Implement all types of components
-            else:
+            else:  # Website
                 ResourceComponent.objects.create(
                     name=component_name,
                     resource=self,

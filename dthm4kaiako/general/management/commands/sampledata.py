@@ -34,7 +34,7 @@ class Command(management.base.BaseCommand):
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
-            'admin@example.com',
+            'admin@dthm4kaiako.ac.nz',
             'password',
             first_name='Admin',
             last_name='Account'
@@ -49,7 +49,7 @@ class Command(management.base.BaseCommand):
         # Create user account
         alex = User.objects.create_user(
             'user',
-            'user@example.com',
+            'user@dthm4kaiako.ac.nz',
             password='password',
             first_name='Alex',
             last_name='Doe'
