@@ -18,6 +18,73 @@ GOOGLE_DRIVE_REGEX = 'https://(drive|docs).google.com'
 logger = logging.getLogger(__name__)
 
 
+class Language(models.Model):
+    """Model for a resource language."""
+
+    name = models.CharField(max_length=40)
+    css_class = models.CharField(max_length=10)
+
+    def __str__(self):
+        """String representation of a language."""
+        return self.name
+
+
+class CurriculumStrand(models.Model):
+    """Model for a curriculum strand."""
+
+    name = models.CharField(max_length=80)
+    abbreviation = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=10)
+
+    def __str__(self):
+        """String representation of a curriculum strand."""
+        return self.name
+
+
+class ProgressOutcome(models.Model):
+    """Model for a progress outcome."""
+
+    name = models.CharField(max_length=80)
+    abbreviation = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=10)
+
+    def __str__(self):
+        """String representation of a progress outcome."""
+        return self.name
+
+
+class NZQAStandard(models.Model):
+    """Model for a NZQA standard."""
+
+    name = models.CharField(max_length=200)
+    abbreviation = models.CharField(max_length=20)
+    css_class = models.CharField(max_length=10)
+
+    def __str__(self):
+        """String representation of a NZQA standard."""
+        return self.name
+
+    class Meta:
+        verbose_name = 'NZQA standard'
+
+
+class YearLevel(models.Model):
+    """Model for a year level."""
+
+    level = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        """String representation of a year level."""
+        return _('Year {}').format(self.level)
+
+
+class CurriculumLearningArea(models.Model):
+    """Model for a curriculum learning area."""
+
+    name = models.CharField(max_length=200)
+    css_class = models.CharField(max_length=10)
+
+
 class Resource(models.Model):
     """Model for a resource."""
 
@@ -26,6 +93,35 @@ class Resource(models.Model):
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    languages = models.ManyToManyField(
+        Language,
+        related_name='resources',
+    )
+    curriculum_strands = models.ManyToManyField(
+        CurriculumStrand,
+        related_name='resources',
+        blank=True,
+    )
+    progress_outcomes = models.ManyToManyField(
+        ProgressOutcome,
+        related_name='resources',
+        blank=True,
+    )
+    nzqa_standards = models.ManyToManyField(
+        NZQAStandard,
+        related_name='resources',
+        blank=True,
+    )
+    year_levels = models.ManyToManyField(
+        YearLevel,
+        related_name='resources',
+        blank=True,
+    )
+    curriculum_learning_areas = models.ManyToManyField(
+        CurriculumLearningArea,
+        related_name='resources',
+        blank=True,
+    )
 
     def get_absolute_url(self):
         """Return URL of object on website.

@@ -4,6 +4,12 @@ from django.contrib import admin
 from resources.models import (
     Resource,
     ResourceComponent,
+    Language,
+    CurriculumStrand,
+    ProgressOutcome,
+    NZQAStandard,
+    YearLevel,
+    CurriculumLearningArea,
 )
 
 
@@ -29,5 +35,10 @@ class ResourceAdmin(admin.ModelAdmin):
     model = Resource
     inlines = [ResourceComponentInline]
 
-
+admin.site.register(Language)
+admin.site.register(CurriculumStrand)
+admin.site.register(ProgressOutcome)
+admin.site.register(NZQAStandard)
+admin.site.register(YearLevel)
+admin.site.register(CurriculumLearningArea)
 admin.site.register(Resource, ResourceAdmin)
