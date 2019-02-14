@@ -267,7 +267,10 @@ class ResourceComponent(models.Model):
             raise ValidationError(
                 _('Resource components must have exactly one type of data (file, URL, or another resource).')
                 )
-        # TODO: Resource cannot be a component of itself.
+        if self.component_resource == self.resource:
+            raise ValidationError(_('Cannot set a resource to be a component of itself.'))
+
+
 
     def __str__(self):
         """Text representation of object.
