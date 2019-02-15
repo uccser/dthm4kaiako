@@ -15,6 +15,66 @@
         <h3 class="h4 pb-1 border-bottom">Information</h3>
         <ul class="list-unstyled">
             <li>
+                <strong>Languages:</strong>
+                {% if resource.languages.exists %}
+                    {% for language in resource.languages.all %}
+                        {{ language }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Curriculum learning area:</strong>
+                {% if resource.curriculum_learning_areas.exists %}
+                    {% for curriculum_learning_area in resource.curriculum_learning_areas.all %}
+                        {% include "resources/badges/curriculum-learning-area.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Technology curriculum strand:</strong>
+                {% if resource.curriculum_strands.exists %}
+                    {% for curriculum_strand in resource.curriculum_strands.all %}
+                        {{ curriculum_strand }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Progress outcomes:</strong>
+                {% if resource.progress_outcomes.exists %}
+                    {% for progress_outcome in resource.progress_outcomes.all %}
+                        {{ progress_outcome }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>NZQA standards:</strong>
+                {% if resource.nzqa_standards.exists %}
+                    {% for nzqa_standard in resource.nzqa_standards.all %}
+                        {{ nzqa_standard }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Year levels:</strong>
+                {% if resource.year_levels.exists %}
+                    {% for year_level in resource.year_levels.all %}
+                        {{ year_level }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
                 <strong>Resource added:</strong>
                 <span title="{{ resource.datetime_added }}">
                     {{ resource.datetime_added|timesince }} ago

@@ -35,6 +35,7 @@ class ResourceAdmin(admin.ModelAdmin):
     model = Resource
     inlines = [ResourceComponentInline]
 
+
 admin.site.register(Language)
 admin.site.register(CurriculumStrand)
 admin.site.register(ProgressOutcome)

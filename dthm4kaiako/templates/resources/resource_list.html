@@ -24,6 +24,12 @@
                                     </span>
                                     <br>
                                     <small class="text-muted">
+                                        {% for language in resource.languages.all %}
+                                            {{ language }}{% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    </small>
+                                    <br>
+                                    <small class="text-muted">
                                         Contains {{ resource.components__count }} component{{ resource.components__count|pluralize }}
                                     </small>
                                 </div>
