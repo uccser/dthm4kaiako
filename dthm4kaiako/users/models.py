@@ -8,7 +8,7 @@ from django.urls import reverse
 class User(AbstractUser):
     """User of website."""
 
-    username = models.CharField(max_length=6, null=True, blank=True)
+    username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
 
@@ -18,6 +18,12 @@ class User(AbstractUser):
     def get_absolute_url(self):
         """Return URL for user's webpage."""
         return reverse('users:detail', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        """Add automated value for username."""
+        super().save(*args, **kwargs)
+        self.username = 'user{}'.format(self.id)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """Name of the user."""
