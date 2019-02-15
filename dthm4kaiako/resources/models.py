@@ -22,7 +22,7 @@ class Language(models.Model):
     """Model for a resource language."""
 
     name = models.CharField(max_length=40)
-    css_class = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=30)
 
     def __str__(self):
         """String representation of a language."""
@@ -34,7 +34,7 @@ class CurriculumStrand(models.Model):
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
-    css_class = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=30)
 
     def __str__(self):
         """String representation of a curriculum strand."""
@@ -46,7 +46,7 @@ class ProgressOutcome(models.Model):
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
-    css_class = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=30)
 
     def __str__(self):
         """String representation of a progress outcome."""
@@ -58,7 +58,7 @@ class NZQAStandard(models.Model):
 
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=20)
-    css_class = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=30)
 
     def __str__(self):
         """String representation of a NZQA standard."""
@@ -82,7 +82,11 @@ class CurriculumLearningArea(models.Model):
     """Model for a curriculum learning area."""
 
     name = models.CharField(max_length=200)
-    css_class = models.CharField(max_length=10)
+    css_class = models.CharField(max_length=30)
+
+    def __str__(self):
+        """String representation of a curriculum learning area."""
+        return self.name
 
 
 class Resource(models.Model):
