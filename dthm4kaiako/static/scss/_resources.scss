@@ -52,3 +52,13 @@ $hover-alpha: .1;
   background-color: #934b31;
   color: #fff;
 }
+
+// Year levels
+@for $num from 0 through 13 {
+  .year-level-#{$num} {
+    // Between 20% and 90% lightness
+    $year-level-background-colour: adjust-color(hsl(235, 20, 90), $lightness: (60 / 14 * $num) * -1%);
+    background-color: $year-level-background-colour;
+    color: get-text-colour($year-level-background-colour);
+  }
+}
