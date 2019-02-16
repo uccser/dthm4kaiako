@@ -36,9 +36,9 @@
             </li>
             <li>
                 <strong>Technology curriculum strand:</strong>
-                {% if resource.curriculum_strands.exists %}
-                    {% for curriculum_strand in resource.curriculum_strands.all %}
-                        {{ curriculum_strand }}{% if not forloop.last %},{% endif %}
+                {% if resource.technology_curriculum_strands.exists %}
+                    {% for technology_curriculum_strand in resource.technology_curriculum_strands.all %}
+                        {% include "resources/badges/technology-curriculum-strand.html" %}
                     {% endfor %}
                 {% else %}
                     None listed
@@ -48,7 +48,7 @@
                 <strong>Progress outcomes:</strong>
                 {% if resource.progress_outcomes.exists %}
                     {% for progress_outcome in resource.progress_outcomes.all %}
-                        {{ progress_outcome }}{% if not forloop.last %},{% endif %}
+                        {% include "resources/badges/progress-outcome.html" %}
                     {% endfor %}
                 {% else %}
                     None listed
@@ -68,7 +68,7 @@
                 <strong>Year levels:</strong>
                 {% if resource.year_levels.exists %}
                     {% for year_level in resource.year_levels.all %}
-                        {{ year_level }}{% if not forloop.last %},{% endif %}
+                        {% include "resources/badges/year-level.html" %}
                     {% endfor %}
                 {% else %}
                     None listed

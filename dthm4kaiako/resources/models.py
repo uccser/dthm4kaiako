@@ -29,15 +29,15 @@ class Language(models.Model):
         return self.name
 
 
-class CurriculumStrand(models.Model):
-    """Model for a curriculum strand."""
+class TechnologyCurriculumStrand(models.Model):
+    """Model for a technology curriculum strand."""
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """String representation of a curriculum strand."""
+        """String representation of a technology curriculum strand."""
         return self.name
 
 
@@ -101,8 +101,8 @@ class Resource(models.Model):
         Language,
         related_name='resources',
     )
-    curriculum_strands = models.ManyToManyField(
-        CurriculumStrand,
+    technology_curriculum_strands = models.ManyToManyField(
+        TechnologyCurriculumStrand,
         related_name='resources',
         blank=True,
     )

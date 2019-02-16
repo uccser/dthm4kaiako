@@ -13,7 +13,12 @@ from resources.models import (
 class ResourceListView(generic.ListView):
     """View for listing resources."""
 
-    queryset = Resource.objects.order_by('name').annotate(Count('components'))
+    queryset = Resource.objects.order_by('name').annotate(Count('components')).prefetch_related(
+        'progress_outcomes',
+        'year_levels',
+        'technology_curriculum_strands',
+        'languages'
+    )
     context_object_name = 'resources'
 
 

@@ -4,8 +4,15 @@ from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
+from resources.models import (
+    Language,
+    TechnologyCurriculumStrand,
+    ProgressOutcome,
+    YearLevel,
+)
 from tests.resources.factories import (
     ResourceFactory,
+    NZQAStandardFactory,
 )
 from tests.dtta.factories import (
     NewsArticleFactory,
@@ -62,6 +69,35 @@ class Command(management.base.BaseCommand):
         )
 
         # Resources
+        Language.objects.create(name='English', css_class='lang-en')
+        Language.objects.create(name='Māori', css_class='lang-mi')
+        TechnologyCurriculumStrand.objects.create(
+            name='Computational thinking',
+            abbreviation='CT',
+            css_class='tcs-ct',
+        )
+        TechnologyCurriculumStrand.objects.create(
+            name='Designing and developing digital outcomes',
+            abbreviation='DDDO',
+            css_class='tcs-dddo',
+        )
+        for i in range(1, 9):
+            ProgressOutcome.objects.create(
+                name='Computational thinking - Progress outcome {}'.format(i),
+                abbreviation='CT PO{}'.format(i),
+                css_class='po-ct',
+            )
+        for i in range(1, 7):
+            ProgressOutcome.objects.create(
+                name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
+                abbreviation='DDDO PO{}'.format(i),
+                css_class='po-dddo',
+            )
+        NZQAStandardFactory.create_batch(size=20)
+        for i in range(0, 14):
+            YearLevel.objects.create(
+                level=i
+            )
         ResourceFactory.create_batch(size=50)
 
         # DTTA
