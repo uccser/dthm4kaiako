@@ -19,12 +19,6 @@ class User(AbstractUser):
         """Return URL for user's webpage."""
         return reverse('users:detail', kwargs={'pk': self.pk})
 
-    def save(self, *args, **kwargs):
-        """Add automated value for username."""
-        super().save(*args, **kwargs)
-        self.username = 'user{}'.format(self.id)
-        super().save(*args, **kwargs)
-
     def __str__(self):
         """Name of the user."""
         return self.first_name
