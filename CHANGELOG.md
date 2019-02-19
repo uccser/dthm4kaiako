@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.1
+
+- Update production secrets.
+
 ## 0.10.0
 
 - Improve detection of resource component types:
