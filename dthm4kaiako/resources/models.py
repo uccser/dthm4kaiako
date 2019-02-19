@@ -25,10 +25,12 @@ class Language(models.Model):
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """String representation of a language."""
+        """Text representation of a language."""
         return self.name
 
     class Meta:
+        """Meta options for class."""
+
         # Māori before English
         ordering = ['-name']
 
@@ -41,10 +43,12 @@ class TechnologyCurriculumStrand(models.Model):
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """String representation of a technology curriculum strand."""
+        """Text representation of a technology curriculum strand."""
         return self.name
 
     class Meta:
+        """Meta options for class."""
+
         ordering = ['abbreviation']
 
 
@@ -61,10 +65,12 @@ class ProgressOutcome(models.Model):
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """String representation of a progress outcome."""
+        """Text representation of a progress outcome."""
         return self.name
 
     class Meta:
+        """Meta options for class."""
+
         ordering = ['abbreviation']
 
 
@@ -87,10 +93,12 @@ class NZQAStandard(models.Model):
     )
 
     def __str__(self):
-        """String representation of a NZQA standard."""
+        """Text representation of a NZQA standard."""
         return self.name
 
     class Meta:
+        """Meta options for class."""
+
         verbose_name = 'NZQA standard'
         ordering = ['level', 'abbreviation']
 
@@ -101,10 +109,12 @@ class YearLevel(models.Model):
     level = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        """String representation of a year level."""
+        """Text representation of a year level."""
         return _('Year {}').format(self.level)
 
     class Meta:
+        """Meta options for class."""
+
         ordering = ['level']
 
 
@@ -115,10 +125,12 @@ class CurriculumLearningArea(models.Model):
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """String representation of a curriculum learning area."""
+        """Text representation of a curriculum learning area."""
         return self.name
 
     class Meta:
+        """Meta options for class."""
+
         ordering = ['name']
 
 
