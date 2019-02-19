@@ -11,7 +11,4 @@ class UsersAppConfig(AppConfig):
 
     def ready(self):
         """Import signals upon intialising application."""
-        try:
-            import users.signals  # noqa F401
-        except ImportError:
-            pass
+        import users.signals
