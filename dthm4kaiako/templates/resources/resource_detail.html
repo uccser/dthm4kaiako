@@ -18,7 +18,7 @@
                 <strong>Languages:</strong>
                 {% if resource.languages.exists %}
                     {% for language in resource.languages.all %}
-                        {{ language }}{% if not forloop.last %},{% endif %}
+                        {% include "resources/badges/language.html" %}
                     {% endfor %}
                 {% else %}
                     None listed
