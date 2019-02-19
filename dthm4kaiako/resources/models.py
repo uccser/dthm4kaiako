@@ -29,7 +29,8 @@ class Language(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        # Māori before English
+        ordering = ['-name']
 
 
 class TechnologyCurriculumStrand(models.Model):

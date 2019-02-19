@@ -55,35 +55,34 @@ $tls-dddo: #269d6e;
 
 
 // Curriculum learning area
-.cla-english {
-  background-color: #00448a;
+.cla-badge {
+  @extend .badge;
+  @extend .badge-pill;
   color: #fff;
-}
-.cla-arts {
-  background-color: #ce7812;
-}
-.cla-health-pe {
-  background-color: #b5152b;
-  color: #fff;
-}
-.cla-languages {
-  background-color: #0096bb;
-}
-.cla-mathematics {
-  background-color: #90054f;
-  color: #fff;
-}
-.cla-science {
-  background-color: #003e27;
-  color: #fff;
-}
-.cla-social-sciences {
-  background-color: #6d1f80;
-  color: #fff;
-}
-.cla-technology {
-  background-color: #934b31;
-  color: #fff;
+  &.cla-english {
+    background-color: #00448a;
+  }
+  &.cla-arts {
+    background-color: #ce7812;
+  }
+  &.cla-health-pe {
+    background-color: #b5152b;
+  }
+  &.cla-languages {
+    background-color: #0096bb;
+  }
+  &.cla-mathematics {
+    background-color: #90054f;
+  }
+  &.cla-science {
+    background-color: #003e27;
+  }
+  &.cla-social-sciences {
+    background-color: #6d1f80;
+  }
+  &.cla-technology {
+    background-color: #934b31;
+  }
 }
 
 // Year levels
@@ -97,8 +96,8 @@ $tls-dddo: #269d6e;
   }
 }
 
-$ncea-level-colour: #900b00;
 // NCEA assessments
+$ncea-level-colour: #900b00;
 .ncea-level {
   @extend .badge;
   @extend .badge-pill;
@@ -113,4 +112,26 @@ $ncea-level-colour: #900b00;
   &-3 {
     background-color: hsl(4, 90, 74);
   }
+}
+
+// Languages
+$language-light: #bfeab4;
+$language-dark: #1b5f0b;
+$language-width: 4rem;
+.language-badge {
+  @extend .badge;
+  display: inline-block;
+  width: $language-width;
+  &.language-en {
+    background-color: $language-dark;
+    color: $language-light;
+  }
+  &.language-mi {
+    background-color: $language-light;
+    color: $language-dark;
+  }
+}
+.language-spacer {
+  display: inline-block;
+  width: $language-width;
 }

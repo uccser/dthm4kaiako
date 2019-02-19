@@ -124,8 +124,13 @@ class ResourceFactory(DjangoModelFactory):
                 )
             )
 
-
-
+        # Add curriculum learning areas
+        self.curriculum_learning_areas.add(
+            *random.sample(
+                list(CurriculumLearningArea.objects.all()),
+                random.randint(0, 2)
+            )
+        )
 
         # Add components
         number_of_components = random.randint(1, 9)

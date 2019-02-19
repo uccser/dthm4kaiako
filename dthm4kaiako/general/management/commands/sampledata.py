@@ -9,6 +9,7 @@ from resources.models import (
     TechnologyCurriculumStrand,
     ProgressOutcome,
     YearLevel,
+    CurriculumLearningArea,
 )
 from tests.resources.factories import (
     ResourceFactory,
@@ -69,8 +70,23 @@ class Command(management.base.BaseCommand):
         )
 
         # Resources
-        Language.objects.create(name='English', css_class='lang-en')
-        Language.objects.create(name='Māori', css_class='lang-mi')
+        Language.objects.create(name='English', css_class='language-en')
+        Language.objects.create(name='Māori', css_class='language-mi')
+        curriculum_learning_areas = {
+            'English': 'english',
+            'Arts': 'arts',
+            'Health and physical education': 'health-pe',
+            'Learning languages': 'languages',
+            'Mathematics and statistics': 'mathematics',
+            'Science': 'science',
+            'Social sciences': 'social-sciences',
+            'Technology': 'technology',
+        }
+        for area_name, area_css_class in curriculum_learning_areas.items():
+            CurriculumLearningArea.objects.create(
+                name=area_name,
+                css_class=area_css_class,
+            )
         tcs_ct = TechnologyCurriculumStrand.objects.create(
             name='Computational thinking',
             abbreviation='CT',
@@ -100,6 +116,7 @@ class Command(management.base.BaseCommand):
             YearLevel.objects.create(
                 level=i
             )
+
         ResourceFactory.create_batch(size=50)
 
         # DTTA
