@@ -7,7 +7,8 @@ from utils.mixins import RedirectToCosmeticURLMixin
 from resources.serializers import ResourceSerializer
 from resources.models import (
     Resource,
-    Language
+    ResourceComponent,
+    Language,
 )
 
 
@@ -31,6 +32,8 @@ class ResourceListView(generic.ListView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
+        context['resource_count'] = Resource.objects.count()
+        context['resource_component_count'] = ResourceComponent.objects.count()
         context['languages'] = Language.objects.all()
         return context
 
