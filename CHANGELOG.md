@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.10.0
+
+- Improve detection of resource component types:
+    - Add PDF and spreadsheet types.
+    - Detect type of Google Drive documents using Google Drive API.
+    - Set YouTube and Vimeo as video components.
+- Add the following classifiers for resources:
+    - Language
+    - Year level
+    - Curriculum learning area
+    - Technology curriculum strand
+    - Progress outcome
+    - NZQA standard
+- Fix bug where a resource could be a component of itself.
+- Fix bug where users with no username could not login into admin.
+- Dependencies changes:
+    - Add google-api-python-client 1.7.8.
+    - Update flake8 from 3.7.5 to 3.7.6.
+    - Update mypy from 0.660 to 0.670.
+    - Update pytest from 4.2.0 to 4.3.0.
+
 ## 0.9.4
 
 - Fix bug where DTTA news articles added after server start are not available. ([fixes #259](https://github.com/uccser/dthm4kaiako/issues/259))
@@ -7,7 +28,7 @@
 ## 0.9.3
 
 - Fix bug where DTTA news articles are filtered by the wrong timezone.
-- Fix bug where Rresource 'component of' links do not link correctly. ([fixes #261](https://github.com/uccser/dthm4kaiako/issues/261))
+- Fix bug where Resource 'component of' links do not link correctly. ([fixes #261](https://github.com/uccser/dthm4kaiako/issues/261))
 - Fix date within FAQ question.
 - Update dependencies:
     - Update flake8 from 3.7.4 to 3.7.5.
