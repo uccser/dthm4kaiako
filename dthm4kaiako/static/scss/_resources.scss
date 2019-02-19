@@ -4,7 +4,7 @@ $hover-alpha: .1;
 #resources {
   .resource:hover,
   .resource:focus {
-    background-color: rgba($resources-brand-colour, $hover-alpha);
+    background-color: rgba($link-colour, $hover-alpha);
     text-decoration: none;
   }
 }
@@ -16,7 +16,7 @@ $hover-alpha: .1;
   }
   .resource-component:hover,
   .resource-component:focus {
-    background-color: rgba($resources-brand-colour, $hover-alpha);
+    background-color: rgba($link-colour, $hover-alpha);
     text-decoration: none;
   }
 }
