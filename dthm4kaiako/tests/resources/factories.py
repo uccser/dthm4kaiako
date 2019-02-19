@@ -110,7 +110,7 @@ class ResourceFactory(DjangoModelFactory):
         if resource_detail_content in [CONTENT_BOTH, CONTENT_PRIMARY]:
             self.progress_outcomes.add(
                 *random.sample(
-                    list(ProgressOutcome.objects.all()),
+                    list(ProgressOutcome.objects.filter(technology_curriculum_strand__in=self.technology_curriculum_strands.all())),
                     random.randint(1, 3)
                 )
             )

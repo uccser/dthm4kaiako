@@ -52,6 +52,11 @@ class ProgressOutcome(models.Model):
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
+    technology_curriculum_strand = models.ForeignKey(
+        TechnologyCurriculumStrand,
+        on_delete=models.CASCADE,
+        related_name='progress_outcomes',
+    )
     css_class = models.CharField(max_length=30)
 
     def __str__(self):

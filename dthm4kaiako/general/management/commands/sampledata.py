@@ -71,26 +71,28 @@ class Command(management.base.BaseCommand):
         # Resources
         Language.objects.create(name='English', css_class='lang-en')
         Language.objects.create(name='Māori', css_class='lang-mi')
-        TechnologyCurriculumStrand.objects.create(
+        tcs_ct = TechnologyCurriculumStrand.objects.create(
             name='Computational thinking',
             abbreviation='CT',
             css_class='tcs-ct',
-        )
-        TechnologyCurriculumStrand.objects.create(
-            name='Designing and developing digital outcomes',
-            abbreviation='DDDO',
-            css_class='tcs-dddo',
         )
         for i in range(1, 9):
             ProgressOutcome.objects.create(
                 name='Computational thinking - Progress outcome {}'.format(i),
                 abbreviation='CT PO{}'.format(i),
+                technology_curriculum_strand=tcs_ct,
                 css_class='po-ct',
             )
+        tcs_dddo = TechnologyCurriculumStrand.objects.create(
+            name='Designing and developing digital outcomes',
+            abbreviation='DDDO',
+            css_class='tcs-dddo',
+        )
         for i in range(1, 7):
             ProgressOutcome.objects.create(
                 name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
                 abbreviation='DDDO PO{}'.format(i),
+                technology_curriculum_strand=tcs_dddo,
                 css_class='po-dddo',
             )
         NZQAStandardFactory.create_batch(size=20)
