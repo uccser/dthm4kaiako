@@ -13,6 +13,13 @@ from resources.models import (
 )
 
 
+class NZQAStandardAdmin(admin.ModelAdmin):
+    """Configuration for displaying NZQA Standards in admin."""
+
+    list_display = ('level', 'abbreviation', 'name')
+    ordering = ('level', 'abbreviation')
+
+
 class ResourceComponentInline(admin.StackedInline):
     """Inline view for resource component objects."""
 
@@ -39,7 +46,7 @@ class ResourceAdmin(admin.ModelAdmin):
 admin.site.register(Language)
 admin.site.register(TechnologyCurriculumStrand)
 admin.site.register(ProgressOutcome)
-admin.site.register(NZQAStandard)
+admin.site.register(NZQAStandard, NZQAStandardAdmin)
 admin.site.register(YearLevel)
 admin.site.register(CurriculumLearningArea)
 admin.site.register(Resource, ResourceAdmin)

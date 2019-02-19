@@ -58,7 +58,7 @@
                 <strong>NZQA standards:</strong>
                 {% if resource.nzqa_standards.exists %}
                     {% for nzqa_standard in resource.nzqa_standards.all %}
-                        {{ nzqa_standard }}{% if not forloop.last %},{% endif %}
+                        {% include "resources/badges/nzqa-standard.html" %}
                     {% endfor %}
                 {% else %}
                     None listed

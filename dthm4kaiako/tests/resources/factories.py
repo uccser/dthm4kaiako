@@ -2,7 +2,7 @@
 
 import random
 import string
-from factory import DjangoModelFactory, Faker, post_generation
+from factory import DjangoModelFactory, Faker, post_generation, LazyFunction
 from factory.faker import faker
 from resources.models import (
     Resource,
@@ -25,8 +25,8 @@ class NZQAStandardFactory(DjangoModelFactory):
     """Factory for generating NZQA standards."""
 
     name = Faker('sentence')
-    abbreviation = 'AS{}'.format(random.randint(10000, 99999))
-    css_class = 'nzqa-as'
+    abbreviation = LazyFunction(lambda: 'AS{}'.format(random.randint(10000, 99999)))
+    level = LazyFunction(lambda: random.randint(1, 3))
 
     class Meta:
         """Metadata for class."""

@@ -28,6 +28,9 @@ class Language(models.Model):
         """String representation of a language."""
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class TechnologyCurriculumStrand(models.Model):
     """Model for a technology curriculum strand."""
@@ -39,6 +42,9 @@ class TechnologyCurriculumStrand(models.Model):
     def __str__(self):
         """String representation of a technology curriculum strand."""
         return self.name
+
+    class Meta:
+        ordering = ['abbreviation']
 
 
 class ProgressOutcome(models.Model):
@@ -52,13 +58,27 @@ class ProgressOutcome(models.Model):
         """String representation of a progress outcome."""
         return self.name
 
+    class Meta:
+        ordering = ['abbreviation']
+
 
 class NZQAStandard(models.Model):
     """Model for a NZQA standard."""
 
+    NCEA_LEVEL_1 = 1
+    NCEA_LEVEL_2 = 2
+    NCEA_LEVEL_3 = 3
+    NCEA_LEVEL_CHOICES = (
+        (NCEA_LEVEL_1, _('NCEA Level 1')),
+        (NCEA_LEVEL_2, _('NCEA Level 2')),
+        (NCEA_LEVEL_3, _('NCEA Level 3')),
+    )
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=20)
-    css_class = models.CharField(max_length=30)
+    level = models.PositiveSmallIntegerField(
+        choices=NCEA_LEVEL_CHOICES,
+        default=NCEA_LEVEL_1,
+    )
 
     def __str__(self):
         """String representation of a NZQA standard."""
@@ -66,6 +86,7 @@ class NZQAStandard(models.Model):
 
     class Meta:
         verbose_name = 'NZQA standard'
+        ordering = ['level', 'abbreviation']
 
 
 class YearLevel(models.Model):
@@ -77,6 +98,9 @@ class YearLevel(models.Model):
         """String representation of a year level."""
         return _('Year {}').format(self.level)
 
+    class Meta:
+        ordering = ['level']
+
 
 class CurriculumLearningArea(models.Model):
     """Model for a curriculum learning area."""
@@ -87,6 +111,9 @@ class CurriculumLearningArea(models.Model):
     def __str__(self):
         """String representation of a curriculum learning area."""
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class Resource(models.Model):

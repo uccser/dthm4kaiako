@@ -96,3 +96,21 @@ $tls-dddo: #269d6e;
     color: get-text-colour($year-level-background-colour);
   }
 }
+
+$ncea-level-colour: #900b00;
+// NCEA assessments
+.ncea-level {
+  @extend .badge;
+  @extend .badge-pill;
+  color: $ncea-level-colour;
+  box-shadow:inset 0px 0px 0px 2px $ncea-level-colour;
+  &-1 {
+    background-color: hsl(2, 90, 90);
+  }
+  &-2 {
+    background-color: hsl(3, 90, 82);
+  }
+  &-3 {
+    background-color: hsl(4, 90, 74);
+  }
+}
