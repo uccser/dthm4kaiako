@@ -4,8 +4,16 @@ from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
+from resources.models import (
+    Language,
+    TechnologyCurriculumStrand,
+    ProgressOutcome,
+    YearLevel,
+    CurriculumLearningArea,
+)
 from tests.resources.factories import (
     ResourceFactory,
+    NZQAStandardFactory,
 )
 from tests.dtta.factories import (
     NewsArticleFactory,
@@ -34,7 +42,7 @@ class Command(management.base.BaseCommand):
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
-            'admin@example.com',
+            'admin@dthm4kaiako.ac.nz',
             'password',
             first_name='Admin',
             last_name='Account'
@@ -49,7 +57,7 @@ class Command(management.base.BaseCommand):
         # Create user account
         alex = User.objects.create_user(
             'user',
-            'user@example.com',
+            'user@dthm4kaiako.ac.nz',
             password='password',
             first_name='Alex',
             last_name='Doe'
@@ -62,6 +70,53 @@ class Command(management.base.BaseCommand):
         )
 
         # Resources
+        Language.objects.create(name='English', css_class='language-en')
+        Language.objects.create(name='Māori', css_class='language-mi')
+        curriculum_learning_areas = {
+            'English': 'english',
+            'Arts': 'arts',
+            'Health and physical education': 'health-pe',
+            'Learning languages': 'languages',
+            'Mathematics and statistics': 'mathematics',
+            'Science': 'science',
+            'Social sciences': 'social-sciences',
+            'Technology': 'technology',
+        }
+        for area_name, area_css_class in curriculum_learning_areas.items():
+            CurriculumLearningArea.objects.create(
+                name=area_name,
+                css_class=area_css_class,
+            )
+        tcs_ct = TechnologyCurriculumStrand.objects.create(
+            name='Computational thinking',
+            abbreviation='CT',
+            css_class='tcs-ct',
+        )
+        for i in range(1, 9):
+            ProgressOutcome.objects.create(
+                name='Computational thinking - Progress outcome {}'.format(i),
+                abbreviation='CT PO{}'.format(i),
+                technology_curriculum_strand=tcs_ct,
+                css_class='po-ct',
+            )
+        tcs_dddo = TechnologyCurriculumStrand.objects.create(
+            name='Designing and developing digital outcomes',
+            abbreviation='DDDO',
+            css_class='tcs-dddo',
+        )
+        for i in range(1, 7):
+            ProgressOutcome.objects.create(
+                name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
+                abbreviation='DDDO PO{}'.format(i),
+                technology_curriculum_strand=tcs_dddo,
+                css_class='po-dddo',
+            )
+        NZQAStandardFactory.create_batch(size=20)
+        for i in range(0, 14):
+            YearLevel.objects.create(
+                level=i
+            )
+
         ResourceFactory.create_batch(size=50)
 
         # DTTA

@@ -4,7 +4,20 @@ from django.contrib import admin
 from resources.models import (
     Resource,
     ResourceComponent,
+    Language,
+    TechnologyCurriculumStrand,
+    ProgressOutcome,
+    NZQAStandard,
+    YearLevel,
+    CurriculumLearningArea,
 )
+
+
+class NZQAStandardAdmin(admin.ModelAdmin):
+    """Configuration for displaying NZQA Standards in admin."""
+
+    list_display = ('level', 'abbreviation', 'name')
+    ordering = ('level', 'abbreviation')
 
 
 class ResourceComponentInline(admin.StackedInline):
@@ -30,4 +43,10 @@ class ResourceAdmin(admin.ModelAdmin):
     inlines = [ResourceComponentInline]
 
 
+admin.site.register(Language)
+admin.site.register(TechnologyCurriculumStrand)
+admin.site.register(ProgressOutcome)
+admin.site.register(NZQAStandard, NZQAStandardAdmin)
+admin.site.register(YearLevel)
+admin.site.register(CurriculumLearningArea)
 admin.site.register(Resource, ResourceAdmin)

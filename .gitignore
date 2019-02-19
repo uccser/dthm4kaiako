@@ -271,7 +271,7 @@ pip-selfcheck.json
 
 
 ### Project template
-
+load_secrets.sh
 dthm4kaiako/media/
 
 .pytest_cache/

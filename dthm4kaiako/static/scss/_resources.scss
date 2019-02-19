@@ -4,7 +4,7 @@ $hover-alpha: .1;
 #resources {
   .resource:hover,
   .resource:focus {
-    background-color: rgba($resources-brand-colour, $hover-alpha);
+    background-color: rgba($link-colour, $hover-alpha);
     text-decoration: none;
   }
 }
@@ -16,7 +16,122 @@ $hover-alpha: .1;
   }
   .resource-component:hover,
   .resource-component:focus {
-    background-color: rgba($resources-brand-colour, $hover-alpha);
+    background-color: rgba($link-colour, $hover-alpha);
     text-decoration: none;
   }
+}
+
+// Technology curriculum strands and progress outcomes
+
+$tls-ct: #1a5881;
+$tls-dddo: #269d6e;
+
+.tcs-ct {
+  @extend .badge;
+  @extend .badge-pill;
+  background-color: $tls-ct;
+  color: mix($tls-ct, #fff, 20%);
+}
+.po-ct {
+  @extend .badge;
+  @extend .badge-pill;
+  background-color: rgba($tls-ct, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $tls-ct;
+  color: $tls-ct;
+}
+.tcs-dddo {
+  @extend .badge;
+  @extend .badge-pill;
+  background-color: $tls-dddo;
+  color: mix($tls-dddo, #fff, 20%);
+}
+.po-dddo {
+  @extend .badge;
+  @extend .badge-pill;
+  background-color: rgba($tls-dddo, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $tls-dddo;
+  color: $tls-dddo;
+}
+
+
+// Curriculum learning area
+.cla-badge {
+  @extend .badge;
+  @extend .badge-pill;
+  color: #fff;
+  &.cla-english {
+    background-color: #00448a;
+  }
+  &.cla-arts {
+    background-color: #ce7812;
+  }
+  &.cla-health-pe {
+    background-color: #b5152b;
+  }
+  &.cla-languages {
+    background-color: #0096bb;
+  }
+  &.cla-mathematics {
+    background-color: #90054f;
+  }
+  &.cla-science {
+    background-color: #003e27;
+  }
+  &.cla-social-sciences {
+    background-color: #6d1f80;
+  }
+  &.cla-technology {
+    background-color: #934b31;
+  }
+}
+
+// Year levels
+@for $num from 0 through 13 {
+  .year-level-#{$num} {
+    @extend .badge;
+    // Between 20% and 90% lightness
+    $year-level-background-colour: adjust-color(hsl(235, 20, 90), $lightness: (60 / 14 * $num) * -1%);
+    background-color: $year-level-background-colour;
+    color: get-text-colour($year-level-background-colour);
+  }
+}
+
+// NCEA assessments
+$ncea-level-colour: #900b00;
+.ncea-level {
+  @extend .badge;
+  @extend .badge-pill;
+  color: $ncea-level-colour;
+  box-shadow:inset 0px 0px 0px 2px $ncea-level-colour;
+  &-1 {
+    background-color: hsl(2, 90, 90);
+  }
+  &-2 {
+    background-color: hsl(3, 90, 82);
+  }
+  &-3 {
+    background-color: hsl(4, 90, 74);
+  }
+}
+
+// Languages
+$language-light: #bfeab4;
+$language-dark: #1b5f0b;
+$language-width: 4rem;
+.language-badge {
+  @extend .badge;
+  display: inline-block;
+  width: $language-width;
+  &.language-en {
+    background-color: $language-dark;
+    color: $language-light;
+  }
+  &.language-mi {
+    background-color: $language-light;
+    color: $language-dark;
+  }
+}
+.language-spacer {
+  display: inline-block;
+  width: $language-width;
 }

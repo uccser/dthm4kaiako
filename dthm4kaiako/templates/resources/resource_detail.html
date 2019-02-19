@@ -15,10 +15,76 @@
         <h3 class="h4 pb-1 border-bottom">Information</h3>
         <ul class="list-unstyled">
             <li>
-                <strong>Resource added:</strong> {{ resource.datetime_added|timesince }} ago <small class="text-muted">({{ resource.datetime_added }})</small>
+                <strong>Languages:</strong>
+                {% if resource.languages.exists %}
+                    {% for language in resource.languages.all %}
+                        {% include "resources/badges/language.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
             </li>
             <li>
-                <strong>Resource last updated:</strong> {{ resource.datetime_updated|timesince }} ago <small class="text-muted">({{ resource.datetime_updated }})</small>
+                <strong>Curriculum learning area:</strong>
+                {% if resource.curriculum_learning_areas.exists %}
+                    {% for curriculum_learning_area in resource.curriculum_learning_areas.all %}
+                        {% include "resources/badges/curriculum-learning-area.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Technology curriculum strand:</strong>
+                {% if resource.technology_curriculum_strands.exists %}
+                    {% for technology_curriculum_strand in resource.technology_curriculum_strands.all %}
+                        {% include "resources/badges/technology-curriculum-strand.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Progress outcomes:</strong>
+                {% if resource.progress_outcomes.exists %}
+                    {% for progress_outcome in resource.progress_outcomes.all %}
+                        {% include "resources/badges/progress-outcome.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>NZQA standards:</strong>
+                {% if resource.nzqa_standards.exists %}
+                    {% for nzqa_standard in resource.nzqa_standards.all %}
+                        {% include "resources/badges/nzqa-standard.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Year levels:</strong>
+                {% if resource.year_levels.exists %}
+                    {% for year_level in resource.year_levels.all %}
+                        {% include "resources/badges/year-level.html" %}
+                    {% endfor %}
+                {% else %}
+                    None listed
+                {% endif %}
+            </li>
+            <li>
+                <strong>Resource added:</strong>
+                <span title="{{ resource.datetime_added }}">
+                    {{ resource.datetime_added|timesince }} ago
+                </span>
+            </li>
+            <li>
+                <strong>Resource last updated:</strong>
+                <span title="{{ resource.datetime_updated }}">
+                    {{ resource.datetime_updated|timesince }} ago
+                </span>
             </li>
         </ul>
     </div>

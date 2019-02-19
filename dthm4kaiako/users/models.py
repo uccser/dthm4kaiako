@@ -8,7 +8,7 @@ from django.urls import reverse
 class User(AbstractUser):
     """User of website."""
 
-    username = models.CharField(max_length=6, null=True, blank=True)
+    username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
 
