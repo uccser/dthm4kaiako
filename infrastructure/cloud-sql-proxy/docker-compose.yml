@@ -24,6 +24,7 @@ services:
       - MAILGUN_API_KEY=${MAILGUN_API_KEY}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - INCLUDE_INCONTEXT_L10N=${INCLUDE_INCONTEXT_L10N}
+      - GOOGLE_DRIVE_API_KEY=${GOOGLE_DRIVE_API_KEY}
     depends_on:
       - cloud_sql_proxy
 
