@@ -19,11 +19,7 @@
             <h3>Results</h3>
 
             {% for result in page_obj.object_list %}
-                <p>
-                    <a href="{{ result.object.get_absolute_url }}">
-                        {{ result.object.name }}
-                    </a>
-                </p>
+                {{ result.html_result|safe }}
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}

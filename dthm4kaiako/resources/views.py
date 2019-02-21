@@ -63,6 +63,7 @@ class ResourceSearchView(SearchView):
 
     template_name = 'resources/search.html'
     form_class = ResourceSearchForm
+    load_all = False
 
     def get_context_data(self, *args, **kwargs):
         """Return context dictionary for resource search view.
