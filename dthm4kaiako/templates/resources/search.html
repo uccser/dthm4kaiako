@@ -7,14 +7,18 @@
 {% endblock page_heading %}
 
 {% block content_container %}
-    <form method="get" action=".">
-        {{ form|crispy }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-primary">Search</button>
+    <div class="col-12 mb-3">
+        <form method="get" action=".">
+            {{ form|crispy }}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
 
+    <div class="col-12">
         {% if search %}
             <h3>Results</h3>
 
@@ -36,5 +40,5 @@
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
-    </form>
+    </div>
 {% endblock content_container %}

@@ -94,7 +94,7 @@ class NZQAStandard(models.Model):
 
     def __str__(self):
         """Text representation of a NZQA standard."""
-        return self.name
+        return self.abbreviation
 
     class Meta:
         """Meta options for class."""

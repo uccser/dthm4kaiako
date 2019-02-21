@@ -6,15 +6,52 @@ from haystack.forms import FacetedSearchForm
 from resources.models import (
     Resource,
     Language,
+    TechnologyCurriculumStrand,
+    ProgressOutcome,
+    NZQAStandard,
+    YearLevel,
+    CurriculumLearningArea,
 )
 
 
 class ResourceSearchForm(FacetedSearchForm):
     """Class for resource search form."""
 
-    languages = forms.ModelMultipleChoiceField(
+    lang = forms.ModelMultipleChoiceField(
         queryset=Language.objects.all(),
         required=False,
+        label='Languages',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+    tech_strands = forms.ModelMultipleChoiceField(
+        queryset=TechnologyCurriculumStrand.objects.all(),
+        required=False,
+        label='Technology curriculum strands',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+    progress_outcomes = forms.ModelMultipleChoiceField(
+        queryset=ProgressOutcome.objects.all(),
+        required=False,
+        label='Progress outcomes',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+    nzqa_standards = forms.ModelMultipleChoiceField(
+        queryset=NZQAStandard.objects.all(),
+        required=False,
+        label='NZQA standards',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+    year_levels = forms.ModelMultipleChoiceField(
+        queryset=YearLevel.objects.all(),
+        required=False,
+        label='Year levels',
+        widget=forms.CheckboxSelectMultiple(),
+    )
+    curriculum_areas = forms.ModelMultipleChoiceField(
+        queryset=CurriculumLearningArea.objects.all(),
+        required=False,
+        label='Curriculum learning areas',
+        widget=forms.CheckboxSelectMultiple(),
     )
 
     def search(self):
@@ -44,23 +81,37 @@ class ResourceSearchForm(FacetedSearchForm):
         # index saves the tags of objects as a list of primary
         # keys, stored as strings. Because of this, the logic below must
         # covert the QuerySet of the filter into a list of primary key strings.
-        if self.cleaned_data['languages']:
-            primary_keys = list(map(str, self.cleaned_data['languages'].values_list('pk', flat=True)))
+        if self.cleaned_data['lang']:
+            primary_keys = list(map(str, self.cleaned_data['lang'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 languages__in=primary_keys
             )
-
+        if self.cleaned_data['tech_strands']:
+            primary_keys = list(map(str, self.cleaned_data['tech_strands'].values_list('pk', flat=True)))
+            search_query_set = search_query_set.filter(
+                technology_curriculum_strands__in=primary_keys
+            )
+        if self.cleaned_data['progress_outcomes']:
+            primary_keys = list(map(str, self.cleaned_data['progress_outcomes'].values_list('pk', flat=True)))
+            search_query_set = search_query_set.filter(
+                progress_outcomes__in=primary_keys
+            )
+        if self.cleaned_data['nzqa_standards']:
+            primary_keys = list(map(str, self.cleaned_data['nzqa_standards'].values_list('pk', flat=True)))
+            search_query_set = search_query_set.filter(
+                nzqa_standards__in=primary_keys
+            )
+        if self.cleaned_data['year_levels']:
+            primary_keys = list(map(str, self.cleaned_data['year_levels'].values_list('pk', flat=True)))
+            search_query_set = search_query_set.filter(
+                year_levels__in=primary_keys
+            )
+        if self.cleaned_data['curriculum_areas']:
+            primary_keys = list(map(str, self.cleaned_data['curriculum_areas'].values_list('pk', flat=True)))
+            search_query_set = search_query_set.filter(
+                curriculum_learning_areas__in=primary_keys
+            )
         return search_query_set
-
-    def no_query_found(self):
-        """
-        Determines the behavior when no query was found.
-
-        By default, no results are returned (``EmptySearchQuerySet``).
-        Should you want to show all results, override this method in your
-        own ``SearchForm`` subclass and do ``return self.searchqueryset.all()``.
-        """
-        return self.searchqueryset.all()
 
 
 def all_items(searchqueryset):
