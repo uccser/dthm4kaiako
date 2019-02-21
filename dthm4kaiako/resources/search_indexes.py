@@ -1,9 +1,13 @@
+"""Index for resource application."""
+
 from django.template.loader import render_to_string
 from haystack import indexes
 from resources.models import Resource, Language
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
+    """Index for resource objects."""
+
     text = indexes.CharField(document=True, use_template=True)
     languages = indexes.FacetMultiValueField()
     technology_curriculum_strands = indexes.FacetMultiValueField()
@@ -94,6 +98,10 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         }
         return render_to_string('resources/resource-card.html', context=context)
 
-
     def get_model(self):
+        """Return model for search index.
+
+        Returns:
+            Resource class.
+        """
         return Resource
