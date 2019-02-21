@@ -10,7 +10,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
     languages = indexes.FacetMultiValueField()
-    technology_curriculum_strands = indexes.FacetMultiValueField()
+    technological_areas = indexes.FacetMultiValueField()
     progress_outcomes = indexes.FacetMultiValueField()
     nzqa_standards = indexes.FacetMultiValueField()
     year_levels = indexes.FacetMultiValueField()
@@ -28,8 +28,8 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         """
         return list(obj.languages.all().values_list("pk", flat=True))
 
-    def prepare_technology_curriculum_strands(self, obj):
-        """Create data for technology curriculum strands index value.
+    def prepare_technological_areas(self, obj):
+        """Create data for technological areas index value.
 
         Args:
             obj (Resource): Resource object.
@@ -37,7 +37,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         Returns:
             List of primary keys as strings.
         """
-        return list(obj.technology_curriculum_strands.all().values_list("pk", flat=True))
+        return list(obj.technological_areas.all().values_list("pk", flat=True))
 
     def prepare_progress_outcomes(self, obj):
         """Create data for progress outcomes index value.

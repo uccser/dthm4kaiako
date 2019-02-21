@@ -20,8 +20,8 @@
             {% for year_level in resource.year_levels.all %}
                 {% include "resources/badges/year-level.html" %}
             {% endfor %}
-            {% for technology_curriculum_strand in resource.technology_curriculum_strands.all %}
-                {% include "resources/badges/technology-curriculum-strand.html" %}
+            {% for technological_area in resource.technological_areas.all %}
+                {% include "resources/badges/technological-area.html" %}
             {% endfor %}
             {% for progress_outcome in resource.progress_outcomes.all %}
                 {% include "resources/badges/progress-outcome.html" %}

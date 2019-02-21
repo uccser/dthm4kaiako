@@ -1,12 +1,14 @@
 """Module for forms for resource module."""
 
-
 from django import forms
 from haystack.forms import FacetedSearchForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import Field
+from crispy_forms.layout import Layout, Submit, Row, Column
 from resources.models import (
     Resource,
     Language,
-    TechnologyCurriculumStrand,
+    TechnologicalArea,
     ProgressOutcome,
     NZQAStandard,
     YearLevel,
@@ -23,10 +25,10 @@ class ResourceSearchForm(FacetedSearchForm):
         label='Languages',
         widget=forms.CheckboxSelectMultiple(),
     )
-    tech_strands = forms.ModelMultipleChoiceField(
-        queryset=TechnologyCurriculumStrand.objects.all(),
+    tech_areas = forms.ModelMultipleChoiceField(
+        queryset=TechnologicalArea.objects.all(),
         required=False,
-        label='Technology curriculum strands',
+        label='Technological areas',
         widget=forms.CheckboxSelectMultiple(),
     )
     progress_outcomes = forms.ModelMultipleChoiceField(
@@ -86,10 +88,10 @@ class ResourceSearchForm(FacetedSearchForm):
             search_query_set = search_query_set.filter(
                 languages__in=primary_keys
             )
-        if self.cleaned_data['tech_strands']:
-            primary_keys = list(map(str, self.cleaned_data['tech_strands'].values_list('pk', flat=True)))
+        if self.cleaned_data['tech_areas']:
+            primary_keys = list(map(str, self.cleaned_data['tech_areas'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
-                technology_curriculum_strands__in=primary_keys
+                technological_areas__in=primary_keys
             )
         if self.cleaned_data['progress_outcomes']:
             primary_keys = list(map(str, self.cleaned_data['progress_outcomes'].values_list('pk', flat=True)))

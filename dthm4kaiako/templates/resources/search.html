@@ -3,19 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block page_heading %}
-    <h1>Search</h1>
+    <h1>Resource Search</h1>
 {% endblock page_heading %}
 
 {% block content_container %}
     <div class="col-12 mb-3">
-        <form method="get" action=".">
-            {{ form|crispy }}
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </div>
-        </form>
+        {% crispy form %}
     </div>
 
     <div class="col-12">

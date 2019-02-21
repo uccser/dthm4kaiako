@@ -19,36 +19,36 @@ $hover-alpha: .1;
   }
 }
 
-// Technology curriculum strands and progress outcomes
+// Technological areas and progress outcomes
 
-$tls-ct: #1a5881;
-$tls-dddo: #269d6e;
+$ta-ct: #1a5881;
+$ta-dddo: #269d6e;
 
-.tcs-ct {
+.ta-ct {
   @extend .badge;
   @extend .badge-pill;
-  background-color: $tls-ct;
-  color: mix($tls-ct, #fff, 20%);
+  background-color: $ta-ct;
+  color: mix($ta-ct, #fff, 20%);
 }
 .po-ct {
   @extend .badge;
   @extend .badge-pill;
-  background-color: rgba($tls-ct, 0.2);
-  box-shadow:inset 0px 0px 0px 2px $tls-ct;
-  color: $tls-ct;
+  background-color: rgba($ta-ct, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $ta-ct;
+  color: $ta-ct;
 }
-.tcs-dddo {
+.ta-dddo {
   @extend .badge;
   @extend .badge-pill;
-  background-color: $tls-dddo;
-  color: mix($tls-dddo, #fff, 20%);
+  background-color: $ta-dddo;
+  color: mix($ta-dddo, #fff, 20%);
 }
 .po-dddo {
   @extend .badge;
   @extend .badge-pill;
-  background-color: rgba($tls-dddo, 0.2);
-  box-shadow:inset 0px 0px 0px 2px $tls-dddo;
-  color: $tls-dddo;
+  background-color: rgba($ta-dddo, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $ta-dddo;
+  color: $ta-dddo;
 }
 
 

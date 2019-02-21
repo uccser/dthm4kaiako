@@ -20,7 +20,7 @@ class ResourceListView(generic.ListView):
     queryset = Resource.objects.order_by('name').annotate(Count('components')).prefetch_related(
         'progress_outcomes',
         'year_levels',
-        'technology_curriculum_strands',
+        'technological_areas',
         'languages',
         'nzqa_standards',
         'curriculum_learning_areas',

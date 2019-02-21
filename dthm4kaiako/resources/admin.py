@@ -5,7 +5,7 @@ from resources.models import (
     Resource,
     ResourceComponent,
     Language,
-    TechnologyCurriculumStrand,
+    TechnologicalArea,
     ProgressOutcome,
     NZQAStandard,
     YearLevel,
@@ -44,7 +44,7 @@ class ResourceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Language)
-admin.site.register(TechnologyCurriculumStrand)
+admin.site.register(TechnologicalArea)
 admin.site.register(ProgressOutcome)
 admin.site.register(NZQAStandard, NZQAStandardAdmin)
 admin.site.register(YearLevel)
