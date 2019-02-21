@@ -2,6 +2,7 @@
 
 from django.views import generic
 from django.db.models import Count
+from haystack.generic_views import SearchView
 from rest_framework import viewsets
 from utils.mixins import RedirectToCosmeticURLMixin
 from resources.serializers import ResourceSerializer
@@ -10,6 +11,7 @@ from resources.models import (
     ResourceComponent,
     Language,
 )
+from resources.forms import ResourceSearchForm
 
 
 class ResourceListView(generic.ListView):
@@ -53,6 +55,23 @@ class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['components'] = self.object.components.order_by('name')
         context['components_of'] = self.object.component_of.order_by('name')
+        return context
+
+
+class ResourceSearchView(SearchView):
+    """View for resource search."""
+
+    template_name = 'resources/search.html'
+    form_class = ResourceSearchForm
+
+    def get_context_data(self, *args, **kwargs):
+        """Return context dictionary for resource search view.
+
+        Returns:
+            Dictionary of context values.
+        """
+        context = super().get_context_data(*args, **kwargs)
+        context['search'] = bool(self.request.GET)
         return context
 
 

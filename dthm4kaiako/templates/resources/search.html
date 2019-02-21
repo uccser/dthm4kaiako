@@ -1,0 +1,44 @@
+{% extends "resources/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block page_heading %}
+    <h1>Search</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <form method="get" action=".">
+        {{ form|crispy }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+
+        {% if search %}
+            <h3>Results</h3>
+
+            {% for result in page_obj.object_list %}
+                <p>
+                    <a href="{{ result.object.get_absolute_url }}">
+                        {{ result.object.name }}
+                    </a>
+                </p>
+            {% empty %}
+                <p>No results found.</p>
+            {% endfor %}
+
+            {% if page_obj.has_previous or page_obj.has_next %}
+            <div>
+                {% if page_obj.has_previous %}<a href="?q={{ query }}&amp;page={{ page_obj.previous_page_number }}">{% endif %}&laquo;
+                    Previous{% if page_obj.has_previous %}</a>{% endif %}
+                |
+                {% if page_obj.has_next %}<a href="?q={{ query }}&amp;page={{ page_obj.next_page_number }}">{% endif %}Next
+                    &raquo;{% if page_obj.has_next %}</a>{% endif %}
+            </div>
+            {% endif %}
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+    </form>
+{% endblock content_container %}
