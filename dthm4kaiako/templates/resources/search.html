@@ -1,6 +1,6 @@
 {% extends "resources/base.html" %}
 
-{% load crispy_forms_tags %}
+{% load static query_replace %}
 
 {% block page_heading %}
     <h1>Resource Search</h1>
@@ -8,8 +8,8 @@
 
 {% block content_container %}
     <div class="col-12 mb-3">
-        <form method="get" action=".">
-            <input type="search" name="q" class="form-control form-control-lg" placeholder="What are you searching for?"
+        <form method="get" action="." id="resource-search">
+            <input type="search" id="id_q" name="q" class="form-control form-control-lg" placeholder="What are you searching for?"
                 aria-describedby="searchHelpText" {% if form.q.value != None %}value="{{ form.q.value|stringformat:'s' }}"{% endif %}>
             <small id="searchHelpText" class="form-text text-muted pl-3">
                 Leave blank to search all items.
@@ -23,7 +23,7 @@
                         {% for language in form.lang.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="lang" id="id_lang_{{ language.pk }}"
-                                value="{{ language.pk }}" {% if language.pk|stringformat:"i" in form.lang.value %}checked="checked"{% endif %}>
+                                value="{{ language.pk }}" {% if language.pk|stringformat:'i' in form.lang.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_lang_{{ language.pk }}">
                                 {% include 'resources/badges/language.html' %}
                             </label>
@@ -36,7 +36,7 @@
                         {% for year_level in form.year_level.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="year_level" id="id_yl_{{ year_level.pk }}"
-                                value="{{ year_level.pk }}" {% if year_level.pk|stringformat:"i" in form.year_level.value %}checked="checked"{% endif %}>
+                                value="{{ year_level.pk }}" {% if year_level.pk|stringformat:'i' in form.year_level.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_yl_{{ year_level.pk }}">
                                 {% include 'resources/badges/year-level.html' %}
                             </label>
@@ -50,7 +50,7 @@
                             <input type="checkbox" class="form-check-input" name="curriculum_area"
                                 id="id_ca_{{ curriculum_learning_area.pk }}"
                                 value="{{ curriculum_learning_area.pk }}"
-                                {% if curriculum_learning_area.pk|stringformat:"i" in form.curriculum_area.value %}checked="checked"{% endif %}>
+                                {% if curriculum_learning_area.pk|stringformat:'i' in form.curriculum_area.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ca_{{ curriculum_learning_area.pk }}">
                                 {% include 'resources/badges/curriculum-learning-area.html' %}
                             </label>
@@ -62,7 +62,7 @@
                         {% for technological_area in form.tech_area.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="tech_area" id="id_ta_{{ technological_area.pk }}"
-                                value="{{ technological_area.pk }}" {% if technological_area.pk|stringformat:"i" in form.tech_area.value %}checked="checked"{% endif %}>
+                                value="{{ technological_area.pk }}" {% if technological_area.pk|stringformat:'i' in form.tech_area.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ta_{{ technological_area.pk }}">
                                 {% include 'resources/badges/technological-area.html' %}
                             </label>
@@ -74,7 +74,7 @@
                         {% for progress_outcome in form.progress_outcome.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="progress_outcome" id="id_po_{{ progress_outcome.pk }}"
-                                value="{{ progress_outcome.pk }}" {% if progress_outcome.pk|stringformat:"i" in form.progress_outcome.value %}checked="checked"{% endif %}>
+                                value="{{ progress_outcome.pk }}" {% if progress_outcome.pk|stringformat:'i' in form.progress_outcome.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_po_{{ progress_outcome.pk }}">
                                 {% include 'resources/badges/progress-outcome.html' %}
                             </label>
@@ -86,7 +86,7 @@
                         {% for nzqa_standard in form.nzqa_standard.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="nzqa_standard" id="id_ns_{{ nzqa_standard.pk }}"
-                                value="{{ nzqa_standard.pk }}" {% if nzqa_standard.pk|stringformat:"i" in form.nzqa_standard.value %}checked="checked"{% endif %}>
+                                value="{{ nzqa_standard.pk }}" {% if nzqa_standard.pk|stringformat:'i' in form.nzqa_standard.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ns_{{ nzqa_standard.pk }}">
                                 {% include 'resources/badges/nzqa-standard.html' %}
                             </label>
@@ -96,7 +96,8 @@
                 </div>
             </details>
 
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="button" id="clear-form" class="btn btn-outline-danger mb-3">Clear form</button>
+            <button type="submit" class="btn btn-success mb-3 float-right" name="page" value="1">Search</button>
         </form>
     </div>
 
@@ -104,19 +105,38 @@
         {% if search %}
             <h3>Results</h3>
 
+            <p class="text-center">
+                <em>
+                    Showing {% if is_paginated %}results {{ page_obj.start_index }} to {{ page_obj.end_index }} of {% endif %}{{ paginator.count }} results
+                </em>
+            </p>
+
             {% for result in page_obj.object_list %}
                 {{ result.html_result|safe }}
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
 
-            {% if page_obj.has_previous or page_obj.has_next %}
-            <div>
-                {% if page_obj.has_previous %}<a href="?q={{ query }}&amp;page={{ page_obj.previous_page_number }}">{% endif %}&laquo;
-                    Previous{% if page_obj.has_previous %}</a>{% endif %}
-                |
-                {% if page_obj.has_next %}<a href="?q={{ query }}&amp;page={{ page_obj.next_page_number }}">{% endif %}Next
-                    &raquo;{% if page_obj.has_next %}</a>{% endif %}
+            {% if paginator.num_pages > 1 %}
+            <div class="text-center">
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-link"
+                        href="{% url 'resources:search' %}?{% query_replace page=page_obj.previous_page_number %}">&laquo; Previous page</a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-link" href="{% url 'resources:search' %}?{% query_replace page=page_obj.next_page_number %}">Next page
+                        &raquo;</a>
+                {% endif %}
+            </div>
+            <div id="result-page-links" class="text-center">
+                <span>Jump to page:</span>
+                {% for page in paginator.page_range %}
+                    {% if page_obj.number == page %}
+                        <a class="btn btn-link disabled" aria-disabled="true">{{ page }}</a>
+                    {% else %}
+                        <a class="btn btn-link" href="{% url 'resources:search' %}?{% query_replace page=page %}">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
             </div>
             {% endif %}
         {% else %}
@@ -124,3 +144,7 @@
         {% endif %}
     </div>
 {% endblock content_container %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/resource-search.js' %}"></script>
+{% endblock scripts %}

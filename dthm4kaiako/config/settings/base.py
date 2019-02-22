@@ -243,6 +243,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',
+                'query_replace': 'config.templatetags.query_replace',
             },
         },
     },
