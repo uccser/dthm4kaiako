@@ -2,9 +2,6 @@
 
 from django import forms
 from haystack.forms import FacetedSearchForm
-from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import Field
-from crispy_forms.layout import Layout, Submit, Row, Column
 from resources.models import (
     Resource,
     Language,
