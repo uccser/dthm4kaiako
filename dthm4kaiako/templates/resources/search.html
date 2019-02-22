@@ -16,7 +16,13 @@
             </small>
 
             <details class="my-3">
-                <summary>Filter by:</summary>
+                <summary>
+                    Filters
+                    <div id="filter-summary" class="text-muted text-right">
+                        <div id="filter-summary-text"></div>
+                        <div id="filter-summary-badges"></div>
+                    </div>
+                </summary>
                 <div class="form-row boxed-text-content">
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Languages</strong>
@@ -44,7 +50,7 @@
                         {% endfor %}
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
-                        <strong>Curriculum learning area</strong>
+                        <strong>Curriculum learning areas</strong>
                         {% for curriculum_learning_area in form.curriculum_area.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="curriculum_area"
@@ -82,7 +88,7 @@
                         {% endfor %}
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
-                        <strong>NZQA standard</strong>
+                        <strong>NZQA standards</strong>
                         {% for nzqa_standard in form.nzqa_standard.field.queryset %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="nzqa_standard" id="id_ns_{{ nzqa_standard.pk }}"

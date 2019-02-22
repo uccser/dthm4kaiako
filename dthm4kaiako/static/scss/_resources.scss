@@ -133,3 +133,20 @@ $language-width: 4rem;
   display: inline-block;
   width: $language-width;
 }
+
+// Search page
+#resource-search {
+  #filter-summary {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 80%;
+    margin-left: 1rem;
+    min-height: 2.7rem;
+  }
+  .dthm-badge {
+    user-select: none;
+    vertical-align: 2px;
+  }
+}
