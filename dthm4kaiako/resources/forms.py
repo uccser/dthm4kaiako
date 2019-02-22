@@ -25,31 +25,31 @@ class ResourceSearchForm(FacetedSearchForm):
         label='Languages',
         widget=forms.CheckboxSelectMultiple(),
     )
-    tech_areas = forms.ModelMultipleChoiceField(
+    tech_area = forms.ModelMultipleChoiceField(
         queryset=TechnologicalArea.objects.all(),
         required=False,
         label='Technological areas',
         widget=forms.CheckboxSelectMultiple(),
     )
-    progress_outcomes = forms.ModelMultipleChoiceField(
+    progress_outcome = forms.ModelMultipleChoiceField(
         queryset=ProgressOutcome.objects.all(),
         required=False,
         label='Progress outcomes',
         widget=forms.CheckboxSelectMultiple(),
     )
-    nzqa_standards = forms.ModelMultipleChoiceField(
+    nzqa_standard = forms.ModelMultipleChoiceField(
         queryset=NZQAStandard.objects.all(),
         required=False,
         label='NZQA standards',
         widget=forms.CheckboxSelectMultiple(),
     )
-    year_levels = forms.ModelMultipleChoiceField(
+    year_level = forms.ModelMultipleChoiceField(
         queryset=YearLevel.objects.all(),
         required=False,
         label='Year levels',
         widget=forms.CheckboxSelectMultiple(),
     )
-    curriculum_areas = forms.ModelMultipleChoiceField(
+    curriculum_area = forms.ModelMultipleChoiceField(
         queryset=CurriculumLearningArea.objects.all(),
         required=False,
         label='Curriculum learning areas',
@@ -88,28 +88,28 @@ class ResourceSearchForm(FacetedSearchForm):
             search_query_set = search_query_set.filter(
                 languages__in=primary_keys
             )
-        if self.cleaned_data['tech_areas']:
-            primary_keys = list(map(str, self.cleaned_data['tech_areas'].values_list('pk', flat=True)))
+        if self.cleaned_data['tech_area']:
+            primary_keys = list(map(str, self.cleaned_data['tech_area'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 technological_areas__in=primary_keys
             )
-        if self.cleaned_data['progress_outcomes']:
-            primary_keys = list(map(str, self.cleaned_data['progress_outcomes'].values_list('pk', flat=True)))
+        if self.cleaned_data['progress_outcome']:
+            primary_keys = list(map(str, self.cleaned_data['progress_outcome'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 progress_outcomes__in=primary_keys
             )
-        if self.cleaned_data['nzqa_standards']:
-            primary_keys = list(map(str, self.cleaned_data['nzqa_standards'].values_list('pk', flat=True)))
+        if self.cleaned_data['nzqa_standard']:
+            primary_keys = list(map(str, self.cleaned_data['nzqa_standard'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 nzqa_standards__in=primary_keys
             )
-        if self.cleaned_data['year_levels']:
-            primary_keys = list(map(str, self.cleaned_data['year_levels'].values_list('pk', flat=True)))
+        if self.cleaned_data['year_level']:
+            primary_keys = list(map(str, self.cleaned_data['year_level'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 year_levels__in=primary_keys
             )
-        if self.cleaned_data['curriculum_areas']:
-            primary_keys = list(map(str, self.cleaned_data['curriculum_areas'].values_list('pk', flat=True)))
+        if self.cleaned_data['curriculum_area']:
+            primary_keys = list(map(str, self.cleaned_data['curriculum_area'].values_list('pk', flat=True)))
             search_query_set = search_query_set.filter(
                 curriculum_learning_areas__in=primary_keys
             )
