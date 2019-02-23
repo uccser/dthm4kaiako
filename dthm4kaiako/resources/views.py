@@ -1,7 +1,6 @@
 """Views for resource application."""
 
 from django.views import generic
-from django.db.models import Count
 from haystack.generic_views import SearchView
 from rest_framework import viewsets
 from utils.mixins import RedirectToCosmeticURLMixin
