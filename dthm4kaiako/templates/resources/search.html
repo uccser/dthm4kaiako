@@ -31,7 +31,7 @@
                             <input type="checkbox" class="form-check-input" name="lang" id="id_lang_{{ language.pk }}"
                                 value="{{ language.pk }}" {% if language.pk|stringformat:'i' in form.lang.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_lang_{{ language.pk }}">
-                                {% include 'resources/badges/language.html' %}
+                                {% include 'resources/badges/language.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}
@@ -44,7 +44,7 @@
                             <input type="checkbox" class="form-check-input" name="year_level" id="id_yl_{{ year_level.pk }}"
                                 value="{{ year_level.pk }}" {% if year_level.pk|stringformat:'i' in form.year_level.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_yl_{{ year_level.pk }}">
-                                {% include 'resources/badges/year-level.html' %}
+                                {% include 'resources/badges/year-level.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}
@@ -58,7 +58,7 @@
                                 value="{{ curriculum_learning_area.pk }}"
                                 {% if curriculum_learning_area.pk|stringformat:'i' in form.curriculum_area.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ca_{{ curriculum_learning_area.pk }}">
-                                {% include 'resources/badges/curriculum-learning-area.html' %}
+                                {% include 'resources/badges/curriculum-learning-area.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}
@@ -70,7 +70,7 @@
                             <input type="checkbox" class="form-check-input" name="tech_area" id="id_ta_{{ technological_area.pk }}"
                                 value="{{ technological_area.pk }}" {% if technological_area.pk|stringformat:'i' in form.tech_area.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ta_{{ technological_area.pk }}">
-                                {% include 'resources/badges/technological-area.html' %}
+                                {% include 'resources/badges/technological-area.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}
@@ -82,7 +82,7 @@
                             <input type="checkbox" class="form-check-input" name="progress_outcome" id="id_po_{{ progress_outcome.pk }}"
                                 value="{{ progress_outcome.pk }}" {% if progress_outcome.pk|stringformat:'i' in form.progress_outcome.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_po_{{ progress_outcome.pk }}">
-                                {% include 'resources/badges/progress-outcome.html' %}
+                                {% include 'resources/badges/progress-outcome.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}
@@ -94,7 +94,7 @@
                             <input type="checkbox" class="form-check-input" name="nzqa_standard" id="id_ns_{{ nzqa_standard.pk }}"
                                 value="{{ nzqa_standard.pk }}" {% if nzqa_standard.pk|stringformat:'i' in form.nzqa_standard.value %}checked{% endif %}>
                             <label class="form-check-label" for="id_ns_{{ nzqa_standard.pk }}">
-                                {% include 'resources/badges/nzqa-standard.html' %}
+                                {% include 'resources/badges/nzqa-standard.html' with no_link=True %}
                             </label>
                         </div>
                         {% endfor %}

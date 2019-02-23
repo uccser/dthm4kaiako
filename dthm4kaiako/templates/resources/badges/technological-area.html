@@ -1,3 +1,4 @@
-<span class="dthm-badge {{ technological_area.css_class }}">
+<{% if no_link %}span{% else %}a href="{% url 'resources:search' %}?tech_area={{ technological_area.pk }}"{% endif %}
+    class="dthm-badge {{ technological_area.css_class }}">
     {{ technological_area.abbreviation }}
-</span>
+</{% if no_link %}span{% else %}a{% endif %}>

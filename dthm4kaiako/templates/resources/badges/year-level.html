@@ -1,3 +1,4 @@
-<span class="dthm-badge year-level-{{ year_level.level }}">
+<{% if no_link %}span{% else %}a href="{% url 'resources:search' %}?year_level={{ year_level.pk }}"{% endif %}
+    class="dthm-badge year-level-{{ year_level.level }}">
     {{ year_level }}
-</span>
+</{% if no_link %}span{% else %}a{% endif %}>

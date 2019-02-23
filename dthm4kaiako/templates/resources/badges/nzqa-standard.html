@@ -1,3 +1,4 @@
-<span class="dthm-badge ncea-level ncea-level-{{ nzqa_standard.level }}">
+<{% if no_link %}span{% else %}a href="{% url 'resources:search' %}?nzqa_standard={{ nzqa_standard.pk }}"{% endif %}
+    class="dthm-badge ncea-level ncea-level-{{ nzqa_standard.level }}">
     {{ nzqa_standard.abbreviation }}
-</span>
+</{% if no_link %}span{% else %}a{% endif %}>

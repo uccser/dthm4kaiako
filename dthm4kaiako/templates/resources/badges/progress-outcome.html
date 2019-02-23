@@ -1,3 +1,4 @@
-<span class="dthm-badge {{ progress_outcome.css_class }}">
+<{% if no_link %}span{% else %}a href="{% url 'resources:search' %}?progress_outcome={{ progress_outcome.pk }}"{% endif %}
+    class="dthm-badge {{ progress_outcome.css_class }}">
     {{ progress_outcome.abbreviation }}
-</span>
+</{% if no_link %}span{% else %}a{% endif %}>
