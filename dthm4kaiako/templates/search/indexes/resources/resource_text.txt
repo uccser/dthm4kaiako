@@ -1,2 +1,35 @@
 {{ object.name }}
 {{ object.description }}
+
+{% for language in object.languages.all %}
+    {{ language.name }}
+{% endfor %}
+
+{% for technological_area in object.technological_areas.all %}
+    {{ technological_area.name }}
+    {{ technological_area.abbreviation }}
+{% endfor %}
+
+{% for progress_outcome in object.progress_outcomes.all %}
+    {{ progress_outcome.name }}
+    {{ progress_outcome.abbreviation }}
+{% endfor %}
+
+{% for nzqa_standard in object.nzqa_standards.all %}
+    {{ nzqa_standard.name }}
+    {{ nzqa_standard.abbreviation }}
+    {{ nzqa_standard.get_level_display }}
+{% endfor %}
+
+{% for year_level in object.year_levels.all %}
+    {{ year_level }}
+{% endfor %}
+
+{% for curriculum_learning_area in object.curriculum_learning_areas.all %}
+    {{ curriculum_learning_area.name }}
+{% endfor %}
+
+{% for component in object.components.all %}
+    {{ component.name }}
+    {{ component.get_component_type_display }}
+{% endfor %}
