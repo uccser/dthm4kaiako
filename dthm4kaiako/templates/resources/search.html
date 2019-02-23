@@ -9,7 +9,7 @@
 {% block content_container %}
     <div class="col-12 mb-3">
         <form method="get" action="." id="resource-search">
-            <input type="search" id="id_q" name="q" class="form-control form-control-lg" placeholder="What are you searching for?"
+            <input type="search" id="id_q" name="q" class="form-control form-control-lg" placeholder="What resources are you searching for?"
                 aria-describedby="searchHelpText" {% if form.q.value != None %}value="{{ form.q.value|stringformat:'s' }}"{% endif %}>
             <small id="searchHelpText" class="form-text text-muted pl-3">
                 Leave blank to search all items.
@@ -113,7 +113,7 @@
 
             <p class="text-center">
                 <em>
-                    Showing {% if is_paginated %}results {{ page_obj.start_index }} to {{ page_obj.end_index }} of {% endif %}{{ paginator.count }} results
+                    Showing {% if is_paginated %}results {{ page_obj.start_index }} to {{ page_obj.end_index }} of {% endif %}{{ paginator.count }} result{{ paginator.count|pluralize }}
                 </em>
             </p>
 

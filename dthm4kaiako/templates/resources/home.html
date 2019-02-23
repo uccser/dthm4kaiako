@@ -1,0 +1,41 @@
+{% extends "resources/base.html" %}
+
+{% load humanize %}
+
+{% block page_heading %}
+    <h1>Resources</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        <p>
+            Find resources for the Digital Technology and Hangarau Matihiko.
+            Currently there are <strong>{{ resource_count }}</strong> resources listed containing <strong>{{ resource_component_count }}</strong> components.
+        </p>
+
+        <form method="get" action="{% url 'resources:search' %}" class="mt-4 mb-2">
+            <label for="id_q" class="h4">Search</label>
+            <div class="d-flex flex-column flex-md-row">
+                <div class="flex-grow mr-md-3">
+                    <input type="search" id="id_q" name="q" class="form-control form-control-lg w-100" placeholder="What resources are you searching for?">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-lg btn-block btn-success">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <p>You can also filter resources using our <a href="{% url 'resources:search' %}">advanced search</a>.</p>
+
+        <h2 class="h4 mt-4">Latest resources</h3>
+    </div>
+
+    {% for resource in latest_resources %}
+        <div class="col-12 col-md-3 col-xl-2 text-muted mb-1">
+            Added {{ resource.datetime_added|naturaltime }}:
+        </div>
+        <div class="col-12 col-md-9 col-xl-10">
+            {% include "resources/resource-card.html" %}
+        </div>
+    {% endfor %}
+{% endblock content_container %}

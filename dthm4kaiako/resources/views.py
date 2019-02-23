@@ -14,18 +14,10 @@ from resources.models import (
 from resources.forms import ResourceSearchForm
 
 
-class ResourceListView(generic.ListView):
-    """View for listing resources."""
+class ResourceHomeView(generic.TemplateView):
+    """View for home of resources."""
 
-    queryset = Resource.objects.order_by('name').annotate(Count('components')).prefetch_related(
-        'progress_outcomes',
-        'year_levels',
-        'technological_areas',
-        'languages',
-        'nzqa_standards',
-        'curriculum_learning_areas',
-    )
-    context_object_name = 'resources'
+    template_name = 'resources/home.html'
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the resource list view.
@@ -37,6 +29,14 @@ class ResourceListView(generic.ListView):
         context['resource_count'] = Resource.objects.count()
         context['resource_component_count'] = ResourceComponent.objects.count()
         context['languages'] = Language.objects.all()
+        context['latest_resources'] = Resource.objects.order_by('-datetime_added').prefetch_related(
+            'progress_outcomes',
+            'year_levels',
+            'technological_areas',
+            'languages',
+            'nzqa_standards',
+            'curriculum_learning_areas',
+        )[:10]
         return context
 
 

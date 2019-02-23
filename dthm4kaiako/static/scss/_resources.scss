@@ -137,7 +137,7 @@ $language-width: 4rem;
 // Search page
 #resource-search {
   #filter-summary {
-    flex-grow: 1;
+    @extend .flex-grow;
     display: flex;
     flex-direction: column;
     justify-content: center;
