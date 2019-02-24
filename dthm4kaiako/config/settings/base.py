@@ -109,7 +109,8 @@ THIRD_PARTY_APPS = [
     'markdownx',
     'ckeditor',
     'ckeditor_uploader',
-    'django_activeurl'
+    'django_activeurl',
+    'haystack',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -242,6 +243,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',
+                'query_replace': 'config.templatetags.query_replace',
             },
         },
     },
@@ -368,5 +370,16 @@ LOGGING = {
             'propagate': False,
             'level': 'DEBUG',
         },
+    },
+}
+
+
+# Search (django-haystack)
+# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'URL': 'elasticsearch:9200/',
+        'INDEX_NAME': 'haystack',
     },
 }

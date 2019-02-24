@@ -4,10 +4,10 @@
   "main": "gulpfile.js",
   "private": true,
   "dependencies": {
-    "bootstrap": "4.2.1",
+    "bootstrap": "4.3.1",
     "details-element-polyfill": "2.3.0",
-    "fuse.js": "3.3.0",
-    "popper.js": "1.14.6",
+    "fuse.js": "3.4.2",
+    "popper.js": "1.14.7",
     "jquery": "3.3.1"
   },
   "devDependencies": {

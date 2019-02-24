@@ -1,8 +1,8 @@
 version: '3'
 services:
   postgres:
-    restart: always
     image: postgres:9.6.11
+    restart: always
     # Set port to non-standard value to not use Travis CI Postgres server.
     command: postgres -p 5434
 
@@ -34,3 +34,7 @@ services:
       - django
     ports:
       - "82:80"
+
+  elasticsearch:
+    image: elasticsearch:2
+    restart: always

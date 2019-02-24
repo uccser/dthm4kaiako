@@ -1,3 +1,4 @@
-<span class="cla-badge cla-{{ curriculum_learning_area.css_class }}">
+<{% if no_link %}span{% else %}a href="{% url 'resources:search' %}?curriculum_area={{ curriculum_learning_area.pk }}"{% endif %}
+    class="dthm-badge cla-badge cla-{{ curriculum_learning_area.css_class }}">
     {{ curriculum_learning_area }}
-</span>
+</{% if no_link %}span{% else %}a{% endif %}>

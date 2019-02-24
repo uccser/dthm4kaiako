@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
 from resources.models import (
     Language,
-    TechnologyCurriculumStrand,
+    TechnologicalArea,
     ProgressOutcome,
     YearLevel,
     CurriculumLearningArea,
@@ -87,28 +87,28 @@ class Command(management.base.BaseCommand):
                 name=area_name,
                 css_class=area_css_class,
             )
-        tcs_ct = TechnologyCurriculumStrand.objects.create(
+        ta_ct = TechnologicalArea.objects.create(
             name='Computational thinking',
             abbreviation='CT',
-            css_class='tcs-ct',
+            css_class='ta-ct',
         )
         for i in range(1, 9):
             ProgressOutcome.objects.create(
                 name='Computational thinking - Progress outcome {}'.format(i),
                 abbreviation='CT PO{}'.format(i),
-                technology_curriculum_strand=tcs_ct,
+                technological_area=ta_ct,
                 css_class='po-ct',
             )
-        tcs_dddo = TechnologyCurriculumStrand.objects.create(
+        ta_dddo = TechnologicalArea.objects.create(
             name='Designing and developing digital outcomes',
             abbreviation='DDDO',
-            css_class='tcs-dddo',
+            css_class='ta-dddo',
         )
         for i in range(1, 7):
             ProgressOutcome.objects.create(
                 name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
                 abbreviation='DDDO PO{}'.format(i),
-                technology_curriculum_strand=tcs_dddo,
+                technological_area=ta_dddo,
                 css_class='po-dddo',
             )
         NZQAStandardFactory.create_batch(size=20)
