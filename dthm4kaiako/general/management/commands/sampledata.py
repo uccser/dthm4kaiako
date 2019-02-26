@@ -35,7 +35,7 @@ class Command(management.base.BaseCommand):
             )
 
         # Clear all data
-        # management.call_command('flush', interactive=False)
+        management.call_command('flush', interactive=False)
         print('Database wiped.')
 
         User = get_user_model()
