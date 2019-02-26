@@ -8,13 +8,13 @@ from resources.models import Resource, Language
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     """Index for resource objects."""
 
-    text = indexes.CharField(document=True, use_template=True)
-    languages = indexes.FacetMultiValueField()
-    technological_areas = indexes.FacetMultiValueField()
-    progress_outcomes = indexes.FacetMultiValueField()
-    nzqa_standards = indexes.FacetMultiValueField()
-    year_levels = indexes.FacetMultiValueField()
-    curriculum_learning_areas = indexes.FacetMultiValueField()
+    text = indexes.EdgeNgramField(document=True, use_template=True)
+    languages = indexes.MultiValueField()
+    technological_areas = indexes.MultiValueField()
+    progress_outcomes = indexes.MultiValueField()
+    nzqa_standards = indexes.MultiValueField()
+    year_levels = indexes.MultiValueField()
+    curriculum_learning_areas = indexes.MultiValueField()
     html_result = indexes.CharField(indexed=False)
 
     def prepare_languages(self, obj):

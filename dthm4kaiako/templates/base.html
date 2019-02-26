@@ -50,6 +50,10 @@
           {% include 'svg/logo.html' %}
         </a>
 
+        {% if DEPLOYMENT_TYPE == 'dev' %}
+          <span class="badge badge-warning">Test server</span>
+        {% endif %}
+
         <div class="collapse navbar-collapse" id="navbarPrimaryContent">
           {% activeurl %}
             <ul class="navbar-nav w-100">

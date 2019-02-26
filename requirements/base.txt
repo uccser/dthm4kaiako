@@ -23,5 +23,7 @@ django-filter==2.1.0  # https://github.com/carltongibson/django-filter/
 google-api-python-client==1.7.8
 
 # Search
-django-haystack==2.8.1  # https://github.com/django-haystack/django-haystack
-elasticsearch==2.4.1  # https://github.com/elastic/elasticsearch-py
+# https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
+git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261876a32bac2bbec94f
+# https://github.com/elastic/elasticsearch-py
+elasticsearch==5.5.3

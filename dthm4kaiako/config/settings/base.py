@@ -378,8 +378,14 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
         'URL': 'elasticsearch:9200/',
         'INDEX_NAME': 'haystack',
     },
 }
+
+# Other
+# ------------------------------------------------------------------------------
+DEPLOYMENT_TYPE = 'local'
+SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
+SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')

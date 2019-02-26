@@ -13,7 +13,14 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # app not on App Engine, make sure to set an appropriate host here.
 # See https://docs.djangoproject.com/en/1.10/ref/settings/
 ALLOWED_HOSTS = ['*']
-PREPEND_WWW = True
+
+# URL Configuration
+# ------------------------------------------------------------------------------
+DEPLOYMENT_TYPE = env("DEPLOYMENT", default=None)
+if DEPLOYMENT_TYPE == "prod":  # noqa: F405
+    PREPEND_WWW = True
+else:
+    PREPEND_WWW = False
 
 # DATABASES
 # ------------------------------------------------------------------------------
@@ -160,5 +167,10 @@ LOGGING = {
 }
 
 
-# Your stuff...
-# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
+        'URL': env('ELASTICSEARCH_CONNECTION_NAME'),
+        'INDEX_NAME': 'haystack',
+    },
+}
