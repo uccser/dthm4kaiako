@@ -25,7 +25,7 @@ jobs:
           script: bash ./infrastructure/dev-deploy/deploy-app.sh
           skip_cleanup: true
           on:
-            branch: issue/209
+            branch: develop
     - script: skip
       name: "Update Google Cloud SQL database"
       deploy:
@@ -33,7 +33,7 @@ jobs:
           script: bash ./infrastructure/dev-deploy/update-content.sh
           skip_cleanup: true
           on:
-            branch: issue/209
+            branch: develop
     - script: skip
       name: "Copy static files to Google Storage Bucket"
       deploy:
@@ -41,7 +41,7 @@ jobs:
           script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
           skip_cleanup: true
           on:
-            branch: issue/209
+            branch: develop
     - stage: production deployment
       script: skip
       name: "Deploy production website to Google App Engine"
