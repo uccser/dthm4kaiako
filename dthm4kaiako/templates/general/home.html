@@ -5,7 +5,7 @@
 {% block body_container %}
     <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-5">
         {% if messages %}
-        <div class="container">
+        <div class="container" id="messages">
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
                 {{ message }}
@@ -20,6 +20,12 @@
             <div class="col-12 text-center">
                 {% include 'svg/logo.html' %}
                 <div class="mb-4">
+                    {% if DEPLOYMENT_TYPE == 'dev' %}
+                        <div class="alert alert-warning d-inline-block" role="alert">
+                            You are viewing the test server, which only contains fake data for testing purposes.
+                        </div>
+                        <br>
+                    {% endif %}
                     <a href="https://github.com/uccser/dthm4kaiako/releases" class="badge badge-warning">
                         Alpha {{ VERSION_NUMBER }}
                     </a>
