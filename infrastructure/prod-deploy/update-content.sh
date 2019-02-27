@@ -7,6 +7,7 @@ cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
 
 # Decrypt secret files archive that contain credentials.
 ./infrastructure/prod-deploy/decrypt-prod-secrets.sh
+ls ./dthm4kaiako/
 
 # Load environment variables.
 source ./dthm4kaiako/load-prod-envs.sh
