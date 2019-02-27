@@ -26,4 +26,4 @@ google-api-python-client==1.7.8
 # https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
 git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261876a32bac2bbec94f
 # https://github.com/elastic/elasticsearch-py
-elasticsearch==5.5.3
+elasticsearch==5.5.3  # pyup: >=5,<6

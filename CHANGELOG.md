@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.11.0
+
+- Add resource search and filtering.
+- Resource badges are now a shortcut to the search page filtered by that badge.
+- Create development server for testing. ([fixes #209](https://github.com/uccser/dthm4kaiako/issues/209))
+- Dependencies changes:
+    - Update bootstrap from 4.2.1 to 4.3.1.
+    - Update fuse.js from 3.3.0 to 3.4.2.
+    - Update popper.js from 1.14.6 to 1.14.7.
+    - Update django-anymail from 5.0 to 6.0.
+    - Update django-allauth from 0.38.0 to 0.39.0.
+    - Add django-haystack with Elasticsearch 5 support.
+    - Add elasticsearch 5.5.3.
+    - Update flake8 from 3.7.6 to 3.7.7.
+    - Update django-extensions from 2.1.5 to 2.1.6.
+    - Update pytest-django from 3.4.7 to 3.4.8.
+    - Update google-auth from 1.6.2 to 1.6.3.
+
 ## 0.10.1
 
 - Update production secrets.

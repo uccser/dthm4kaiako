@@ -36,5 +36,5 @@ services:
       - "82:80"
 
   elasticsearch:
-    image: elasticsearch:2
+    image: elasticsearch:5
     restart: always

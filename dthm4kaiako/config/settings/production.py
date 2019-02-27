@@ -24,7 +24,7 @@ else:
 
 # Exempt Google App Engine cron job URLs from HTTPS to function correctly.
 SECURE_REDIRECT_EXEMPT = [
-    '^cron/.*',
+    r'^/?cron/.*',
 ]
 
 # DATABASES
