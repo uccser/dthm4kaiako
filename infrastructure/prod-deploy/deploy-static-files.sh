@@ -36,4 +36,3 @@ ssh-keygen -q -N "" -f ~/.ssh/google_compute_engine
 # Bucket.
 # See: https://cloud.google.com/python/django/flexible-environment#deploy_the_app_to_the_app_engine_flexible_environment
 gsutil rsync -R ./dthm4kaiako/staticfiles/ gs://dthm4kaiako.appspot.com/static/
-gsutil acl ch -r -u AllUsers:R gs://dthm4kaiako.appspot.com/static/
