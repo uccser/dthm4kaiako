@@ -8,7 +8,7 @@ from resources.models import Resource, Language
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     """Index for resource objects."""
 
-    text = indexes.EdgeNgramField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True)
     languages = indexes.MultiValueField()
     technological_areas = indexes.MultiValueField()
     progress_outcomes = indexes.MultiValueField()
