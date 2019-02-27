@@ -35,15 +35,15 @@ class Language(models.Model):
         ordering = ['-name']
 
 
-class TechnologyCurriculumStrand(models.Model):
-    """Model for a technology curriculum strand."""
+class TechnologicalArea(models.Model):
+    """Model for a technological areas."""
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
     css_class = models.CharField(max_length=30)
 
     def __str__(self):
-        """Text representation of a technology curriculum strand."""
+        """Text representation of a technological area."""
         return self.name
 
     class Meta:
@@ -57,8 +57,8 @@ class ProgressOutcome(models.Model):
 
     name = models.CharField(max_length=80)
     abbreviation = models.CharField(max_length=10)
-    technology_curriculum_strand = models.ForeignKey(
-        TechnologyCurriculumStrand,
+    technological_area = models.ForeignKey(
+        TechnologicalArea,
         on_delete=models.CASCADE,
         related_name='progress_outcomes',
     )
@@ -94,7 +94,7 @@ class NZQAStandard(models.Model):
 
     def __str__(self):
         """Text representation of a NZQA standard."""
-        return self.name
+        return self.abbreviation
 
     class Meta:
         """Meta options for class."""
@@ -146,8 +146,8 @@ class Resource(models.Model):
         Language,
         related_name='resources',
     )
-    technology_curriculum_strands = models.ManyToManyField(
-        TechnologyCurriculumStrand,
+    technological_areas = models.ManyToManyField(
+        TechnologicalArea,
         related_name='resources',
         blank=True,
     )

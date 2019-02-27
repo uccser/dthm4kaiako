@@ -35,10 +35,10 @@
                 {% endif %}
             </li>
             <li>
-                <strong>Technology curriculum strand:</strong>
-                {% if resource.technology_curriculum_strands.exists %}
-                    {% for technology_curriculum_strand in resource.technology_curriculum_strands.all %}
-                        {% include "resources/badges/technology-curriculum-strand.html" %}
+                <strong>Technological area:</strong>
+                {% if resource.technological_area.exists %}
+                    {% for technological_area in resource.technological_areas.all %}
+                        {% include "resources/badges/technological-area.html" %}
                     {% endfor %}
                 {% else %}
                     None listed

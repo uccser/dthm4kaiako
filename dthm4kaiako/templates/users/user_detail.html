@@ -23,6 +23,11 @@
             <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action">
               Manage your emails
             </a>
+            {% if object.is_staff %}
+              <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+                Open admin website
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>

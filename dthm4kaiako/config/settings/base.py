@@ -109,7 +109,8 @@ THIRD_PARTY_APPS = [
     'markdownx',
     'ckeditor',
     'ckeditor_uploader',
-    'django_activeurl'
+    'django_activeurl',
+    'haystack',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -242,6 +243,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',
+                'query_replace': 'config.templatetags.query_replace',
             },
         },
     },
@@ -370,3 +372,20 @@ LOGGING = {
         },
     },
 }
+
+
+# Search (django-haystack)
+# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
+        'URL': 'elasticsearch:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+# Other
+# ------------------------------------------------------------------------------
+DEPLOYMENT_TYPE = 'local'
+SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
+SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')

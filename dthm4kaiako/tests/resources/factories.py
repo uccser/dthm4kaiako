@@ -9,7 +9,7 @@ from resources.models import (
     Language,
     NZQAStandard,
     CurriculumLearningArea,
-    TechnologyCurriculumStrand,
+    TechnologicalArea,
     ProgressOutcome,
     YearLevel,
 )
@@ -67,15 +67,15 @@ class ResourceFactory(DjangoModelFactory):
         else:
             self.languages.add(random.choice(Language.objects.all()))
 
-        # Set technology curriculum strand
+        # Set technological areas
         # 20% chance both, otherwise one
         if random.randint(1, 5) == 1:
-            self.technology_curriculum_strands.add(
-                *TechnologyCurriculumStrand.objects.all()
+            self.technological_areas.add(
+                *TechnologicalArea.objects.all()
             )
         else:
-            self.technology_curriculum_strands.add(
-                random.choice(TechnologyCurriculumStrand.objects.all())
+            self.technological_areas.add(
+                random.choice(TechnologicalArea.objects.all())
             )
 
         # Choose primary (45%), secondary (45%), both (10%) for rest of variables
@@ -109,7 +109,7 @@ class ResourceFactory(DjangoModelFactory):
             self.progress_outcomes.add(
                 *random.sample(
                     list(ProgressOutcome.objects.filter(
-                        technology_curriculum_strand__in=self.technology_curriculum_strands.all()
+                        technological_area__in=self.technological_areas.all()
                     )),
                     random.randint(1, 3)
                 )

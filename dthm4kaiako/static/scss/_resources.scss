@@ -2,10 +2,8 @@ $hover-alpha: .1;
 
 // List view page
 #resources {
-  .resource:hover,
-  .resource:focus {
-    background-color: rgba($link-colour, $hover-alpha);
-    text-decoration: none;
+  .resource {
+    border: 1px solid rgba(0, 0, 0, 0.4)
   }
 }
 
@@ -21,36 +19,52 @@ $hover-alpha: .1;
   }
 }
 
-// Technology curriculum strands and progress outcomes
+// Technological areas and progress outcomes
 
-$tls-ct: #1a5881;
-$tls-dddo: #269d6e;
+$ta-ct: #1a5881;
+$ta-dddo: #269d6e;
 
-.tcs-ct {
+.ta-ct {
   @extend .badge;
   @extend .badge-pill;
-  background-color: $tls-ct;
-  color: mix($tls-ct, #fff, 20%);
+  background-color: $ta-ct;
+  color: mix($ta-ct, #fff, 20%);
+  &:hover {
+    background-color: darken($ta-ct, 10%);
+    color: mix($ta-ct, #fff, 30%);
+  }
 }
 .po-ct {
   @extend .badge;
   @extend .badge-pill;
-  background-color: rgba($tls-ct, 0.2);
-  box-shadow:inset 0px 0px 0px 2px $tls-ct;
-  color: $tls-ct;
+  background-color: rgba($ta-ct, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $ta-ct;
+  color: $ta-ct;
+  &:hover {
+    background-color: rgba($ta-ct, 0.4);
+    color: $ta-ct;
+  }
 }
-.tcs-dddo {
+.ta-dddo {
   @extend .badge;
   @extend .badge-pill;
-  background-color: $tls-dddo;
-  color: mix($tls-dddo, #fff, 20%);
+  background-color: $ta-dddo;
+  color: mix($ta-dddo, #fff, 20%);
+    &:hover {
+    background-color: darken($ta-dddo, 10%);
+    color: mix($ta-dddo, #fff, 30%);
+  }
 }
 .po-dddo {
   @extend .badge;
   @extend .badge-pill;
-  background-color: rgba($tls-dddo, 0.2);
-  box-shadow:inset 0px 0px 0px 2px $tls-dddo;
-  color: $tls-dddo;
+  background-color: rgba($ta-dddo, 0.2);
+  box-shadow:inset 0px 0px 0px 2px $ta-dddo;
+  color: $ta-dddo;
+  &:hover {
+    background-color: rgba($ta-dddo, 0.4);
+    color: $ta-dddo;
+  }
 }
 
 
@@ -59,29 +73,56 @@ $tls-dddo: #269d6e;
   @extend .badge;
   @extend .badge-pill;
   color: #fff;
+  &:hover {
+    color: $gray-200;
+  }
   &.cla-english {
     background-color: #00448a;
+    &:hover {
+      background-color: darken(#00448a, 10%);
+    }
   }
   &.cla-arts {
     background-color: #ce7812;
+    &:hover {
+      background-color: darken(#ce7812, 10%);
+    }
   }
   &.cla-health-pe {
     background-color: #b5152b;
+    &:hover {
+      background-color: darken(#b5152b, 10%);
+    }
   }
   &.cla-languages {
     background-color: #0096bb;
+    &:hover {
+      background-color: darken(#0096bb, 10%);
+    }
   }
   &.cla-mathematics {
     background-color: #90054f;
+    &:hover {
+      background-color: darken(#90054f, 10%);
+    }
   }
   &.cla-science {
     background-color: #003e27;
+    &:hover {
+      background-color: darken(#003e27, 10%);
+    }
   }
   &.cla-social-sciences {
     background-color: #6d1f80;
+    &:hover {
+      background-color: darken(#6d1f80, 10%);
+    }
   }
   &.cla-technology {
     background-color: #934b31;
+    &:hover {
+      background-color: darken(#934b31, 10%);
+    }
   }
 }
 
@@ -93,6 +134,10 @@ $tls-dddo: #269d6e;
     $year-level-background-colour: adjust-color(hsl(235, 20, 90), $lightness: (60 / 14 * $num) * -1%);
     background-color: $year-level-background-colour;
     color: get-text-colour($year-level-background-colour);
+    &:hover {
+      background-color: darken($year-level-background-colour, 15%);
+      color: get-text-colour($year-level-background-colour);
+    }
   }
 }
 
@@ -102,15 +147,27 @@ $ncea-level-colour: #900b00;
   @extend .badge;
   @extend .badge-pill;
   color: $ncea-level-colour;
+  &:hover {
+    color: $ncea-level-colour;
+  }
   box-shadow:inset 0px 0px 0px 2px $ncea-level-colour;
   &-1 {
     background-color: hsl(2, 90, 90);
+    &:hover {
+      background-color: darken(hsl(2, 90, 90), 10%);
+    }
   }
   &-2 {
     background-color: hsl(3, 90, 82);
+    &:hover {
+      background-color: darken(hsl(3, 90, 82), 10%);
+    }
   }
   &-3 {
     background-color: hsl(4, 90, 74);
+    &:hover {
+      background-color: darken(hsl(4, 90, 74), 10%);
+    }
   }
 }
 
@@ -125,13 +182,38 @@ $language-width: 4rem;
   &.language-en {
     background-color: $language-dark;
     color: $language-light;
+    &:hover {
+      background-color: lighten($language-dark, 13%);
+      color: $language-light;
+    }
   }
   &.language-mi {
     background-color: $language-light;
     color: $language-dark;
+    &:hover {
+      background-color: darken($language-light, 10%);
+      color: $language-dark;
+    }
   }
 }
 .language-spacer {
   display: inline-block;
   width: $language-width;
+}
+
+// Search page
+#resource-search {
+  #filter-summary {
+    @extend .flex-grow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 80%;
+    margin-left: 1rem;
+    min-height: 2.7rem;
+  }
+  .dthm-badge {
+    user-select: none;
+    vertical-align: 2px;
+  }
 }
