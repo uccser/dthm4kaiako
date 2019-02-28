@@ -22,11 +22,6 @@ if DEPLOYMENT_TYPE == "prod":  # noqa: F405
 else:
     PREPEND_WWW = False
 
-# Exempt Google App Engine cron job URLs from HTTPS to function correctly.
-SECURE_REDIRECT_EXEMPT = [
-    r'^/?cron/.*',
-]
-
 # DATABASES
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
