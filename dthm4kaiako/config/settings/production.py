@@ -166,7 +166,8 @@ LOGGING = {
     }
 }
 
-
+# Search - Django Haystack
+# ------------------------------------------------------------------------------
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',

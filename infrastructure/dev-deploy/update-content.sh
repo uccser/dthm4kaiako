@@ -11,6 +11,9 @@ cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
 # Load environment variables.
 source ./dthm4kaiako/load-dev-envs.sh
 
+# Override Elasticsearch connection name for accessing from Travis
+export ELASTICSEARCH_CONNECTION_NAME="$DEV_ELASTICSEARCH_CONNECTION_NAME"
+
 # Update the database and website sample content
 ./dev start
 ./dev migrate
