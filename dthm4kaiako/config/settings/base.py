@@ -116,6 +116,7 @@ LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
     'resources.apps.ResourcesAppConfig',
+    'events.apps.EventsAppConfig',
     'dtta.apps.DttaAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
