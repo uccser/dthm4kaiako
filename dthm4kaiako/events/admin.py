@@ -1,5 +1,5 @@
 """Module for admin configuration for the events application."""
-
+import logging
 from django.contrib import admin
 from django.contrib.gis.db import models as geomodels
 from events.models import (
@@ -11,6 +11,8 @@ from events.models import (
     Series,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
+
+logger = logging.getLogger(__name__)
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -32,6 +34,45 @@ class EventAdmin(admin.ModelAdmin):
 
     model = Event
     inlines = [SessionInline]
+    fieldsets = (
+        (None, {
+            'fields': (
+                'name',
+                'description',
+                'locations',
+                'series',
+                'organisers',
+                'sponsors',
+            )}
+        ),
+        ('Timings', {
+            'description': 'Will be overridden if any sessions are provided.',
+            'fields': (
+                'start',
+                'end'
+            ),
+        }),
+        ('Registration', {
+            'description': 'Currently only registration via URL is available.',
+            'fields': ('registration_link', ),
+        }),
+        ('Visibility', {
+            'fields': ('published', ),
+        }),
+    )
+    list_display = ('name', 'start', 'end')
+    ordering = ('start', 'end', 'name')
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        event = form.instance
+
+        if event.sessions.all().exists():
+            print('Exists')
+            logger.info('Event sessions detected for {} so setting event times based off sessions.'.format(event))
+            event.start = event.sessions.order_by('start').first().start
+            event.end = event.sessions.order_by('-end').first().end
+            event.save()
 
 
 admin.site.register(Event, EventAdmin)

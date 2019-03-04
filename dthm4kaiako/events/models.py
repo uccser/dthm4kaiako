@@ -1,5 +1,6 @@
 """Models for resources application."""
 
+
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from utils.get_upload_filepath import (
@@ -8,6 +9,7 @@ from utils.get_upload_filepath import (
     get_event_series_upload_path,
 )
 from ckeditor_uploader.fields import RichTextUploadingField
+
 
 
 class Location(models.Model):

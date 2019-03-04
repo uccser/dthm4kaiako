@@ -29,4 +29,4 @@ git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261
 elasticsearch==5.5.3  # pyup: >=5,<6
 
 # Geolocation
-django-map-widgets==0.2.1
+git+https://github.com/erdem/django-map-widgets.git@v0.2.2  # https://github.com/erdem/django-map-widgets

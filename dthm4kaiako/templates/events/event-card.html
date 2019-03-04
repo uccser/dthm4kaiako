@@ -1,0 +1,38 @@
+{% load static %}
+
+<div class="resource card mb-3 w-100">
+    <div class="card-header">
+        <h5 class="d-inline-block mb-0">
+            <a href="{{ event.get_absolute_url }}">
+                {% if event.series %}
+                    {% if event.series.logo %}
+                        <img src="{{ event.series.logo }}" class="img-inline align-middle" alt="{{ event.series.name }}">
+                    {% else %}
+                        <span class="align-middle">{{ event.series.name }}:</span>
+                    {% endif %}
+                {% endif %}
+                {{ event.name }}
+            </a>
+        </h5>
+        <div class="float-right text-left text-md-right">
+            {% for organiser in event.organisers.all %}
+                {% if organiser.logo %}
+                    <img src="{{ organiser.logo }}" class="img-inline align-middle" alt="{{ organiser.name }}">
+                {% else %}
+                    <span class="align-middle">{{ organiser.name }}:</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card-body py-2">
+        {% if event.start|date:"j" != event.end|date:"j" %}
+            {% if event.start|date:"F" == event.end|date:"F" %}
+                {{ event.start|date:"j" }}
+            {% else %}
+                {{ event.start|date:"j F" }}
+            {% endif %}
+            to
+            {% endif %}
+        {{ event.end|date:" j F, Y" }}
+    </div>
+</div>

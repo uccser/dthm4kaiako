@@ -4,10 +4,14 @@
     <h1>Events</h1>
 {% endblock page_heading %}
 
-{% block content_container %}
-    <div class="col-12">
-        <p>
-            Find and register for professional development events throughout New Zealand.
-        </p>
-    </div>
-{% endblock content_container %}
+{% block content %}
+    <p>
+        Find and register for professional development events throughout New Zealand.
+    </p>
+
+
+    <h2>Upcoming events</h2>
+    {% for event in events %}
+        {% include 'events/event-card.html' %}
+    {% endfor %}
+{% endblock content %}
