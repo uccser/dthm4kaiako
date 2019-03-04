@@ -76,6 +76,7 @@ NUMBER_GROUPING = 3
 DATABASES = {
     'default': env.db('DATABASE_URL', default='postgres:///dthm4kaiako'),
 }
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # URLS
@@ -98,6 +99,7 @@ DJANGO_APPS = [
     # Handy template tags
     'django.contrib.humanize',
     'django.contrib.admin',
+    'django.contrib.gis',
 ]
 THIRD_PARTY_APPS = [
     'anymail',
@@ -111,6 +113,7 @@ THIRD_PARTY_APPS = [
     'ckeditor_uploader',
     'django_activeurl',
     'haystack',
+    'mapwidgets',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -348,6 +351,7 @@ REST_FRAMEWORK = {
 
 # Google Cloud API
 GOOGLE_DRIVE_API_KEY = env('GOOGLE_DRIVE_API_KEY')
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
 
 LOGGING = {
@@ -383,6 +387,19 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'elasticsearch:9200/',
         'INDEX_NAME': 'haystack',
     },
+}
+
+# Maps (django-map-widgets)
+# ------------------------------------------------------------------------------
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 5),
+        ('mapCenterLocation', [-41, 174]),
+        ("GooglePlaceAutocompleteOptions",
+            {'componentRestrictions': {'country': 'nz'}}),
+        ("markerFitZoom", 12),
+    ),
+    "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY,
 }
 
 # Other
