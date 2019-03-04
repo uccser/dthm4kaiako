@@ -19,9 +19,23 @@ class LocationAdmin(admin.ModelAdmin):
     }
 
 
-admin.site.register(Event)
+class SessionInline(admin.StackedInline):
+    """Inline view for event sessions."""
+
+    model = Session
+    fk_name = 'event'
+    extra = 1
+
+
+class EventAdmin(admin.ModelAdmin):
+    """Admin view for an event."""
+
+    model = Event
+    inlines = [SessionInline]
+
+
+admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Organiser)
 admin.site.register(Sponsor)
 admin.site.register(Series)
-admin.site.register(Session)

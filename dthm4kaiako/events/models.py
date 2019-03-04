@@ -61,26 +61,6 @@ class Sponsor(models.Model):
         return self.name
 
 
-class Session(models.Model):
-    """"Model for an event session."""
-
-    name = models.CharField(max_length=200)
-    description = RichTextUploadingField()
-    url = models.URLField(blank=True)
-    url_label = models.CharField(max_length=200)
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    locations = models.ManyToManyField(
-        Location,
-        related_name='sessions',
-        blank=True,
-    )
-
-    def __str__(self):
-        """Text representation of an session."""
-        return self.name
-
-
 class Series(models.Model):
     """Model for an event series."""
 
@@ -118,11 +98,6 @@ class Event(models.Model):
         related_name='events',
         blank=True,
     )
-    sessions = models.ManyToManyField(
-        Session,
-        related_name='events',
-        blank=True,
-    )
     sponsors = models.ManyToManyField(
         Sponsor,
         related_name='events',
@@ -143,4 +118,29 @@ class Event(models.Model):
 
     def __str__(self):
         """Text representation of an event."""
+        return self.name
+
+
+class Session(models.Model):
+    """"Model for an event session."""
+
+    name = models.CharField(max_length=200)
+    description = RichTextUploadingField()
+    url = models.URLField(blank=True)
+    url_label = models.CharField(max_length=200, blank=True)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='sessions',
+    )
+    locations = models.ManyToManyField(
+        Location,
+        related_name='sessions',
+        blank=True,
+    )
+
+    def __str__(self):
+        """Text representation of an session."""
         return self.name
