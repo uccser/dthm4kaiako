@@ -36,8 +36,13 @@
     background-color: $dtta-brand-colour-dark !important;
 }
 
-#navbarPrimaryContent .resource-navbar .nav-link:hover,
-#navbarPrimaryContent .resource-navbar.active {
+#navbarPrimaryContent .events-navbar .nav-link:hover,
+#navbarPrimaryContent .events-navbar.active {
+    background-color: $events-brand-colour !important;
+}
+
+#navbarPrimaryContent .resources-navbar .nav-link:hover,
+#navbarPrimaryContent .resources-navbar.active {
     background-color: $resources-brand-colour !important;
 }
 
@@ -52,6 +57,19 @@
     }
     .dropdown-item:hover {
         background-color: lighten($resources-brand-colour, 5%);
+        color: $white;
+    }
+}
+
+// Events
+#events-navbar {
+    background-color: $events-brand-colour;
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: lighten($events-brand-colour, 5%);
+    }
+    .dropdown-item:hover {
+        background-color: lighten($events-brand-colour, 5%);
         color: $white;
     }
 }

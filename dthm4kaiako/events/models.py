@@ -1,6 +1,5 @@
 """Models for resources application."""
 
-import logging
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from utils.get_upload_filepath import (
