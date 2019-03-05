@@ -14,6 +14,7 @@ from resources.models import (
 )
 from events.models import (
     Location,
+    Series,
 )
 from tests.resources.factories import (
     ResourceFactory,
@@ -21,6 +22,8 @@ from tests.resources.factories import (
 )
 from tests.events.factories import (
     SponsorFactory,
+    OrganiserFactory,
+    EventFactory,
 )
 from tests.dtta.factories import (
     NewsArticleFactory,
@@ -139,9 +142,38 @@ class Command(management.base.BaseCommand):
         print('Resources created.')
 
         # Events
-        SponsorFactory.create_batch(size=6)
+        SponsorFactory.create_batch(size=10)
         print('Event sponsors created.')
-
+        OrganiserFactory.create_batch(size=10)
+        print('Event organisers created.')
+        event_series = {
+            (
+                'Computer Science for High Schools',
+                'CS4HS',
+            ),
+            (
+                'Computer Science for Primary Schools',
+                'CS4PS',
+            ),
+            (
+                'Computer Science for Professional Development',
+                'CS4PD',
+            ),
+            (
+                'Code Club for Teachers',
+                'CC4T',
+            ),
+            (
+                'Kia Takatū ā-Matihiko Webinars',
+                'KTAM Webinars',
+            ),
+        }
+        for (name, abbreviation) in event_series:
+            Series.objects.create(
+                name=name,
+                abbreviation=abbreviation,
+            )
+        print('Event series created.')
         event_locations = {
             # Name, Latitude, Longitude
             (
@@ -159,6 +191,31 @@ class Command(management.base.BaseCommand):
                 -43.50806966261862,
                 172.57665261421835,
             ),
+            (
+                "Hobsonville Point Secondary School, 70 Hobsonville Point Road, Auckland",
+                -36.795041366345274,
+                174.65528011322021,
+            ),
+            (
+                "Wellington Girls' College, Wellington",
+                -41.275429,
+                174.780210,
+            ),
+            (
+                "Western Springs College, Western Springs, Auckland",
+                -36.861982,
+                174.717508,
+            ),
+            (
+                "St Peter’s College, Milson, Palmerston North",
+                -40.334277,
+                175.605451,
+            ),
+            (
+                "Southland Girls' High School, Georgetown, Invercargill",
+                -46.417670,
+                168.365330,
+            ),
         }
         for (name, lat, lng) in event_locations:
             Location.objects.create(
@@ -167,6 +224,8 @@ class Command(management.base.BaseCommand):
                 coords=Point(lng, lat),
             )
         print('Event locations created.')
+        EventFactory.create_batch(size=30)
+        print('Events created.')
 
         # DTTA
         NewsArticleFactory.create_batch(size=20)
