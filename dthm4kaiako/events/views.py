@@ -20,7 +20,13 @@ class HomeView(generic.TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        future_events = Event.objects.filter(end__gte=now()).order_by('start')
+        future_events = Event.objects.filter(end__gte=now()).order_by('start').prefetch_related(
+            'organisers',
+            'locations',
+            'sponsors',
+        ).select_related(
+            'series',
+        )
         context['events'] = future_events[:10]
         context['locations'] = Location.objects.filter(events__in=future_events).distinct()
         return context
