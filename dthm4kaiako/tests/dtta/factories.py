@@ -1,4 +1,4 @@
-"""Module for factories for tesing DTTA application."""
+"""Module for factories for testing the DTTA application."""
 
 from factory import DjangoModelFactory, Faker
 from dtta.models import (

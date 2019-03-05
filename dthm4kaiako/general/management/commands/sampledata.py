@@ -15,6 +15,10 @@ from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
 )
+from tests.events.factories import (
+    SponsorFactory,
+    LocationFactory,
+)
 from tests.dtta.factories import (
     NewsArticleFactory,
     PageFactory,
@@ -128,8 +132,14 @@ class Command(management.base.BaseCommand):
             )
         print('NZQA standards created.')
 
-        ResourceFactory.create_batch(size=50)
+        ResourceFactory.create_batch(size=20)
         print('Resources created.')
+
+        # Events
+        SponsorFactory.create_batch(size=6)
+        print('Event sponsors created.')
+        LocationFactory.create_batch(size=20)
+        print('Event locations created.')
 
         # DTTA
         NewsArticleFactory.create_batch(size=20)
