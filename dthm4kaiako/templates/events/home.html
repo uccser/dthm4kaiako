@@ -14,4 +14,29 @@
     {% for event in events %}
         {% include 'events/event-card.html' %}
     {% endfor %}
+
+    <div id="event-map"></div>
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+        var event_markers = [
+            {% for location in locations %}
+                { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+            {% endfor %}
+        ];
+
+        function initMap() {
+            var map = new google.maps.Map(
+                document.getElementById('event-map'),
+                { zoom: 6, center: { lat: -41, lng: 174 }}
+            );
+            for (var i=0; i < event_markers.length; i++) {
+                var marker = new google.maps.Marker({ position: event_markers[i], map: map });
+            }
+        }
+    </script>
+    <!--Load the API from the specified URL -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJm_JBcmz2JvfRvPvPfycE0xHYU01ElnA&callback=initMap">
+    </script>
+{% endblock scripts %}

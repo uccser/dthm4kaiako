@@ -3,6 +3,7 @@
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.gis.geos import Point
 from allauth.account.models import EmailAddress
 from resources.models import (
     Language,
@@ -11,13 +12,15 @@ from resources.models import (
     YearLevel,
     CurriculumLearningArea,
 )
+from events.models import (
+    Location,
+)
 from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
 )
 from tests.events.factories import (
     SponsorFactory,
-    LocationFactory,
 )
 from tests.dtta.factories import (
     NewsArticleFactory,
@@ -138,7 +141,31 @@ class Command(management.base.BaseCommand):
         # Events
         SponsorFactory.create_batch(size=6)
         print('Event sponsors created.')
-        LocationFactory.create_batch(size=20)
+
+        event_locations = {
+            # Name, Latitude, Longitude
+            (
+                "Erskine Building, University of Canterbury, Christchurch",
+                -43.52257394343779,
+                172.58110338161464,
+            ),
+            (
+                "Central Lecture Theatres, University of Canterbury, Christchurch",
+                -43.523110727405,
+                172.58360856483455,
+            ),
+            (
+                "Burnside High School, Christchurch",
+                -43.50806966261862,
+                172.57665261421835,
+            ),
+        }
+        for (name, lat, lng) in event_locations:
+            Location.objects.create(
+                name=name,
+                description=name,
+                coords=Point(lng, lat),
+            )
         print('Event locations created.')
 
         # DTTA

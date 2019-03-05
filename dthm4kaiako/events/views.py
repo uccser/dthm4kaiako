@@ -4,18 +4,23 @@ from django.views import generic
 from django.utils.timezone import now
 from events.models import (
     Event,
+    Location,
 )
 
-class HomeView(generic.ListView):
+
+class HomeView(generic.TemplateView):
     """View for event homepage."""
 
     template_name = 'events/home.html'
-    context_object_name = "events"
 
-    def get_queryset(self):
-        """Get queryset of all upcoming events.
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event homepage view.
 
         Returns:
-            Queryset of Event objects ordered by start datetime.
+            Dictionary of context data.
         """
-        return Event.objects.filter(end__gte=now()).order_by('start')[:10]
+        context = super().get_context_data(**kwargs)
+        future_events = Event.objects.filter(end__gte=now()).order_by('start')
+        context['events'] = future_events[:10]
+        context['locations'] = Location.objects.filter(events__in=future_events).distinct()
+        return context
