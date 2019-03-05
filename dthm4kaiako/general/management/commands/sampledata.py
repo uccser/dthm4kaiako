@@ -1,5 +1,6 @@
 """Module for the custom Django sampledata command."""
 
+import csv
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -174,57 +175,28 @@ class Command(management.base.BaseCommand):
                 abbreviation=abbreviation,
             )
         print('Event series created.')
-        event_locations = {
-            # Name, Latitude, Longitude
-            (
-                "Erskine Building, University of Canterbury, Christchurch",
-                -43.52257394343779,
-                172.58110338161464,
-            ),
-            (
-                "Central Lecture Theatres, University of Canterbury, Christchurch",
-                -43.523110727405,
-                172.58360856483455,
-            ),
-            (
-                "Burnside High School, Christchurch",
-                -43.50806966261862,
-                172.57665261421835,
-            ),
-            (
-                "Hobsonville Point Secondary School, 70 Hobsonville Point Road, Auckland",
-                -36.795041366345274,
-                174.65528011322021,
-            ),
-            (
-                "Wellington Girls' College, Wellington",
-                -41.275429,
-                174.780210,
-            ),
-            (
-                "Western Springs College, Western Springs, Auckland",
-                -36.861982,
-                174.717508,
-            ),
-            (
-                "St Peter’s College, Milson, Palmerston North",
-                -40.334277,
-                175.605451,
-            ),
-            (
-                "Southland Girls' High School, Georgetown, Invercargill",
-                -46.417670,
-                168.365330,
-            ),
-        }
-        for (name, lat, lng) in event_locations:
-            Location.objects.create(
-                name=name,
-                description=name,
-                coords=Point(lng, lat),
-            )
+
+        region_codes = dict()
+        for (code, name) in Location.REGION_CHOICES:
+            region_codes[name] = code
+        with open('general/management/commands/sample-data/nz-schools.csv') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['Longitude'] and row['Latitude'] and row['Region']:
+                    Location.objects.create(
+                        name=row['Name'],
+                        street_address=row['Street'],
+                        suburb=row['Suburb'],
+                        city=row['City'],
+                        region=region_codes[row['Region']],
+                        coords=Point(
+                            float(row['Longitude']),
+                            float(row['Latitude'])
+                        ),
+                    )
         print('Event locations created.')
-        EventFactory.create_batch(size=30)
+
+        EventFactory.create_batch(size=50)
         print('Events created.')
 
         # DTTA

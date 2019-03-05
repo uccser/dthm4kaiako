@@ -9,14 +9,77 @@ from utils.get_upload_filepath import (
     get_event_series_upload_path,
 )
 from ckeditor_uploader.fields import RichTextUploadingField
-
+from django.utils.translation import gettext_lazy as _
 
 
 class Location(models.Model):
     """Model for a physical location."""
 
-    name = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    room = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text='Name of room or space, for example: Room 134',
+    )
+    name = models.CharField(
+        max_length=200,
+        help_text='Name of location, for example: Middleton Grange School'
+    )
+    street_address = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text='Street address location, for example: 12 High Street'
+    )
+    suburb = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text='Suburb, for example: Riccarton'
+    )
+    city = models.CharField(
+        max_length=200,
+        help_text='Town or city, for example: Christchurch',
+        default='Christchurch',
+    )
+    REGION_NORTHLAND = 1
+    REGION_AUCKLAND = 2
+    REGION_WAIKATO = 3
+    REGION_BAY_OF_PLENTY = 4
+    REGION_GISBORNE = 5
+    REGION_HAWKES_BAY = 6
+    REGION_TARANAKI = 7
+    REGION_MANAWATU_WANGANUI = 8
+    REGION_WELLINGTON = 9
+    REGION_TASMAN = 10
+    REGION_NELSON = 11
+    REGION_MARLBOROUGH = 12
+    REGION_WEST_COAST = 13
+    REGION_CANTERBURY = 14
+    REGION_OTAGO = 15
+    REGION_SOUTHLAND = 16
+    REGION_CHATHAM_ISLANDS = 17
+    REGION_CHOICES = (
+        (REGION_NORTHLAND, _('Northland')),
+        (REGION_AUCKLAND, _('Auckland')),
+        (REGION_WAIKATO, _('Waikato')),
+        (REGION_BAY_OF_PLENTY, _('Bay of Plenty')),
+        (REGION_GISBORNE, _('Gisborne')),
+        (REGION_HAWKES_BAY, _("Hawke's Bay")),
+        (REGION_TARANAKI, _('Taranaki')),
+        (REGION_MANAWATU_WANGANUI, _('Manawatu-Wanganui')),
+        (REGION_WELLINGTON, _('Wellington')),
+        (REGION_TASMAN, _('Tasman')),
+        (REGION_NELSON, _('Nelson')),
+        (REGION_MARLBOROUGH, _('Marlborough')),
+        (REGION_WEST_COAST, _('West Coast')),
+        (REGION_CANTERBURY, _('Canterbury')),
+        (REGION_OTAGO, _('Otago')),
+        (REGION_SOUTHLAND, _('Southland')),
+        (REGION_CHATHAM_ISLANDS, _('Chatman Islands')),
+    )
+    region = models.PositiveSmallIntegerField(
+        choices=REGION_CHOICES,
+        default=REGION_CANTERBURY,
+    )
+    description = RichTextUploadingField(blank=True)
     coords = geomodels.PointField()
 
     def __str__(self):
