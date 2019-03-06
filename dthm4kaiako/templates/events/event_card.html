@@ -4,15 +4,29 @@
 
 <div class="resource card mb-3 w-100">
     <div class="card-header align-middle">
-        <h5 class="d-inline-block mb-0">
-            <a href="{{ event.get_absolute_url }}">
-                {% if event.series %}
-                    {% if event.series.logo %}
-                        <img src="{{ event.series.logo }}" class="img-inline" alt="{{ event.series.name }}">
-                    {% else %}
-                        {{ event.series.abbreviation }}:
-                    {% endif %}
+        <div>
+            {% for organiser in organisers %}
+                {% if organiser.logo %}
+                    <img src="{{ organiser.logo.url }}" class="img-inline mr-2" alt="{{ organiser.name }}">
+                {% else %}
+                    <span class="text-muted mr-2">
+                        {{ organiser.name }}
+                    </span>
                 {% endif %}
+            {% endfor %}
+        </div>
+        <h5 class="d-inline-block mb-0">
+            {% if event.series %}
+                {% if event.series.logo %}
+                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                {% else %}
+                    <span class="text-muted">
+                        {{ event.series.abbreviation }}:
+                    </span>
+                {% endif %}
+            {% endif %}
+
+            <a href="{{ event.get_absolute_url }}">
                 {{ event.name }}
             </a>
         </h5>

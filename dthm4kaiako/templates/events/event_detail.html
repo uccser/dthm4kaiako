@@ -8,13 +8,24 @@
 
 {% block page_heading %}
     <h1 id="event-details">
+        <div>
+            {% for organiser in organisers %}
+                {% if organiser.logo %}
+                    <img src="{{ organiser.logo.url }}" class="img-y2 mr-2" alt="{{ organiser.name }}">
+                {% else %}
+                    <span class="text-muted mr-2">
+                        {{ organiser.name }}
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </div>
         {% if event.series %}
             {% if event.series.logo %}
-                <img src="{{ event.series.logo }}" class="img-inline align-top" alt="{{ event.series.name }}">
+                <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
             {% else %}
-                <div class="text-muted h5">
+                <span class="text-muted">
                     {{ event.series.name }}
-                </div>
+                </span>
             {% endif %}
         {% endif %}
         {{ event.name }}
@@ -75,7 +86,7 @@
                 <li class="my-2">
                     <a href="{{ sponsor.url }}" target="_blank">
                         {% if sponsor.logo %}
-                        <img src="{{ sponsor.logo }}" class="img-sponsor-logo" alt="{{ sponsor.name }}">
+                        <img src="{{ sponsor.logo.url }}" class="img-y4" alt="{{ sponsor.name }}">
                         {% else %}
                             {{ sponsor.name }}
                         {% endif %}
@@ -148,6 +159,11 @@
                 <a class="nav-link" href="#event-description">
                     Description
                 </a>
+                {% if sponsors %}
+                    <a class="nav-link" href="#event-sponsors">
+                        Sponsor{{ sponsors|pluralize }}
+                    </a>
+                {% endif %}
                 {% if location or locations %}
                     <a class="nav-link" href="#event-location">
                         Location{{ locations|pluralize }}
