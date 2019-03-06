@@ -6,8 +6,8 @@ source ./infrastructure/dev-deploy/load-dev-deploy-config-envs.sh
 ./dev update
 
 # Generate production static files
-rm -r build/
-rm -r staticfiles/
+sudo rm -r ./dthm4kaiako/build/
+sudo rm -r ./dthm4kaiako/staticfiles/
 ./dev static_prod
 ./dev dev collect_static
 

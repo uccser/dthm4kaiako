@@ -1,4 +1,4 @@
-"""Module for factories for tesing DTTA application."""
+"""Module for factories for testing the DTTA application."""
 
 from factory import DjangoModelFactory, Faker
 from dtta.models import (
@@ -14,7 +14,7 @@ class NewsArticleFactory(DjangoModelFactory):
 
     title = Faker('sentence')
     content = Faker('paragraph', nb_sentences=50)
-    datetime = Faker('date_time_this_decade', tzinfo=pytz.timezone('Pacific/Auckland'))
+    datetime = Faker('date_time_between', start_date='-6w', end_date='+2d', tzinfo=pytz.timezone('Pacific/Auckland'))
 
     class Meta:
         """Metadata for class."""
@@ -27,7 +27,7 @@ class PageFactory(DjangoModelFactory):
 
     title = Faker('sentence')
     content = Faker('paragraph', nb_sentences=5)
-    date = Faker('date_time_this_decade', tzinfo=pytz.timezone('Pacific/Auckland'))
+    date = Faker('date_time_between', start_date='-1y', end_date='+4w', tzinfo=pytz.timezone('Pacific/Auckland'))
     published = True
 
     class Meta:

@@ -1,0 +1,25 @@
+{% extends "events/base.html" %}
+
+{% block page_heading %}
+    <h1>Events</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>
+        Find and register for professional development events throughout New Zealand.
+        We plan to add the ability to search and filter events at a later stage.
+    </p>
+
+    <h2>Upcoming events</h2>
+    {% for event in events %}
+        {% include 'events/event_card.html' %}
+    {% endfor %}
+
+    {% with ratio='4by3' %}
+        {% include "generic/map-element.html" %}
+    {% endwith %}
+{% endblock content %}
+
+{% block scripts %}
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}

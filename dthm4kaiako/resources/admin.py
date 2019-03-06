@@ -16,7 +16,7 @@ from resources.models import (
 class NZQAStandardAdmin(admin.ModelAdmin):
     """Configuration for displaying NZQA Standards in admin."""
 
-    list_display = ('level', 'abbreviation', 'name')
+    list_display = ('level', 'abbreviation', 'name', 'credit_value', 'standard_type')
     ordering = ('level', 'abbreviation')
 
 

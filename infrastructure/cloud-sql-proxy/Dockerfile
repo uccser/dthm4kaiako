@@ -9,6 +9,15 @@ LABEL maintainer="csse-education-research@canterbury.ac.nz"
 ARG DEBIAN_FRONTEND=noninteractive
 ENV DJANGO_PRODUCTION=True
 
+RUN apt-get update \
+    && apt-get install -y \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    --no-install-recommends --no-install-suggests \
+    && apt-get -y --purge autoremove \
+    && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 8080
 RUN mkdir /dthm4kaiako
 WORKDIR /dthm4kaiako

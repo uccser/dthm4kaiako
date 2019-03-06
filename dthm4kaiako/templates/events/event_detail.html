@@ -1,0 +1,191 @@
+{% extends "events/base.html" %}
+
+{% load static %}
+
+{% block body_element %}
+    <body class="position-relative" data-spy="scroll" data-target="#event-navigation" data-offset="100">
+{% endblock body_element %}
+
+{% block page_heading %}
+    <h1 id="event-details">
+        <div>
+            {% for organiser in organisers %}
+                {% if organiser.logo %}
+                    <img src="{{ organiser.logo.url }}" class="img-y2 mr-2" alt="{{ organiser.name }}">
+                {% else %}
+                    <span class="text-muted mr-2">
+                        {{ organiser.name }}
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if event.series %}
+            {% if event.series.logo %}
+                <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+            {% else %}
+                <span class="text-muted">
+                    {{ event.series.name }}
+                </span>
+            {% endif %}
+        {% endif %}
+        {{ event.name }}
+    </h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 col-md-8 order-2 order-md-1">
+        <div>
+            {% if event.locations.all %}
+                {% include "events/badges/location_type.html" with location_type="onsite" %}
+            {% endif %}
+            {% if event.accessible_online %}
+                {% include "events/badges/location_type.html" with location_type="online" %}
+            {% endif %}
+            <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
+            <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
+            <p class="mb-0">
+                <strong>Cost:</strong>
+                {% if event.price == 0 %}
+                    Free!
+                {% else %}
+                    {{ event.price }}
+                {% endif %}
+            </p>
+            {% if location %}
+                <p>
+                    <strong>Location:</strong> {{ location.get_full_address }}
+                </p>
+            {% elif locations %}
+                <p class="mb-0">
+                    <strong>Locations:</strong>
+                </p>
+                <ul>
+                    {% for location in locations %}
+                        <li>{{ location.get_full_address }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if event.series %}
+                <div class="card mb-3">
+                    <div class="card-block p-2">
+                        This event is part of the {{ event.series.name }} series.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <h3 id="event-description" class="event-heading">Description</h3>
+        <div class="mb-3">
+            {{ event.description|safe }}
+        </div>
+
+        {% if sponsors %}
+            <h3 id="event-sponsors" class="event-heading">Sponsor{{ sponsors.count|pluralize }}</h3>
+            <ul class="list-unstyled">
+                {% for sponsor in sponsors %}
+                <li class="my-2">
+                    <a href="{{ sponsor.url }}" target="_blank">
+                        {% if sponsor.logo %}
+                        <img src="{{ sponsor.logo.url }}" class="img-y4" alt="{{ sponsor.name }}">
+                        {% else %}
+                            {{ sponsor.name }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if location or locations %}
+            <h3 id="event-location" class="event-heading">Location{{ locations|pluralize }}</h3>
+            {% if location %}
+                <p>
+                    {{ location.get_full_address }}
+                </p>
+            {% elif locations %}
+                <ul>
+                    {% for location in locations %}
+                    <li>{{ location.get_full_address }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% with ratio='1by1' %}
+                {% include "generic/map-element.html" %}
+            {% endwith %}
+        {% endif %}
+
+        {% if sessions %}
+            <h3 id="event-schedule" class="event-heading">Schedule</h3>
+
+            {% for session in sessions %}
+                {% ifchanged session.start|date:"d" %}
+                    <h4 class="text-center">{{ session.start|date:"l j F, Y" }}</h4>
+                {% endifchanged %}
+
+                <div class="row">
+                    {% ifchanged session.start|time session.end|time %}
+                        <div class="col-12 mb-2 schedule-line"></div>
+                        <div class="col-md-3 text-center text-md-right">
+                            <h5>
+                                {{ session.start|time:"g:i a" }}<br class="hidden-sm-down">
+                                <small class="text-muted">until {{ session.end|time:"g:i a" }}</small>
+                            </h5>
+                        </div>
+                    {% else %}
+                    <div class="col-12 offset-md-3 col-md-9 mb-2 schedule-line-thin"></div>
+                    <div class="col-md-3"></div>
+                    {% endifchanged %}
+
+                    <div class="col-md-9">
+                        <h5>
+                            {{ session.name }}
+                        </h5>
+                        <div class="mb-3">
+                            {{ session.description|safe }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="col-12 col-md-4 order-1 order-md-2">
+        <div id="sticky-navigation" class="mb-3">
+            <strong>Navigation</strong>
+            <nav id="event-navigation" class="nav nav-pills flex-column">
+                <a class="nav-link" href="#event-details">
+                    Details
+                </a>
+                <a class="nav-link" href="#event-description">
+                    Description
+                </a>
+                {% if sponsors %}
+                    <a class="nav-link" href="#event-sponsors">
+                        Sponsor{{ sponsors|pluralize }}
+                    </a>
+                {% endif %}
+                {% if location or locations %}
+                    <a class="nav-link" href="#event-location">
+                        Location{{ locations|pluralize }}
+                    </a>
+                {% endif %}
+                <a class="nav-link" href="#event-schedule">
+                    Schedule
+                </a>
+            </nav>
+            <hr>
+            <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
+                Register to attend event
+            </a>
+
+        </div>
+    </div>
+{% endblock content_container %}
+
+{% block scripts %}
+    {% if location %}
+        {% include "generic/map-javascript.html" with map_location=location map_zoom=13 %}
+    {% elif locations %}
+        {% include "generic/map-javascript.html" with map_locations=locations map_zoom=5 %}
+    {% endif %}
+{% endblock scripts %}

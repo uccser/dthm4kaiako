@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgres:9.6.11
+    image: mdillon/postgis:9.6
     restart: always
     # Set port to non-standard value to not use Travis CI Postgres server.
     command: postgres -p 5434
@@ -20,6 +20,7 @@ services:
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - INCLUDE_INCONTEXT_L10N=False
       - GOOGLE_DRIVE_API_KEY=${GOOGLE_DRIVE_API_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
     depends_on:
       - postgres
 

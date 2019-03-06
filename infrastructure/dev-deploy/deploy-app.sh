@@ -40,7 +40,3 @@ python ./infrastructure/replace_envs.py ./infrastructure/dev-deploy/app.yaml
 # that the apps deploy to the correct services.
 # See: https://cloud.google.com/sdk/gcloud/reference/app/deploy
 gcloud app deploy ./app.yaml --quiet --project=dthm4kaiako-dev
-
-# Publish cron jobs to Google App Engine.
-cp ./infrastructure/dev-deploy/cron.yaml ./cron.yaml
-gcloud app deploy ./cron.yaml --quiet --project=dthm4kaiako-dev

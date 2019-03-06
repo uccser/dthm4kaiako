@@ -8,7 +8,7 @@ from .production import *  # noqa: F403
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": 'django.contrib.gis.db.backends.postgis',
         "HOST": "cloud_sql_proxy",
         "PORT": "5432",
         "NAME": "dthm4kaiako",

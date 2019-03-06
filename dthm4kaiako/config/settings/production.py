@@ -22,17 +22,12 @@ if DEPLOYMENT_TYPE == "prod":  # noqa: F405
 else:
     PREPEND_WWW = False
 
-# Exempt Google App Engine cron job URLs from HTTPS to function correctly.
-SECURE_REDIRECT_EXEMPT = [
-    '^cron/.*',
-]
-
 # DATABASES
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'dthm4kaiako',
         'USER': env('GOOGLE_CLOUD_SQL_DATABASE_USERNAME'),  # noqa: F405
         'PASSWORD': env('GOOGLE_CLOUD_SQL_DATABASE_PASSWORD'),  # noqa: F405
@@ -171,7 +166,8 @@ LOGGING = {
     }
 }
 
-
+# Search - Django Haystack
+# ------------------------------------------------------------------------------
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
@@ -179,3 +175,4 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
