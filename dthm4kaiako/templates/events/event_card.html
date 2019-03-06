@@ -1,0 +1,59 @@
+{% load static %}
+
+{% load humanize %}
+
+<div class="resource card mb-3 w-100">
+    <div class="card-header align-middle">
+        <div>
+            {% for organiser in organisers %}
+                {% if organiser.logo %}
+                    <img src="{{ organiser.logo.url }}" class="img-inline mr-2" alt="{{ organiser.name }}">
+                {% else %}
+                    <span class="text-muted mr-2">
+                        {{ organiser.name }}
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <h5 class="d-inline-block mb-0">
+            {% if event.series %}
+                {% if event.series.logo %}
+                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                {% else %}
+                    <span class="text-muted">
+                        {{ event.series.abbreviation }}:
+                    </span>
+                {% endif %}
+            {% endif %}
+
+            <a href="{{ event.get_absolute_url }}">
+                {{ event.name }}
+            </a>
+        </h5>
+        <div class="float-md-right text-left text-md-right">
+            {% if event.start|date:"j" != event.end|date:"j" %}
+                {% if event.start|date:"F" == event.end|date:"F" %}
+                    {{ event.start|date:"j" }}
+                {% else %}
+                    {{ event.start|date:"j F" }}
+                {% endif %}
+                to
+            {% endif %}
+            {{ event.end|date:" j F, Y" }}<br>
+            <small class="text-muted">{{ event.start|naturaltime }}</small>
+        </div>
+        <div>
+            {% if event.locations.all %}
+                {% include "events/badges/location_type.html" with location_type="onsite" %}
+            {% endif %}
+            {% if event.accessible_online %}
+                {% include "events/badges/location_type.html" with location_type="online" %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body py-2">
+        {% for location in event.locations.all %}
+            {{ location.name }}, {{ location.city }}, {{ location.get_region_display }}<br>
+        {% endfor %}
+    </div>
+</div>
