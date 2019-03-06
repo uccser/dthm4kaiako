@@ -44,13 +44,16 @@ class EventAdmin(admin.ModelAdmin):
                 'fields': (
                     'name',
                     'description',
-                    'locations',
                     'series',
                     'organisers',
                     'sponsors',
+                    'price',
                 )
             }
         ),
+        ('Location', {
+            'fields': ('accessible_online', 'locations'),
+        }),
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
             'fields': ('registration_link', ),
