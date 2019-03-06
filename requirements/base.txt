@@ -15,7 +15,7 @@ django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
 django-ckeditor==5.6.1  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
 django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
-djangorestframework==3.9.1  # https://github.com/encode/django-rest-framework
+djangorestframework==3.9.2  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
 django-filter==2.1.0  # https://github.com/carltongibson/django-filter/
 
