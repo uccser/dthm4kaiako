@@ -105,7 +105,6 @@ class NZQAStandard(models.Model):
         default=1,
     )
 
-
     def __str__(self):
         """Text representation of a NZQA standard."""
         return self.abbreviation
