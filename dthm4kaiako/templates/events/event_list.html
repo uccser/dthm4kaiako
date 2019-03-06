@@ -1,0 +1,11 @@
+{% extends "events/base.html" %}
+
+{% block page_heading %}
+    <h1>All events</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {% for event in events %}
+        {% include 'events/event_card.html' %}
+    {% endfor %}
+{% endblock content %}

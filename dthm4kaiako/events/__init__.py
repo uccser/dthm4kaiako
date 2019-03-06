@@ -1,0 +1,1 @@
+"""Module for events application."""

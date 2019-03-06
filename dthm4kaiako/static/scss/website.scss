@@ -43,6 +43,7 @@
 @import "homepage";
 @import "footer";
 @import "resources";
+@import "events";
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
@@ -70,6 +71,21 @@ body {
     max-height: 1.5rem;
 }
 
+.img-y1 {
+  max-height: 1rem;
+}
+.img-y2 {
+  max-height: 2rem;
+}
+.img-y3 {
+  max-height: 3rem;
+}
+.img-y4 {
+  max-height: 4rem;
+}
+.img-y5 {
+  max-height: 5rem;
+}
 ////////////////////////////////
 		//Variables//
 ////////////////////////////////

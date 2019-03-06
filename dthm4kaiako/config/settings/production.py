@@ -27,7 +27,7 @@ else:
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'dthm4kaiako',
         'USER': env('GOOGLE_CLOUD_SQL_DATABASE_USERNAME'),  # noqa: F405
         'PASSWORD': env('GOOGLE_CLOUD_SQL_DATABASE_PASSWORD'),  # noqa: F405

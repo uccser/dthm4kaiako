@@ -35,6 +35,51 @@ def get_resource_upload_path(component, filename):
     return join('resources', str(component.resource.pk), filename)
 
 
+def get_event_organiser_upload_path(organiser, filename):
+    """Create upload path for an event organiser by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Organiser): Organiser object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('events', 'organiser', str(organiser.pk), filename)
+
+
+def get_event_sponsor_upload_path(organiser, filename):
+    """Create upload path for an event sponsor by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Sponsor): Sponsor object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('events', 'sponsor', str(organiser.pk), filename)
+
+
+def get_event_series_upload_path(series, filename):
+    """Create upload path for an event series by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Series): Series object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('events', 'series', str(series.pk), filename)
+
+
 def get_dtta_news_article_source_upload_path(source, filename):
     """Create upload path for a DTTA news source logo.
 

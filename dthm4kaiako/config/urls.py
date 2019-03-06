@@ -15,6 +15,7 @@ urlpatterns = [
     path('', include('general.urls', namespace='general')),
     path(settings.ADMIN_URL, admin.site.urls),
     path('resources/', include('resources.urls', namespace='resources')),
+    path('events/', include('events.urls', namespace='events'),),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('accounts/', include('allauth.urls')),

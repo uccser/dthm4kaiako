@@ -1,8 +1,11 @@
 """Module for the custom Django sampledata command."""
 
+import csv
+import random
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.gis.geos import Point
 from allauth.account.models import EmailAddress
 from resources.models import (
     Language,
@@ -11,9 +14,18 @@ from resources.models import (
     YearLevel,
     CurriculumLearningArea,
 )
+from events.models import (
+    Location,
+    Series,
+)
 from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
+)
+from tests.events.factories import (
+    SponsorFactory,
+    OrganiserFactory,
+    EventFactory,
 )
 from tests.dtta.factories import (
     NewsArticleFactory,
@@ -128,8 +140,61 @@ class Command(management.base.BaseCommand):
             )
         print('NZQA standards created.')
 
-        ResourceFactory.create_batch(size=50)
+        ResourceFactory.create_batch(size=20)
         print('Resources created.')
+
+        # Events
+        SponsorFactory.create_batch(size=10)
+        print('Event sponsors created.')
+        OrganiserFactory.create_batch(size=10)
+        print('Event organisers created.')
+        event_series = {
+            (
+                'Computer Science for High Schools',
+                'CS4HS',
+            ),
+            (
+                'Computer Science for Primary Schools',
+                'CS4PS',
+            ),
+            (
+                'Computer Science for Professional Development',
+                'CS4PD',
+            ),
+            (
+                'Code Club for Teachers',
+                'CC4T',
+            ),
+        }
+        for (name, abbreviation) in event_series:
+            Series.objects.create(
+                name=name,
+                abbreviation=abbreviation,
+            )
+        print('Event series created.')
+
+        region_codes = dict()
+        for (code, name) in Location.REGION_CHOICES:
+            region_codes[name] = code
+        with open('general/management/commands/sample-data/nz-schools.csv') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in random.sample(list(reader), 100):
+                if row['Longitude'] and row['Latitude'] and row['Region']:
+                    Location.objects.create(
+                        name=row['Name'],
+                        street_address=row['Street'],
+                        suburb=row['Suburb'],
+                        city=row['City'],
+                        region=region_codes[row['Region']],
+                        coords=Point(
+                            float(row['Longitude']),
+                            float(row['Latitude'])
+                        ),
+                    )
+        print('Event locations created.')
+
+        EventFactory.create_batch(size=50)
+        print('Events created.')
 
         # DTTA
         NewsArticleFactory.create_batch(size=20)

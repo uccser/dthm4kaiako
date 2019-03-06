@@ -1,4 +1,4 @@
-"""Module for factories for tesing resources application."""
+"""Module for factories for testing the resources application."""
 
 import random
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction
