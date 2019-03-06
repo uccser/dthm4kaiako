@@ -77,6 +77,8 @@ class ProgressOutcome(models.Model):
 class NZQAStandard(models.Model):
     """Model for a NZQA standard."""
 
+    name = models.CharField(max_length=200)
+    abbreviation = models.CharField(max_length=20)
     NCEA_LEVEL_1 = 1
     NCEA_LEVEL_2 = 2
     NCEA_LEVEL_3 = 3
@@ -85,11 +87,22 @@ class NZQAStandard(models.Model):
         (NCEA_LEVEL_2, _('NCEA Level 2')),
         (NCEA_LEVEL_3, _('NCEA Level 3')),
     )
-    name = models.CharField(max_length=200)
-    abbreviation = models.CharField(max_length=20)
     level = models.PositiveSmallIntegerField(
         choices=NCEA_LEVEL_CHOICES,
         default=NCEA_LEVEL_1,
+    )
+    INTERNAL_STANDARD = 1
+    EXTERNAL_STANDARD = 2
+    STANDARD_TYPE_CHOICES = (
+        (INTERNAL_STANDARD, _('Internal')),
+        (EXTERNAL_STANDARD, _('External')),
+    )
+    standard_type = models.PositiveSmallIntegerField(
+        choices=STANDARD_TYPE_CHOICES,
+        default=INTERNAL_STANDARD,
+    )
+    credit_value = models.PositiveSmallIntegerField(
+        default=1,
     )
 
     def __str__(self):
