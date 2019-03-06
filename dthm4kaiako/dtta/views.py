@@ -24,7 +24,8 @@ class HomeView(generic.base.TemplateView):
         """
         context = super().get_context_data(**kwargs)
         last_month = now() - timedelta(days=30)
-        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now()).filter(datetime__gte=last_month).order_by('-datetime')
+        context['latest_news_articles'] = NewsArticle.objects.filter(
+            datetime__lte=now()).filter(datetime__gte=last_month).order_by('-datetime')
         context['related_links'] = RelatedLink.objects.order_by('order_number')
         return context
 
