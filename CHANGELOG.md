@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.1
+
+- Do not require a description for an event session.
+- Display missing fields for events in admin interface.
+- Allow event start and end datetimes to be empty until sessions are created.
+- Fix bug where 500 error page couldn't load.
+
 ## 0.12.0
 
 - Add basic events hub. ([fixes #296](https://github.com/uccser/dthm4kaiako/issues/296))
