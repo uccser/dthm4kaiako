@@ -1,6 +1,6 @@
 {% extends "dtta/base.html" %}
 
-{% load static markdown %}
+{% load static humanize %}
 
 {% block page_heading %}
     <img class="logo-header img-fluid mx-auto d-block m-3" src="{% static 'img/logos/dtta-logo.png' %}">
@@ -27,8 +27,8 @@
             <h3>Latest news</h3>
             {% for news_article in latest_news_articles %}
                 <div class="row mb-2 no-gutters">
-                    <div class="col-auto mr-3">
-                        <span class="text-muted">{{ news_article.datetime|date:"SHORT_DATE_FORMAT" }}</span>
+                    <div class="col-3">
+                        <span class="text-muted">{{ news_article.datetime|naturalday:"DATE_FORMAT"|capfirst }}</span>
                     </div>
                     <div class="col">
                         <a href="{{ news_article.get_absolute_url }}">

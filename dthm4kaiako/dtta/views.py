@@ -2,6 +2,7 @@
 
 from django.views import generic
 from django.utils.timezone import now
+from datetime import timedelta
 from utils.mixins import RedirectToCosmeticURLMixin
 from dtta.models import (
     Page,
@@ -22,7 +23,8 @@ class HomeView(generic.base.TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now()).order_by('-datetime')[:5]
+        last_month = now() - timedelta(days=30)
+        context['latest_news_articles'] = NewsArticle.objects.filter(datetime__lte=now()).filter(datetime__gte=last_month).order_by('-datetime')
         context['related_links'] = RelatedLink.objects.order_by('order_number')
         return context
 
