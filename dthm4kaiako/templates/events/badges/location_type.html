@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<span class="dthm-badge location-type-badge location-type-{{ location_type }}">
+    {% if location_type == 'online' %}
+        {% trans 'Online' %}
+    {% else %}
+        {% trans 'Onsite' %}
+    {% endif %}
+</span>

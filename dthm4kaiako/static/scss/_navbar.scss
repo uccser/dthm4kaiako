@@ -10,10 +10,7 @@
             vertical-align: baseline;
         }
     }
-    .nav-link:hover,
-    .navbar-brand:hover {
-        background-color: $brand-colour-light;
-    }
+
     .navbar-logo {
         height: 2rem;
     }
@@ -23,12 +20,17 @@
 }
 
 
-.navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, .75);
-}
+
 
 #primary-navbar {
     background-color: $brand-colour-dark !important;
+    .nav-link:hover,
+    .navbar-brand:hover {
+        background-color: $brand-colour-light;
+    }
+    &.navbar-dark .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, .75);
+    }
 }
 
 #navbarPrimaryContent .dtta-navbar .nav-link:hover,

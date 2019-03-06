@@ -39,7 +39,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
       <![endif]-->
   </head>
+  {% block body_element %}
   <body>
+  {% endblock body_element %}
     <nav id="primary-navbar" class="navbar navbar-expand-md navbar-dark">
       <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarPrimaryContent"
@@ -92,23 +94,22 @@
     {% block secondary_navbar %}
     {% endblock secondary_navbar %}
 
-
     {% block body_container %}
-    {% if messages %}
-      <div class="container">
-        {% for message in messages %}
-          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+      {% if messages %}
+        <div class="container">
+          {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
-    <div id="page-header" class="my-3">
-      <div class="container">
+      <div id="page-header" class="my-3">
+        <div class="container">
           {% block page_heading %}
           {% endblock page_heading %}
         </div>

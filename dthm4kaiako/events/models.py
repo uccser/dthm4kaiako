@@ -3,11 +3,13 @@
 
 from django.db import models
 from django.contrib.gis.db import models as geomodels
+from django.urls import reverse
 from utils.get_upload_filepath import (
     get_event_organiser_upload_path,
     get_event_sponsor_upload_path,
     get_event_series_upload_path,
 )
+from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
 
@@ -83,8 +85,22 @@ class Location(models.Model):
     coords = geomodels.PointField()
 
     def __str__(self):
-        """Text representation of a name."""
+        """Text representation of a location."""
         return self.name
+
+    def get_full_address(self):
+        """Get full text representation of a location."""
+        address = ''
+        if self.room:
+            address += self.room + ',\n'
+        address += self.name + ',\n'
+        if self.street_address:
+            address += self.street_address + ',\n'
+        if self.suburb:
+            address += self.suburb + ', '
+        address += self.city + ',\n'
+        address += self.get_region_display()
+        return address
 
     class Meta:
         """Meta options for class."""
@@ -154,10 +170,16 @@ class Event(models.Model):
 
     name = models.CharField(max_length=200)
     description = RichTextUploadingField()
+    slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
     registration_link = models.URLField(blank=True)
     published = models.BooleanField(default=False)
     start = models.DateTimeField()
     end = models.DateTimeField()
+    accessible_online = models.BooleanField(
+        default=False,
+        help_text='Select if this event be attended online'
+    )
+    price = models.PositiveSmallIntegerField(default=0)
     locations = models.ManyToManyField(
         Location,
         related_name='events',
@@ -180,6 +202,33 @@ class Event(models.Model):
         null=True,
         blank=True,
     )
+    # TODO: Add validation that if no locations, then accessible_online must be true
+
+    def update_datetimes(self):
+        """Update datetimes of event."""
+        self.start = self.sessions.order_by('start').first().start
+        self.end = self.sessions.order_by('-end').first().end
+        self.save()
+
+    def get_absolute_url(self):
+        """Return URL of event on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('events:event', kwargs={'pk': self.pk, 'slug': self.slug})
+
+    def get_short_name(self):
+        """Event name with series abbreviation if available.
+
+        Returns:
+            String of short event name.
+        """
+        if self.series:
+            return '{}: {}'.format(self.series.abbreviation, self.name)
+        else:
+            return self.name
+
 
     def __str__(self):
         """Text representation of an event."""

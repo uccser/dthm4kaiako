@@ -1,3 +1,34 @@
 #event-map {
   height: 50rem;
 }
+
+#sticky-navigation {
+  @extend .position-sticky;
+  top: 1rem;
+}
+
+// Location badges (onsite/online)
+$location-type-light: #84f1e6;
+$location-type-dark: #148086;
+.location-type-badge {
+  @extend .badge;
+  display: inline-block;
+  &.location-type-onsite {
+    background-color: $location-type-dark;
+    color: $location-type-light;
+    // Uncomment if adding action to badge
+    // &:hover {
+      //   background-color: lighten($location-type-dark, 10%);
+    //   color: $location-type-light;
+    // }
+  }
+  &.location-type-online {
+    background-color: $location-type-light;
+    color: $location-type-dark;
+    // Uncomment if adding action to badge
+    // &:hover {
+    //   background-color: darken($location-type-light, 10%);
+    //   color: $location-type-dark;
+    // }
+  }
+}

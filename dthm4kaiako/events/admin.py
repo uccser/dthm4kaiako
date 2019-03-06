@@ -27,6 +27,7 @@ class SessionInline(admin.StackedInline):
     model = Session
     fk_name = 'event'
     extra = 1
+    min_num = 1
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -45,13 +46,6 @@ class EventAdmin(admin.ModelAdmin):
                 'sponsors',
             )}
         ),
-        ('Timings', {
-            'description': 'Will be overridden if any sessions are provided.',
-            'fields': (
-                'start',
-                'end'
-            ),
-        }),
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
             'fields': ('registration_link', ),
@@ -65,14 +59,8 @@ class EventAdmin(admin.ModelAdmin):
 
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
-        event = form.instance
-
-        if event.sessions.all().exists():
-            print('Exists')
-            logger.info('Event sessions detected for {} so setting event times based off sessions.'.format(event))
-            event.start = event.sessions.order_by('start').first().start
-            event.end = event.sessions.order_by('-end').first().end
-            event.save()
+        # Update datetimes on event after saving sessions
+        form.instance.update_datetimes()
 
 
 admin.site.register(Event, EventAdmin)

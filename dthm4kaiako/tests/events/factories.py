@@ -4,7 +4,8 @@ import random
 import pytz
 from datetime import timedelta
 from django.contrib.gis.geos import Point
-from factory import DjangoModelFactory, Faker, post_generation, LazyAttribute
+from tests.utils import random_boolean
+from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute
 from factory.fuzzy import BaseFuzzyAttribute
 from factory.faker import faker
 from events.models import (
@@ -56,11 +57,12 @@ class EventFactory(DjangoModelFactory):
     """Factory for generating events."""
 
     name = Faker('sentence', nb_words=3)
-    description = Faker('paragraph', nb_sentences=5)
+    description = Faker('paragraph', nb_sentences=50)
     registration_link = Faker('url')
     published = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
     end = LazyAttribute(lambda obj: obj.start + timedelta(days=random.randint(0, 3)))
+    accessible_online = LazyFunction(random_boolean)
 
     class Meta:
         """Metadata for class."""

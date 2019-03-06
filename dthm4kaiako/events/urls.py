@@ -6,4 +6,6 @@ from events import views
 app_name = 'events'
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
+    path('event/<int:pk>/', views.EventDetailView.as_view()),
+    path('event/<int:pk>/<slug:slug>/', views.EventDetailView.as_view(), name='event'),
 ]

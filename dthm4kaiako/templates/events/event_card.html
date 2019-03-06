@@ -16,7 +16,7 @@
                 {{ event.name }}
             </a>
         </h5>
-        <div class="float-right text-left text-md-right">
+        <div class="float-md-right text-left text-md-right">
             {% if event.start|date:"j" != event.end|date:"j" %}
                 {% if event.start|date:"F" == event.end|date:"F" %}
                     {{ event.start|date:"j" }}
@@ -27,6 +27,14 @@
             {% endif %}
             {{ event.end|date:" j F, Y" }}<br>
             <small class="text-muted">{{ event.start|naturaltime }}</small>
+        </div>
+        <div>
+            {% if event.locations.all %}
+                {% include "events/badges/location_type.html" with location_type="onsite" %}
+            {% endif %}
+            {% if event.accessible_online %}
+                {% include "events/badges/location_type.html" with location_type="online" %}
+            {% endif %}
         </div>
     </div>
     <div class="card-body py-2">

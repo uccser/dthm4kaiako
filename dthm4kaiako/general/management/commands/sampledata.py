@@ -164,10 +164,6 @@ class Command(management.base.BaseCommand):
                 'Code Club for Teachers',
                 'CC4T',
             ),
-            (
-                'Kia Takatū ā-Matihiko Webinars',
-                'KTAM Webinars',
-            ),
         }
         for (name, abbreviation) in event_series:
             Series.objects.create(
