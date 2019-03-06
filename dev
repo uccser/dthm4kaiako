@@ -42,8 +42,6 @@ defhelp 'dev [DEV_COMMAND]' 'Run a developer command.'
 
 # Start development environment
 cmd_start() {
-  echo "Loading secrets..."
-  source ./load_secrets.sh
   echo "Creating systems..."
   docker-compose up -d
   echo ""
