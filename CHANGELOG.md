@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.12.0
+
+- Add basic events hub. ([fixes #296](https://github.com/uccser/dthm4kaiako/issues/296))
+    - Replaces the existing cs4teachers.org.nz website.
+    - Use geographical information system (GIS) to store and process location data.
+    - Events can either be onsite, online, or both.
+    - Events can have multiple sponsors, organisers, and sessions.
+    - Events and sessions can have multiple locations.
+    - Add sample data generator for event hub for testing.
+- Increase number of news articles on DTTA homepage to show last month of articles. ([fixes #301](https://github.com/uccser/dthm4kaiako/issues/301))
+- Store type and credits for NZQA achievement standards. ([fixes #304](https://github.com/uccser/dthm4kaiako/issues/304))
+- Increase number of workers on website servers. ([fixes #298](https://github.com/uccser/dthm4kaiako/issues/298))
+- Dependencies changes:
+    - Update python-slugify from 2.0.1 to 3.0.0.
+    - Update django-allauth from 0.39.0 to 0.39.1.
+    - Update djangorestframework from 3.9.1 to 3.9.2.
+    - Add django-map-widgets 0.2.2.
+
 ## 0.11.0
 
 - Add resource search and filtering.
