@@ -2,6 +2,7 @@
 
 import random
 
+
 def random_boolean(percent=50):
     """Return a random boolean.
 

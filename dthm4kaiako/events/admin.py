@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 class LocationAdmin(admin.ModelAdmin):
+    """Inline view for event locations."""
+
     formfield_overrides = {
         geomodels.PointField: {"widget": GooglePointFieldWidget}
     }
@@ -36,15 +38,18 @@ class EventAdmin(admin.ModelAdmin):
     model = Event
     inlines = [SessionInline]
     fieldsets = (
-        (None, {
-            'fields': (
-                'name',
-                'description',
-                'locations',
-                'series',
-                'organisers',
-                'sponsors',
-            )}
+        (
+            None,
+            {
+                'fields': (
+                    'name',
+                    'description',
+                    'locations',
+                    'series',
+                    'organisers',
+                    'sponsors',
+                )
+            }
         ),
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
@@ -58,6 +63,7 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ('start', 'end', 'name')
 
     def save_related(self, request, form, formsets, change):
+        """Trigger update of event datetimes after sessions are saved."""
         super().save_related(request, form, formsets, change)
         # Update datetimes on event after saving sessions
         form.instance.update_datetimes()

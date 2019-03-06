@@ -240,7 +240,7 @@ class Event(models.Model):
 
 
 class Session(models.Model):
-    """"Model for an event session."""
+    """Model for an event session."""
 
     name = models.CharField(max_length=200)
     description = RichTextUploadingField()

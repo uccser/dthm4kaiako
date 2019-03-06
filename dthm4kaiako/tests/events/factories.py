@@ -3,10 +3,8 @@
 import random
 import pytz
 from datetime import timedelta
-from django.contrib.gis.geos import Point
 from tests.utils import random_boolean
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute
-from factory.fuzzy import BaseFuzzyAttribute
 from factory.faker import faker
 from events.models import (
     Sponsor,
