@@ -76,6 +76,10 @@
     }
 }
 
+#event-navigation.nav-pills .nav-link.active {
+    background-color: $events-brand-colour;
+}
+
 // DTTA
 #dtta-navbar {
     background-color: $dtta-brand-colour-dark !important;

@@ -32,3 +32,15 @@ $location-type-dark: #148086;
     // }
   }
 }
+
+.event-heading {
+  @extend .mt-4;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid $events-brand-colour;
+}
+.schedule-line {
+  border-top: 2px solid $gray-300;
+}
+.schedule-line-thin {
+  border-top: 1px solid $gray-300;
+}

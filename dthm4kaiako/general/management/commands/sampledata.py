@@ -1,6 +1,7 @@
 """Module for the custom Django sampledata command."""
 
 import csv
+import random
 from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -177,7 +178,7 @@ class Command(management.base.BaseCommand):
             region_codes[name] = code
         with open('general/management/commands/sample-data/nz-schools.csv') as csvfile:
             reader = csv.DictReader(csvfile)
-            for row in reader:
+            for row in random.sample(list(reader), 100):
                 if row['Longitude'] and row['Latitude'] and row['Region']:
                     Location.objects.create(
                         name=row['Name'],

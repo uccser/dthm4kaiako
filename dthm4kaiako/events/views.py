@@ -54,6 +54,7 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
+        context['sessions'] = self.object.sessions.all().prefetch_related('locations')
         if self.object.locations.count() == 1:
             context['location'] = self.object.locations.first()
         elif self.object.locations.count() > 1:

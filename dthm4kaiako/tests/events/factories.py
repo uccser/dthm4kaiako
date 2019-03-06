@@ -14,6 +14,7 @@ from events.models import (
     Series,
     Event,
     Location,
+    Session,
 )
 
 
@@ -61,7 +62,7 @@ class EventFactory(DjangoModelFactory):
     registration_link = Faker('url')
     published = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
-    end = LazyAttribute(lambda obj: obj.start + timedelta(days=random.randint(0, 3)))
+    end = LazyAttribute(lambda obj: obj.start)
     accessible_online = LazyFunction(random_boolean)
 
     class Meta:
@@ -108,3 +109,20 @@ class EventFactory(DjangoModelFactory):
         # 50% chance of being in a series
         if random.randint(1, 2) == 1:
             self.series = random.choice(Series.objects.all())
+
+        # Add sessions
+        start_time = self.start.replace(microsecond=0, second=0, minute=0)
+        number_of_sessions = random.randint(1, 10)
+        for i in range(number_of_sessions):
+            duration = random.choice([30, 60, 120, 180])
+            end_time = start_time + timedelta(minutes=duration)
+            Session.objects.create(
+                name=FAKER.sentence(),
+                description=FAKER.paragraph(nb_sentences=10),
+                event=self,
+                url=FAKER.url(),
+                start=start_time,
+                end=end_time,
+            )
+            start_time = end_time
+        self.update_datetimes()

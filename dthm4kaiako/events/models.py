@@ -229,10 +229,14 @@ class Event(models.Model):
         else:
             return self.name
 
-
     def __str__(self):
         """Text representation of an event."""
         return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['start', 'end']
 
 
 class Session(models.Model):
@@ -258,3 +262,8 @@ class Session(models.Model):
     def __str__(self):
         """Text representation of an session."""
         return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['start', 'end']
