@@ -243,7 +243,7 @@ class Session(models.Model):
     """Model for an event session."""
 
     name = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    description = RichTextUploadingField(blank=True)
     url = models.URLField(blank=True)
     url_label = models.CharField(max_length=200, blank=True)
     start = models.DateTimeField()
