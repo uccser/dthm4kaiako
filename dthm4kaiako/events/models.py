@@ -172,9 +172,10 @@ class Event(models.Model):
     description = RichTextUploadingField()
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
     registration_link = models.URLField(blank=True)
+    # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(
         default=False,
         help_text='Select if this event be attended online'
@@ -243,7 +244,7 @@ class Session(models.Model):
     """Model for an event session."""
 
     name = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    description = RichTextUploadingField(blank=True)
     url = models.URLField(blank=True)
     url_label = models.CharField(max_length=200, blank=True)
     start = models.DateTimeField()
