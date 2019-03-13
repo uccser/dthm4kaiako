@@ -22,11 +22,23 @@
                     {% endif %}
             }
         );
-        for (var i = 0; i < event_markers.length; i++) {
-            var marker = new google.maps.Marker({ position: event_markers[i], map: map });
-        }
+        var map_markers = event_markers.map(function (location, i) {
+            return new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        });
+        {% if map_locations %}
+            var markerCluster = new MarkerClusterer(map, map_markers,
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        {% endif %}
     }
 </script>
+
+{% if map_locations %}
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+{% endif %}
+
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
 </script>
