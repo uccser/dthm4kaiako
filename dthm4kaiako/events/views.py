@@ -29,7 +29,22 @@ class HomeView(generic.TemplateView):
             'series',
         )
         context['events'] = future_events[:10]
-        context['map_locations'] = Location.objects.filter(events__in=future_events).distinct()
+
+        raw_map_locations = []
+        map_locations = Location.objects.filter(events__in=future_events).distinct().prefetch_related('events')
+
+
+        for location in map_locations:
+            # TODO: Need to show events listing for each location in a faster manner
+            events_text = ''
+            for event in future_events.filter(locations__in=[location]):
+                events_text += '<li><a href="{}">{}</a></li>'.format(event.get_absolute_url(), event.name)
+            raw_map_locations.append({
+                'coords': {'lat': location.coords.y, 'lng': location.coords.x},
+                'title': location.name,
+                'text': '<strong>{}</strong><ul class="mb-0">{}</ul>'.format(location.name, events_text),
+            })
+        context['raw_map_locations'] = raw_map_locations
         return context
 
 

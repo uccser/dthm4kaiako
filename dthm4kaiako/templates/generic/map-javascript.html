@@ -1,41 +1,70 @@
 <script>
-    var event_markers = [
-        {% if map_location %}
-            { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
-        {% elif map_locations %}
-            {% for location in map_locations %}
-                { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
-            {% endfor %}
-        {% endif %}
-    ];
+    {% if raw_map_locations %}
+        var event_markers = {{ raw_map_locations|safe }};
+    {% else %}
+        var event_markers = [
+            {% if map_location %}
+                {
+                    coords: { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+                    title: "{{ location.name|escape }}",
+                    text: "{{ location.get_full_address|escape|linebreaksbr }}",
+                },
+            {% elif map_locations %}
+                {% for location in map_locations %}
+                    {
+                        coords: { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+                        title: "{{ location.name|escape }}",
+                        text: "{{ location.get_full_address|escape|linebreaksbr }}",
+                    },
+                {% endfor %}
+            {% endif %}
+        ];
+    {% endif %}
 
     function initMap() {
+        var map_markers = [];
+        var infowindow = new google.maps.InfoWindow();
         var map = new google.maps.Map(
             document.getElementById('map'),
             {
                 zoom: {{ map_zoom|default:6 }},
                 center:
                     {% if map_location %}
-                        event_markers[0],
+                        event_markers[0].coords,
                     {% else %}
                         { lat: -41, lng: 174 },
                     {% endif %}
             }
         );
-        var map_markers = event_markers.map(function (location, i) {
-            return new google.maps.Marker({
-                position: location,
-                map: map
+
+        function addMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location.coords,
+                map: map,
+                title: location.title,
             });
-        });
-        {% if map_locations %}
+            map_markers.push(marker);
+
+            marker.addListener('click', function () {
+                // Close previously opened infowindow
+                infowindow.close();
+                infowindow.setContent(location.text);
+                infowindow.open(map, marker);
+            });
+        }
+
+        for (var i = 0; i < event_markers.length; i++) {
+            addMarker(event_markers[i]);
+        }
+
+        {% if map_locations or raw_map_locations %}
             var markerCluster = new MarkerClusterer(map, map_markers,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
         {% endif %}
     }
 </script>
 
-{% if map_locations %}
+{% if map_locations or raw_map_locations%}
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 {% endif %}
 
