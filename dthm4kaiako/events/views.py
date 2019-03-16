@@ -43,7 +43,7 @@ class HomeView(generic.TemplateView):
                     raw_map_locations[key] = {
                         'coords': {'lat': location.coords.y, 'lng': location.coords.x},
                         'title': location.name,
-                        'text': '<strong>{}</strong>'.format(location.name),
+                        'text': '<div class="map-info-title">{}</div>'.format(location.name),
                     }
                 raw_map_locations[key]['text'] += '<p class="mb-0"><a href="{}">{:%-d %b %Y} - {}</a></p>'.format(
                     event.get_absolute_url(),
