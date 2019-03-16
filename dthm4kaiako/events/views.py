@@ -5,7 +5,6 @@ from django.utils.timezone import now
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
-    Location,
 )
 
 
@@ -31,7 +30,6 @@ class HomeView(generic.TemplateView):
         # Force evaluation of queryset
         future_events = list(future_events)
         context['events'] = future_events[:10]
-
 
         raw_map_locations = {}
         for event in future_events:
