@@ -28,23 +28,29 @@ class HomeView(generic.TemplateView):
         ).select_related(
             'series',
         )
+        # Force evaluation of queryset
+        future_events = list(future_events)
         context['events'] = future_events[:10]
 
-        raw_map_locations = []
-        map_locations = Location.objects.filter(events__in=future_events).distinct().prefetch_related('events')
 
-
-        for location in map_locations:
-            # TODO: Need to show events listing for each location in a faster manner
-            events_text = ''
-            for event in future_events.filter(locations__in=[location]):
-                events_text += '<li><a href="{}">{}</a></li>'.format(event.get_absolute_url(), event.name)
-            raw_map_locations.append({
-                'coords': {'lat': location.coords.y, 'lng': location.coords.x},
-                'title': location.name,
-                'text': '<strong>{}</strong><ul class="mb-0">{}</ul>'.format(location.name, events_text),
-            })
-        context['raw_map_locations'] = raw_map_locations
+        raw_map_locations = {}
+        for event in future_events:
+            print(event.pk, event.locations.all())
+            for location in event.locations.all():
+                key = location.pk
+                if location.pk not in raw_map_locations:
+                    # Create basic location information
+                    raw_map_locations[key] = {
+                        'coords': {'lat': location.coords.y, 'lng': location.coords.x},
+                        'title': location.name,
+                        'text': '<strong>{}</strong>'.format(location.name),
+                    }
+                raw_map_locations[key]['text'] += '<p class="mb-0"><a href="{}">{:%-d %b %Y} - {}</a></p>'.format(
+                    event.get_absolute_url(),
+                    event.start,
+                    event.name
+                )
+        context['raw_map_locations'] = list(raw_map_locations.values())
         return context
 
 
