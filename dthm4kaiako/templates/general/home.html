@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block body_container %}
-    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-5">
+    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-4">
         {% if messages %}
         <div class="container" id="messages">
             {% for message in messages %}
@@ -37,52 +37,70 @@
         </div>
     </div>
 
-    <div id="call-to-actions" class="container mt-5">
+    <div id="calls-to-action" class="container">
         <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="media mb-4">
-                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-versions-100-blue.png' %}">
-                    <div class="media-body">
-                        <h4 class="mt-0">Resources</h4>
-                        <p>
+            <div class="col-12 col-lg-4 mb-3">
+                <div class="card" id="cta-resources">
+                    <img class="card-img-top" src="{% static 'img/icons/icons8-versions-100-resources.png' %}">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Resources</h5>
+                        <p class="card-text">
                             Find resources for teaching Digital Technologies & Hangarau Matihiko curricula.
+                        </p>
+                        <p class="card-text">
                             At a later date, we will also have the abilty for you to share your own resources.
                         </p>
-                        <a class="btn btn-primary" href="{% url 'resources:home' %}" role="button">
-                            View resources
-                        </a>
+                    </div>
+                    <a class="btn" href="{% url 'resources:home' %}" role="button">
+                        View resources
+                    </a>
+                    <div class="card-footer text-muted text-center">
+                        Contains <strong>{{ resource_count }}</strong> resources
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="media mb-4">
-                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-classroom-100.png' %}">
-                    <div class="media-body">
-                        <h4 class="mt-0">Events</h4>
-                        <p>
+            <div class="col-12 col-lg-4 mb-3">
+                <div class="card" id="cta-events">
+                    <img class="card-img-top" src="{% static 'img/icons/icons8-classroom-100-events.png' %}">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Events</h5>
+                        <p class="card-text">
                             Find and register for professional development events throughout New Zealand.
                         </p>
-                        <a class="btn btn-primary" href="{% url 'events:home' %}" role="button">
-                            View events
-                        </a>
+                    </div>
+                    <a class="btn" id="btn-events" href="{% url 'events:home' %}" role="button">
+                        View events
+                    </a>
+                    <div class="card-footer text-muted text-center">
+                        Lists <strong>{{ upcoming_events }}</strong> upcoming events
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="media my-4">
-                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-user-groups-100.png' %}">
-                    <div class="media-body">
-                        <h4 class="mt-0">Community</h4>
-                        <p>
-                            Join the Digital Technologies Teachers Aotearoa association, which is a community of teachers who share resources, communicate and speak with one voice for their subject area.
+            <div class="col-12 col-lg-4 mb-3">
+                <div class="card" id="cta-dtta">
+                    <img class="card-img-top" src="{% static 'img/icons/icons8-user-groups-100-dtta.png' %}">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Community</h5>
+                        <p class="card-text">
+                            Join the Digital Technologies Teachers Aotearoa association, which is a community of teachers who share resources,
+                            communicate and speak with one voice for their subject area.
                         </p>
-                        </p>
-                        <a class="btn btn-primary" href="{% url 'dtta:home' %}">
-                            View DTTA homepage
-                        </a>
+                    </div>
+                    <a class="btn" href="{% url 'dtta:home' %}" role="button">
+                        View DTTA homepage
+                    </a>
+                    <div class="card-footer text-muted text-center">
+                        Over <strong>800</strong> members
                     </div>
                 </div>
             </div>
+
+            {% if featured_event %}
+                <div class="col-12 my-3">
+                    {% include 'events/event_card.html' with event=featured_event %}
+                </div>
+            {% endif %}
+
             <div class="col-12 col-lg-6">
                 <div class="media my-4">
                     <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-faq-100.png' %}">

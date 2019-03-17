@@ -1,10 +1,13 @@
 """Views for general application."""
 
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.views.generic import (
     TemplateView,
     FormView,
 )
+from resources.models import Resource
+from events.models import Event
 from general.forms import ContactForm
 
 
@@ -12,6 +15,18 @@ class HomeView(TemplateView):
     """View for website homepage."""
 
     template_name = 'general/home.html'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the website home view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['resource_count'] = Resource.objects.count()
+        context['upcoming_events'] = Event.objects.filter(published=True).filter(end__gte=now()).count()
+        context['featured_event'] = Event.objects.filter(published=True).filter(featured=True).filter(end__gte=now()).first()
+        return context
 
 
 class AboutView(TemplateView):

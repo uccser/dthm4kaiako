@@ -21,8 +21,63 @@
 }
 
 // Applies to website homepage and DTTA homepage
-#call-to-actions {
-  h2, h3, h4 {
-    font-weight: bold;
+$calls-to-action-border: 2px;
+$calls-to-action-background-fade: 7%;
+$calls-to-action-button-darken: 10%;
+#calls-to-action {
+  .card {
+    align-items: stretch;
+    height: 100%;
+    img {
+      height: 100px;
+      width: 100px;
+      align-self: center;
+      margin-top: 1rem;
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .btn {
+      @extend .btn-primary;
+      display: block;
+      color: white;
+      margin: 0 0.5rem 0.5rem;
+    }
+    .card-footer {
+      text-align: center;
+    }
+    &#cta-resources {
+      border: $calls-to-action-border solid $resources-brand-colour;
+      background-color: mix($resources-brand-colour, #fff, $calls-to-action-background-fade);
+      .btn {
+        background-color: $resources-brand-colour;
+        border-color: $resources-brand-colour;
+        &:hover {
+          background-color: darken($resources-brand-colour, $calls-to-action-button-darken);
+        }
+      }
+    }
+    &#cta-events {
+      border: $calls-to-action-border solid $events-brand-colour;
+      background-color: mix($events-brand-colour, #fff, $calls-to-action-background-fade);
+      .btn {
+        background-color: $events-brand-colour;
+        border-color: $events-brand-colour;
+        &:hover {
+          background-color: darken($events-brand-colour, $calls-to-action-button-darken);
+        }
+      }
+    }
+    &#cta-dtta {
+      border: $calls-to-action-border solid $dtta-brand-colour;
+      background-color: mix($dtta-brand-colour, #fff, $calls-to-action-background-fade);
+      .btn {
+        background-color: $dtta-brand-colour;
+        border-color: $dtta-brand-colour;
+        &:hover {
+          background-color: darken($dtta-brand-colour, $calls-to-action-button-darken);
+        }
+      }
+    }
   }
 }
