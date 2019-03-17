@@ -105,7 +105,7 @@ class Location(models.Model):
     class Meta:
         """Meta options for class."""
 
-        ordering = ['name']
+        ordering = ['region', 'city', 'name']
 
 
 class Organiser(models.Model):
@@ -124,6 +124,11 @@ class Organiser(models.Model):
         """Text representation of an event organiser."""
         return self.name
 
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+
 
 class Sponsor(models.Model):
     """Model for an event sponsor."""
@@ -140,6 +145,11 @@ class Sponsor(models.Model):
     def __str__(self):
         """Text representation of an sponsor."""
         return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
 
 
 class Series(models.Model):
