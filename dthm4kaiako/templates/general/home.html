@@ -40,15 +40,12 @@
     <div id="calls-to-action" class="container">
         <div class="row">
             <div class="col-12 col-lg-4 mb-3">
-                <div class="card" id="cta-resources">
+                <div class="cta" id="cta-resources">
                     <img class="card-img-top" src="{% static 'img/icons/icons8-versions-100-resources.png' %}">
                     <div class="card-body">
                         <h5 class="card-title text-center">Resources</h5>
                         <p class="card-text">
                             Find resources for teaching Digital Technologies & Hangarau Matihiko curricula.
-                        </p>
-                        <p class="card-text">
-                            At a later date, we will also have the abilty for you to share your own resources.
                         </p>
                     </div>
                     <a class="btn" href="{% url 'resources:home' %}" role="button">
@@ -60,7 +57,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-4 mb-3">
-                <div class="card" id="cta-events">
+                <div class="cta" id="cta-events">
                     <img class="card-img-top" src="{% static 'img/icons/icons8-classroom-100-events.png' %}">
                     <div class="card-body">
                         <h5 class="card-title text-center">Events</h5>
@@ -72,25 +69,24 @@
                         View events
                     </a>
                     <div class="card-footer text-muted text-center">
-                        Lists <strong>{{ upcoming_events }}</strong> upcoming events
+                        Contains <strong>{{ upcoming_events }}</strong> upcoming events
                     </div>
                 </div>
             </div>
             <div class="col-12 col-lg-4 mb-3">
-                <div class="card" id="cta-dtta">
+                <div class="cta" id="cta-dtta">
                     <img class="card-img-top" src="{% static 'img/icons/icons8-user-groups-100-dtta.png' %}">
                     <div class="card-body">
                         <h5 class="card-title text-center">Community</h5>
                         <p class="card-text">
-                            Join the Digital Technologies Teachers Aotearoa association, which is a community of teachers who share resources,
-                            communicate and speak with one voice for their subject area.
+                            Join the Digital Technologies Teachers Aotearoa association.
                         </p>
                     </div>
                     <a class="btn" href="{% url 'dtta:home' %}" role="button">
                         View DTTA homepage
                     </a>
                     <div class="card-footer text-muted text-center">
-                        Over <strong>800</strong> members
+                        Contains <strong>800+</strong> members
                     </div>
                 </div>
             </div>
@@ -100,17 +96,34 @@
                     {% include 'events/event_card.html' with event=featured_event %}
                 </div>
             {% endif %}
-
-            <div class="col-12 col-lg-6">
-                <div class="media my-4">
-                    <img class="align-self-center mr-3" src="{% static 'img/icons/icons8-faq-100.png' %}">
-                    <div class="media-body">
-                        <h4 class="mt-0">Frequently Asked Questions</h4>
-                        <p>Have a question about the website? Have a look for the answer within the FAQ.</p>
-                        <a class="btn btn-primary" href="{% url 'general:faq' %}" role="button">
-                            View FAQ page
-                        </a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-4 mb-3">
+                <div class="cta">
+                    <img class="card-img-top" src="{% static 'img/icons/icons8-about-100.png' %}">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">About</h5>
+                        <p class="card-text">
+                            Learn more about the history, purpose, and plans of this website.
+                        </p>
                     </div>
+                    <a class="btn" id="btn-events" href="{% url 'general:about' %}" role="button">
+                        View about page
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 mb-3">
+                <div class="cta">
+                    <img class="card-img-top" src="{% static 'img/icons/icons8-faq-100.png' %}">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Frequently Asked Questions</h5>
+                        <p class="card-text">
+                            Have a question about the website? Have a look for the answer within the FAQ.
+                        </p>
+                    </div>
+                    <a class="btn" id="btn-events" href="{% url 'general:faq' %}" role="button">
+                        View FAQ page
+                    </a>
                 </div>
             </div>
         </div>

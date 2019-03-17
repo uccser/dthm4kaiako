@@ -25,7 +25,13 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['resource_count'] = Resource.objects.count()
         context['upcoming_events'] = Event.objects.filter(published=True).filter(end__gte=now()).count()
-        context['featured_event'] = Event.objects.filter(published=True).filter(featured=True).filter(end__gte=now()).first()
+        context['featured_event'] = Event.objects.filter(published=True).filter(featured=True).filter(end__gte=now()).prefetch_related(
+            'organisers',
+            'locations',
+            'sponsors',
+        ).select_related(
+            'series',
+        ).first()
         return context
 
 

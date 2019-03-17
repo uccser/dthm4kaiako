@@ -46,6 +46,10 @@ $location-type-dark: #148086;
     background-color: #fff6ab;
     color: #71660b;
   }
+  .event-location {
+    display: inline-block;
+    font-size: 90%;
+  }
   .event-location:not(:last-child) {
     padding-right: 0.6rem;
     margin-right: 0.4rem;
