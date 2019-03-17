@@ -1,8 +1,11 @@
-{% load static %}
+{% load static humanize %}
 
-{% load humanize %}
-
-<div class="resource card mb-3 w-100">
+<div class="event card mb-3 w-100">
+    {% if event.featured %}
+        <div class="card-header featured-header align-middle">
+            Featured event
+        </div>
+    {% endif %}
     <div class="card-header align-middle">
         <div>
             {% for organiser in organisers %}

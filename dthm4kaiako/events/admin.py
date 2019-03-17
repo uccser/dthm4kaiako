@@ -59,7 +59,7 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('registration_link', ),
         }),
         ('Visibility', {
-            'fields': ('published', ),
+            'fields': ('published', 'featured'),
         }),
     )
     list_display = ('name', 'start', 'end')

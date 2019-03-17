@@ -174,6 +174,7 @@ class Event(models.Model):
     registration_link = models.URLField(blank=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(

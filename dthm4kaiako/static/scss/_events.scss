@@ -38,7 +38,15 @@ $location-type-dark: #148086;
     // }
   }
 }
-
+.event {
+  border-color: rgba(0, 0, 0, 0.25);
+  .featured-header {
+    font-size: 0.8rem;
+    padding: 0.4rem 1.25rem;
+    background-color: #fff6ab;
+    color: #71660b;
+  }
+}
 .event-heading {
   @extend .mt-4;
   padding-bottom: 0.2rem;
