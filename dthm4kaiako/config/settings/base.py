@@ -104,6 +104,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'anymail',
     'crispy_forms',
+    'django_filters',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
