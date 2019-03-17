@@ -36,7 +36,7 @@
             </li>
             <li>
                 <strong>Technological area:</strong>
-                {% if resource.technological_area.exists %}
+                {% if resource.technological_areas.exists %}
                     {% for technological_area in resource.technological_areas.all %}
                         {% include "resources/badges/technological-area.html" %}
                     {% endfor %}
