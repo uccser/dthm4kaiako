@@ -20,8 +20,6 @@
   }
 }
 
-$calls-to-action-border: 2px;
-$calls-to-action-background-fade: 7%;
 $calls-to-action-button-darken: 10%;
 .cta {
   @extend .card;
@@ -47,8 +45,6 @@ $calls-to-action-button-darken: 10%;
     text-align: center;
   }
   &#cta-resources {
-    border: $calls-to-action-border solid $resources-brand-colour;
-    background-color: mix($resources-brand-colour, #fff, $calls-to-action-background-fade);
     .btn {
       background-color: $resources-brand-colour;
       border-color: $resources-brand-colour;
@@ -58,8 +54,6 @@ $calls-to-action-button-darken: 10%;
     }
   }
   &#cta-events {
-    border: $calls-to-action-border solid $events-brand-colour;
-    background-color: mix($events-brand-colour, #fff, $calls-to-action-background-fade);
     .btn {
       background-color: $events-brand-colour;
       border-color: $events-brand-colour;
@@ -69,8 +63,6 @@ $calls-to-action-button-darken: 10%;
     }
   }
   &#cta-dtta {
-    border: $calls-to-action-border solid $dtta-brand-colour;
-    background-color: mix($dtta-brand-colour, #fff, $calls-to-action-background-fade);
     .btn {
       background-color: $dtta-brand-colour;
       border-color: $dtta-brand-colour;
