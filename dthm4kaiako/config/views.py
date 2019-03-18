@@ -20,8 +20,7 @@ def cron_rebuild_index(request):
         200 HTTP response when valid cron job call is made.
         403 HTTP resoponse when invalid source.
     """
-    call_command('rebuild_index', noinput='')
-    return HttpResponse(status=200)
+    print(request.META.items())
     if request.META.get('HTTP_X_APPENGINE_CRON'):
         call_command('rebuild_index', noinput='')
         return HttpResponse(status=200)
