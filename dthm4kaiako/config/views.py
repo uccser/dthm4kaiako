@@ -15,7 +15,8 @@ def health_check(request):
 
 def cron_rebuild_index(request):
     """Rebuild search index when triggered by cron job.
-     Returns:
+
+    Returns:
         200 HTTP response when valid cron job call is made.
         403 HTTP resoponse when invalid source.
     """
