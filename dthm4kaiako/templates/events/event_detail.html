@@ -7,41 +7,44 @@
 {% endblock body_element %}
 
 {% block page_heading %}
-    <h1 id="event-details">
-        <div>
+    <div id="event-details">
+        <div class="h6 text-muted">
             {% for organiser in organisers %}
                 {% if organiser.logo %}
-                    <img src="{{ organiser.logo.url }}" class="img-y2 mr-2" alt="{{ organiser.name }}">
+                    <img src="{{ organiser.logo.url }}" class="img-y4 mr-4" alt="{{ organiser.name }}">
                 {% else %}
-                    <span class="text-muted mr-2">
+                    <span class="text-muted mr-4">
                         {{ organiser.name }}
                     </span>
                 {% endif %}
             {% endfor %}
         </div>
+        <h1>
+            {{ event.name }}
+        </h1>
         {% if event.series %}
-            {% if event.series.logo %}
-                <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-            {% else %}
-                <span class="text-muted">
-                    {{ event.series.name }}
-                </span>
-            {% endif %}
+            <div class="h6 text-muted">
+                Part of the
+                {% if event.series.logo %}
+                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                {% else %}
+                    <span class="text-muted">
+                        {{ event.series.name }}
+                    </span>
+                series
+                {% endif %}
+            </div>
         {% endif %}
-        {{ event.name }}
-    </h1>
+    </div>
 {% endblock page_heading %}
 
 {% block content_container %}
     <div class="col-12 col-md-8 order-2 order-md-1">
         <div>
-            {% if event.locations.all %}
-                {% include "events/badges/location_type.html" with location_type="onsite" %}
-            {% endif %}
             {% if event.accessible_online %}
-                {% include "events/badges/location_type.html" with location_type="online" %}
+                {% include "events/badges/online.html" %}
             {% endif %}
-            <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
+            <p class="mb-0 mt-3"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
             <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
             <p class="mb-0">
                 <strong>Cost:</strong>

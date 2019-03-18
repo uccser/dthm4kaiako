@@ -1,0 +1,4 @@
+<span class="location-badge">
+    {{ location.city }}{% if location.city != location.get_region_display %},
+    {{ location.get_region_display }}{% endif %}
+</span>
