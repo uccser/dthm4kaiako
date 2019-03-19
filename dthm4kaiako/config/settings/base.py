@@ -121,6 +121,7 @@ LOCAL_APPS = [
     'resources.apps.ResourcesAppConfig',
     'events.apps.EventsAppConfig',
     'dtta.apps.DttaAppConfig',
+    'authentic_context_cards.apps.AuthenticContextCardsAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
