@@ -27,8 +27,19 @@
                             <div class="ac-card-front-details">
                                 <strong>Learning area:</strong> {{ achievement_outcome.curriculum_area }}<br>
                                 <strong>Curriculum level:</strong> {{ achievement_outcome.level }}<br>
-                                <strong>Component:</strong> {{ achievement_outcome.component }}<br>
-                                <strong>Strand:</strong> {{ achievement_outcome.strand }}
+                                <strong>Component:</strong>
+                                {% if achievement_outcome.component %}
+                                    {{ achievement_outcome.component }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                                <br>
+                                <strong>Strand:</strong>
+                                {% if achievement_outcome.strand %}
+                                    {{ achievement_outcome.strand }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
                             </div>
                         </div>
                     </div>

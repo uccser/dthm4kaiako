@@ -6,8 +6,6 @@ $card-margin: 3mm;
 $margin-top: 30mm;
 $border-width: 2px;
 
-// Authentic Context Cards
-
 div {
     padding: 0;
     margin: 0;
@@ -52,7 +50,7 @@ div {
         left: 0;
         right: 0;
         bottom: $card-margin;
-        font-size: 0.7rem;
+        font-size: 0.8grem;
         .logo {
             height: 4mm;
         }
@@ -84,7 +82,6 @@ div {
         }
     }
 }
-
 
 .learning-area-ENG {
     background-color: $la-english;
