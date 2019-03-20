@@ -1,4 +1,4 @@
-code,curriculum_area_code,curriculum_area,level,component_code,component,strand_code,strand,content
+code,learning_area_code,learning_area,level,component_code,component,strand_code,strand,content
 TEC1-PRA-PLA,TEC,Technology,1,PRA,Technological Practice,PLA,Planning for practice,"Outline a general plan to support the development of an outcome, identifying appropriate steps and resources."
 TEC1-PRA-BRI,TEC,Technology,1,PRA,Technological Practice,BRI,Brief development,"Describe the outcome they are developing and identify the attributes it should have, taking account of the need or opportunity and the resources available."
 TEC1-PRA-DEV,TEC,Technology,1,PRA,Technological Practice,DEV,Outcome development and evaluation,Investigate a context to communicate potential outcomes. Evaluate these against attributes; select and develop an outcome in keeping with the identified attributes.
@@ -566,7 +566,12 @@ MAT1-GEO-SHA,MAT,Mathematics and Statistics,1,GEO,Geometry and Measurement,SHA,S
 MAT1-GEO-POS-1,MAT,Mathematics and Statistics,1,GEO,Geometry and Measurement,POS-1,Position and Orientation,"Give and follow instructions for movement that involves distances, directions, and half or quarter turns."
 MAT1-GEO-POS-2,MAT,Mathematics and Statistics,1,GEO,Geometry and Measurement,POS-2,Position and Orientation,Describe their position relative to a person or object.
 MAT1-GEO-TRA,MAT,Mathematics and Statistics,1,GEO,Geometry and Measurement,TRA,Transformation,"Communicate and record the results of translations, reflections, and rotations on plane shapes."
-MAT1-STA-INV,MAT,Mathematics and Statistics,1,STA,Statistics,INV,Statistical Investigation,"Conduct investigations using the statistical enquiry cycle: <br />posing and answering questions;<br />gathering, sorting and counting, and displaying category data;<br />discussing the results."
+MAT1-STA-INV,MAT,Mathematics and Statistics,1,STA,Statistics,INV,Statistical Investigation,"Conduct investigations using the statistical enquiry cycle:
+<ul>
+<li>posing and answering questions.</li>
+<li>gathering, sorting and counting, and displaying category data.</li>
+<li>discussing the results.</li>
+</ul>"
 MAT1-STA-LIT,MAT,Mathematics and Statistics,1,STA,Statistics,LIT,Statistical Literacy,Interpret statements made by others from statistical investigations and probability activities.
 MAT1-STA-PRO,MAT,Mathematics and Statistics,1,STA,Statistics,PRO,Probability,"Investigate situations that involve elements of chance, acknowledging and anticipating possible outcomes."
 MAT2-NUM-STRA,MAT,Mathematics and Statistics,2,NUM,Number and Algebra,STRA,Number strategies,Use simple additive strategies with whole numbers and fractions.

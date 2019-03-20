@@ -11,8 +11,8 @@ class AchievementObjective(models.Model):
     """Model for an achievement objective."""
 
     code = models.CharField(max_length=30)
-    curriculum_area = models.CharField(max_length=100)
-    curriculum_area_code = models.CharField(max_length=10)
+    learning_area = models.CharField(max_length=100)
+    learning_area_code = models.CharField(max_length=10)
     level = models.PositiveSmallIntegerField(default=1)
     component = models.CharField(max_length=100)
     component_code = models.CharField(max_length=10)

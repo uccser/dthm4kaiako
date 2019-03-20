@@ -8,10 +8,10 @@
     <body>
         {% spaceless %}
             {% for achievement_outcome in achievement_outcomes %}
-                <div class="ac-card learning-area-{{ achievement_outcome.curriculum_area_code }} {% if forloop.counter|divisibleby:2 or forloop.last %}page-break{% endif %}">
+                <div class="ac-card learning-area-{{ achievement_outcome.learning_area_code }} {% if forloop.counter|divisibleby:2 or forloop.last %}page-break{% endif %}">
                     <div class="ac-card-back">
                         <span class="ac-card-area">
-                            {{ achievement_outcome.curriculum_area }}
+                            {{ achievement_outcome.learning_area }}
                         </span>
                         <div class="ac-card-credits">
                             Authentic Context Cards<br>
@@ -25,7 +25,7 @@
                                 {{ achievement_outcome.content|safe }}
                             </div>
                             <div class="ac-card-front-details">
-                                <strong>Learning area:</strong> {{ achievement_outcome.curriculum_area }}<br>
+                                <strong>Learning area:</strong> {{ achievement_outcome.learning_area }}<br>
                                 <strong>Curriculum level:</strong> {{ achievement_outcome.level }}<br>
                                 <strong>Component:</strong>
                                 {% if achievement_outcome.component %}
