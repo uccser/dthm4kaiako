@@ -8,7 +8,7 @@
     <body>
         {% spaceless %}
             {% for achievement_outcome in achievement_outcomes %}
-                <div class="ac-card learning-area-{{ achievement_outcome.curriculum_area_code }} {% if forloop.counter|divisibleby:2 %}page-break{% endif %}">
+                <div class="ac-card learning-area-{{ achievement_outcome.curriculum_area_code }} {% if forloop.counter|divisibleby:2 or forloop.last %}page-break{% endif %}">
                     <div class="ac-card-back">
                         <span class="ac-card-area">
                             {{ achievement_outcome.curriculum_area }}
