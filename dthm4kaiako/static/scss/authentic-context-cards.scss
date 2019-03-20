@@ -23,7 +23,6 @@ div {
 
 .ac-card-back,
 .ac-card-front {
-
     display: inline-block;
     box-sizing: content-box;
     overflow: hidden;
@@ -68,8 +67,14 @@ div {
         margin: $card-margin;
         padding: $card-margin;
         position: relative;
+        ul {
+            padding-left: 0.7rem;
+        }
         .content-small {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+        }
+        .content-smaller {
+            font-size: 0.63rem;
         }
         .ac-card-front-details {
             width: $card-width - ($card-margin * 4);
