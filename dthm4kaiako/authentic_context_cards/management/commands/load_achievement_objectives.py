@@ -2,7 +2,7 @@
 
 import csv
 from django.core import management
-from authentic_context_cards.models import AchivementObjective
+from authentic_context_cards.models import AchievementObjective
 
 CSV_PATH = 'authentic_context_cards/achievement-objectives.csv'
 
@@ -20,7 +20,7 @@ class Command(management.base.BaseCommand):
         with open(CSV_PATH) as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                obj, created = AchivementObjective.objects.update_or_create(
+                obj, created = AchievementObjective.objects.update_or_create(
                     code=row['code'],
                     defaults=row,
                 )

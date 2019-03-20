@@ -54,7 +54,10 @@ body {
 .logo-header {
   max-height: 10rem;
 }
-
+#svg-logo-inline {
+  width: 12rem;
+  vertical-align: 3px;
+}
 .btn-dtta {
   @extend .btn-danger;
   background-color: $dtta-brand-colour;
@@ -116,4 +119,68 @@ $red: #b94a48;
   background-color: $pink;
   border-color: $dark-pink;
   color: $red;
+}
+
+
+// Authentic Context Cards
+
+.ac-card {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 120mm;//
+    border-top: $border-width solid black;
+    border-left: $border-width solid black;
+    border-right: $border-width solid black;
+}
+
+.ac-card-back,
+.ac-card-front {
+    flex: 0 1 50%;
+    // display: inline-block;
+    // position: absolute;
+    // width: $card-width;
+    // height: 119mm;
+    //box-sizing: border-box;
+}
+
+.ac-card-back {
+    // position: relative;
+    border-right: $border-width dashed black;
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+
+}
+
+.card-front-container {
+    background-color: white;
+    margin: 10mm;
+}
+
+.learning-area-ENG {
+    background-color: $la-english;
+}
+.learning-area-ART {
+    background-color: $la-arts;
+}
+.learning-area-HEA {
+    background-color: $la-health-pe;
+}
+.learning-area-LEA {
+    background-color: $la-languages;
+}
+.learning-area-MAT {
+    background-color: $la-mathematics;
+}
+.learning-area-SCI {
+    background-color: $la-science;
+}
+.learning-area-SOC {
+    background-color: $la-social-sciences;
+}
+.learning-area-TEC {
+    background-color: $la-technology;
 }

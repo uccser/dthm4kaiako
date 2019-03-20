@@ -1,0 +1,51 @@
+{% load static i18n %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Metadata -->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}dthm4kaiako.ac.nz{% endblock title %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% if DEPLOYED %}
+      <!-- Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133342557-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133342557-1');
+      </script>
+    {% endif %}
+
+    <!-- Favicon (created by realfavicongenerator.net) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'img/favicons/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'img/favicons/safari-pinned-tab.svg' %}" color="#1f2730">
+    <meta name="msapplication-TileColor" content="#1f2730">
+    <meta name="theme-color" content="#1f2730">
+
+    <!-- Styling -->
+    <link href="{% static 'css/website.css' %}" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <![endif]-->
+  </head>
+  {% block body_element %}<body>{% endblock body_element %}
+    {% block body %}{% endblock body %}
+
+    {% block modal %}{% endblock modal %}
+
+    <script src="{% static 'js/website.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>

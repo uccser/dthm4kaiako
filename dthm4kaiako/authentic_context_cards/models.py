@@ -7,7 +7,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 
 
-class AchivementObjective(models.Model):
+class AchievementObjective(models.Model):
     """Model for an achievement objective."""
 
     code = models.CharField(max_length=30)

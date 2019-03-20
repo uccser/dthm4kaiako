@@ -1,0 +1,39 @@
+{% load static %}
+{% load i18n %}
+
+<html>
+    <head>
+        <title>{{ filename }}</title>
+    </head>
+    <body>
+        {% spaceless %}
+            {% for achievement_outcome in achievement_outcomes %}
+                <div class="ac-card learning-area-{{ achievement_outcome.curriculum_area_code }} {% if forloop.counter|divisibleby:2 %}page-break{% endif %}">
+                    <div class="ac-card-back">
+                        <span class="ac-card-area">
+                            {{ achievement_outcome.curriculum_area }}
+                        </span>
+                        <div class="ac-card-credits">
+                            Authentic Context Cards<br>
+                            <img src="./img/logos/dthm4kaiako-logo-png-alternative.png" class="logo">
+                        </div>
+
+                    </div>
+                    <div class="ac-card-front">
+                        <div class="ac-card-front-container">
+                            <div class="ac-card-front-content {% if achievement_outcome.content|length > 300 %}content-small{% endif %}">
+                                {{ achievement_outcome.content|safe }}
+                            </div>
+                            <div class="ac-card-front-details">
+                                <strong>Learning area:</strong> {{ achievement_outcome.curriculum_area }}<br>
+                                <strong>Curriculum level:</strong> {{ achievement_outcome.level }}<br>
+                                <strong>Component:</strong> {{ achievement_outcome.component }}<br>
+                                <strong>Strand:</strong> {{ achievement_outcome.strand }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        {% endspaceless %}
+    </body>
+</html>
