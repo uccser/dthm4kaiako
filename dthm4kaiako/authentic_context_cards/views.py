@@ -30,31 +30,3 @@ class HomeView(generic.base.TemplateView):
         context['levels'] = AchievementObjective.objects.order_by(
             'level').values('level').annotate(count=Count('level'))
         return context
-
-
-def generate_cards(request):
-    """View for generated PDF of a specific cards.
-
-    Args:
-        request: HttpRequest object.
-
-    Returns:
-        HTML response containing PDF of cards.
-    """
-    from weasyprint import HTML, CSS
-    context = dict()
-    context["achievement_outcomes"] = AchievementObjective.objects.all()[:10]
-
-    filename = "{} ({})".format('Authentic Context Cards', 'Random 10 cards')
-    context["filename"] = filename
-
-    pdf_html = render_to_string("authentic_context_cards/card-pdf.html", context)
-    html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
-    # css_file = finders.find("css/print-resource-pdf.css")
-    # css_string = open(css_file, encoding="UTF-8").read()
-    css_string = ''
-    base_css = CSS(string=css_string)
-    pdf_file = html.write_pdf(stylesheets=[base_css])
-    response = HttpResponse(pdf_file, content_type="application/pdf")
-    response["Content-Disposition"] = RESPONSE_CONTENT_DISPOSITION.format(filename=filename)
-    return response
