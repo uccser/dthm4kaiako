@@ -404,12 +404,16 @@ MAP_WIDGETS = {
     "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY,
 }
 
+# Authentic Context Cards
+# ------------------------------------------------------------------------------
+AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION = os.path.join(
+    str(ROOT_DIR.path("staticfiles")),
+    "authentic_context_cards"
+)
+AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE = 'Authentic Context Cards - Level {}'
+
 # Other
 # ------------------------------------------------------------------------------
 DEPLOYMENT_TYPE = 'local'
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
-AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION = os.path.join(
-    str(ROOT_DIR.path("staticfiles")),
-    "authentic_context_cards"
-)

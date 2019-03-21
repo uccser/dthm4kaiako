@@ -3,13 +3,66 @@
 {% load static %}
 
 {% block page_heading %}
-    <h1 class="text-center">Authentic Context Cards</h1>
+    <h1 id="acc-title" class="text-center">Authentic Context Cards</h1>
 {% endblock page_heading %}
 
 {% block content_container %}
     <div class="col-12 text-center">
         <p class="lead">
-            Sets of printable cards of New Zealand achievement outcomes for prompting authentic contexts.
+            Sets of printable cards of New Zealand achievement objectives for prompting authentic contexts.{{ STATIC_PREFIX }}
         </p>
     </div>
+    <div class="col-12 col-md-6 mb-3 text-center order-md-2">
+        <div class="ac-card-front sample-card learning-area-{{ achievement_outcome.learning_area_code }}">
+            <div class="ac-card-front-container">
+                <div class="ac-card-front-content
+                    {% if achievement_outcome.content|length > 500 %}content-smaller
+                    {% elif achievement_outcome.content|length > 300 %}content-small{% endif %}
+                    ">
+                    {{ achievement_outcome.content|safe }}
+                </div>
+                <div class="ac-card-front-details">
+                    <strong>Learning area:</strong> {{ achievement_outcome.learning_area }}<br>
+                    <strong>Curriculum level:</strong> {{ achievement_outcome.level }}<br>
+                    <strong>Component:</strong>
+                    {% if achievement_outcome.component %}
+                    {{ achievement_outcome.component }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                    <br>
+                    <strong>Strand:</strong>
+                    {% if achievement_outcome.strand %}
+                    {{ achievement_outcome.strand }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="text-muted my-2">Sample card</div>
+    </div>
+    <div class="col-12 col-md-6 order-md-1">
+        <h4>
+            Download card sets
+        </h4>
+        <p>
+            Two cards are on each A4 page.
+            Print and cut along the solid lines, and fold along the dashed line.
+            A double sided version will be developed at a later time.
+        </p>
+        <div class="list-group mb-5">
+            {% for level in levels %}
+                <a href="{{ STATIC_URL }}authentic_context_cards/{{ filename }}{{ level.level }}.pdf" download class="list-group-item list-group-item-action">
+                    <strong>Level {{ level.level }}</strong> - {{ level.count }} cards - Single sided
+                </a>
+            {% endfor %}
+        </div>
+
+        <p><strong>Feedback? Suggestions?</strong> Please <a href="{% url 'general:contact' %}">contact us here</a>.</p>
+    </div>
 {% endblock content_container %}
+
+{% block css %}
+    <link href="{% static 'css/authentic-context-cards.css' %}" rel="stylesheet">
+{% endblock css %}

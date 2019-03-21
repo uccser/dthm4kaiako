@@ -59,6 +59,7 @@ div {
     height: $card-height;
     width: $card-width;
     border-left: $border-width dashed black;
+    text-align: left;
     color: black;
     font-size: 1rem;
     .ac-card-front-container {
@@ -88,6 +89,11 @@ div {
     }
 }
 
+.sample-card {
+    border: none !important;
+    border-radius: 2mm;
+}
+
 .learning-area-ENG {
     background-color: $la-english;
 }
@@ -111,4 +117,28 @@ div {
 }
 .learning-area-TEC {
     background-color: $la-technology;
+}
+
+#acc-title {
+    padding-bottom: 1rem;
+    border-bottom: 10px solid;
+    border-image: linear-gradient(
+        to right,
+        $la-english 0%,
+        $la-english 12.5%,
+        $la-arts 12.5%,
+        $la-arts 25%,
+        $la-health-pe 25%,
+        $la-health-pe 37.5%,
+        $la-languages 37.5%,
+        $la-languages 50%,
+        $la-mathematics 50%,
+        $la-mathematics 62.5%,
+        $la-science 62.5%,
+        $la-science 75%,
+        $la-social-sciences 75%,
+        $la-social-sciences 87.5%,
+        $la-technology 87.5%,
+        $la-technology 100%,
+    ) 1;
 }

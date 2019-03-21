@@ -1,8 +1,10 @@
 """Views for authentic context cards application."""
 
+from random import randint
 from django.views import generic
 from django.http import HttpResponse
 from django.conf import settings
+from django.db.models import Count
 from django.template.loader import render_to_string
 from django.contrib.staticfiles import finders
 from authentic_context_cards.models import AchievementObjective
@@ -22,12 +24,12 @@ class HomeView(generic.base.TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        achievement_outcomes = AchievementObjective.objects.all()
-        context["achievement_outcomes"] = achievement_outcomes
-        counts = dict()
-        for outcome in achievement_outcomes:
-            counts[outcome.level] = counts.get(outcome.level, 0) + 1
-        context['counts'] = counts
+        achievement_objectives = AchievementObjective.objects.all()
+        random_card = randint(0, len(achievement_objectives))
+        context['achievement_outcome'] = achievement_objectives[random_card]
+        context['filename'] = settings.AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE[:-2].replace(' ', '%20')
+        context['levels'] = AchievementObjective.objects.order_by(
+            'level').values('level').annotate(count=Count('level'))
         return context
 
 

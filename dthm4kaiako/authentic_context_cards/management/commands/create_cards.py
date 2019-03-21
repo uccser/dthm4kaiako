@@ -10,8 +10,6 @@ from django.db.models import Max, Min
 from authentic_context_cards.models import AchievementObjective
 from weasyprint import HTML, CSS
 
-FILENAME_TEMPLATE = 'Authentic Context Cards - Level {}'
-
 
 class Command(management.base.BaseCommand):
     """Required command class for the custom Django create_cards command."""
@@ -42,7 +40,7 @@ class Command(management.base.BaseCommand):
             context = dict()
 
             # Create filename
-            filename = FILENAME_TEMPLATE.format(level_num)
+            filename = settings.AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE.format(level_num)
             context['filename'] = filename
 
             # Create HTML
