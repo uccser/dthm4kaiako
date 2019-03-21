@@ -9,7 +9,8 @@ source ./infrastructure/dev-deploy/load-dev-deploy-config-envs.sh
 sudo rm -r ./dthm4kaiako/build/
 sudo rm -r ./dthm4kaiako/staticfiles/
 ./dev static_prod
-./dev dev collect_static
+./dev collect_static
+./dev create_cards
 
 # Install Google Cloud SDK
 ./infrastructure/install_google_cloud_sdk.sh
