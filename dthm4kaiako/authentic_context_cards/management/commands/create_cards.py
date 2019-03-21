@@ -43,8 +43,8 @@ class Command(management.base.BaseCommand):
             context['filename'] = filename
 
             # Create HTML
-            outcomes = AchievementObjective.objects.filter(level=level_num).order_by('code')
-            context['achievement_outcomes'] = outcomes
+            objectives = AchievementObjective.objects.filter(level=level_num).order_by('code')
+            context['achievement_objectives'] = objectives
             pdf_html = render_to_string('authentic_context_cards/cards-pdf.html', context)
             html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
 
