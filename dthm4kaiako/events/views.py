@@ -2,10 +2,12 @@
 
 from django.views import generic
 from django.utils.timezone import now
+from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
 )
+from events.filters import EventFilter
 
 
 class HomeView(generic.TemplateView):
@@ -33,7 +35,6 @@ class HomeView(generic.TemplateView):
 
         raw_map_locations = {}
         for event in future_events:
-            print(event.pk, event.locations.all())
             for location in event.locations.all():
                 key = location.pk
                 if location.pk not in raw_map_locations:
@@ -52,10 +53,10 @@ class HomeView(generic.TemplateView):
         return context
 
 
-class EventListView(generic.ListView):
+class EventListView(FilterView):
     """View for listing events."""
 
-    model = Event
+    filterset_class = EventFilter
     context_object_name = 'events'
 
     def get_queryset(self):

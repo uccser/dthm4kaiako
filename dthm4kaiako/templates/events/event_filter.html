@@ -1,11 +1,18 @@
 {% extends "events/base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block page_heading %}
     <h1>All events</h1>
 {% endblock page_heading %}
 
 {% block content %}
-    {% for event in events %}
+    <form action="." method="get" class="mb-3">
+        {{ filter.form|crispy }}
+        <input class="btn btn-primary" type="submit" />
+    </form>
+
+    {% for event in filter.qs %}
         {% include 'events/event_card.html' %}
     {% endfor %}
 {% endblock content %}
