@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.2
+
+- Fix bug where event organisers are not shown on an event card.
+
 ## 0.13.1
 
 - Fix bug where authentic context cards are empty.
