@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.1
+
+- Fix bug where authentic context cards are empty.
+- Fix deployment of cron job for production deployment.
+- Show log of updating achievement objectives.
+
 ## 0.13.0
 
 - Redesign homepage to highlight key entrypoints to the website. ([fixes #314](https://github.com/uccser/dthm4kaiako/issues/314))
