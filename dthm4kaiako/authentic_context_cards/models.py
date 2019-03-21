@@ -1,10 +1,6 @@
 """Models for authentic context cards application."""
 
 from django.db import models
-from django.urls import reverse
-from autoslug import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
-from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 
 
 class AchievementObjective(models.Model):

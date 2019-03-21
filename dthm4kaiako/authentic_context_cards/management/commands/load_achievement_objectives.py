@@ -14,7 +14,6 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the load_achievement_objectives command is given."""
-
         created_count = 0
         updated_count = 0
         with open(CSV_PATH) as csvfile:

@@ -1,12 +1,10 @@
 """Module for the custom Django create_cards command."""
 
 import os
-import csv
 from django.core import management
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.staticfiles import finders
-from django.db.models import Max, Min
 from authentic_context_cards.models import AchievementObjective
 from weasyprint import HTML, CSS
 
@@ -18,7 +16,6 @@ class Command(management.base.BaseCommand):
 
     def add_arguments(self, parser):
         """Add optional parameter to create_cards command."""
-
         parser.add_argument(
             "level_number",
             nargs="?",
@@ -28,13 +25,15 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the create_cards command is given."""
-
-        base_path = settings.AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION
+        pdf_directory = settings.AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION
+        if not os.path.exists(pdf_directory):
+            os.makedirs(pdf_directory)
 
         if options["level_number"]:
             level_values = [int(options["level_number"])]
         else:
-            level_values = AchievementObjective.objects.all().values_list('level', flat=True).order_by('level').distinct()
+            level_values = AchievementObjective.objects.all().values_list(
+                'level', flat=True).order_by('level').distinct()
 
         for level_num in level_values:
             context = dict()
@@ -56,10 +55,6 @@ class Command(management.base.BaseCommand):
             pdf_file = html.write_pdf(stylesheets=[base_css])
 
             # Save file
-            pdf_directory = settings.AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION
-            if not os.path.exists(pdf_directory):
-                os.makedirs(pdf_directory)
-
             filename = '{}.pdf'.format(filename)
             pdf_file_output = open(os.path.join(pdf_directory, filename), 'wb')
             pdf_file_output.write(pdf_file)
