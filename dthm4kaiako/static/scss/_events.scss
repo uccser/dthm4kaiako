@@ -1,5 +1,11 @@
 #event-map {
   height: 50rem;
+
+}
+.map-info-title {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
 }
 
 #sticky-navigation {
@@ -8,31 +14,41 @@
 }
 
 // Location badges (onsite/online)
-$location-type-light: #84f1e6;
-$location-type-dark: #148086;
-.location-type-badge {
+$location-light: #a7efe7;
+$location-dark: #148086;
+.location-badge {
   @extend .badge;
   display: inline-block;
-  &.location-type-onsite {
-    background-color: $location-type-dark;
-    color: $location-type-light;
-    // Uncomment if adding action to badge
-    // &:hover {
-      //   background-color: lighten($location-type-dark, 10%);
-    //   color: $location-type-light;
-    // }
-  }
-  &.location-type-online {
-    background-color: $location-type-light;
-    color: $location-type-dark;
-    // Uncomment if adding action to badge
-    // &:hover {
-    //   background-color: darken($location-type-light, 10%);
-    //   color: $location-type-dark;
-    // }
-  }
+  box-shadow:inset 0px 0px 0px 2px $location-dark;
+  color: $location-dark;
+}
+.online-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $location-light;
+  color: $location-dark;
 }
 
+.event {
+  border-color: rgba(0, 0, 0, 0.25);
+  .featured-header {
+    font-size: 0.8rem;
+    padding: 0.4rem 1.25rem;
+    background-color: #fff6ab;
+    color: #71660b;
+    text-align: center;
+    font-weight: bold;
+  }
+  .event-location {
+    display: inline-block;
+    font-size: 90%;
+  }
+  .event-location:not(:last-child) {
+    padding-right: 0.6rem;
+    margin-right: 0.4rem;
+    border-right: 1px solid $gray-500;
+  }
+}
 .event-heading {
   @extend .mt-4;
   padding-bottom: 0.2rem;

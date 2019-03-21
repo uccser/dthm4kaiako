@@ -18,3 +18,4 @@ export ELASTICSEARCH_CONNECTION_NAME="$DEV_ELASTICSEARCH_CONNECTION_NAME"
 ./dev start
 ./dev migrate
 ./dev sampledata
+./dev load_achievement_objectives

@@ -59,10 +59,10 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('registration_link', ),
         }),
         ('Visibility', {
-            'fields': ('published', ),
+            'fields': ('published', 'featured'),
         }),
     )
-    list_display = ('name', 'start', 'end')
+    list_display = ('name', 'series', 'start', 'end', 'featured')
     ordering = ('start', 'end', 'name')
 
     def save_related(self, request, form, formsets, change):

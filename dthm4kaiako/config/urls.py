@@ -6,8 +6,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
-from config.views import health_check
-
+from config.views import (
+    health_check,
+    cron_rebuild_index,
+)
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 
@@ -18,11 +20,13 @@ urlpatterns = [
     path('events/', include('events.urls', namespace='events'),),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
+    path('authentic-context-cards/', include('authentic_context_cards.urls', namespace='authentic_context_cards')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('api/', include('rest_framework.urls')),
     path('_ah/health', health_check),
+    path('cron/rebuild_index/', cron_rebuild_index),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

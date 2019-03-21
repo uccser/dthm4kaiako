@@ -8,7 +8,7 @@ from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 
 
 class Page(models.Model):
-    """Model for a flat page on DTTA wresourceebsite."""
+    """Model for a flat page on DTTA website."""
 
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', always_update=True, null=True)

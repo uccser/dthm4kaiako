@@ -105,7 +105,7 @@ class Location(models.Model):
     class Meta:
         """Meta options for class."""
 
-        ordering = ['name']
+        ordering = ['region', 'city', 'name']
 
 
 class Organiser(models.Model):
@@ -124,6 +124,11 @@ class Organiser(models.Model):
         """Text representation of an event organiser."""
         return self.name
 
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+
 
 class Sponsor(models.Model):
     """Model for an event sponsor."""
@@ -140,6 +145,11 @@ class Sponsor(models.Model):
     def __str__(self):
         """Text representation of an sponsor."""
         return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
 
 
 class Series(models.Model):
@@ -174,6 +184,7 @@ class Event(models.Model):
     registration_link = models.URLField(blank=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(

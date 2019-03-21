@@ -5,7 +5,6 @@ from django.utils.timezone import now
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
-    Location,
 )
 
 
@@ -28,8 +27,28 @@ class HomeView(generic.TemplateView):
         ).select_related(
             'series',
         )
+        # Force evaluation of queryset
+        future_events = list(future_events)
         context['events'] = future_events[:10]
-        context['map_locations'] = Location.objects.filter(events__in=future_events).distinct()
+
+        raw_map_locations = {}
+        for event in future_events:
+            print(event.pk, event.locations.all())
+            for location in event.locations.all():
+                key = location.pk
+                if location.pk not in raw_map_locations:
+                    # Create basic location information
+                    raw_map_locations[key] = {
+                        'coords': {'lat': location.coords.y, 'lng': location.coords.x},
+                        'title': location.name,
+                        'text': '<div class="map-info-title">{}</div>'.format(location.name),
+                    }
+                raw_map_locations[key]['text'] += '<p class="mb-0"><a href="{}">{:%-d %b %Y} - {}</a></p>'.format(
+                    event.get_absolute_url(),
+                    event.start,
+                    event.name
+                )
+        context['raw_map_locations'] = list(raw_map_locations.values())
         return context
 
 

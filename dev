@@ -154,6 +154,18 @@ cmd_django_shell() {
 }
 defhelp django_shell "Open Django shell."
 
+# Run load_achievement_objectives command
+cmd_load_achievement_objectives() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py load_achievement_objectives
+}
+defhelp load_achievement_objectives "Load achievement objectives."
+
+# Run create_cards command
+cmd_create_cards() {
+  docker-compose exec django /docker_venv/bin/python3 ./manage.py create_cards
+}
+defhelp create_cards "Create authentic context cards."
+
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser
 }
