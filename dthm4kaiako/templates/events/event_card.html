@@ -7,51 +7,53 @@
         </div>
     {% endif %}
     <div class="card-header align-middle">
-        <div class="d-inline-block">
-            {% if event.series %}
-                <div class="mb-2
-                ">
-                    {% for organiser in event.organisers.all %}
-                        {% if organiser.logo %}
-                            <img src="{{ organiser.logo.url }}" class="img-y2 mr-3" alt="{{ organiser.name }}">
-                        {% else %}
-                            <small class="text-muted mr-4">
-                                {{ organiser.name }}
-                            </small>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <h5 class="d-inline-block mb-0">
-                <a href="{{ event.get_absolute_url }}">
-                    {{ event.name }}
-                </a>
-            </h5>
-            {% if event.series %}
-                <small class="text-muted d-block">
-                    Part of the
-                    {% if event.series.logo %}
-                        <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                    {% else %}
-                        <span class="text-muted">
-                            {{ event.series.abbreviation }}
-                        </span>
-                    {% endif %}
-                    series
-                </small>
-            {% endif %}
-        </div>
-        <div class="float-md-right text-left text-md-right">
-            {% if event.start|date:"j" != event.end|date:"j" %}
-                {% if event.start|date:"F" == event.end|date:"F" %}
-                    {{ event.start|date:"j" }}
-                {% else %}
-                    {{ event.start|date:"j F" }}
+        <div class="row">
+            <div class="col-12 col-lg-7 col-xl-9">
+                {% if event.series %}
+                    <div class="mb-2
+                    ">
+                        {% for organiser in event.organisers.all %}
+                            {% if organiser.logo %}
+                                <img src="{{ organiser.logo.url }}" class="img-y2 mr-3" alt="{{ organiser.name }}">
+                            {% else %}
+                                <small class="text-muted mr-4">
+                                    {{ organiser.name }}
+                                </small>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
-                to
-            {% endif %}
-            {{ event.end|date:" j F Y" }}<br>
-            <small class="text-muted">{{ event.start|naturaltime }}</small>
+                <h5 class="d-inline-block mb-0">
+                    <a href="{{ event.get_absolute_url }}">
+                        {{ event.name }}
+                    </a>
+                </h5>
+                {% if event.series %}
+                    <small class="text-muted d-block">
+                        Part of the
+                        {% if event.series.logo %}
+                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                        {% else %}
+                            <span class="text-muted">
+                                {{ event.series.abbreviation }}
+                            </span>
+                        {% endif %}
+                        series
+                    </small>
+                {% endif %}
+            </div>
+            <div class="col text-left text-lg-right align-self-center">
+                {% if event.start|date:"j" != event.end|date:"j" %}
+                    {% if event.start|date:"F" == event.end|date:"F" %}
+                        {{ event.start|date:"j" }}
+                    {% else %}
+                        {{ event.start|date:"j F" }}
+                    {% endif %}
+                    to
+                {% endif %}
+                {{ event.end|date:" j F Y" }}<br>
+                <small class="text-muted">{{ event.start|naturaltime }}</small>
+            </div>
         </div>
     </div>
     <div class="card-body py-2">
