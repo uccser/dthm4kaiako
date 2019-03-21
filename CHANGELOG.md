@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.3
+
+- Add published attribute to resources.
+
 ## 0.13.2
 
 - Fix bug where event organisers are not shown on an event card.
