@@ -105,3 +105,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
             Resource class.
         """
         return Resource
+
+    def index_queryset(self, using=None):
+        """Return queryset of items to index."""
+        return Resource.objects.filter(published=True)

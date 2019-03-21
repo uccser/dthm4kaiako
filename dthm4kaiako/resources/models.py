@@ -155,6 +155,7 @@ class Resource(models.Model):
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    published = models.BooleanField(default=False)
     languages = models.ManyToManyField(
         Language,
         related_name='resources',

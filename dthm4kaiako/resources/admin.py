@@ -41,6 +41,7 @@ class ResourceAdmin(admin.ModelAdmin):
 
     model = Resource
     inlines = [ResourceComponentInline]
+    list_display = ('name', 'published')
 
 
 admin.site.register(Language)
