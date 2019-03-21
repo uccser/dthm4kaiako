@@ -42,5 +42,5 @@ python ./infrastructure/replace_envs.py ./infrastructure/prod-deploy/app.yaml
 gcloud app deploy ./app.yaml --quiet --project=dthm4kaiako
 
 # Publish cron jobs to Google App Engine.
-cp ./infrastructure/dev-deploy/cron.yaml ./cron.yaml
-gcloud app deploy ./cron.yaml --quiet --project=dthm4kaiako-dev
+cp ./infrastructure/prod-deploy/cron.yaml ./cron.yaml
+gcloud app deploy ./cron.yaml --quiet --project=dthm4kaiako
