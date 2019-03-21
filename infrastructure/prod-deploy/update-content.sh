@@ -17,3 +17,4 @@ export ELASTICSEARCH_CONNECTION_NAME="$PROD_ELASTICSEARCH_CONNECTION_NAME"
 # Start the system and run the migrate and collect_static system commands.
 ./dev start
 ./dev migrate
+./dev load_achievement_objectives

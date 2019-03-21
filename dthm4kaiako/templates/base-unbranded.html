@@ -1,0 +1,46 @@
+{% extends "base-core.html" %}
+
+{% load static i18n activeurl %}
+
+{% block body %}
+  <div id="page-header" class="my-3">
+    <div class="container">
+      {% block page_heading %}
+      {% endblock page_heading %}
+    </div>
+  </div>
+  <div id="content-container" class="container">
+    <div class="row">
+      {% block content_container %}
+        <div class="col-12">
+          {% block content %}
+          {% endblock content %}
+        </div>
+      {% endblock content_container %}
+    </div>
+  </div>
+
+
+  <footer class="py-3 mt-5 d-print-none white-footer text-center">
+    <div class="container-fluid">
+      <p>
+        A component of the
+              <a id="svg-logo-inline" class="navbar-brand mr-0" href="{% url 'general:home' %}">
+                {% include 'svg/logo.html' %}
+              </a>
+        website.</p>
+      <p>
+        <small>
+          {% url 'dtta:home' as dtta_homepage %}
+          {% blocktrans trimmed %}
+          DTHM for kaiako is a project by the <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">Computer
+            Science Education Research Group</a> at the <a href="http://www.canterbury.ac.nz/">University of Canterbury</a>, the <a href="{{ dtta_homepage }}">Digital Technologies Teachers Aotearoa</a> association, and <a href="https://www.facebook.com/aateasolutions/">AATEA Solutions</a>.
+          The dthm4kaiako website is open source on <a href="https://github.com/uccser/dthm4kaiako">GitHub</a>,
+          and available under a <a href="https://github.com/uccser/dthm4kaiako/blob/develop/LICENSE">MIT licence</a>.
+          Icons provided generously by <a href="https://icons8.com/">icons8</a>.
+          {% endblocktrans %}
+        </small>
+      </p>
+    </div>
+  </footer>
+{% endblock body %}
