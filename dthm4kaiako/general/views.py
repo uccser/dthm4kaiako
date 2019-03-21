@@ -23,7 +23,7 @@ class HomeView(TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        context['resource_count'] = Resource.objects.count()
+        context['resource_count'] = Resource.objects.filter(published=True).count()
         context['upcoming_events'] = Event.objects.filter(published=True).filter(end__gte=now()).count()
         context['featured_event'] = Event.objects.filter(published=True).filter(featured=True).filter(
             end__gte=now()).prefetch_related(

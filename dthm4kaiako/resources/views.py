@@ -25,10 +25,11 @@ class ResourceHomeView(generic.TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        context['resource_count'] = Resource.objects.count()
-        context['resource_component_count'] = ResourceComponent.objects.count()
+        context['resource_count'] = Resource.objects.filter(published=True).count()
+        context['resource_component_count'] = ResourceComponent.objects.filter(resource__published=True).count()
         context['languages'] = Language.objects.all()
-        context['latest_resources'] = Resource.objects.order_by('-datetime_added').prefetch_related(
+        context['latest_resources'] = Resource.objects.filter(published=True).order_by(
+            '-datetime_added').prefetch_related(
             'progress_outcomes',
             'year_levels',
             'technological_areas',
@@ -42,8 +43,11 @@ class ResourceHomeView(generic.TemplateView):
 class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     """View for a resource."""
 
-    model = Resource
     context_object_name = 'resource'
+
+    def get_queryset(self, **kwargs):
+        """Return queryset of resources to pull from."""
+        return Resource.objects.filter(published=True)
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the resource detail view.
