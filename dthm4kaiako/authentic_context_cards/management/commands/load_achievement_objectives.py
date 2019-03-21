@@ -25,6 +25,8 @@ class Command(management.base.BaseCommand):
                 )
                 if created:
                     created_count += 1
+                    print('Created {}'.format(obj.code))
                 else:
                     updated_count += 1
+                    print('Updated {}'.format(obj.code))
         print('Achievement objects loaded ({} created, {} updated).'.format(created_count, updated_count))
