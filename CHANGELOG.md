@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.13.0
+
+- Redesign homepage to highlight key entrypoints to the website. ([fixes #314](https://github.com/uccser/dthm4kaiako/issues/314))
+- Add authentic context cards website. ([fixes #294](https://github.com/uccser/dthm4kaiako/issues/294))
+- Allow events to be featured on the website. ([fixes #317](https://github.com/uccser/dthm4kaiako/issues/317))
+- Improve design of event cards to clearly show organisers and series.
+- Allow nodes on event map to show future events at each location. ([fixes #313](https://github.com/uccser/dthm4kaiako/issues/313))
+- Add map clustering to events map.
+- Order event organisers and sponsors in alphabetical order by name.
+- Order event locations by region, then city, then name (roughly listed north to south across New Zealand).
+- Improve listing of events on admin site.
+- Increase contrast between NZQA standard levels. ([fixes #320](https://github.com/uccser/dthm4kaiako/issues/320))
+- Fix bug where technological areas not showing on a resource detail. ([fixes #321](https://github.com/uccser/dthm4kaiako/issues/321))
+- Fix bug where event times wouldn't fit correctly. ([fixes #325](https://github.com/uccser/dthm4kaiako/issues/325))
+- Dependencies changes:
+    - Update Sphinx from 1.8.4 to 1.8.5.
+    - Update pytest from 4.3.0 to 4.3.1.
+    - Update coverage from 4.5.2 to 4.5.3.
+    - Remove Werkzeug dependency.
+    - Remove ipdb dependency.
+
 ## 0.12.1
 
 - Do not require a description for an event session.
