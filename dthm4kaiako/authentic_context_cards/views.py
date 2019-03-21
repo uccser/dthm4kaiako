@@ -2,10 +2,8 @@
 
 from random import randint
 from django.views import generic
-from django.http import HttpResponse
 from django.conf import settings
 from django.db.models import Count
-from django.template.loader import render_to_string
 from authentic_context_cards.models import AchievementObjective
 
 RESPONSE_CONTENT_DISPOSITION = "attachment; filename*=UTF-8''{filename}.pdf; filename=\"{filename}.pdf\""
