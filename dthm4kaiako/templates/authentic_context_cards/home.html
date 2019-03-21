@@ -54,7 +54,7 @@
         <div class="list-group mb-5">
             {% for level in levels %}
                 <a href="{{ STATIC_URL }}authentic_context_cards/{{ filename }}{{ level.level }}.pdf" download class="list-group-item list-group-item-action">
-                    <strong>Level {{ level.level }}</strong> - {{ level.count }} cards - Single sided
+                    <strong>Level {{ level.level }}</strong> - {{ level.count }} cards
                 </a>
             {% endfor %}
         </div>
