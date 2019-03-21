@@ -9,9 +9,8 @@
     <div class="card-header align-middle">
         <div class="row">
             <div class="col-12 col-lg-7 col-xl-9">
-                {% if event.series %}
-                    <div class="mb-2
-                    ">
+                {% if event.organisers.all %}
+                    <div class="mb-2">
                         {% for organiser in event.organisers.all %}
                             {% if organiser.logo %}
                                 <img src="{{ organiser.logo.url }}" class="img-y2 mr-3" alt="{{ organiser.name }}">
@@ -23,7 +22,7 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                <h5 class="d-inline-block mb-0">
+                <h5 class="mb-0">
                     <a href="{{ event.get_absolute_url }}">
                         {{ event.name }}
                     </a>
