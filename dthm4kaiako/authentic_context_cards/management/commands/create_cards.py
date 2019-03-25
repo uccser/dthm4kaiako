@@ -62,9 +62,14 @@ class Command(management.base.BaseCommand):
                             }
                         )
                 else:
+                    objectives = list(objectives)
                     cards_per_page = 4
                     fronts = list()
                     backs = list()
+                    blank_card = {
+                        'objective': None,
+                        'side': 'back',
+                    }
                     for objective in objectives:
                         backs.append(
                             {
@@ -78,32 +83,33 @@ class Command(management.base.BaseCommand):
                                 'side': 'front',
                             }
                         )
-                        if len(fronts) == 4:
+                        if len(fronts) == 4 or objective == objectives[-1]:
+                            blanks = list()
+                            for i in range(cards_per_page - len(fronts)):
+                                blanks.append(blank_card)
                             cards.extend(backs)
+                            cards.extend(blanks)
+                            if len(fronts) == 1:
+                                cards.append(blanks.pop())
+                                cards.extend(fronts)
+                                cards.extend(blanks)
+                            elif len(fronts) == 2:
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
+                                cards.extend(blanks)
+                            elif len(fronts) == 3:
+                                cards.append(fronts.pop(0))
+                                cards.append(fronts.pop(0))
+                                cards.append(blanks.pop())
+                                cards.extend(fronts)
+                                cards.extend(blanks)
+                            else:
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
                             backs = list()
-                            cards.extend(fronts)
                             fronts = list()
-                    # Add any leftover cards
-                    blanks = list()
-                    blank_card = {
-                        'objective': None,
-                        'side': 'back',
-                    }
-                    for i in range(cards_per_page - len(backs)):
-                        blanks.append(blank_card)
-                    cards.extend(backs)
-                    cards.extend(blanks)
-                    if len(fronts) == 1:
-                        cards.append(blanks.pop())
-                        cards.extend(fronts)
-                    elif len(fronts) == 3:
-                        cards.append(fronts.pop())
-                        cards.append(fronts.pop())
-                        cards.append(blanks.pop())
-                        cards.extend(fronts)
-                    else:
-                        cards.extend(fronts)
-                        cards.extend(blanks)
 
                 # Create HTML
                 context['cards'] = cards

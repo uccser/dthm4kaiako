@@ -8,7 +8,7 @@
     <body class="text-center print-{{ print_type|lower }}">
         {% spaceless %}
             {% for card in cards %}
-                <div class="ac-card ac-card-{{ card.side }} learning-area-{{ card.objective.learning_area_code }} {% if forloop.counter|divisibleby:4 or forloop.last or card.page_break %}page-break{% endif %}">
+                <div class="ac-card ac-card-{{ card.side }} learning-area-{{ card.objective.learning_area_code }} {% if forloop.counter|divisibleby:4 or forloop.last %}page-break{% endif %}">
                     {% if card.side == 'back' and card.objective %}
                         <span class="ac-card-area">
                             {{ card.objective.learning_area }}
