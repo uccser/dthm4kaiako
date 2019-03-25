@@ -13,11 +13,12 @@ div {
 
 .ac-card {
     display: inline-block;
-    border-top: $border-width solid black;
-    border-left: $border-width solid black;
-    border-right: $border-width solid black;
-    &.page-break {
-        border-bottom: $border-width solid black;
+    border: $border-width solid black;
+    .print-single &.ac-card-back {
+        border-right: $border-width dashed black;
+    }
+    .print-single &.ac-card-front {
+        border-left: none;
     }
 }
 
@@ -34,9 +35,9 @@ div {
     height: $card-height - $margin-top;
     position: relative;
     text-align: center;
-    margin-top: $margin-top;
-    margin-left: $card-margin;
-    margin-right: $card-margin;
+    padding-top: $margin-top;
+    padding-left: $card-margin;
+    padding-right: $card-margin;
     color: white;
     .ac-card-area {
         font-size: 2rem;
@@ -58,7 +59,6 @@ div {
 .ac-card-front {
     height: $card-height;
     width: $card-width;
-    border-left: $border-width dashed black;
     text-align: left;
     color: black;
     font-size: 1rem;
