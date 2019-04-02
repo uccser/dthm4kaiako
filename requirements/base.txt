@@ -1,6 +1,6 @@
 pytz==2018.9  # https://github.com/stub42/pytz
 python-slugify==3.0.0  # https://github.com/un33k/python-slugify
-Pillow==5.4.1  # https://github.com/python-pillow/Pillow
+Pillow==6.0.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==19.1.0  # https://github.com/hynek/argon2_cffi
 redis>=2.10.6, < 3  # pyup: < 3 # https://github.com/antirez/redis
 filetype==1.0.4  # https://github.com/h2non/filetype.py
