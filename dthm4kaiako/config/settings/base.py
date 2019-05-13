@@ -244,7 +244,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.api_keys.api_keys',
                 'config.context_processors.deployed.deployed',
-                'config.context_processors.dtta_flat_pages.dtta_flat_pages',
+                'config.context_processors.dtta_menu.dtta_menu',
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {

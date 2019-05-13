@@ -6,6 +6,7 @@ from datetime import timedelta
 from utils.mixins import RedirectToCosmeticURLMixin
 from dtta.models import (
     Page,
+    Project,
     NewsArticle,
     RelatedLink,
 )
@@ -55,6 +56,21 @@ class PageDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
             Pages filtered by published boolean.
         """
         return Page.objects.filter(published=True)
+
+
+class ProjectDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
+    """View for DTTA project page."""
+
+    model = Project
+    context_object_name = 'project'
+
+    def get_queryset(self):
+        """Only show published project pages.
+
+        Returns:
+            Project pages filtered by published boolean.
+        """
+        return Project.objects.filter(published=True)
 
 
 class NewsArticleListView(generic.ListView):

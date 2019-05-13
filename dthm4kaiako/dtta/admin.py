@@ -3,6 +3,7 @@
 from django.contrib import admin
 from dtta.models import (
     Page,
+    Project,
     NewsArticle,
     NewsArticleAudience,
     NewsArticleSource,
@@ -12,6 +13,13 @@ from dtta.models import (
 
 class PageAdmin(admin.ModelAdmin):
     """Configuration for display DTTA flat pages in admin."""
+
+    list_display = ('title', 'date')
+    ordering = ('order_number', )
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    """Configuration for display DTTA project pages in admin."""
 
     list_display = ('title', 'date')
     ordering = ('order_number', )
@@ -31,6 +39,7 @@ class RelatedLinkAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Page, PageAdmin)
+admin.site.register(Project, ProjectAdmin)
 admin.site.register(NewsArticle, NewsArticleAdmin)
 admin.site.register(NewsArticleAudience)
 admin.site.register(NewsArticleSource)
