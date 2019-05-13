@@ -10,6 +10,8 @@ urlpatterns = [
     path('membership/', views.MembershipView.as_view(), name='membership'),
     path('page/<int:pk>/', views.PageDetailView.as_view()),
     path('page/<int:pk>/<slug:slug>/', views.PageDetailView.as_view(), name='page'),
+    path('project/<int:pk>/', views.ProjectDetailView.as_view()),
+    path('project/<int:pk>/<slug:slug>/', views.ProjectDetailView.as_view(), name='project'),
     path('news/', views.NewsArticleListView.as_view(), name='news_article_list'),
     path('news/<int:pk>/', views.NewsArticleDetailView.as_view()),
     path('news/<int:pk>/<slug:slug>/', views.NewsArticleDetailView.as_view(), name='news_article'),

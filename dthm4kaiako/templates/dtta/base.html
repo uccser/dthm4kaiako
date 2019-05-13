@@ -35,15 +35,28 @@
                 <a class="dropdown-item" href="http://hangaraumatihiko.tki.org.nz/">Hangarau Matihiko</a>
               </div>
             </li>
-            {% if DTTA_FLAT_PAGES %}
+            {% if DTTA_PAGES %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dttaPlanningLinks" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   Planning
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dttaPlanningLinks">
-                  {% for page in DTTA_FLAT_PAGES %}
+                  {% for page in DTTA_PAGES %}
                     <a class="dropdown-item" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                  {% endfor %}
+                </div>
+              </li>
+            {% endif %}
+            {% if DTTA_PROJECTS %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dttaPlanningLinks" role="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  Projects
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dttaPlanningLinks">
+                  {% for project in DTTA_PROJECTS %}
+                    <a class="dropdown-item" href="{{ project.get_absolute_url }}">{{ project.title }}</a>
                   {% endfor %}
                 </div>
               </li>

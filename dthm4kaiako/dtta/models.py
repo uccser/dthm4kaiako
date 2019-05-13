@@ -34,6 +34,36 @@ class Page(models.Model):
         return self.title
 
 
+class Project(models.Model):
+    """Model for a flat page of a project on the DTTA website.
+
+    TODO: Combine Page and Project models.
+    """
+
+    title = models.CharField(max_length=200)
+    slug = AutoSlugField(populate_from='title', always_update=True, null=True)
+    date = models.DateField()
+    order_number = models.PositiveSmallIntegerField(default=1)
+    published = models.BooleanField(default=False)
+    content = RichTextUploadingField()
+
+    def get_absolute_url(self):
+        """Return URL of object on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse("dtta:project", kwargs={'pk': self.pk, 'slug': self.slug})
+
+    def __str__(self):
+        """Text representation of object.
+
+        Returns:
+            Name of DTTA project page (str).
+        """
+        return self.title
+
+
 class NewsArticleAudience(models.Model):
     """Model for an audience of a news article published by DTTA."""
 

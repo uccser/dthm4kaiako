@@ -4,6 +4,7 @@ from factory import DjangoModelFactory, Faker
 from dtta.models import (
     NewsArticle,
     Page,
+    Project,
     RelatedLink,
 )
 import pytz
@@ -34,6 +35,20 @@ class PageFactory(DjangoModelFactory):
         """Metadata for class."""
 
         model = Page
+
+
+class ProjectFactory(DjangoModelFactory):
+    """Factory for generating DTTA projects."""
+
+    title = Faker('sentence')
+    content = Faker('paragraph', nb_sentences=5)
+    date = Faker('date_time_between', start_date='-1y', end_date='+4w', tzinfo=pytz.timezone('Pacific/Auckland'))
+    published = True
+
+    class Meta:
+        """Metadata for class."""
+
+        model = Project
 
 
 class RelatedLinkFactory(DjangoModelFactory):
