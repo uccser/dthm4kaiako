@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.14.0
+
+- Add double sided version of authentic context cards.
+- Add projects area to DTTA hub.
+- Dependencies changes:
+    - Update autoprefixer from 9.4.6 to 9.5.1.
+    - Update babel/core from 7.2.2 to 7.4.4.
+    - Update babel/preset-env from 7.3.1 to 7.4.4.
+    - Update del from 3.0.0 to 4.1.1.
+    - Update details-element-polyfill from 2.3.0 to 2.3.1.
+    - Update django-ckeditor from 5.6.1 to 5.7.0.
+    - Update djangorestframework from 3.9.2 to 3.9.4.
+    - Update fuse.js from 3.4.2 to 3.4.4.
+    - Update gulp from 3.9.1 to 4.0.2.
+    - Update gulp-sourcemaps from 2.6.4 to 2.6.5.
+    - Update jshint from 2.9.7 to 2.10.2.
+    - Update jquery from 3.3.1 to 3.4.1.
+    - Update node-gyp from 3.8.0 to 4.0.0.
+    - Update Pillow from 5.4.1 to 6.0.0.
+    - Update popper.js from 1.14.7 to 1.15.0.
+    - Update python-slugify from 3.0.0 to 3.0.2.
+    - Update pytz from 2018.9 to 2019.1.
+    - Update yargs from 12.0.5 to 13.2.4.
+    - Update Sphinx from 1.8.5 to 2.0.1.
+    - Update psycopg2-binary from 2.7.7 to 2.8.2.
+    - Update pytest from 4.3.1 to 4.5.0.
+    - Update faxtory-boy from 2.11.1 to 2.12.0.
+
 ## 0.13.3
 
 - Add published attribute to resources.
