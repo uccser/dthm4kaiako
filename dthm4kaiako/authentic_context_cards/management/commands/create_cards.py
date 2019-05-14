@@ -36,28 +36,96 @@ class Command(management.base.BaseCommand):
                 'level', flat=True).order_by('level').distinct()
 
         for level_num in level_values:
-            context = dict()
+            for print_type in settings.AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES:
+                context = dict()
+                context['print_type'] = print_type
 
-            # Create filename
-            filename = settings.AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE.format(level_num)
-            context['filename'] = filename
+                # Create filename
+                filename = settings.AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE.format(level_num, print_type)
+                context['filename'] = filename
 
-            # Create HTML
-            objectives = AchievementObjective.objects.filter(level=level_num).order_by('code')
-            context['achievement_objectives'] = objectives
-            pdf_html = render_to_string('authentic_context_cards/cards-pdf.html', context)
-            html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
+                # Create card data
+                cards = list()
+                objectives = AchievementObjective.objects.filter(level=level_num).order_by('code')
+                if print_type == settings.AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT:
+                    for objective in objectives:
+                        cards.append(
+                            {
+                                'objective': objective,
+                                'side': 'back',
+                            }
+                        )
+                        cards.append(
+                            {
+                                'objective': objective,
+                                'side': 'front',
+                            }
+                        )
+                else:
+                    objectives = list(objectives)
+                    cards_per_page = 4
+                    fronts = list()
+                    backs = list()
+                    blank_card = {
+                        'objective': None,
+                        'side': 'back',
+                    }
+                    for objective in objectives:
+                        backs.append(
+                            {
+                                'objective': objective,
+                                'side': 'back',
+                            }
+                        )
+                        fronts.append(
+                            {
+                                'objective': objective,
+                                'side': 'front',
+                            }
+                        )
+                        if len(fronts) == 4 or objective == objectives[-1]:
+                            blanks = list()
+                            for i in range(cards_per_page - len(fronts)):
+                                blanks.append(blank_card)
+                            cards.extend(backs)
+                            cards.extend(blanks)
+                            if len(fronts) == 1:
+                                cards.append(blanks.pop())
+                                cards.extend(fronts)
+                                cards.extend(blanks)
+                            elif len(fronts) == 2:
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
+                                cards.extend(blanks)
+                            elif len(fronts) == 3:
+                                cards.append(fronts.pop(0))
+                                cards.append(fronts.pop(0))
+                                cards.append(blanks.pop())
+                                cards.extend(fronts)
+                                cards.extend(blanks)
+                            else:
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
+                                cards.append(fronts.pop(1))
+                                cards.append(fronts.pop(0))
+                            backs = list()
+                            fronts = list()
 
-            # Render as PDF
-            css_file = finders.find('css/authentic-context-cards.css')
-            css_string = open(css_file, encoding='UTF-8').read()
-            base_css = CSS(string=css_string)
-            pdf_file = html.write_pdf(stylesheets=[base_css])
+                # Create HTML
+                context['cards'] = cards
+                pdf_html = render_to_string('authentic_context_cards/cards-pdf.html', context)
+                html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
 
-            # Save file
-            filename = '{}.pdf'.format(filename)
-            pdf_file_output = open(os.path.join(pdf_directory, filename), 'wb')
-            pdf_file_output.write(pdf_file)
-            pdf_file_output.close()
+                # Render as PDF
+                css_file = finders.find('css/authentic-context-cards.css')
+                css_string = open(css_file, encoding='UTF-8').read()
+                base_css = CSS(string=css_string)
+                pdf_file = html.write_pdf(stylesheets=[base_css])
 
-            print('Created {}'.format(filename))
+                # Save file
+                filename = '{}.pdf'.format(filename)
+                pdf_file_output = open(os.path.join(pdf_directory, filename), 'wb')
+                pdf_file_output.write(pdf_file)
+                pdf_file_output.close()
+
+                print('Created {}'.format(filename))

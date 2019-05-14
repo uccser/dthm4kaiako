@@ -244,7 +244,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'config.context_processors.api_keys.api_keys',
                 'config.context_processors.deployed.deployed',
-                'config.context_processors.dtta_flat_pages.dtta_flat_pages',
+                'config.context_processors.dtta_menu.dtta_menu',
                 'config.context_processors.version_number.version_number',
             ],
             'libraries': {
@@ -410,7 +410,10 @@ AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION = os.path.join(
     str(ROOT_DIR.path("staticfiles")),
     "authentic_context_cards"
 )
-AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE = 'Authentic Context Cards - Level {}'
+AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE = 'Authentic Context Cards - Level {} - {} sided'
+AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT = 'Single'
+AUTHENTIC_CONTEXT_CARDS_DOUBLE_PRINT = 'Double'
+AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES = (AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT, AUTHENTIC_CONTEXT_CARDS_DOUBLE_PRINT)
 
 # Other
 # ------------------------------------------------------------------------------

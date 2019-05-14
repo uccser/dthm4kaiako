@@ -1,0 +1,9 @@
+{% extends "dtta/base.html" %}
+
+{% block page_heading %}
+    <h1>{{ project.title }}</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {{ project.content|safe }}
+{% endblock content %}

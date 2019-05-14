@@ -30,6 +30,7 @@ from tests.events.factories import (
 from tests.dtta.factories import (
     NewsArticleFactory,
     PageFactory,
+    ProjectFactory,
     RelatedLinkFactory,
 )
 
@@ -201,5 +202,7 @@ class Command(management.base.BaseCommand):
         print('DTTA news articles created.')
         PageFactory.create_batch(size=5)
         print('DTTA pages created.')
+        ProjectFactory.create_batch(size=5)
+        print('DTTA projects created.')
         RelatedLinkFactory.create_batch(size=10)
         print('DTTA related links created.')

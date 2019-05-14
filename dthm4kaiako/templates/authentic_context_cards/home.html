@@ -46,20 +46,25 @@
         <h4>
             Download card sets
         </h4>
-        <p>
-            Two cards are on each A4 page.
-            Print and cut along the solid lines, and fold along the dashed line.
-            A double sided version will be developed at a later time.
-        </p>
-        <div class="list-group mb-5">
-            {% for level in levels %}
-                <a href="{{ STATIC_URL }}authentic_context_cards/{{ filename }}{{ level.level }}.pdf" download class="list-group-item list-group-item-action">
-                    <strong>Level {{ level.level }}</strong> - {{ level.count }} cards
+        {% for level in levels %}
+            <div class="row align-items-center py-2 border-top">
+                <div class="d-inline-block px-3">
+                    <h5 class="mb-0">
+                        <strong>Level {{ level.level }}</strong><br>
+                    </h5>
+                    <small class="text-muted">{{ level.count }} cards</small>
+                </div>
+                <a href="{{ STATIC_URL }}authentic_context_cards/{{ filename.0 }}{{ level.level }}{{ filename.1 }}Single{{ filename.2 }}.pdf" download class="btn btn-outline-primary btn-sm mr-3">
+                    Single sided
                 </a>
-            {% endfor %}
-        </div>
-
-        <p><strong>Feedback? Suggestions?</strong> Please <a href="{% url 'general:contact' %}">contact us here</a>.</p>
+                <a href="{{ STATIC_URL }}authentic_context_cards/{{ filename.0 }}{{ level.level }}{{ filename.1 }}Double{{ filename.2 }}.pdf" download class="btn btn-outline-primary btn-sm mr-3">
+                    Double sided
+                </a>
+            </div>
+        {% endfor %}
+        <p class="mt-5">
+            <strong>Feedback? Suggestions?</strong> Please <a href="{% url 'general:contact' %}">contact us here</a>.
+        </p>
     </div>
 {% endblock content_container %}
 

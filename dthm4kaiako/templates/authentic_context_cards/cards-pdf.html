@@ -5,49 +5,50 @@
     <head>
         <title>{{ filename }}</title>
     </head>
-    <body>
+    <body class="text-center print-{{ print_type|lower }}">
         {% spaceless %}
-            {% for achievement_objective in achievement_objectives %}
-                <div class="ac-card learning-area-{{ achievement_objective.learning_area_code }} {% if forloop.counter|divisibleby:2 or forloop.last %}page-break{% endif %}">
-                    <div class="ac-card-back">
+            {% for card in cards %}
+                <div class="ac-card ac-card-{{ card.side }} learning-area-{{ card.objective.learning_area_code }} {% if forloop.counter|divisibleby:4 or forloop.last %}page-break{% endif %}">
+                    {% if card.side == 'back' and card.objective %}
                         <span class="ac-card-area">
-                            {{ achievement_objective.learning_area }}
+                            {{ card.objective.learning_area }}
                         </span>
                         <div class="ac-card-credits">
                             Authentic Context Cards<br>
                             <img src="./img/logos/dthm4kaiako-logo-png-alternative.png" class="logo">
                         </div>
-
-                    </div>
-                    <div class="ac-card-front">
+                    {% elif card.side == 'front' and card.objective %}
                         <div class="ac-card-front-container">
                             <div class="ac-card-front-content
-                                {% if achievement_objective.content|length > 500 %}content-smaller
-                                {% elif achievement_objective.content|length > 300 %}content-small{% endif %}
+                                {% if card.objective.content|length > 500 %}content-smaller
+                                {% elif card.objective.content|length > 300 %}content-small{% endif %}
                                 ">
-                                {{ achievement_objective.content|safe }}
+                                {{ card.objective.content|safe }}
                             </div>
                             <div class="ac-card-front-details">
-                                <strong>Learning area:</strong> {{ achievement_objective.learning_area }}<br>
-                                <strong>Curriculum level:</strong> {{ achievement_objective.level }}<br>
+                                <strong>Learning area:</strong> {{ card.objective.learning_area }}<br>
+                                <strong>Curriculum level:</strong> {{ card.objective.level }}<br>
                                 <strong>Component:</strong>
-                                {% if achievement_objective.component %}
-                                    {{ achievement_objective.component }}
+                                {% if card.objective.component %}
+                                    {{ card.objective.component }}
                                 {% else %}
                                     N/A
                                 {% endif %}
                                 <br>
                                 <strong>Strand:</strong>
-                                {% if achievement_objective.strand %}
-                                    {{ achievement_objective.strand }}
+                                {% if card.objective.strand %}
+                                    {{ card.objective.strand }}
                                 {% else %}
                                     N/A
                                 {% endif %}
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
+                {% if card.page_break %}
+                    <div class="page-break"></div>
+                {% endif %}
+            {% endfor %}
         {% endspaceless %}
     </body>
 </html>
