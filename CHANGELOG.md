@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.1
+
+- Update dependency as backup bindings for Google Cloud Storage
+
 ## 0.14.0
 
 - Add double sided version of authentic context cards.
