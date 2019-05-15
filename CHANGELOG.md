@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.1
+
+- Update dependency as backup bindings for Google Cloud Storage
+
 ## 0.14.0
 
 - Add double sided version of authentic context cards.
@@ -26,7 +30,7 @@
     - Update Sphinx from 1.8.5 to 2.0.1.
     - Update psycopg2-binary from 2.7.7 to 2.8.2.
     - Update pytest from 4.3.1 to 4.5.0.
-    - Update faxtory-boy from 2.11.1 to 2.12.0.
+    - Update factory-boy from 2.11.1 to 2.12.0.
 
 ## 0.13.3
 
