@@ -49,6 +49,7 @@ class ResourceFactory(DjangoModelFactory):
 
     name = Faker('sentence')
     description = Faker('paragraph', nb_sentences=5)
+    published = True
 
     class Meta:
         """Metadata for class."""
