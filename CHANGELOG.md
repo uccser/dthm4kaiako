@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.14.2
+
+- Add new dependency for missing library for Google Cloud Storage dependency.
+
 ## 0.14.1
 
-- Update dependency as backup bindings for Google Cloud Storage
+- Update dependency for backup bindings for Google Cloud Storage.
 
 ## 0.14.0
 
