@@ -9,5 +9,5 @@ google-auth==1.6.3  # https://github.com/googleapis/google-auth-library-python
 
 # Extra packages due to missing bindings
 # See: https://github.com/uccser/dthm4kaiako/issues/363
-google-cloud-storage==1.15.0
+google-cloud-storage==1.16.1
 google-resumable-media[requests]==0.3.2
