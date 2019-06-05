@@ -149,6 +149,14 @@ class Command(management.base.BaseCommand):
         return cards
 
     def write_card_pdf(self, pdf_directory, filename, context):
+        """Write card PDF to directory.
+
+        Args:
+            pdf_directory (str): Path to write files to.
+            filename (str): Filename of file to write.
+            context (dict): Context used for rendering template.
+
+        """
         pdf_html = render_to_string('authentic_context_cards/cards-pdf.html', context)
         html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
 
