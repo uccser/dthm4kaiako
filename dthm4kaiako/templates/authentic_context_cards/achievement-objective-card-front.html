@@ -1,0 +1,25 @@
+<div class="ac-card-front-container">
+    <div class="ac-card-front-content
+        {% if achievement_objective.content|length > 500 %}content-smaller
+        {% elif achievement_objective.content|length > 300 %}content-small{% endif %}
+        ">
+        {{ achievement_objective.content|safe }}
+    </div>
+    <div class="ac-card-front-details">
+        <strong>Learning area:</strong> {{ achievement_objective.learning_area }}<br>
+        <strong>Curriculum level:</strong> {{ achievement_objective.level }}<br>
+        <strong>Component:</strong>
+        {% if achievement_objective.component %}
+            {{ achievement_objective.component }}
+        {% else %}
+            N/A
+        {% endif %}
+        <br>
+        <strong>Strand:</strong>
+        {% if achievement_objective.strand %}
+            {{ achievement_objective.strand }}
+        {% else %}
+            N/A
+        {% endif %}
+    </div>
+</div>
