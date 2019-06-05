@@ -23,3 +23,23 @@ class AchievementObjective(models.Model):
             Code of acheivement objective (str).
         """
         return self.code
+
+
+class ProgressOutcome(models.Model):
+    """Model for an progress outcome."""
+
+    progress_outcome_number = models.PositiveSmallIntegerField(default=1)
+    code = models.CharField(max_length=30)
+    learning_area = models.CharField(max_length=100)
+    learning_area_code = models.CharField(max_length=10)
+    technological_area = models.CharField(max_length=100)
+    technological_area_code = models.CharField(max_length=10)
+    content = models.TextField()
+
+    def __str__(self):
+        """Text representation of object.
+
+        Returns:
+            Code of progress outcome (str).
+        """
+        return self.code
