@@ -1,0 +1,53 @@
+{% extends "base-unbranded.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1 id="lac-title" class="text-center">Learning Area Cards</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 text-center mb-3">
+        <p class="lead">
+            Sets of printable cards of New Zealand achievement objectives and progress outcomes.
+        </p>
+    </div>
+    <div class="col-12 col-md-6">
+        <h4>Download card sets</h4>
+        {% for card_set in card_sets %}
+        <div class="py-3 border-top">
+            <h5 class="mb-2">
+                <strong>{{ card_set.title }}</strong>
+                <small class="text-muted ml-2">{{ card_set.count }} cards</small>
+            </h5>
+            <div class="d-block">
+                <a href="{{ STATIC_URL }}learning_area_cards/{{ card_set.single_filename }}"
+                    download class="btn btn-outline-primary btn-sm mr-3">
+                    Single sided
+                </a>
+                <a href="{{ STATIC_URL }}learning_area_cards/{{ card_set.double_filename }}"
+                    download class="btn btn-outline-primary btn-sm mr-3">
+                    Double sided
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+        <p class="mt-5">
+            <strong>Feedback? Suggestions?</strong> Please <a href="{% url 'general:contact' %}">contact us here</a>.
+        </p>
+    </div>
+    <div class="col-12 col-md-6 mb-3 text-center">
+        <div class="la-card-front sample-card learning-area-{{ achievement_objective.learning_area_code }}">
+            {% include "learning_area_cards/achievement-objective-card-front.html" %}
+        </div>
+        <div class="text-muted my-2 mb-5">Sample achievement objective card</div>
+        <div class="la-card-front sample-card learning-area-{{ progress_outcome.learning_area_code }}">
+            {% include "learning_area_cards/progress-outcome-card-front.html" %}
+        </div>
+        <div class="text-muted my-2">Sample progress outcome card</div>
+    </div>
+{% endblock content_container %}
+
+{% block css %}
+    <link href="{% static 'css/learning-area-cards.css' %}" rel="stylesheet">
+{% endblock css %}

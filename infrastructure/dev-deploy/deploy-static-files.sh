@@ -11,8 +11,8 @@ sudo rm -r ./dthm4kaiako/staticfiles/
 ./dev static_prod
 ./dev collect_static
 
-# Create authentic context cards
-./dev load_achievement_objectives
+# Create learning area cards
+./dev load_card_data
 ./dev create_cards
 
 # Install Google Cloud SDK

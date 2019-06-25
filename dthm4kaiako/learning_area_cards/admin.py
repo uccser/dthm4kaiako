@@ -1,7 +1,7 @@
-"""Module for admin configuration for authentic context cards application."""
+"""Module for admin configuration for learning area cards application."""
 
 from django.contrib import admin
-from authentic_context_cards.models import AchievementObjective
+from learning_area_cards.models import AchievementObjective
 
 
 class AchievementObjectiveAdmin(admin.ModelAdmin):

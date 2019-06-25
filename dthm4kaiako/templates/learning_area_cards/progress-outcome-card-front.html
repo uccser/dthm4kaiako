@@ -1,0 +1,13 @@
+<div class="la-card-front-container">
+    <div class="la-card-front-content
+        {% if progress_outcome.content|length > 800 %}content-smaller
+        {% elif progress_outcome.content|length > 300 %}content-small{% endif %}
+        ">
+        {{ progress_outcome.content|safe }}
+    </div>
+    <div class="la-card-front-details">
+        <strong>Learning area:</strong> {{ progress_outcome.learning_area }}<br>
+        <strong>Number:</strong> {{ progress_outcome.progress_outcome_number }}<br>
+        <strong>Technological area:</strong> {{ progress_outcome.technological_area }}<br>
+    </div>
+</div>

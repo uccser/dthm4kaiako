@@ -121,7 +121,7 @@ LOCAL_APPS = [
     'resources.apps.ResourcesAppConfig',
     'events.apps.EventsAppConfig',
     'dtta.apps.DttaAppConfig',
-    'authentic_context_cards.apps.AuthenticContextCardsAppConfig',
+    'learning_area_cards.apps.LearningAreaCardsAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -404,16 +404,16 @@ MAP_WIDGETS = {
     "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY,
 }
 
-# Authentic Context Cards
+# Learning Area Cards
 # ------------------------------------------------------------------------------
-AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION = os.path.join(
+LEARNING_AREA_CARDS_GENERATION_LOCATION = os.path.join(
     str(ROOT_DIR.path("staticfiles")),
-    "authentic_context_cards"
+    "learning_area_cards"
 )
-AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE = 'Authentic Context Cards - Level {} - {} sided'
-AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT = 'Single'
-AUTHENTIC_CONTEXT_CARDS_DOUBLE_PRINT = 'Double'
-AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES = (AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT, AUTHENTIC_CONTEXT_CARDS_DOUBLE_PRINT)
+LEARNING_AREA_CARDS_FILENAME_TEMPLATE = 'Learning Area Cards - {card_set_title} - {print_type} sided.pdf'
+LEARNING_AREA_CARDS_SINGLE_PRINT = 'Single'
+LEARNING_AREA_CARDS_DOUBLE_PRINT = 'Double'
+LEARNING_AREA_CARDS_PRINT_TYPES = (LEARNING_AREA_CARDS_SINGLE_PRINT, LEARNING_AREA_CARDS_DOUBLE_PRINT)
 
 # Other
 # ------------------------------------------------------------------------------
