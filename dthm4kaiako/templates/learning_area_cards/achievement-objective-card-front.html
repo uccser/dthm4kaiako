@@ -1,11 +1,11 @@
-<div class="ac-card-front-container">
-    <div class="ac-card-front-content
+<div class="la-card-front-container">
+    <div class="la-card-front-content
         {% if achievement_objective.content|length > 500 %}content-smaller
         {% elif achievement_objective.content|length > 300 %}content-small{% endif %}
         ">
         {{ achievement_objective.content|safe }}
     </div>
-    <div class="ac-card-front-details">
+    <div class="la-card-front-details">
         <strong>Learning area:</strong> {{ achievement_objective.learning_area }}<br>
         <strong>Curriculum level:</strong> {{ achievement_objective.level }}<br>
         <strong>Component:</strong>

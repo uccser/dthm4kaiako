@@ -1,26 +1,26 @@
-"""Views for authentic context cards application."""
+"""Views for learning area cards application."""
 
 from random import randint
 from django.views import generic
 from django.conf import settings
 from django.db.models import Count
-from authentic_context_cards.models import (
+from learning_area_cards.models import (
     AchievementObjective,
     ProgressOutcome,
 )
-from authentic_context_cards.utils import get_card_set_metadata
+from learning_area_cards.utils import get_card_set_metadata
 
 
 RESPONSE_CONTENT_DISPOSITION = "attachment; filename*=UTF-8''{filename}.pdf; filename=\"{filename}.pdf\""
 
 
 class HomeView(generic.base.TemplateView):
-    """View for authentic context cards homepage."""
+    """View for learning area cards homepage."""
 
-    template_name = 'authentic_context_cards/home.html'
+    template_name = 'learning_area_cards/home.html'
 
     def get_context_data(self, **kwargs):
-        """Provide the context data for the authentic context cards home view.
+        """Provide the context data for the learning area cards home view.
 
         Returns:
             Dictionary of context data.
@@ -44,7 +44,7 @@ class HomeView(generic.base.TemplateView):
             'level').values('level').annotate(count=Count('level')))
         card_set_type = 'ao'
         for card_set in achievement_objective_card_sets:
-            for print_type in settings.AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES:
+            for print_type in settings.LEARNING_AREA_CARDS_PRINT_TYPES:
                 (title, filename) = get_card_set_metadata(
                     card_type=card_set_type,
                     print_type=print_type,
@@ -60,7 +60,7 @@ class HomeView(generic.base.TemplateView):
             'learning_area').values('learning_area').annotate(count=Count('learning_area')))
         card_set_type = 'po'
         for card_set in progress_outcome_card_sets:
-            for print_type in settings.AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES:
+            for print_type in settings.LEARNING_AREA_CARDS_PRINT_TYPES:
                 (title, filename) = get_card_set_metadata(
                     card_type=card_set_type,
                     print_type=print_type,

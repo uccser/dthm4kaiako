@@ -11,26 +11,26 @@ div {
     margin: 0;
 }
 
-.ac-card {
+.la-card {
     display: inline-block;
     border: $border-width solid black;
-    .print-single &.ac-card-back {
+    .print-single &.la-card-back {
         border-right: $border-width dashed black;
     }
-    .print-single &.ac-card-front {
+    .print-single &.la-card-front {
         border-left: none;
     }
 }
 
-.ac-card-back,
-.ac-card-front {
+.la-card-back,
+.la-card-front {
     display: inline-block;
     box-sizing: content-box;
     overflow: hidden;
     vertical-align: top;
 }
 
-.ac-card-back {
+.la-card-back {
     width: $card-width - ($card-margin * 2);
     height: $card-height - $margin-top;
     position: relative;
@@ -39,12 +39,12 @@ div {
     padding-left: $card-margin;
     padding-right: $card-margin;
     color: white;
-    .ac-card-area {
+    .la-card-area {
         font-size: 2rem;
         font-weight: bold;
         letter-spacing: 1px;
     }
-    .ac-card-credits {
+    .la-card-credits {
         position: absolute;
         text-align: center;
         left: 0;
@@ -56,13 +56,13 @@ div {
         }
     }
 }
-.ac-card-front {
+.la-card-front {
     height: $card-height;
     width: $card-width;
     text-align: left;
     color: black;
     font-size: 1rem;
-    .ac-card-front-container {
+    .la-card-front-container {
         background-color: white;
         height: $card-height - ($card-margin * 2);
         margin: $card-margin;
@@ -77,7 +77,7 @@ div {
         .content-smaller {
             font-size: 0.63rem;
         }
-        .ac-card-front-details {
+        .la-card-front-details {
             width: $card-width - ($card-margin * 4);
             position: absolute;
             border-top: 1px solid $gray-400;
@@ -119,7 +119,7 @@ div {
     background-color: $la-technology;
 }
 
-#acc-title {
+#lac-title {
     padding-bottom: 1rem;
     border-bottom: 10px solid;
     border-image: linear-gradient(
