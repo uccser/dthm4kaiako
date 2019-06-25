@@ -1,25 +1,25 @@
-"""Module for the custom Django load_achievement_objectives command."""
+"""Module for the custom Django load_progress_outcomes command."""
 
 import csv
 from django.core import management
-from authentic_context_cards.models import AchievementObjective
+from learning_area_cards.models import ProgressOutcome
 
-CSV_PATH = 'authentic_context_cards/achievement-objectives.csv'
+CSV_PATH = 'learning_area_cards/progress-outcomes.csv'
 
 
 class Command(management.base.BaseCommand):
-    """Required command class for the custom Django load_achievement_objectives command."""
+    """Required command class for the custom Django load_progress_outcomes command."""
 
-    help = "Load achievement objectives to database."
+    help = "Load progress outcomes to database."
 
     def handle(self, *args, **options):
-        """Automatically called when the load_achievement_objectives command is given."""
+        """Automatically called when the load_progress_outcomes command is given."""
         created_count = 0
         updated_count = 0
         with open(CSV_PATH) as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                obj, created = AchievementObjective.objects.update_or_create(
+                obj, created = ProgressOutcome.objects.update_or_create(
                     code=row['code'],
                     defaults=row,
                 )
@@ -29,4 +29,4 @@ class Command(management.base.BaseCommand):
                 else:
                     updated_count += 1
                     print('Updated {}'.format(obj.code))
-        print('Achievement objects loaded ({} created, {} updated).'.format(created_count, updated_count))
+        print('Progress outcomes loaded ({} created, {} updated).'.format(created_count, updated_count))
