@@ -404,7 +404,7 @@ MAP_WIDGETS = {
     "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY,
 }
 
-# Authentic Context Cards
+# Learning Area Cards
 # ------------------------------------------------------------------------------
 LEARNING_AREA_CARDS_GENERATION_LOCATION = os.path.join(
     str(ROOT_DIR.path("staticfiles")),
