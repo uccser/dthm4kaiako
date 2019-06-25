@@ -21,6 +21,7 @@ urlpatterns = [
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
     path('authentic-context-cards/', include('authentic_context_cards.urls', namespace='authentic_context_cards')),
+    path('poet/', include('poet.urls', namespace='poet')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
