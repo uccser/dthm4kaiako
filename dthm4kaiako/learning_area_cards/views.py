@@ -30,13 +30,13 @@ class HomeView(generic.base.TemplateView):
         # Random Achievement Objective card
         achievement_objectives = AchievementObjective.objects.all()
         if achievement_objectives:
-            random_card = randint(0, len(achievement_objectives))
+            random_card = randint(0, len(achievement_objectives) - 1)
             context['achievement_objective'] = achievement_objectives[random_card]
 
         # Random Progress Outcome card
         progress_outcomes = ProgressOutcome.objects.all()
         if progress_outcomes:
-            random_card = randint(0, len(progress_outcomes))
+            random_card = randint(0, len(progress_outcomes) - 1)
             context['progress_outcome'] = progress_outcomes[random_card]
 
         # Begin card sets with achievement objectives sets
