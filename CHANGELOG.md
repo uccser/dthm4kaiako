@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.1
+
+- Fix out of index error for learning area cards webpage.
+
 ## 0.15.0
 
 - Change name of 'Authentic Context Cards' to 'Learning Area Cards'.
