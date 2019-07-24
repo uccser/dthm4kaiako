@@ -20,7 +20,7 @@ coreapi==2.3.3  # https://github.com/core-api/python-client
 django-filter==2.1.0  # https://github.com/carltongibson/django-filter/
 
 # Google Cloud Platform
-google-api-python-client==1.7.9
+google-api-python-client==1.7.10
 
 # Search
 # https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
