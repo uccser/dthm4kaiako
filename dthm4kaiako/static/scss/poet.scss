@@ -9,6 +9,11 @@ $gap-size: 5px;
     grid-template-columns: auto auto auto auto auto auto auto auto auto;
     grid-gap: $gap-size;
     place-content: stretch;
+
+    label {
+        display: block;
+        color: gray;
+    }
 }
 
 .grid-column {
@@ -40,7 +45,6 @@ $gap-size: 5px;
     background: $technology-brown-lightest;
     color: white;
     text-align: center;
-    font-weight: bold;
 }
 
 .po-label {

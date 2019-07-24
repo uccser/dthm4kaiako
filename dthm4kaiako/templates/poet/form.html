@@ -18,17 +18,93 @@
                     CT
                 </div>
             </div>
-            {% for num in num|rjust:8 %}
-                <div class="grid-column curriculum-level-content {% if forloop.counter > 5 %}ncea{% endif %}">
-                    <div class="curriculum-level-title">
-                        Level {{ forloop.counter }}
-                    </div>
-                    <div class="curriculum-level-dddo">
-                    </div>
-                    <div class="curriculum-level-ct">
-                    </div>
+            <div class="grid-column curriculum-level-content">
+                <div class="curriculum-level-title">
+                    Level 1
                 </div>
-            {% endfor %}
+                <div class="curriculum-level-dddo">
+                </div>
+                <div class="curriculum-level-ct">
+                    <label for="po-ct-1">PO1</label>
+                    <input type="radio" id="po-ct-1" name="choice" value="po-ct-1">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content">
+                <div class="curriculum-level-title">
+                    Level 2
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content">
+                <div class="curriculum-level-title">
+                    Level 3
+                </div>
+                <div class="curriculum-level-dddo">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content">
+                <div class="curriculum-level-title">
+                    Level 4
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content">
+                <div class="curriculum-level-title">
+                    Level 5
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content ncea">
+                <div class="curriculum-level-title">
+                    Level 6
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content ncea">
+                <div class="curriculum-level-title">
+                    Level 7
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
+            <div class="grid-column curriculum-level-content ncea">
+                <div class="curriculum-level-title">
+                    Level 8
+                </div>
+                <div class="curriculum-level-dddo">
+                    <input type="radio" name="choice">
+                </div>
+                <div class="curriculum-level-ct">
+                    <input type="radio" name="choice">
+                </div>
+            </div>
             <div id="po-label-1-10" class="po-label">Progress outcomes for years 1-10</div>
             <div id="po-label-ncea-1" class="po-label">NCEA 1</div>
             <div id="po-label-ncea-2" class="po-label">NCEA 2</div>
