@@ -6,4 +6,5 @@ from poet import views
 app_name = 'poet'
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
+    path('form/', views.FormView.as_view(), name='form'),
 ]

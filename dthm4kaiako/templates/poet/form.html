@@ -1,0 +1,42 @@
+{% extends "base-unbranded.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h1 class="text-center">POET</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        <div id="po-table">
+            <div class="grid-column">
+                <div></div>
+                <div class="curriculum-level-strand-title dddo">
+                    DDDO
+                </div>
+                <div class="curriculum-level-strand-title ct">
+                    CT
+                </div>
+            </div>
+            {% for num in num|rjust:8 %}
+                <div class="grid-column curriculum-level-content {% if forloop.counter > 5 %}ncea{% endif %}">
+                    <div class="curriculum-level-title">
+                        Level {{ forloop.counter }}
+                    </div>
+                    <div class="curriculum-level-dddo">
+                    </div>
+                    <div class="curriculum-level-ct">
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="po-label-1-10" class="po-label">Progress outcomes for years 1-10</div>
+            <div id="po-label-ncea-1" class="po-label">NCEA 1</div>
+            <div id="po-label-ncea-2" class="po-label">NCEA 2</div>
+            <div id="po-label-ncea-3" class="po-label">NCEA 3</div>
+        </div>
+    </div>
+{% endblock content_container %}
+
+{% block css %}
+    <link href="{% static 'css/poet.css' %}" rel="stylesheet">
+{% endblock css %}

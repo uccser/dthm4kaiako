@@ -9,3 +9,8 @@ class HomeView(generic.base.TemplateView):
     """View for POET homepage."""
 
     template_name = 'poet/home.html'
+
+class FormView(generic.base.TemplateView):
+    """View for POET homepage."""
+
+    template_name = 'poet/form.html'
