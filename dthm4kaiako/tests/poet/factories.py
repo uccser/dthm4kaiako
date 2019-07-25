@@ -1,7 +1,6 @@
 """Module for factories for testing the resources application."""
 
-import random
-from factory import DjangoModelFactory, Faker, post_generation, LazyFunction
+from factory import DjangoModelFactory, Faker
 from factory.django import FileField
 from factory import Iterator
 from poet.models import (

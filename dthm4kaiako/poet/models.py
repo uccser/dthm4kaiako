@@ -50,7 +50,8 @@ class Resource(models.Model):
 
 
 class Submission(models.Model):
-    """"""
+    """Model for a resource in a form submission."""
+
     datetime = models.DateTimeField(auto_now_add=True)
     # TODO: IP address for anti cheating
     # TODO: Time taken for anti cheating
