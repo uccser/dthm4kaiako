@@ -1,19 +1,16 @@
+@import "core-variables";
+
 $technology-brown: #9c5444;
 $technology-brown-light: #bd8a78;
 $technology-brown-lighter: #d2aea1;
 $technology-brown-lightest: #e4cfc7;
-$gap-size: 5px;
+$gap-size: 3px;
 
 #po-table {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto;
     grid-gap: $gap-size;
     place-content: stretch;
-
-    label {
-        display: block;
-        color: gray;
-    }
 }
 
 .grid-column {
@@ -22,13 +19,43 @@ $gap-size: 5px;
     grid-template-rows: 1fr 2fr 2fr;
     place-content: stretch;
 
-    .curriculum-level-strand-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
+    #curriculum-level-strand-title-dddo {
+        color: $ta-dddo;
+        background-color: lighten($color: $ta-dddo, $amount: 50)
+    }
+    #curriculum-level-strand-title-ct {
+        color: $ta-ct;
+        background-color: lighten($color: $ta-ct, $amount: 50)
     }
 
+    .curriculum-level-strand-title,
+    .curriculum-level-node {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+    $cell-mix: 80%;
+    .curriculum-level-dddo {
+        background-color: mix($technology-brown-lightest, $ta-dddo, $weight: $cell-mix);
+    }
+    .curriculum-level-ct {
+        background-color: mix($technology-brown-lightest, $ta-ct, $weight: $cell-mix);
+    }
+    $stripe-colour-1: transparent;
+    $stripe-colour-2: #d2aea1;
+    &.ncea .curriculum-level-dddo,
+    &.ncea .curriculum-level-ct {
+        background-image: linear-gradient(
+            135deg,
+            $stripe-colour-1 40%,
+            $stripe-colour-2 40%,
+            $stripe-colour-2 50%,
+            $stripe-colour-1 50%,
+            $stripe-colour-1 90%,
+            $stripe-colour-2 90%,
+            $stripe-colour-2 100%);
+        background-size: 10.00px 10.00px;
+    }
     .curriculum-level-title {
         background: $technology-brown;
         color: white;
@@ -36,14 +63,8 @@ $gap-size: 5px;
         font-weight: bold;
         padding: 0.5rem;
     }
-    &.ncea {
-        background-image: linear-gradient(135deg, #e4cfc7 40%, #d2aea1 40%, #d2aea1 50%, #e4cfc7 50%, #e4cfc7 90%, #d2aea1 90%, #d2aea1 100%);
-        background-size: 10.00px 10.00px;
-    }
 }
 .curriculum-level-content {
-    background: $technology-brown-lightest;
-    color: white;
     text-align: center;
 }
 
@@ -69,4 +90,32 @@ $gap-size: 5px;
 #po-label-ncea-3 {
     grid-column: 9;
     grid-row: 2;
+}
+
+$radio-size: 1.5rem;
+$radio-colour: #696969;
+$radio-x-position: 1.3rem;
+
+.custom-control {
+    padding-left: 0;
+    .custom-control-label {
+        color: $radio-colour;
+        font-size: 0.9rem;
+        font-weight: bold;
+        user-select: none;
+        cursor: pointer;
+        height: $radio-x-position + $radio-size;
+    }
+    .custom-control-label::before,
+    .custom-control-label::after {
+        width: $radio-size;
+        height: $radio-size;
+        left: 50%;
+        margin-left: -$radio-size / 2;
+        top: $radio-x-position;
+        cursor: pointer;
+    }
+    .custom-control-label::before {
+        border-color: $radio-colour;
+    }
 }
