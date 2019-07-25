@@ -23,7 +23,7 @@ class ProgressOutcome(models.Model):
         Returns:
             Code of progress outcome (str).
         """
-        return self.code
+        return self.label
 
 
 class Resource(models.Model):
@@ -39,6 +39,14 @@ class Resource(models.Model):
     pdf = models.FileField(
         upload_to=get_poet_resource_upload_path,
     )
+
+    def __str__(self):
+        """Text representation of object.
+
+        Returns:
+            Code of resource (str).
+        """
+        return self.title
 
 
 class Submission(models.Model):

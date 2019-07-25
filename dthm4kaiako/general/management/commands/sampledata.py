@@ -14,25 +14,29 @@ from resources.models import (
     YearLevel,
     CurriculumLearningArea,
 )
-from events.models import (
-    Location,
-    Series,
-)
 from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
+)
+# Events
+from events.models import (
+    Location,
+    Series,
 )
 from tests.events.factories import (
     SponsorFactory,
     OrganiserFactory,
     EventFactory,
 )
+# DTTA
 from tests.dtta.factories import (
     NewsArticleFactory,
     PageFactory,
     ProjectFactory,
     RelatedLinkFactory,
 )
+# POET
+from tests.poet.factories import ResourceFactory as POETResourceFactory
 
 
 class Command(management.base.BaseCommand):
@@ -206,3 +210,8 @@ class Command(management.base.BaseCommand):
         print('DTTA projects created.')
         RelatedLinkFactory.create_batch(size=10)
         print('DTTA related links created.')
+
+        # POET
+        management.call_command('load_poet_data')
+        POETResourceFactory.create_batch(size=20)
+        print('POET resources created.')
