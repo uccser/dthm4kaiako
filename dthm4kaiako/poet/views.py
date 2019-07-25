@@ -24,15 +24,3 @@ class FormWizardView(SessionWizardView):
     def done(self, form_list, **kwargs):
         # TODO: Save data to database
         return HttpResponseRedirect(reverse('poet:home'))
-
-# class FormView(generic.base.TemplateView):
-#     """View for POET homepage."""
-
-#     template_name = 'general/contact.html'
-#     form_class = ContactForm
-#     success_url = reverse_lazy('general:contact-success')
-
-#     def form_valid(self, form):
-#         """Send email if form is valid."""
-#         form.send_email()
-#         return super().form_valid(form)

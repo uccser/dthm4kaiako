@@ -1,6 +1,6 @@
 <div class="custom-control custom-radio">
-    <input type="radio" id="{{ widget.attrs.id }}" name="{{ widget.name }}" value="{{ widget.value }}" class="custom-control-input" {% include "django/forms/widgets/attrs.html" %}>
-    <label class="custom-control-label" for="{{ widget.attrs.id }}">
-        {{ widget.label }}
+    <input type="radio" id="{{ choice.attrs.id }}" name="{{ choice.name }}" value="{{ choice.value }}" class="custom-control-input" {% include "django/forms/widgets/attrs.html" with widget=choice %}>
+    <label class="custom-control-label" for="{{ choice.attrs.id }}">
+        {{ choice.label }}
     </label>
 </div>

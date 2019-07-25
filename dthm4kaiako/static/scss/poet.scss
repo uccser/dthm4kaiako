@@ -104,7 +104,7 @@ $radio-x-position: 1.3rem;
         font-weight: bold;
         user-select: none;
         cursor: pointer;
-        height: $radio-x-position + $radio-size;
+        height: ($radio-x-position * 2) + $radio-size;
     }
     .custom-control-label::before,
     .custom-control-label::after {
@@ -117,5 +117,8 @@ $radio-x-position: 1.3rem;
     }
     .custom-control-label::before {
         border-color: $radio-colour;
+    }
+    #extra-choices & {
+        display: inline-flex;
     }
 }

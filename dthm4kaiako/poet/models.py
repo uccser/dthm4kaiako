@@ -9,6 +9,8 @@ class ProgressOutcome(models.Model):
 
     progress_outcome_number = models.PositiveSmallIntegerField(default=1)
     code = models.CharField(max_length=30)
+    label = models.CharField(max_length=30)
+    short_label = models.CharField(max_length=10)
     learning_area = models.CharField(max_length=100)
     learning_area_code = models.CharField(max_length=10)
     technological_area = models.CharField(max_length=100)
