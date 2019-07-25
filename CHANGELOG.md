@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.2
+
+- Change default ordering of event locations to be alphabetical.
+
 ## 0.15.1
 
 - Fix out of index error for learning area cards webpage.
