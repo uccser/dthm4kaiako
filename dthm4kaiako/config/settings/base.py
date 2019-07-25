@@ -100,9 +100,12 @@ DJANGO_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.gis',
+    # Include forms application as default renderer is overwritten
+    'django.forms',
 ]
 THIRD_PARTY_APPS = [
     'anymail',
+    'formtools',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -255,7 +258,10 @@ TEMPLATES = [
         },
     },
 ]
-# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+
+# FORMS
+# ------------------------------------------------------------------------------
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # FIXTURES

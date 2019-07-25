@@ -165,7 +165,7 @@ defhelp load_card_data "Load card data."
 cmd_load_poet_data() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py load_poet_data
 }
-defhelp load_card_data "Load poet data."
+defhelp load_poet_data "Load poet data."
 
 # Run create_cards command
 cmd_create_cards() {
