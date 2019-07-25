@@ -25,15 +25,15 @@
 
             <div class="d-flex justify-content-end">
                 {% if wizard.steps.prev %}
-                    <button class="btn-primary" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
+                    <button class="btn btn-primary" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
                         Previous resource
                     </button>
                 {% endif %}
 
-                {% if wizard.steps.last %}
-                    <input type="submit" class="btn-success ml-auto" value="{% trans "Submit" %}" />
+                {% if wizard.steps.current == wizard.steps.last %}
+                    <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
                 {% else %}
-                    <input type="submit" class="btn-primary ml-auto" value="Next resource" />
+                    <input type="submit" class="btn btn-primary ml-auto" value="Next resource" />
                 {% endif %}
             </div>
         </form>
