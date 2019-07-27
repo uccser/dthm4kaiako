@@ -2,11 +2,35 @@
 
 from django import forms
 from poet.models import ProgressOutcome
-from poet.widgets import ProgressOutcomeTableRadioSelect
+from poet.widgets import (
+    ResourcePDFPreviewWithPK,
+    ProgressOutcomeTableRadioSelect,
+)
+
+
+class ResourceField(forms.IntegerField):
+    """Field for resource in POET form.
+
+    - PDF is shown in viewer.
+    - Value is disabled (used to track PO choice against resource)
+    """
+
+    def __init__(self, resource, *args, **kwargs):
+        """Initialise method."""
+        super().__init__(
+            required=True,
+            initial=resource.pk,
+            label='',
+            widget=ResourcePDFPreviewWithPK(resource),
+        )
+        self.resource = resource
 
 
 class POChoiceField(forms.ModelChoiceField):
-    """Field for PO choices displayed in form."""
+    """Field for PO choices displayed in form.
+
+    - Field widget is custom HTML table.
+    """
 
     def __init__(self, *args, **kwargs):
         """Initialise method."""
@@ -15,9 +39,6 @@ class POChoiceField(forms.ModelChoiceField):
             to_field_name='code',
             required=True,
             empty_label=None,
-            # TODO: Change following this:
-            # https://docs.djangoproject.com/en/2.2/ref/forms/api/#django.forms.Form.initial
-            # initial='UNKNOWN',
             widget=ProgressOutcomeTableRadioSelect(),
             label='Which progress outcome applies best to this resource:'
         )
@@ -27,19 +48,11 @@ class POChoiceField(forms.ModelChoiceField):
         return progress_outcome.short_label
 
 
-class Resource1Form(forms.Form):
-    """Form for first resource displayed in form."""
+class ResourceForm(forms.Form):
+    """Form for resource displayed in form."""
 
-    choice = POChoiceField()
-
-
-class Resource2Form(forms.Form):
-    """Form for second resource displayed in form."""
-
-    choice = POChoiceField()
-
-
-class Resource3Form(forms.Form):
-    """Form for third resource displayed in form."""
-
-    choice = POChoiceField()
+    def add_resources(self, resources):
+        """Add resources for form."""
+        for i, resource in enumerate(resources):
+            self.fields['resource' + str(i)] = ResourceField(resource)
+            self.fields['choice' + str(i)] = POChoiceField()

@@ -12,7 +12,7 @@ class ResourceAdmin(admin.ModelAdmin):
     """Admin view for resource objects."""
 
     model = Resource
-    list_display = ('title', 'target_progress_outcome', 'active')
+    list_display = ('title', 'target_progress_outcome', 'pk', 'active')
 
 
 admin.site.register(ProgressOutcome)

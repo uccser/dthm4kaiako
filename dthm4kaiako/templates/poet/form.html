@@ -9,32 +9,15 @@
 {% block content_container %}
     <div class="col-12">
         <h3 class="text-center">
-            Resource {{ wizard.steps.step1 }} of {{ wizard.steps.count }}
+            Resources
         </h3>
 
-
-        <form method="post" novalidate>
+        <form method="post">
             {% csrf_token %}
-            {{ wizard.management_form }}
-
-            <div class="text-center">
-                <img src="https://place-hold.it/150x200.png&text=PDF&bold&fontsize=22" class="m-5">
-            </div>
-
-            {{ wizard.form }}
+            {{ form }}
 
             <div class="d-flex justify-content-end">
-                {% if wizard.steps.prev %}
-                    <button class="btn btn-primary" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
-                        Previous resource
-                    </button>
-                {% endif %}
-
-                {% if wizard.steps.current == wizard.steps.last %}
-                    <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
-                {% else %}
-                    <input type="submit" class="btn btn-primary ml-auto" value="Next resource" />
-                {% endif %}
+                <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
             </div>
         </form>
     </div>
