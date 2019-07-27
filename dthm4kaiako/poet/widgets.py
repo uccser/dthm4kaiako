@@ -9,7 +9,7 @@ class ResourcePDFPreviewWithPK(NumberInput):
     template_name = 'poet/widgets/resource.html'
 
     def __init__(self, resource):
-        """Custom initialiser.
+        """Initialise widget.
 
         Args:
             Resource for
@@ -18,9 +18,11 @@ class ResourcePDFPreviewWithPK(NumberInput):
         self.resource = resource
 
     def get_context(self, name, value, attrs):
+        """Extra context for widget."""
         context = super().get_context(name, value, attrs)
         context['resource'] = self.resource
         return context
+
 
 class ProgressOutcomeTableRadioSelect(RadioSelect):
     """Widget for progress outcome table picker."""
