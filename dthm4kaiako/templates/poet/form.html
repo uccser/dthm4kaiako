@@ -8,15 +8,10 @@
 
 {% block content_container %}
     <div class="col-12">
-        <h3 class="text-center">
-            Resources
-        </h3>
-
-        <form method="post">
+        <form method="post" novalidate>
             {% csrf_token %}
             {{ form }}
-
-            <div class="d-flex justify-content-end">
+            <div class="text-center">
                 <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
             </div>
         </form>

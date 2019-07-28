@@ -20,16 +20,21 @@ def poet_form(request):
     context = dict()
 
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = ResourceForm(request.POST)
-        # check whether it's valid:
+        # Check whether POST data is valid, otherwise recreate form
+        form = ResourceForm()
+        form.add_fields_from_request(request)
+
+        # print(form.is_valid())
+        # print(request.POST)
+        # print(request.session['poet_form_resources'])
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            print(request.POST)
-            print(request.session['poet_form_resources'])
             return HttpResponseRedirect(reverse('poet:home'))
+        else:
+            # create a form instance and populate it with data from the request:
+            context['form'] = form
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -37,7 +42,7 @@ def poet_form(request):
         # TODO: Add picking logic based off user request
         resources = select_resources_for_poet_form(request)
         form = ResourceForm()
-        form.add_resources(resources)
+        form.add_fields_from_resources(resources)
         pks = list()
         for resource in resources:
             pks.append(resource.pk)

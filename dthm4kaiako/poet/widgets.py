@@ -8,7 +8,7 @@ class ResourcePDFPreviewWithPK(NumberInput):
 
     template_name = 'poet/widgets/resource.html'
 
-    def __init__(self, resource):
+    def __init__(self, resource, number):
         """Initialise widget.
 
         Args:
@@ -16,11 +16,13 @@ class ResourcePDFPreviewWithPK(NumberInput):
         """
         super().__init__()
         self.resource = resource
+        self.number = number
 
     def get_context(self, name, value, attrs):
         """Extra context for widget."""
         context = super().get_context(name, value, attrs)
         context['resource'] = self.resource
+        context['number'] = self.number
         return context
 
 

@@ -15,15 +15,14 @@ class ResourceField(forms.IntegerField):
     - Value is disabled (used to track PO choice against resource)
     """
 
-    def __init__(self, resource, *args, **kwargs):
+    def __init__(self, resource, number, *args, **kwargs):
         """Initialise method."""
         super().__init__(
             required=True,
             initial=resource.pk,
             label='',
-            widget=ResourcePDFPreviewWithPK(resource),
+            widget=ResourcePDFPreviewWithPK(resource, number),
         )
-        self.resource = resource
 
 
 class POChoiceField(forms.ModelChoiceField):
@@ -38,6 +37,7 @@ class POChoiceField(forms.ModelChoiceField):
             queryset=ProgressOutcome.objects.order_by('code'),
             to_field_name='code',
             required=True,
+            initial=kwargs.get('initial'),
             empty_label=None,
             widget=ProgressOutcomeTableRadioSelect(),
             label='Which progress outcome applies best to this resource:'
