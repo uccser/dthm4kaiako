@@ -28,10 +28,8 @@ def poet_form(request):
         # print(request.POST)
         # print(request.session['poet_form_resources'])
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            # Render results template with data
+            # Render results template with form.cleaned_data
+            pass
         else:
             # create a form instance and populate it with data from the request:
             context['form'] = form

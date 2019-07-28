@@ -1,20 +1,18 @@
-"""Module for factories for testing the resources application."""
+"""Module for factories for testing the POET application."""
 
-from factory import DjangoModelFactory, Faker
+import random
+from factory import DjangoModelFactory, Faker, LazyFunction
 from factory.django import FileField
 from factory import Iterator
 from poet.models import (
     Resource,
     ProgressOutcome,
+    Submission,
 )
 
-CONTENT_PRIMARY = 1
-CONTENT_SECONDARY = 2
-CONTENT_BOTH = 3
 
-
-class ResourceFactory(DjangoModelFactory):
-    """Factory for generating resources."""
+class POETFormResourceFactory(DjangoModelFactory):
+    """Factory for generating POET form resources."""
 
     title = Faker('sentence')
     active = True
@@ -25,3 +23,19 @@ class ResourceFactory(DjangoModelFactory):
         """Metadata for class."""
 
         model = Resource
+
+
+class POETFormSubmissionFactory(DjangoModelFactory):
+    """Factory for generating POET form submissions."""
+
+    resource = LazyFunction(
+        lambda: random.choice(Resource.objects.all())
+    )
+    progress_outcome = LazyFunction(
+        lambda: random.choice(ProgressOutcome.objects.all())
+    )
+
+    class Meta:
+        """Metadata for class."""
+
+        model = Submission

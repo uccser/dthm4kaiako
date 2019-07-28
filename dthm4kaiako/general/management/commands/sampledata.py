@@ -36,7 +36,10 @@ from tests.dtta.factories import (
     RelatedLinkFactory,
 )
 # POET
-from tests.poet.factories import ResourceFactory as POETResourceFactory
+from tests.poet.factories import (
+    POETFormResourceFactory,
+    POETFormSubmissionFactory,
+)
 
 
 class Command(management.base.BaseCommand):
@@ -213,5 +216,7 @@ class Command(management.base.BaseCommand):
 
         # POET
         management.call_command('load_poet_data')
-        POETResourceFactory.create_batch(size=20)
+        POETFormResourceFactory.create_batch(size=10)
         print('POET resources created.')
+        POETFormSubmissionFactory.create_batch(size=1000)
+        print('POET submissions created.')
