@@ -18,6 +18,7 @@ def poet_form(request):
     """View for POET form."""
     # Create form view with resources in forms
     context = dict()
+    template = 'poet/form.html'
 
     if request.method == 'POST':
         # Check whether POST data is valid, otherwise recreate form
@@ -27,12 +28,11 @@ def poet_form(request):
         # print(form.is_valid())
         # print(request.POST)
         # print(request.session['poet_form_resources'])
-        if form.is_valid():
+        if True:
             # Render results template with form.cleaned_data
-            pass
-        else:
-            # create a form instance and populate it with data from the request:
-            context['form'] = form
+            template = 'poet/result.html'
+            form.update_form_with_summary()
+        context['form'] = form
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -47,4 +47,4 @@ def poet_form(request):
         request.session['poet_form_resources'] = pks
         context['form'] = form
 
-    return render(request, 'poet/form.html', context)
+    return render(request, template, context)

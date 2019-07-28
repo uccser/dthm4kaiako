@@ -93,18 +93,35 @@ $gap-size: 3px;
 }
 
 $radio-size: 1.5rem;
-$radio-colour: #696969;
+$radio-colour: #333333;
 $radio-x-position: 1.3rem;
+$front-layer-index: 20;
+$back-layer-index: 10;
 
 .custom-control {
     padding-left: 0;
     .custom-control-label {
         color: $radio-colour;
+        text-align: center;
         font-size: 0.9rem;
         font-weight: bold;
         user-select: none;
         cursor: pointer;
         height: ($radio-x-position * 2) + $radio-size;
+        .choice-percentage {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .choice-heat {
+            position: absolute;
+            top: 28%;
+            bottom: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: $back-layer-index;
+        }
     }
     .custom-control-label::before,
     .custom-control-label::after {
@@ -114,6 +131,7 @@ $radio-x-position: 1.3rem;
         margin-left: -$radio-size / 2;
         top: $radio-x-position;
         cursor: pointer;
+        z-index: $front-layer-index;
     }
     .custom-control-label::before {
         border-color: $radio-colour;
@@ -121,4 +139,13 @@ $radio-x-position: 1.3rem;
     #extra-choices & {
         display: inline-flex;
     }
+}
+
+.custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
+    background-color: rgba(44, 72, 100, 1);
+}
+
+.resource-embed {
+    width: 100%;
+    height: 30rem;
 }

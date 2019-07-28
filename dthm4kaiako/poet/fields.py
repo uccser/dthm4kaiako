@@ -31,7 +31,7 @@ class POChoiceField(forms.ModelChoiceField):
     - Field widget is custom HTML table.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, resource, *args, **kwargs):
         """Initialise method."""
         super().__init__(
             queryset=ProgressOutcome.objects.order_by('code'),
@@ -42,6 +42,8 @@ class POChoiceField(forms.ModelChoiceField):
             widget=ProgressOutcomeTableRadioSelect(),
             label='Which progress outcome applies best to this resource:'
         )
+        # Used for summary calculations
+        self.resource = resource
 
     def label_from_instance(self, progress_outcome):
         """Return label for each progress outcome."""

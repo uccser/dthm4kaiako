@@ -31,3 +31,10 @@ class ProgressOutcomeTableRadioSelect(RadioSelect):
 
     template_name = 'poet/widgets/po-table.html'
     option_template_name = 'poet/widgets/po-radio-select.html'
+
+    def get_context(self, name, value, attrs):
+        """Extra context for widget."""
+        context = super().get_context(name, value, attrs)
+        if hasattr(self, 'percentage_data'):
+            context['percentage_data'] = self.percentage_data
+        return context

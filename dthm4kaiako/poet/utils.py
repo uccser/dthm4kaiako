@@ -13,7 +13,6 @@ def select_resources_for_poet_form(request):
     Returns:
         List of resource objects.
     """
-    random.sample(list(Resource.objects.all()), 3)
     resources = random.sample(list(Resource.objects.all()), 3)
     return resources
 
