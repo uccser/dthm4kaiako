@@ -26,7 +26,7 @@ class ResourceForm(forms.Form):
         while run_loop:
             resource_pk = int(request.POST['resource' + str(i)])
             choice = request.POST.get('choice' + str(i), None)
-            print(i, type(resource_pk), type(resource_session_pks[i]))
+            # TODO: Move to field clean method
             if resource_pk != resource_session_pks[i]:
                 raise Exception('Resouce PKs do not match')
             resource = Resource.objects.get(pk=resource_pk)

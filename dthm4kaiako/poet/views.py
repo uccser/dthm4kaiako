@@ -31,7 +31,7 @@ def poet_form(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            return HttpResponseRedirect(reverse('poet:home'))
+            # Render results template with data
         else:
             # create a form instance and populate it with data from the request:
             context['form'] = form
