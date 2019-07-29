@@ -5,6 +5,7 @@ from poet.models import ProgressOutcome
 from poet.widgets import (
     ResourcePDFPreviewWithPK,
     ProgressOutcomeTableRadioSelect,
+    TextArea,
 )
 
 
@@ -48,3 +49,16 @@ class POChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, progress_outcome):
         """Return label for each progress outcome."""
         return progress_outcome.short_label
+
+
+class FeedbackField(forms.CharField):
+    """Field for feedback on PO choice in form."""
+
+    def __init__(self, *args, **kwargs):
+        """Initialise method."""
+        super().__init__(
+            required=False,
+            initial=kwargs.get('initial'),
+            label='Any feedback?',
+            widget=TextArea,
+        )

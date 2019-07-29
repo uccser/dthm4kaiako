@@ -10,6 +10,7 @@ from poet.models import (
 from poet.fields import (
     ResourceField,
     POChoiceField,
+    FeedbackField,
 )
 
 
@@ -21,6 +22,7 @@ class ResourceForm(forms.Form):
         for i, resource in enumerate(resources):
             self.fields['resource' + str(i)] = ResourceField(resource, i + 1)
             self.fields['choice' + str(i)] = POChoiceField(resource)
+            self.fields['feedback' + str(i)] = FeedbackField()
 
     def add_fields_from_request(self, request):
         """Add fields to form from request object."""
@@ -45,6 +47,7 @@ class ResourceForm(forms.Form):
                 resource,
                 initial=choice,
             )
+            self.fields['feedback' + str(i)]=FeedbackField()
             if request.POST.get('resource' + str(i + 1), False):
                 i += 1
             else:

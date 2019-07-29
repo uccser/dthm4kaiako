@@ -1,6 +1,6 @@
 """Widgets for POET forms."""
 
-from django.forms.widgets import NumberInput, RadioSelect
+from django.forms.widgets import NumberInput, RadioSelect, TextInput
 
 
 class ResourcePDFPreviewWithPK(NumberInput):
@@ -38,3 +38,9 @@ class ProgressOutcomeTableRadioSelect(RadioSelect):
         if hasattr(self, 'percentage_data'):
             context['percentage_data'] = self.percentage_data
         return context
+
+
+class TextArea(TextInput):
+    """Widget for feedback text area."""
+
+    template_name = 'poet/widgets/text-area.html'
