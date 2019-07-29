@@ -34,7 +34,7 @@ class ResourceForm(forms.Form):
             resource_pk = int(request.POST['resource' + str(i)])
             choice = request.POST.get('choice' + str(i), None)
             # TODO: Move to field clean method
-            if resource_pk != resource_session_pks[i]:
+            if not resource_session_pks or resource_pk != resource_session_pks[i]:
                 raise Exception('Resouce PKs do not match')
             resource = Resource.objects.get(pk=resource_pk)
             self.fields['resource' + str(i)] = ResourceField(
@@ -60,6 +60,6 @@ class ResourceForm(forms.Form):
                     'code').annotate(count=Count('submissions'))
                 percentage_data = dict()
                 for data in count_data:
-                    percentage_data[data['code']] = (data['count'] / total_submissions) * 100
+                    percentage_data[data['code']] = (data['count'] / total_submissions)
                 field.widget.percentage_data = percentage_data
                 field.disabled = True

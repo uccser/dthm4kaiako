@@ -1,18 +1,11 @@
-{% load get_item %}
+{% load poet_templatetags %}
 
 <div class="custom-control custom-radio">
     <input type="radio" id="{{ choice.attrs.id }}" name="{{ choice.name }}" value="{{ choice.value }}" class="custom-control-input" {% include "django/forms/widgets/attrs.html" with widget=choice %}>
     <label class="custom-control-label" for="{{ choice.attrs.id }}">
         {{ choice.label }}
         {% if percentage_data %}
-            <div class="choice-percentage">
-                {{ percentage_data|get_item:choice.value|floatformat }}%
-            </div>
-            <div class="choice-heat" style="
-                background: linear-gradient(90deg, rgba(255,0,0,0) 0%, rgba(255,0,0,{% widthratio percentage_data|get_item:choice.value 100 600 %}) 50%, rgba(255,0,0,0) 100%);
-                width: {% widthratio percentage_data|get_item:choice.value 100 600 %}px;
-            ">
-            </div>
+            {% render_heat_element %}
         {% endif %}
     </label>
 </div>

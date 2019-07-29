@@ -25,15 +25,24 @@ class POETFormResourceFactory(DjangoModelFactory):
         model = Resource
 
 
+def get_progress_outcome():
+    progress_outcomes = ProgressOutcome.objects.all()
+    if random.randint(1, 5) == 1:
+        progress_outcome = progress_outcomes.get(code='PO-CT-3')
+    else:
+        progress_outcome = random.choice(
+            progress_outcomes,
+        )
+    return progress_outcome
+
+
 class POETFormSubmissionFactory(DjangoModelFactory):
     """Factory for generating POET form submissions."""
 
     resource = LazyFunction(
         lambda: random.choice(Resource.objects.all())
     )
-    progress_outcome = LazyFunction(
-        lambda: random.choice(ProgressOutcome.objects.all())
-    )
+    progress_outcome = LazyFunction(get_progress_outcome)
 
     class Meta:
         """Metadata for class."""
