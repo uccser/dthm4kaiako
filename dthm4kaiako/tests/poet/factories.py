@@ -16,7 +16,7 @@ class POETFormResourceFactory(DjangoModelFactory):
 
     title = Faker('sentence')
     active = True
-    pdf = FileField(from_path='tests/poet/example-poet-data.pdf')
+    content = Faker('paragraph', nb_sentences=20)
     target_progress_outcome = Iterator(ProgressOutcome.objects.all())
 
     class Meta:

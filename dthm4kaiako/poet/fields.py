@@ -3,7 +3,7 @@
 from django import forms
 from poet.models import ProgressOutcome
 from poet.widgets import (
-    ResourcePDFPreviewWithPK,
+    ResourcePreviewWithPK,
     ProgressOutcomeTableRadioSelect,
     TextArea,
 )
@@ -12,7 +12,7 @@ from poet.widgets import (
 class ResourceField(forms.IntegerField):
     """Field for resource in POET form.
 
-    - PDF is shown in viewer.
+    - Preview is shown to user.
     - Value is disabled (used to track PO choice against resource)
     """
 
@@ -22,7 +22,7 @@ class ResourceField(forms.IntegerField):
             required=True,
             initial=resource.pk,
             label='',
-            widget=ResourcePDFPreviewWithPK(resource, number),
+            widget=ResourcePreviewWithPK(resource, number),
         )
 
 

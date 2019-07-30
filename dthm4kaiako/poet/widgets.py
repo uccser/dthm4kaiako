@@ -3,7 +3,7 @@
 from django.forms.widgets import NumberInput, RadioSelect, TextInput
 
 
-class ResourcePDFPreviewWithPK(NumberInput):
+class ResourcePreviewWithPK(NumberInput):
     """Widget for resource."""
 
     template_name = 'poet/widgets/resource.html'

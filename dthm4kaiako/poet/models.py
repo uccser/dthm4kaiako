@@ -1,7 +1,7 @@
 """Models for POET application."""
 
 from django.db import models
-from utils.get_upload_filepath import get_poet_resource_upload_path
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class ProgressOutcome(models.Model):
@@ -36,9 +36,7 @@ class Resource(models.Model):
         on_delete=models.CASCADE,
         related_name='resources',
     )
-    pdf = models.FileField(
-        upload_to=get_poet_resource_upload_path,
-    )
+    content = RichTextUploadingField()
 
     def __str__(self):
         """Text representation of object.

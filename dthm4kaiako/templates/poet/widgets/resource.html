@@ -1,6 +1,6 @@
 <h3>Resource {{ number }}:</h3>
 
-<div class="text-center my-3">
-    <embed src="{{ resource.pdf.url }}" type="application/pdf" class="resource-embed">
+<div class="resource-content my-3">
+    {{ resource.content|safe }}
 </div>
 <input type="hidden" name="{{ widget.name }}" value="{{ widget.value|stringformat:'s' }}" {% include "django/forms/widgets/attrs.html" %}>
