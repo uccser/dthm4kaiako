@@ -7,6 +7,12 @@
     <div class="container">
       {% block page_heading %}
       {% endblock page_heading %}
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
   <div id="content-container" class="container">
