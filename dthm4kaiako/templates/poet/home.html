@@ -30,8 +30,13 @@
             <li>Ability to add feedback to your answer.</li>
             <li>All submissions are anonymous.</li>
         </ul>
+        <hr class="my-4">
 
-        {% crispy form %}
+        {% if form.po_group.field.choices|length_is:"0" %}
+            <p><em>Sorry, the survey tool is currently closed.</em></p>
+        {% else %}
+            {% crispy form %}
+        {% endif %}
     </div>
     <div class="col-12 col-md-6">
         <figure class="figure">
