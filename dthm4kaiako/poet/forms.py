@@ -33,7 +33,7 @@ class POETSurveySelectorForm(forms.Form):
             )
         ).filter(resource_count__gte=settings.NUM_RESOURCES_PER_FORM),
         empty_label=None,
-        label='Select your teaching range:',
+        label='Select year levels:',
     )
 
     def __init__(self, *args, **kwargs):
