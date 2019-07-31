@@ -145,3 +145,7 @@ $radio-x-position: 1.3rem;
 .custom-control-input:disabled ~ .custom-control-label {
     cursor: default !important;
 }
+
+.resource-content {
+    user-select: none;
+}
