@@ -41,9 +41,10 @@ def poet_form(request):
             messages.error(request, '{}.'.format(e.message))
         else:
             # Save submissions to database
-            print(data)
             for submission_data in data:
                 Submission.objects.create(**submission_data)
+            # Delete session data
+            request.session.pop('poet_form_resources', None)
             # Render results template with form.cleaned_data
             request.session['poet_form_submitted'] = True
             template = 'poet/result.html'
@@ -51,6 +52,9 @@ def poet_form(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
+        # Check if unsubmitted form data exists
+        if request.session.get('poet_form_resources', False):
+            messages.warning(request, 'Any previous unsubmitted forms are now marked as invalid.')
         # Get resources for form
         # TODO: Add picking logic based off user request
         resources = select_resources_for_poet_form(request)
