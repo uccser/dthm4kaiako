@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from poet.models import (
     Resource,
     ProgressOutcome,
+    ProgressOutcomeGroup,
     Submission,
 )
 from poet.fields import (
@@ -13,9 +14,26 @@ from poet.fields import (
     POChoiceField,
     FeedbackField,
 )
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 
-class POETForm(forms.Form):
+class POETSurveySelectorForm(forms.Form):
+
+    po_group = forms.ModelChoiceField(
+        queryset=ProgressOutcomeGroup.objects.filter(active=True),
+        empty_label=None,
+        label='Select your teaching range:',
+    )
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Begin survey', css_class="btn-success"))
+
+class POETSurveyForm(forms.Form):
     """Form for resource displayed in form."""
 
     def add_fields_from_resources(self, resources):

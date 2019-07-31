@@ -12,7 +12,8 @@ class ResourcePreviewWithPK(NumberInput):
         """Initialise widget.
 
         Args:
-            Resource for
+            resource (Resource): Resource for widget.
+            number (int): Number resource in form.
         """
         super().__init__()
         self.resource = resource

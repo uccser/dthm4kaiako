@@ -1,6 +1,6 @@
 {% extends "poet/base.html" %}
 
-{% load static %}
+{% load static crispy_forms_tags %}
 
 {% block page_heading %}
     <div id="poet-title">
@@ -20,7 +20,7 @@
 {% block content_container %}
     <div class="col-12 col-md-6">
         <p>
-            The progress outcome evaluation tool has been developed to anonymously crowdsource information of where teachers how Digital Technology resources relate to progress outcomes, and to see how this data changes over time.
+            The progress outcome evaluation tool has been developed to anonymously crowdsource information of how Digital Technology resources relate to progress outcomes, and to see how this data changes over time.
         </p>
 
         <p>Survey features include:</p>
@@ -30,9 +30,8 @@
             <li>Ability to add feedback to your answer.</li>
             <li>All submissions are anonymous.</li>
         </ul>
-        <a href="{% url 'poet:form' %}" class="btn btn-success">
-            Begin survey
-        </a>
+
+        {% crispy form %}
     </div>
     <div class="col-12 col-md-6">
         <figure class="figure">

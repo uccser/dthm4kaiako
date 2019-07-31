@@ -3,19 +3,26 @@
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.forms import ValidationError
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from poet.forms import POETForm
+from django.views.generic.edit import FormView
+from poet.forms import POETSurveySelectorForm, POETSurveyForm
 from poet.utils import select_resources_for_poet_form
-from poet.models import Submission
+from poet.models import Submission, ProgressOutcome
 
 
-class HomeView(generic.base.TemplateView):
-    """View for POET homepage."""
-
+class HomeView(FormView):
     template_name = 'poet/home.html'
+    form_class = POETSurveySelectorForm
+    success_url = reverse_lazy('poet:form')
+
+
+# class HomeView(FormView):
+#     """View for POET homepage."""
+
+#     template_name = 'poet/home.html'
 
 
 def poet_form(request):
@@ -26,7 +33,7 @@ def poet_form(request):
 
     if request.method == 'POST' and not request.session.get('poet_form_submitted', False):
         # Check whether POST data is valid
-        form = POETForm()
+        form = POETSurveyForm()
         try:
             form.add_fields_from_request(request)
         except (ObjectDoesNotExist, ValidationError) as e:
@@ -45,7 +52,7 @@ def poet_form(request):
                 Submission.objects.create(**submission_data)
             # Delete session data
             request.session.pop('poet_form_resources', None)
-            # Render results template with form.cleaned_data
+            # Render results template
             request.session['poet_form_submitted'] = True
             template = 'poet/result.html'
             form.update_form_with_summary()
@@ -54,11 +61,11 @@ def poet_form(request):
     else:
         # Check if unsubmitted form data exists
         if request.session.get('poet_form_resources', False):
-            messages.warning(request, 'Any previous unsubmitted forms are now marked as invalid.')
+            messages.warning(request, 'Previous unsubmitted form/s are now marked as invalid. The form displayed here is')
         # Get resources for form
         # TODO: Add picking logic based off user request
         resources = select_resources_for_poet_form(request)
-        form = POETForm()
+        form = POETSurveyForm()
         form.add_fields_from_resources(resources)
         pks = list()
         for resource in resources:
@@ -66,5 +73,7 @@ def poet_form(request):
         request.session['poet_form_resources'] = pks
         request.session['poet_form_submitted'] = False
         context['form'] = form
+
+    context['progress_outcomes'] = ProgressOutcome.objects.values()
 
     return render(request, template, context)

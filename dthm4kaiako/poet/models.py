@@ -37,6 +37,19 @@ class ProgressOutcomeGroup(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        """Text representation of object.
+
+        Returns:
+            Name of progress outcome group (str).
+        """
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+
 
 class Resource(models.Model):
     """Model for resource in POET."""
