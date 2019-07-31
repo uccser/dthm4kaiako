@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from poet.models import (
-    ProgressOutcome,
+    ProgressOutcomeGroup,
     Resource,
     Submission,
 )
@@ -22,6 +22,6 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'resource', 'progress_outcome', 'datetime')
 
 
-admin.site.register(ProgressOutcome)
+admin.site.register(ProgressOutcomeGroup)
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Submission, SubmissionAdmin)

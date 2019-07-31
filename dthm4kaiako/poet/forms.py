@@ -1,7 +1,8 @@
 """Forms for POET application."""
 
 from django import forms
-from django.db.models import Count
+
+from django.db.models import Q, Count
 from django.core.exceptions import ObjectDoesNotExist
 from poet.models import (
     Resource,
@@ -14,6 +15,7 @@ from poet.fields import (
     POChoiceField,
     FeedbackField,
 )
+from poet import settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -21,7 +23,15 @@ from crispy_forms.layout import Submit
 class POETSurveySelectorForm(forms.Form):
 
     po_group = forms.ModelChoiceField(
-        queryset=ProgressOutcomeGroup.objects.filter(active=True),
+        queryset=ProgressOutcomeGroup.objects.filter(
+            active=True
+        ).annotate(
+            resource_count=Count(
+                'progress_outcomes__resources',
+                distinct=True,
+                filter=Q(progress_outcomes__resources__active=True)
+            )
+        ).filter(resource_count__gte=settings.NUM_RESOURCES_PER_FORM),
         empty_label=None,
         label='Select your teaching range:',
     )

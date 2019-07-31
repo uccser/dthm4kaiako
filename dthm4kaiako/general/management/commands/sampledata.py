@@ -217,7 +217,7 @@ class Command(management.base.BaseCommand):
 
         # POET
         management.call_command('load_poet_data')
-        POETFormResourceFactory.create_batch(size=10)
+        POETFormResourceFactory.create_batch(size=20)
         print('POET resources created.')
         POETFormProgressOutcomeGroupFactory.create_batch(size=6)
         print('POET progress outcome groups created.')
