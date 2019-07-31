@@ -3,17 +3,36 @@
 {% load i18n %}
 
 {% block page_heading %}
-    <h1 class="text-center">POET</h1>
+    <h1 class="text-center">POET Survey</h1>
 {% endblock page_heading %}
 
 {% block content_container %}
     <div class="col-12">
-        <form method="post" novalidate>
+        <p>
+            The following resources have been randomly picked from the teaching levels you selected.
+        </p>
+
+        <p>
+            A list of all Progress Outcomes definitions are found at the <a href="#po-definintions">bottom of this page</a>.
+        </p>
+
+        <form method="post" class="mb-z">
             {% csrf_token %}
             {{ form }}
             <div class="text-center">
                 <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
             </div>
         </form>
+
+        <h3 id="po-definintions">Progress Outcome Reference</h3>
+        {% for progress_outcome_id, progress_outcome in progress_outcomes.items %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ progress_outcome.label }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ progress_outcome.technological_area }}</h6>
+                    <p class="card-text">{{ progress_outcome.content|safe }}</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock content_container %}

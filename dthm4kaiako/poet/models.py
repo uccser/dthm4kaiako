@@ -25,6 +25,11 @@ class ProgressOutcome(models.Model):
         """
         return self.label
 
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['label', ]
+
 
 class ProgressOutcomeGroup(models.Model):
     """Model for a group of progress outcomes in POET."""

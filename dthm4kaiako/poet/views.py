@@ -83,5 +83,5 @@ def poet_form(request):
         form.add_fields_from_resources(resources)
         request.session['poet_form_submitted'] = False
         context['form'] = form
-    context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.all()}
+    context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.exclude(learning_area__exact='')}
     return render(request, template, context)
