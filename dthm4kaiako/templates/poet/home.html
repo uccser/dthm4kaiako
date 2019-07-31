@@ -1,14 +1,48 @@
-{% extends "base-unbranded.html" %}
+{% extends "poet/base.html" %}
 
 {% load static %}
 
 {% block page_heading %}
-    <h1 class="text-center">POET</h1>
-    <h2 class="text-center">Progress Outcome Evaluation Tool</h2>
+    <!-- <h1 class="text-center">POET</h1>
+    <h2 class="text-center">Progress Outcome Evaluation Tool</h2> -->
 {% endblock page_heading %}
 
 {% block content_container %}
-    <div class="col-12 text-center">
-        <a href="{% url 'poet:form' %}" class="btn btn-success">Start</a>
+    <div id="poet-title" class="col-12">
+        <h1 class="display-4 mt-3">
+            <span>P</span>rogress
+            <span>O</span>utcome
+            <span>E</span>valuation
+            <span>T</span>ool
+        </h1>
+        <p class="lead mb-5">Anonymous crowdsourced evalutions matching Digital Technology resources to progress outcomes.</p>
+        <hr class="my-4">
     </div>
+
+    <div class="col-12 col-md-6">
+        <p>
+            The progress outcome evaluation tool has been developed to anonymously crowdsource information of where teachers how Digital Technology resources relate to progress outcomes, and to see how this data changes over time.
+        </p>
+
+        <p>Survey features include:</p>
+        <ul>
+            <li>Resources are randomly selected from a set based on your teaching area.</li>
+            <li>Ability to view distributions of all submissions, compared to your submission.</li>
+            <li>Ability to add feedback to your answer.</li>
+            <li>All submissions are anonymous.</li>
+        </ul>
+        <a href="{% url 'poet:form' %}" class="btn btn-success">
+            Begin survey
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <figure class="figure">
+            <img class="figure-img img-fluid rounded" src="{% static 'img/poet/example-progress-outcome-distributions.png' %}" alt="Example results for a resource showing distribution of answers">
+            <figcaption class="figure-caption">
+                Example distribution for a resource to a few progress outcomes.
+            </figcaption>
+        </figure>
+    </div>
+
+
 {% endblock content_container %}

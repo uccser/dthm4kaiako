@@ -1,6 +1,6 @@
-{% extends "base-unbranded.html" %}
+{% extends "poet/base.html" %}
 
-{% load static i18n %}
+{% load i18n %}
 
 {% block page_heading %}
     <h1 class="text-center">POET</h1>
@@ -17,7 +17,3 @@
         </form>
     </div>
 {% endblock content_container %}
-
-{% block css %}
-    <link href="{% static 'css/poet.css' %}" rel="stylesheet">
-{% endblock css %}

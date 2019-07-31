@@ -1,0 +1,17 @@
+{% extends "base-unbranded.html" %}
+
+{% load static activeurl %}
+
+{% block title %}POET - dthm4kaiako.ac.nz{% endblock title %}
+
+{% block navbar %}
+<nav id="poet-navbar" class="navbar navbar-light">
+    <a class="navbar-brand mr-0" href="{% url 'poet:home' %}">
+        <strong>POET</strong>
+    </a>
+</nav>
+{% endblock navbar %}
+
+{% block css %}
+<link href="{% static 'css/poet.css' %}" rel="stylesheet">
+{% endblock css %}
