@@ -1,12 +1,18 @@
 """Module for factories for testing the POET application."""
 
 import random
-from factory import DjangoModelFactory, Faker, LazyFunction
+from factory import (
+    DjangoModelFactory,
+    Faker,
+    LazyFunction,
+    post_generation,
+)
 from factory.django import FileField
 from factory import Iterator
 from poet.models import (
     Resource,
     ProgressOutcome,
+    ProgressOutcomeGroup,
     Submission,
 )
 
@@ -23,6 +29,28 @@ class POETFormResourceFactory(DjangoModelFactory):
         """Metadata for class."""
 
         model = Resource
+
+
+class POETFormProgressOutcomeGroupFactory(DjangoModelFactory):
+    """Factory for generating POET PO groups."""
+
+    name = Faker('sentence')
+    active = True
+
+    class Meta:
+        """Metadata for class."""
+
+        model = ProgressOutcomeGroup
+
+    @post_generation
+    def add_detail(self, create, extracted, **kwargs):
+        """Add detail to PO group."""
+        self.progress_outcomes.add(
+            *random.sample(
+                list(ProgressOutcome.objects.all()),
+                random.randint(3, 8)
+            )
+        )
 
 
 def get_progress_outcome():

@@ -39,6 +39,7 @@ from tests.dtta.factories import (
 from tests.poet.factories import (
     POETFormResourceFactory,
     POETFormSubmissionFactory,
+    POETFormProgressOutcomeGroupFactory,
 )
 
 
@@ -218,5 +219,7 @@ class Command(management.base.BaseCommand):
         management.call_command('load_poet_data')
         POETFormResourceFactory.create_batch(size=10)
         print('POET resources created.')
+        POETFormProgressOutcomeGroupFactory.create_batch(size=6)
+        print('POET progress outcome groups created.')
         POETFormSubmissionFactory.create_batch(size=1000)
         print('POET submissions created.')
