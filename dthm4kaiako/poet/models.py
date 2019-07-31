@@ -26,6 +26,18 @@ class ProgressOutcome(models.Model):
         return self.label
 
 
+class ProgressOutcomeGroup(models.Model):
+    """Model for a group of progress outcomes in POET."""
+
+    name = models.CharField(max_length=100)
+    active = models.BooleanField(default=False)
+    progress_outcomes = models.ManyToManyField(
+        ProgressOutcome,
+        related_name='groups',
+        blank=True,
+    )
+
+
 class Resource(models.Model):
     """Model for resource in POET."""
 
