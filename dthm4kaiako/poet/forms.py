@@ -17,7 +17,7 @@ from poet.fields import (
 )
 from poet import settings
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, HTML, Submit
 
 
 class POETSurveySelectorForm(forms.Form):
@@ -41,7 +41,11 @@ class POETSurveySelectorForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Begin survey', css_class="btn-success"))
+        self.helper.layout = Layout(
+            'po_group',
+            Submit('submit', 'Begin survey', css_class="btn-success"),
+            HTML('{% if active_survey %}<a class="btn btn-secondary" href={% url "poet:form" %}>Resume incompleted survey</a>{% endif %}'),
+        )
 
 class POETSurveyForm(forms.Form):
     """Form for resource displayed in form."""

@@ -18,12 +18,22 @@ class HomeView(FormView):
     form_class = POETSurveySelectorForm
     success_url = reverse_lazy('poet:form')
 
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the POET home view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['active_survey'] = self.request.session.get('poet_form_resources', False)
+        return context
+
     def form_valid(self, form):
         """Send email if form is valid."""
         resources_pks = select_resources_for_poet_form(form.cleaned_data['po_group'])
         self.request.session['poet_form_resources'] = resources_pks
         self.request.session['poet_form_new'] = True
-        self.request.session['poet_form_submitted'] = False
+        # self.request.session['poet_form_submitted'] = False
         return super().form_valid(form)
 
 
@@ -64,7 +74,7 @@ def poet_form(request):
         # Check if new form
         new_form = request.session.pop('poet_form_new', False)
         if not new_form:
-            messages.info(request, 'Loaded previous survey form.')
+            messages.info(request, 'Loaded incomplete survey resources.')
 
         # Get resources for form
         resource_pks = request.session['poet_form_resources']
