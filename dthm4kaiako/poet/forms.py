@@ -98,26 +98,6 @@ class POETSurveyForm(forms.Form):
             else:
                 run_loop = False
 
-    def update_form_with_summary(self):
-        """Update each choice option with percentage selected."""
-        for field_id, field in list(self.fields.items()):
-            field.disabled = True
-            if field_id.startswith('choice'):
-                resource = field.resource
-                total_submissions = Submission.objects.filter(resource=resource).count()
-                count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
-                    'code').annotate(count=Count('submissions'))
-                percentage_data = dict()
-                for data in count_data:
-                    percentage_data[data['code']] = (data['count'] / total_submissions)
-                field.widget.percentage_data = percentage_data
-                field.widget.percentage_statement = "{:.1f}% of people agree with your selection".format(
-                    percentage_data[field.initial] * 100
-                )
-                field.label = ''
-            if field_id.startswith('feedback'):
-                field.widget = forms.HiddenInput()
-
     def validate(self, request):
         """Validate the form contains required information."""
         data = []
@@ -147,3 +127,23 @@ class POETSurveyForm(forms.Form):
             else:
                 run_loop = False
         return data
+
+    def update_form_with_summary(self):
+        """Update each choice option with percentage selected."""
+        for field_id, field in list(self.fields.items()):
+            field.disabled = True
+            if field_id.startswith('choice'):
+                resource = field.resource
+                total_submissions = Submission.objects.filter(resource=resource).count()
+                count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
+                    'code').annotate(count=Count('submissions'))
+                percentage_data = dict()
+                for data in count_data:
+                    percentage_data[data['code']] = (data['count'] / total_submissions)
+                field.widget.percentage_data = percentage_data
+                field.widget.percentage_statement = "{:.1f}% of people agree with your selection".format(
+                    percentage_data[field.initial] * 100
+                )
+                field.label = ''
+            if field_id.startswith('feedback'):
+                field.widget = forms.HiddenInput()
