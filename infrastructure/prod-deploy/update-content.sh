@@ -18,3 +18,4 @@ export ELASTICSEARCH_CONNECTION_NAME="$PROD_ELASTICSEARCH_CONNECTION_NAME"
 ./dev start
 ./dev migrate
 ./dev load_card_data
+./dev load_poet_data
