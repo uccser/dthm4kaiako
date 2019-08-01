@@ -51,7 +51,6 @@ def poet_form(request):
         try:
             form.add_fields_from_request(request)
         except (ObjectDoesNotExist, ValidationError) as e:
-            raise Exception()
             messages.error(request, 'Invalid form data. Returning to POET home.')
             # Delete session data
             request.session.pop('poet_form_resources', None)
@@ -76,7 +75,6 @@ def poet_form(request):
             request.session.pop('poet_form_active', None)
             # Render results template
             template = 'poet/result.html'
-            # TODO: Render without form object
             form.update_form_with_summary()
 
     # if a GET (or any other method) we'll create a blank form

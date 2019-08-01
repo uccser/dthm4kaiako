@@ -93,7 +93,8 @@ class POETSurveyForm(forms.Form):
 
     def update_form_with_summary(self):
         """Update each choice option with percentage selected."""
-        for field_id, field in self.fields.items():
+        for field_id, field in list(self.fields.items()):
+            field.disabled = True
             if field_id.startswith('choice'):
                 resource = field.resource
                 total_submissions = Submission.objects.filter(resource=resource).count()
@@ -103,7 +104,12 @@ class POETSurveyForm(forms.Form):
                 for data in count_data:
                     percentage_data[data['code']] = (data['count'] / total_submissions)
                 field.widget.percentage_data = percentage_data
-                field.disabled = True
+                field.widget.percentage_statement = "{:.1f}% of people agree with your selection".format(
+                    percentage_data[field.initial] * 100
+                )
+                field.label = ''
+            if field_id.startswith('feedback'):
+                field.widget = forms.HiddenInput()
 
 
     def validate(self, request):
