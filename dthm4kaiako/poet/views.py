@@ -50,7 +50,7 @@ def poet_form(request):
             form.add_fields_from_request(request)
         except (ObjectDoesNotExist, ValidationError) as e:
             messages.error(request, '{}. Returning to POET home.'.format(e.message))
-            redirect(reverse('poet:home'))
+            return redirect(reverse('poet:home'))
 
         context['form'] = form
 
@@ -71,13 +71,15 @@ def poet_form(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
+        # Get resources for form
+        resource_pks = request.session.get('poet_form_resources', None)
+        if not resource_pks:
+            return redirect(reverse('poet:home'))
         # Check if new form
         new_form = request.session.pop('poet_form_new', False)
         if not new_form:
             messages.info(request, 'Loaded incomplete survey resources.')
 
-        # Get resources for form
-        resource_pks = request.session['poet_form_resources']
         resources = Resource.objects.filter(pk__in=resource_pks)
         form = POETSurveyForm()
         form.add_fields_from_resources(resources)
