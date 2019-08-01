@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.0
+
+- Add Progress Outcome Evaluation Tool (POET) application.
+
 ## 0.15.2
 
 - Change default ordering of event locations to be alphabetical.

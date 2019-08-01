@@ -1,0 +1,157 @@
+@import "core-variables";
+
+$technology-brown: #9c5444;
+$technology-brown-light: #bd8a78;
+$technology-brown-lighter: #d2aea1;
+$technology-brown-lightest: #e4cfc7;
+$gap-size: 2px;
+
+hr {
+    border-color: #b8b8b8;
+}
+
+#poet-navbar {
+    background-color: #e6e6e6;
+    justify-content: center !important;
+}
+
+#poet-title {
+    h1 {
+        color: #5c5c5c;
+        font-size: 3rem;
+        span {
+            color: #2e2e2e;
+            font-weight: bold;
+        }
+    }
+    .lead {
+        color: #737373;
+    }
+}
+
+label {
+    font-weight: bold;
+}
+.percentage_statement {
+    font-size: 1.2rem;
+}
+#div_id_po_group .asteriskField {
+    display: none;
+}
+
+#po-table {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: 1fr 2fr 2fr;
+    grid-row-gap: $gap-size;
+    place-content: stretch;
+    align-items: stretch;
+
+    .po-label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: black;
+        background: $technology-brown-light;
+        &.ncea {
+            margin-left: $gap-size;
+        }
+    }
+    #po-label-1-10 {
+        grid-column-start: 2;
+        grid-column-end: 7;
+    }
+    #curriculum-level-strand-title-dddo {
+        color: $ta-dddo;
+        background-color: lighten($color: $ta-dddo, $amount: 50)
+    }
+    #curriculum-level-strand-title-ct {
+        color: $ta-ct;
+        background-color: lighten($color: $ta-ct, $amount: 50)
+    }
+
+    .curriculum-level-strand-title,
+    .curriculum-level-node {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+    $cell-mix: 80%;
+    .curriculum-level-dddo {
+        background-color: mix($technology-brown-lightest, $ta-dddo, $weight: $cell-mix);
+    }
+    .curriculum-level-ct {
+        background-color: mix($technology-brown-lightest, $ta-ct, $weight: $cell-mix);
+    }
+    .curriculum-level-title {
+        background: $technology-brown;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        padding: 0.5rem;
+    }
+}
+.curriculum-level-content {
+    text-align: center;
+}
+
+$radio-size: 1.5rem;
+$radio-colour: #333333;
+$radio-x-position: 1.3rem;
+
+.custom-control {
+    padding-left: 0;
+    .custom-control-label {
+        color: $radio-colour !important;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: bold;
+        user-select: none;
+        cursor: pointer;
+        height: ($radio-x-position * 2) + $radio-size;
+        .choice-percentage {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            font-weight: normal;
+        }
+        .choice-heat {
+            position: absolute;
+            top: 28%;
+            bottom: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+        }
+    }
+    .custom-control-label::before,
+    .custom-control-label::after {
+        width: $radio-size;
+        height: $radio-size;
+        left: 50%;
+        margin-left: -$radio-size / 2;
+        top: $radio-x-position;
+        cursor: pointer;
+    }
+    .custom-control-label::before {
+        border-color: $radio-colour;
+    }
+    #extra-choices & {
+        display: inline-flex;
+    }
+}
+
+.custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
+    background-color: rgba(44, 72, 100, 1);
+}
+
+.custom-control-input:disabled ~ .custom-control-label {
+    cursor: default !important;
+}
+
+.resource-content {
+    user-select: none;
+}
