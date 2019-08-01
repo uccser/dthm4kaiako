@@ -16,11 +16,11 @@
             A list of all Progress Outcomes definitions are found at the <a href="#po-definintions">bottom of this page</a>.
         </p>
 
-        <form method="post" class="mb-z">
+        <form method="post" class="mb-3" novalidate>
             {% csrf_token %}
             {{ form }}
             <div class="text-center">
-                <input type="submit" class="btn btn-success ml-auto" value="{% trans "Submit" %}" />
+                <input type="submit" class="btn btn-success mb-5" value="{% trans "Submit survey" %}" />
             </div>
         </form>
 

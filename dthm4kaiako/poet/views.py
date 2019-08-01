@@ -33,7 +33,7 @@ class HomeView(FormView):
         resources_pks = select_resources_for_poet_form(form.cleaned_data['po_group'])
         self.request.session['poet_form_resources'] = resources_pks
         self.request.session['poet_form_new'] = True
-        # self.request.session['poet_form_submitted'] = False
+        self.request.session['poet_form_active'] = True
         return super().form_valid(form)
 
 
@@ -43,17 +43,23 @@ def poet_form(request):
     context = dict()
     template = 'poet/form.html'
 
-    if request.method == 'POST' and not request.session.get('poet_form_submitted', False):
-        # Check whether POST data is valid
+    if request.method == 'POST' and request.session.get('poet_form_active', False):
         form = POETSurveyForm()
+
+        # Check whether POST data is valid, if not return to home
         try:
             form.add_fields_from_request(request)
         except (ObjectDoesNotExist, ValidationError) as e:
-            messages.error(request, '{}. Returning to POET home.'.format(e.message))
+            raise Exception()
+            messages.error(request, 'Invalid form data. Returning to POET home.')
+            # Delete session data
+            request.session.pop('poet_form_resources', None)
+            request.session.pop('poet_form_active', None)
             return redirect(reverse('poet:home'))
 
         context['form'] = form
 
+        # Valid form but missing data
         try:
             data = form.validate(request)
         except ValidationError as e:
@@ -64,9 +70,10 @@ def poet_form(request):
                 Submission.objects.create(**submission_data)
             # Delete session data
             request.session.pop('poet_form_resources', None)
+            request.session.pop('poet_form_active', None)
             # Render results template
-            request.session['poet_form_submitted'] = True
             template = 'poet/result.html'
+            # TODO: Render without form object
             form.update_form_with_summary()
 
     # if a GET (or any other method) we'll create a blank form
@@ -75,6 +82,7 @@ def poet_form(request):
         resource_pks = request.session.get('poet_form_resources', None)
         if not resource_pks:
             return redirect(reverse('poet:home'))
+
         # Check if new form
         new_form = request.session.pop('poet_form_new', False)
         if not new_form:
@@ -83,7 +91,6 @@ def poet_form(request):
         resources = Resource.objects.filter(pk__in=resource_pks)
         form = POETSurveyForm()
         form.add_fields_from_resources(resources)
-        request.session['poet_form_submitted'] = False
         context['form'] = form
     context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.exclude(learning_area__exact='')}
     return render(request, template, context)

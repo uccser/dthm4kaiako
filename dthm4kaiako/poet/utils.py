@@ -18,4 +18,4 @@ def select_resources_for_poet_form(progress_outcome_group):
         active=True,
         target_progress_outcome__in=progress_outcome_group.progress_outcomes.all(),
     ).values_list('pk', flat=True)
-    return random.sample(list(all_resources), NUM_RESOURCES_PER_FORM)
+    return sorted(random.sample(list(all_resources), NUM_RESOURCES_PER_FORM))

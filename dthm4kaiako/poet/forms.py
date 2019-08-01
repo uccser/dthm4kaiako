@@ -61,24 +61,31 @@ class POETSurveyForm(forms.Form):
         """Add fields to form from request object."""
         resource_session_pks = request.session.get('poet_form_resources', list())
         if not resource_session_pks:
-            raise forms.ValidationError('Resouce IDs not present in session.')
+            raise forms.ValidationError('Resouce IDs not present in session')
         i = 0
         run_loop = True
         while run_loop:
             resource_pk = int(request.POST['resource' + str(i)])
             if resource_pk != resource_session_pks[i]:
-                raise forms.ValidationError('Resource IDs from form do not match session data.')
-            choice = request.POST.get('choice' + str(i), None)
+                forms.ValidationError('Resource IDs from form do not match session data')
+            progress_outcome_code = request.POST.get('choice' + str(i), None)
+            feedback = request.POST.get('feedback' + str(i), '')
+            # Check data exists
             resource = Resource.objects.get(pk=resource_pk)
+            if progress_outcome_code:
+                ProgressOutcome.objects.get(code=progress_outcome_code)
+            # Create fields
             self.fields['resource' + str(i)] = ResourceField(
                 resource,
                 i + 1,
             )
             self.fields['choice' + str(i)] = POChoiceField(
                 resource,
-                initial=choice,
+                initial=progress_outcome_code,
             )
-            self.fields['feedback' + str(i)]=FeedbackField()
+            self.fields['feedback' + str(i)]=FeedbackField(
+                initial=feedback,
+            )
             if request.POST.get('resource' + str(i + 1), False):
                 i += 1
             else:
@@ -108,26 +115,13 @@ class POETSurveyForm(forms.Form):
             progress_outcome_code = request.POST.get('choice' + str(i), None)
             feedback = request.POST.get('feedback' + str(i), '')
 
-            try:
-                resource = Resource.objects.get(pk=resource_pk)
-            except ObjectDoesNotExist:
-                raise forms.ValidationError(
-                    'Resource ID %(id)s not found',
-                    params={'id': resource_pk},
-                )
-
             if not progress_outcome_code:
                 raise forms.ValidationError(
                     'A progress outcome choice is blank, please fill in one option for each table'
                 )
 
-            try:
-                progress_outcome = ProgressOutcome.objects.get(code=progress_outcome_code)
-            except ObjectDoesNotExist:
-                raise forms.ValidationError(
-                    'Progress outcome code %(code)s not found',
-                    params={'code': progress_outcome_code},
-                )
+            resource = Resource.objects.get(pk=resource_pk)
+            progress_outcome = ProgressOutcome.objects.get(code=progress_outcome_code)
 
             data.append({
                 'resource': resource,
