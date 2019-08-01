@@ -21,6 +21,7 @@ urlpatterns = [
     path('events/', include('events.urls', namespace='events'),),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
+    path('poet/', include('poet.urls', namespace='poet')),
     path('learning-area-cards/', include('learning_area_cards.urls', namespace='learning_area_cards')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),

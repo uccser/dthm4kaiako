@@ -1,0 +1,17 @@
+{% extends "poet/base.html" %}
+
+{% load static i18n %}
+
+{% block page_heading %}
+    <h1 class="text-center">Survey results</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div id="poet-results" class="col-12">
+        {{ form }}
+
+        <div class="text-center my-5">
+            <a href="{% url 'poet:home' %}" class="btn btn-primary">Return to POET homepage</a>
+        </div>
+    </div>
+{% endblock content_container %}

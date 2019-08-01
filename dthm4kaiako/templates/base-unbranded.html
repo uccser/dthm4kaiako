@@ -3,10 +3,23 @@
 {% load static i18n activeurl %}
 
 {% block body %}
+  {% block navbar %}
+  {% endblock navbar %}
   <div id="page-header" class="my-3">
     <div class="container">
       {% block page_heading %}
       {% endblock page_heading %}
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
   <div id="content-container" class="container">

@@ -1,0 +1,11 @@
+{% load poet_templatetags %}
+
+<div class="custom-control custom-radio" data-toggle="tooltip" data-placement="bottom" title="{{ self.choices }}">
+    <input type="radio" id="{{ choice.attrs.id }}" name="{{ choice.name }}" value="{{ choice.value }}" class="custom-control-input" {% include "django/forms/widgets/attrs.html" with widget=choice %}>
+    <label class="custom-control-label" for="{{ choice.attrs.id }}">
+        {{ choice.label }}
+        {% if percentage_data %}
+            {% render_heat_element %}
+        {% endif %}
+    </label>
+</div>

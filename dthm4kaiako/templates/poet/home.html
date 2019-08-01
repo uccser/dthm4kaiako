@@ -1,0 +1,50 @@
+{% extends "poet/base.html" %}
+
+{% load static crispy_forms_tags %}
+
+{% block page_heading %}
+    <div id="poet-title">
+        <h1 class="display-4 mt-3">
+            <span>P</span>rogress
+            <span>O</span>utcome
+            <span>E</span>valuation
+            <span>T</span>ool
+        </h1>
+        <p class="lead mb-5">
+            Anonymous crowdsourced evaluations matching Digital Technologies resources to Progress Outcomes.
+        </p>
+        <hr class="my-4">
+    </div>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 col-md-6">
+        <p>
+            The Progress Outcome Evaluation Tool has been developed to anonymously crowdsource information of how Digital Technologies resources relate to the Progress Outcomes, and to see how this data changes over time as students and teachers become more familiar with the revised Technology Curriculum.
+        </p>
+
+        <p>Survey features include:</p>
+        <ul>
+            <li>Resources are randomly selected from a set based on your selected year levels taught.</li>
+            <li>Ability to view distributions of all submissions, compared to your submission.</li>
+            <li>Ability to add feedback to your answer.</li>
+        </ul>
+        <hr class="my-4">
+
+        {% if form.po_group.field.choices|length_is:"0" %}
+            <p><em>Sorry, the survey tool is currently closed.</em></p>
+        {% else %}
+            {% crispy form %}
+        {% endif %}
+    </div>
+    <div class="col-12 col-md-6">
+        <figure class="figure">
+            <img class="figure-img img-fluid rounded" src="{% static 'img/poet/example-progress-outcome-distributions.png' %}" alt="Example results for a resource showing distribution of answers">
+            <figcaption class="figure-caption">
+                Example distribution for a resource to a few progress outcomes.
+            </figcaption>
+        </figure>
+    </div>
+
+
+{% endblock content_container %}

@@ -18,10 +18,6 @@ $hover-alpha: .1;
 }
 
 // Technological areas and progress outcomes
-
-$ta-ct: #1a5881;
-$ta-dddo: #269d6e;
-
 .ta-ct {
   @extend .badge;
   @extend .badge-pill;

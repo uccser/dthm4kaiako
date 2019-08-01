@@ -1,0 +1,8 @@
+<hr class="my-5">
+
+<h2 class="text-center"><strong>Resource {{ number }}</strong></h2>
+<div class="resource-content my-3 p-3 border rounded">
+    <h4>{{ resource.title }}</h4>
+    {{ resource.content|safe }}
+</div>
+<input type="hidden" name="{{ widget.name }}" value="{{ widget.value|stringformat:'s' }}" {% include "django/forms/widgets/attrs.html" %}>

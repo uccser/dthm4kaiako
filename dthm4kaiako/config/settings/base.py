@@ -100,6 +100,8 @@ DJANGO_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.gis',
+    # Include forms application as default renderer is overwritten
+    'django.forms',
 ]
 THIRD_PARTY_APPS = [
     'anymail',
@@ -122,6 +124,7 @@ LOCAL_APPS = [
     'events.apps.EventsAppConfig',
     'dtta.apps.DttaAppConfig',
     'learning_area_cards.apps.LearningAreaCardsAppConfig',
+    'poet.apps.POETAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -249,12 +252,17 @@ TEMPLATES = [
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',
+                'get_item': 'config.filters.get_item',
                 'query_replace': 'config.templatetags.query_replace',
+                'poet_templatetags': 'poet.templatetags',
             },
         },
     },
 ]
-# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+
+# FORMS
+# ------------------------------------------------------------------------------
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # FIXTURES
