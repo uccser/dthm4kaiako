@@ -135,15 +135,16 @@ class POETSurveyForm(forms.Form):
             if field_id.startswith('choice'):
                 resource = field.resource
                 total_submissions = Submission.objects.filter(resource=resource).count()
-                count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
-                    'code').annotate(count=Count('submissions'))
-                percentage_data = dict()
-                for data in count_data:
-                    percentage_data[data['code']] = (data['count'] / total_submissions)
-                field.widget.percentage_data = percentage_data
-                field.widget.percentage_statement = "{:.1f}% of people agree with your selection".format(
-                    percentage_data[field.initial] * 100
-                )
+                if total_submissions < settings.MINIMUM_SUBMISSIONS_PER_RESOURCE:
+                    field.widget.incomplete_data = True
+                else:
+                    count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
+                        'code').annotate(count=Count('submissions'))
+                    percentage_data = dict()
+                    for data in count_data:
+                        percentage_data[data['code']] = (data['count'] / total_submissions)
+                    field.widget.percentage_data = percentage_data
+                    field.widget.percentage_matching = percentage_data[field.initial] * 100
                 field.label = ''
             if field_id.startswith('feedback'):
                 field.widget = forms.HiddenInput()

@@ -36,9 +36,11 @@ class ProgressOutcomeTableRadioSelect(RadioSelect):
     def get_context(self, name, value, attrs):
         """Extra context for widget."""
         context = super().get_context(name, value, attrs)
-        if hasattr(self, 'percentage_data'):
+        if hasattr(self, 'incomplete_data'):
+            context['incomplete_data'] = True
+        elif hasattr(self, 'percentage_data'):
             context['percentage_data'] = self.percentage_data
-            context['percentage_statement'] = self.percentage_statement
+            context['percentage_matching'] = self.percentage_matching
         return context
 
 

@@ -1,6 +1,10 @@
+{% if incomplete_data %}
+    <div class="alert alert-warning text-center" role="alert">
+       <strong>Sorry!</strong> The minimum required submission threshold has not yet been reached to show data for this resource.
+    </div>
 {% if percentage_statement %}
     <p class="text-center percentage_statement">
-        <strong>{{ percentage_statement }}</strong>
+        <strong>{{ percentage_matching|floatformat }}% of people agree with your selection</strong>
     </p>
 {% endif %}
 
