@@ -81,8 +81,7 @@ class Submission(models.Model):
     """Model for a resource in a form submission."""
 
     datetime = models.DateTimeField(auto_now_add=True)
-    # TODO: IP address for anti cheating
-    # TODO: Time taken for anti cheating
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
     feedback = models.TextField()
     resource = models.ForeignKey(
         Resource,

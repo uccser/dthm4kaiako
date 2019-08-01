@@ -18,7 +18,7 @@ django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
 djangorestframework==3.9.4  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
 django-filter==2.1.0  # https://github.com/carltongibson/django-filter/
-django-formtools==2.1
+django-ipware==2.1.0
 
 # Google Cloud Platform
 google-api-python-client==1.7.8

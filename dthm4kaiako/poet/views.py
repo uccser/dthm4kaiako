@@ -1,5 +1,6 @@
 """Views for POET application."""
 
+from ipware import get_client_ip
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.forms import ValidationError
@@ -66,7 +67,9 @@ def poet_form(request):
             messages.error(request, '{}.'.format(e.message))
         else:
             # Save submissions to database
+            client_ip, is_routable = get_client_ip(request)
             for submission_data in data:
+                submission_data['ip_address'] = client_ip
                 Submission.objects.create(**submission_data)
             # Delete session data
             request.session.pop('poet_form_resources', None)
