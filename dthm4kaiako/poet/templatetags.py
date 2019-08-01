@@ -7,6 +7,7 @@ register = template.Library()
 
 DYNAMIC_HEAT_ELEMENT_WIDTH = 150  # pixels
 
+
 @register.simple_tag(takes_context=True)
 def render_heat_element(context, **kwargs):
     """Render heatmap element.

@@ -1,6 +1,6 @@
 """Helper functions for determining file paths for uploads."""
 
-from os.path import join, splitext
+from os.path import join
 from datetime import datetime
 from pytz import timezone
 

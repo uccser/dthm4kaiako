@@ -3,7 +3,6 @@
 from django import forms
 
 from django.db.models import Q, Count
-from django.core.exceptions import ObjectDoesNotExist
 from poet.models import (
     Resource,
     ProgressOutcome,
@@ -19,8 +18,15 @@ from poet import settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Submit
 
+RESUME_BUTTON = (
+    '{% if active_survey %}<a class="btn btn-secondary" href={% url "poet:form" %}>'
+    'Resume incompleted survey'
+    '</a>{% endif %}'
+)
+
 
 class POETSurveySelectorForm(forms.Form):
+    """Form for picking a type of POET survey."""
 
     po_group = forms.ModelChoiceField(
         queryset=ProgressOutcomeGroup.objects.filter(
@@ -44,8 +50,9 @@ class POETSurveySelectorForm(forms.Form):
         self.helper.layout = Layout(
             'po_group',
             Submit('submit', 'Begin survey', css_class="btn-success"),
-            HTML('{% if active_survey %}<a class="btn btn-secondary" href={% url "poet:form" %}>Resume incompleted survey</a>{% endif %}'),
+            HTML(RESUME_BUTTON),
         )
+
 
 class POETSurveyForm(forms.Form):
     """Form for resource displayed in form."""
@@ -83,7 +90,7 @@ class POETSurveyForm(forms.Form):
                 resource,
                 initial=progress_outcome_code,
             )
-            self.fields['feedback' + str(i)]=FeedbackField(
+            self.fields['feedback' + str(i)] = FeedbackField(
                 initial=feedback,
             )
             if request.POST.get('resource' + str(i + 1), False):
@@ -111,8 +118,8 @@ class POETSurveyForm(forms.Form):
             if field_id.startswith('feedback'):
                 field.widget = forms.HiddenInput()
 
-
     def validate(self, request):
+        """Validate the form contains required information."""
         data = []
         i = 0
         run_loop = True

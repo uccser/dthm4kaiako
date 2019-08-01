@@ -7,7 +7,6 @@ from factory import (
     LazyFunction,
     post_generation,
 )
-from factory.django import FileField
 from factory import Iterator
 from poet.models import (
     Resource,
@@ -54,6 +53,7 @@ class POETFormProgressOutcomeGroupFactory(DjangoModelFactory):
 
 
 def get_progress_outcome():
+    """Return a random PO, biased to PO-CT-3."""
     progress_outcomes = ProgressOutcome.objects.all()
     if random.randint(1, 5) == 1:
         progress_outcome = progress_outcomes.get(code='PO-CT-3')

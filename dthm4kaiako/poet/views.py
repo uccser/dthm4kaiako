@@ -1,8 +1,6 @@
 """Views for POET application."""
 
 from ipware import get_client_ip
-from django.http import HttpResponseRedirect
-from django.views import generic
 from django.forms import ValidationError
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
@@ -15,6 +13,8 @@ from poet.models import Submission, ProgressOutcome, Resource
 
 
 class HomeView(FormView):
+    """View for POET homepage."""
+
     template_name = 'poet/home.html'
     form_class = POETSurveySelectorForm
     success_url = reverse_lazy('poet:form')
@@ -50,7 +50,7 @@ def poet_form(request):
         # Check whether POST data is valid, if not return to home
         try:
             form.add_fields_from_request(request)
-        except (ObjectDoesNotExist, ValidationError) as e:
+        except (ObjectDoesNotExist, ValidationError):
             messages.error(request, 'Invalid form data. Returning to POET home.')
             # Delete session data
             request.session.pop('poet_form_resources', None)
