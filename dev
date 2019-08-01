@@ -171,7 +171,7 @@ defhelp load_poet_data "Load poet data."
 cmd_create_cards() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py create_cards
 }
-defhelp create_cards "Create authentic context cards."
+defhelp create_cards "Create learning area cards."
 
 cmd_createsuperuser() {
   docker-compose exec django /docker_venv/bin/python3 ./manage.py createsuperuser

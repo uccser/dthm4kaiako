@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.urls import include, path
+from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -20,14 +21,16 @@ urlpatterns = [
     path('events/', include('events.urls', namespace='events'),),
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('users/', include('users.urls', namespace='users'),),
-    path('authentic-context-cards/', include('authentic_context_cards.urls', namespace='authentic_context_cards')),
     path('poet/', include('poet.urls', namespace='poet')),
+    path('learning-area-cards/', include('learning_area_cards.urls', namespace='learning_area_cards')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('api/', include('rest_framework.urls')),
     path('_ah/health', health_check),
     path('cron/rebuild_index/', cron_rebuild_index),
+    # Redirects
+    path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

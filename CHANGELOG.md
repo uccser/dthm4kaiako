@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.15.2
+
+- Change default ordering of event locations to be alphabetical.
+
+## 0.15.1
+
+- Fix out of index error for learning area cards webpage.
+
+## 0.15.0
+
+- Change name of 'Authentic Context Cards' to 'Learning Area Cards'.
+- Add progress outcome card set to learning area cards.
+- Fix incorrect data for achievement objectives for learning area cards.
+- Dependencies changes:
+    - Update anymail[mailgun] from 6.0 to 6.0.1.
+    - Update ckeditor from 5.7.0 to 5.7.1.
+    - Update django-extensions from 2.1.6 to 2.1.9.
+    - Update django-model-utils from 3.1.2 to 3.2.0.
+    - Update google-api-python-client from 1.7.8 to 1.7.9.
+    - Update google-cloud-storage from 1.15.0 to 1.16.1.
+    - Update mypy from 0.670 to 0.711.
+    - Update psycopg2-binary from 2.8.2 to 2.8.3.
+    - Update pytest from 4.5.0 to 4.6.3.
+    - Update pytest-django from 3.4.8 to 3.5.0.
+    - Update Sphinx from 2.0.1 to 2.1.2.
+
 ## 0.14.2
 
 - Add new dependency for missing library for Google Cloud Storage dependency.

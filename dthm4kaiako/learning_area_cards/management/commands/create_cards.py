@@ -5,22 +5,22 @@ from django.core import management
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.staticfiles import finders
-from authentic_context_cards.models import (
+from learning_area_cards.models import (
     AchievementObjective,
     ProgressOutcome,
 )
-from authentic_context_cards.utils import get_card_set_metadata
+from learning_area_cards.utils import get_card_set_metadata
 from weasyprint import HTML, CSS
 
 
 class Command(management.base.BaseCommand):
     """Required command class for the custom Django create_cards command."""
 
-    help = 'Create authentic context card PDFs for each level.'
+    help = 'Create learning area card PDFs for each level.'
 
     def handle(self, *args, **options):
         """Automatically called when the create_cards command is given."""
-        pdf_directory = settings.AUTHENTIC_CONTEXT_CARDS_GENERATION_LOCATION
+        pdf_directory = settings.LEARNING_AREA_CARDS_GENERATION_LOCATION
         if not os.path.exists(pdf_directory):
             os.makedirs(pdf_directory)
         self.create_achievement_objective_cards(pdf_directory)
@@ -36,7 +36,7 @@ class Command(management.base.BaseCommand):
             'level', flat=True).order_by('level').distinct()
         card_type = 'ao'
         for level_num in achievement_objectives_level_values:
-            for print_type in settings.AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES:
+            for print_type in settings.LEARNING_AREA_CARDS_PRINT_TYPES:
                 (title, filename) = get_card_set_metadata(
                     card_type=card_type,
                     print_type=print_type,
@@ -63,7 +63,7 @@ class Command(management.base.BaseCommand):
             'learning_area', flat=True).distinct()
         card_type = 'po'
         for learning_area in learning_areas:
-            for print_type in settings.AUTHENTIC_CONTEXT_CARDS_PRINT_TYPES:
+            for print_type in settings.LEARNING_AREA_CARDS_PRINT_TYPES:
                 (title, filename) = get_card_set_metadata(
                     card_type=card_type,
                     print_type=print_type,
@@ -83,7 +83,7 @@ class Command(management.base.BaseCommand):
     def prepare_card_data(self, items, print_type):
         """Prepare card data for rendering."""
         cards = list()
-        if print_type == settings.AUTHENTIC_CONTEXT_CARDS_SINGLE_PRINT:
+        if print_type == settings.LEARNING_AREA_CARDS_SINGLE_PRINT:
             for item in items:
                 cards.append(
                     {
@@ -157,11 +157,11 @@ class Command(management.base.BaseCommand):
             context (dict): Context used for rendering template.
 
         """
-        pdf_html = render_to_string('authentic_context_cards/cards-pdf.html', context)
+        pdf_html = render_to_string('learning_area_cards/cards-pdf.html', context)
         html = HTML(string=pdf_html, base_url=settings.BUILD_ROOT)
 
         # Render as PDF
-        css_file = finders.find('css/authentic-context-cards.css')
+        css_file = finders.find('css/learning-area-cards.css')
         css_string = open(css_file, encoding='UTF-8').read()
         base_css = CSS(string=css_string)
         pdf_file = html.write_pdf(stylesheets=[base_css])

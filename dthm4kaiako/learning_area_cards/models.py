@@ -1,4 +1,4 @@
-"""Models for authentic context cards application."""
+"""Models for learning area cards application."""
 
 from django.db import models
 

@@ -1,4 +1,4 @@
-"""Utility functions for authentic context cards application."""
+"""Utility functions for learning area cards application."""
 
 from urllib.parse import quote as urlquote
 from django.conf import settings
@@ -26,7 +26,7 @@ def get_card_set_metadata(card_type, print_type, level=None, learning_area=None,
     else:
         title = PROGRESS_OUTCOME_TITLE_TEMPLATE.format(learning_area)
 
-    filename = settings.AUTHENTIC_CONTEXT_CARDS_FILENAME_TEMPLATE.format(
+    filename = settings.LEARNING_AREA_CARDS_FILENAME_TEMPLATE.format(
         card_set_title=title,
         print_type=print_type,
     )

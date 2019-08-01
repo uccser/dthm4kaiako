@@ -105,7 +105,7 @@ class Location(models.Model):
     class Meta:
         """Meta options for class."""
 
-        ordering = ['region', 'city', 'name']
+        ordering = ['name', ]
 
 
 class Organiser(models.Model):

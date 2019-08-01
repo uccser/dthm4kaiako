@@ -8,18 +8,18 @@
     <body class="text-center print-{{ print_type|lower }}">
         {% spaceless %}
             {% for card in cards %}
-                <div class="ac-card ac-card-{{ card.side }} learning-area-{{ card.item.learning_area_code }} {% if forloop.counter|divisibleby:4 or forloop.last %}page-break{% endif %}">
+                <div class="la-card la-card-{{ card.side }} learning-area-{{ card.item.learning_area_code }} {% if forloop.counter|divisibleby:4 or forloop.last %}page-break{% endif %}">
                     {% if card_type == 'ao' %}
                         {% if card.side == 'back' %}
-                            {% include "authentic_context_cards/achievement-objective-card-back.html" with achievement_objective=card.item %}
+                            {% include "learning_area_cards/achievement-objective-card-back.html" with achievement_objective=card.item %}
                         {% elif card.side == 'front' %}
-                            {% include "authentic_context_cards/achievement-objective-card-front.html" with achievement_objective=card.item %}
+                            {% include "learning_area_cards/achievement-objective-card-front.html" with achievement_objective=card.item %}
                         {% endif %}
                     {% elif card_type == 'po' %}
                         {% if card.side == 'back' %}
-                            {% include "authentic_context_cards/progress-outcome-card-back.html" with progress_outcome=card.item %}
+                            {% include "learning_area_cards/progress-outcome-card-back.html" with progress_outcome=card.item %}
                         {% elif card.side == 'front' %}
-                            {% include "authentic_context_cards/progress-outcome-card-front.html" with progress_outcome=card.item %}
+                            {% include "learning_area_cards/progress-outcome-card-front.html" with progress_outcome=card.item %}
                         {% endif %}
                     {% endif %}
                 </div>
