@@ -16,13 +16,7 @@ from poet.fields import (
 )
 from poet import settings
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Submit
-
-RESUME_BUTTON = (
-    '{% if active_survey %}<a class="btn btn-secondary" href={% url "poet:form" %}>'
-    'Resume incompleted survey'
-    '</a>{% endif %}'
-)
+from crispy_forms.layout import Layout, Submit
 
 
 class POETSurveySelectorForm(forms.Form):
@@ -50,7 +44,6 @@ class POETSurveySelectorForm(forms.Form):
         self.helper.layout = Layout(
             'po_group',
             Submit('submit', 'Begin survey', css_class="btn-success"),
-            HTML(RESUME_BUTTON),
         )
 
 

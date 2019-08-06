@@ -6,6 +6,8 @@ from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.db.models.aggregates import Count
+from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from poet.forms import POETSurveySelectorForm, POETSurveyForm
 from poet.utils import select_resources_for_poet_form
@@ -95,3 +97,27 @@ def poet_form(request):
         context['form'] = form
     context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.exclude(learning_area__exact='')}
     return render(request, template, context)
+
+
+class StatisticsView(TemplateView):
+    """View for POET statistics page."""
+
+    template_name = 'poet/statistics.html'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event homepage view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        resources = Resource.objects.order_by('title')
+        for resource in resources:
+            submissions = Submission.objects.filter(resource=resource).count()
+            count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
+                'code').annotate(count=Count('submissions'))
+            percentage_data = dict()
+            for data in count_data:
+                percentage_data[data['code']] = (data['count'] / submissions)
+            resource.percentage_data = percentage_data
+        return context

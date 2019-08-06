@@ -1,0 +1,15 @@
+{% extends "poet/base.html" %}
+
+{% load static i18n %}
+
+{% block page_heading %}
+    <h1 class="text-center">POET Statistics</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        {% for resource in resources %}
+            {{ resource }}
+        {% endfor %}
+    </div>
+{% endblock content_container %}

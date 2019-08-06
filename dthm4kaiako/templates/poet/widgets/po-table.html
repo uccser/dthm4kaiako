@@ -1,8 +1,13 @@
 {% if incomplete_data %}
-    <div class="alert alert-warning text-center" role="alert">
-       <strong>Sorry!</strong> The minimum required submission threshold has not yet been reached to show data for this resource.
+    <div class="alert alert-info text-center" role="alert">
+       <strong>Thank you for your submission!</strong> We currently don't have enough data to show the distribution of results, check back at a later time to see if the results are available.
     </div>
 {% else %}
+    {% if percentage_statement %}
+        <p class="text-center percentage_statement">
+            <strong>{{ percentage_matching|floatformat }}% of people agree with your selection</strong>
+        </p>
+    {% endif %}
     <div id="po-table">
         <div id="po-label-1-10" class="po-label">Progress outcomes for years 1-10</div>
         <div class="po-label ncea">NCEA 1</div>
@@ -65,9 +70,4 @@
         {% include widget.optgroups.0.1.0.template_name with choice=widget.optgroups.0.1.0 %}
         {% include widget.optgroups.15.1.0.template_name with choice=widget.optgroups.15.1.0 %}
     </div>
-{% endif %}
-{% if percentage_statement %}
-    <p class="text-center percentage_statement">
-        <strong>{{ percentage_matching|floatformat }}% of people agree with your selection</strong>
-    </p>
 {% endif %}
