@@ -14,6 +14,7 @@ django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
 django-ckeditor==5.7.1  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
+django-recaptcha==2.0.4
 django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
 djangorestframework==3.9.4  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client

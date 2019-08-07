@@ -10,7 +10,11 @@ from django.contrib import messages
 from django.db.models.aggregates import Count
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from poet.forms import POETSurveySelectorForm, POETSurveyForm
+from poet.forms import (
+    POETSurveySelectorForm,
+    POETSurveyForm,
+    POETContactForm,
+)
 from poet.utils import select_resources_for_poet_form
 from poet.models import Submission, ProgressOutcome, Resource
 
@@ -122,3 +126,16 @@ class StatisticsView(TemplateView):
                 percentage_data[data['code']] = (data['count'] / submissions)
             resource.percentage_data = percentage_data
         return context
+
+
+class ContactView(FormView):
+    """View for website contact page."""
+
+    template_name = 'poet/contact.html'
+    form_class = POETContactForm
+
+    def form_valid(self, form):
+        """Send email if form is valid."""
+        form.send_email()
+        messages.success(self.request, 'Your email has been sent.')
+        return redirect(reverse('poet:home'))
