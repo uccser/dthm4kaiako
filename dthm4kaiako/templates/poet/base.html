@@ -32,6 +32,13 @@
                             Contact
                         </a>
                     </li>
+                    {% if perms.poet %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'poet:statistics' %}">
+                                Statistics
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

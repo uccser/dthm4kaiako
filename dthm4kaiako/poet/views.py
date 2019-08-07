@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models.aggregates import Count
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
@@ -106,28 +107,39 @@ def poet_form(request):
     return render(request, template, context)
 
 
-class StatisticsListView(ListView):
+class StatisticsListView(PermissionRequiredMixin, ListView):
     """View for POET statistics list page."""
 
     model = ProgressOutcome
     context_object_name = 'progress_outcomes'
     template_name = 'poet/statistics.html'
+    permission_required = 'poet.view_submission'
 
     def get_queryset(self):
         """Get queryset for page.
 
         Returns:
-            Progress outcomes with resources.
+        Progress outcomes with resources.
         """
         return ProgressOutcome.objects.all().prefetch_related('resources')
 
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event homepage view.
 
-class StatisticsDetailsView(DetailView):
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['total_submissions'] = Submission.objects.count()
+        return context
+
+class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
     """View for POET statistics details page."""
 
     model = Resource
     context_object_name = 'resource'
     template_name = 'poet/statistics_detail.html'
+    permission_required = 'poet.view_submission'
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the event homepage view.
@@ -142,7 +154,6 @@ class StatisticsDetailsView(DetailView):
             count=Count('submissions', filter=Q(submissions__resource=self.object)))}
         for progress_outcome_code, progress_outcome in progress_outcomes.items():
             progress_outcome.percentage = progress_outcome.count / total_submissions
-            print(progress_outcome.count, progress_outcome.percentage)
         context['total_submissions'] = total_submissions
         context['progress_outcomes'] = progress_outcomes
         context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
