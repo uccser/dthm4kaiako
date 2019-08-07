@@ -155,3 +155,11 @@ $radio-x-position: 1.3rem;
 .resource-content {
     user-select: none;
 }
+
+.tooltip-inner {
+    max-width: 400px !important;
+    text-align: left !important;
+}
+.tooltip.show {
+    opacity: 1;
+}

@@ -1,6 +1,6 @@
 {% extends "poet/base.html" %}
 
-{% load i18n %}
+{% load i18n static %}
 
 {% block page_heading %}
     <h1 class="text-center">POET Survey</h1>
@@ -36,3 +36,11 @@
         {% endfor %}
     </div>
 {% endblock content_container %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        var progress_outcomes = {{ progress_outcomes_json|safe }};
+    </script>
+    <script src="{% static 'js/poet.js' %}"></script>
+{% endblock scripts %}

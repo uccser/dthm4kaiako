@@ -1,6 +1,7 @@
 """Views for POET application."""
 
 from ipware import get_client_ip
+from json import dumps
 from django.forms import ValidationError
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
@@ -95,7 +96,7 @@ def poet_form(request):
         form = POETSurveyForm()
         form.add_fields_from_resources(resources)
         context['form'] = form
-    context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.exclude(learning_area__exact='')}
+    context['progress_outcomes_json'] = dumps(list(ProgressOutcome.objects.values()))
     return render(request, template, context)
 
 
