@@ -7,8 +7,9 @@ from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.db.models import Q
 from django.db.models.aggregates import Count
-from django.views.generic import TemplateView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from poet.forms import (
     POETSurveySelectorForm,
@@ -100,14 +101,33 @@ def poet_form(request):
         form = POETSurveyForm()
         form.add_fields_from_resources(resources)
         context['form'] = form
+    context['progress_outcomes'] = ProgressOutcome.objects.exclude(learning_area__exact='')
     context['progress_outcomes_json'] = dumps(list(ProgressOutcome.objects.values()))
     return render(request, template, context)
 
 
-class StatisticsView(TemplateView):
-    """View for POET statistics page."""
+class StatisticsListView(ListView):
+    """View for POET statistics list page."""
 
+    model = ProgressOutcome
+    context_object_name = 'progress_outcomes'
     template_name = 'poet/statistics.html'
+
+    def get_queryset(self):
+        """Get queryset for page.
+
+        Returns:
+            Progress outcomes with resources.
+        """
+        return ProgressOutcome.objects.all().prefetch_related('resources')
+
+
+class StatisticsDetailsView(DetailView):
+    """View for POET statistics details page."""
+
+    model = Resource
+    context_object_name = 'resource'
+    template_name = 'poet/statistics_detail.html'
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the event homepage view.
@@ -116,15 +136,16 @@ class StatisticsView(TemplateView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
-        resources = Resource.objects.order_by('title')
-        for resource in resources:
-            submissions = Submission.objects.filter(resource=resource).count()
-            count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
-                'code').annotate(count=Count('submissions'))
-            percentage_data = dict()
-            for data in count_data:
-                percentage_data[data['code']] = (data['count'] / submissions)
-            resource.percentage_data = percentage_data
+        context['statistics'] = True
+        total_submissions = Submission.objects.filter(resource=self.object).count()
+        progress_outcomes = {x.code: x for x in ProgressOutcome.objects.annotate(
+            count=Count('submissions', filter=Q(submissions__resource=self.object)))}
+        for progress_outcome_code, progress_outcome in progress_outcomes.items():
+            progress_outcome.percentage = progress_outcome.count / total_submissions
+            print(progress_outcome.count, progress_outcome.percentage)
+        context['total_submissions'] = total_submissions
+        context['progress_outcomes'] = progress_outcomes
+        context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
         return context
 
 

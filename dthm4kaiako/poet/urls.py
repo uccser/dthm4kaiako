@@ -7,6 +7,7 @@ app_name = 'poet'
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('form/', views.poet_form, name='form'),
-    path('statistics/', views.StatisticsView.as_view(), name='statistics'),
+    path('statistics/', views.StatisticsListView.as_view(), name='statistics'),
+    path('statistics/<int:pk>/', views.StatisticsDetailsView.as_view(), name='statistics_detail'),
     path('contact-us/', views.ContactView.as_view(), name='contact'),
 ]

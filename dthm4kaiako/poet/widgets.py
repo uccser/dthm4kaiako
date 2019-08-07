@@ -30,8 +30,8 @@ class ResourcePreviewWithPK(NumberInput):
 class ProgressOutcomeTableRadioSelect(RadioSelect):
     """Widget for progress outcome table picker."""
 
-    template_name = 'poet/widgets/po-table.html'
-    option_template_name = 'poet/widgets/po-radio-select.html'
+    template_name = 'poet/widgets/progress-outcome.html'
+    option_template_name = 'poet/widgets/progress-outcome-radio-select.html'
 
     def get_context(self, name, value, attrs):
         """Extra context for widget."""

@@ -221,5 +221,5 @@ class Command(management.base.BaseCommand):
         print('POET resources created.')
         POETFormProgressOutcomeGroupFactory.create_batch(size=6)
         print('POET progress outcome groups created.')
-        POETFormSubmissionFactory.create_batch(size=400)
+        POETFormSubmissionFactory.create_batch(size=700)
         print('POET submissions created.')

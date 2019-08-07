@@ -1,6 +1,7 @@
 """Models for POET application."""
 
 from django.db import models
+from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -76,6 +77,13 @@ class Resource(models.Model):
         """
         return self.title
 
+    def get_statistics_url(self):
+        """Return statistics URL of POET resource.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('poet:statistics_detail', kwargs={'pk': self.pk})
 
 class Submission(models.Model):
     """Model for a resource in a form submission."""
