@@ -43,9 +43,11 @@ def write_file(filename, updated_content):
 
 def main():
     filename = get_filename()
+    print("File to read: {}".format(filename))
     file_content = read_file(filename)
     updated_content = replace_placeholders(file_content)
     write_file(filename, updated_content)
+    print("Updated file written.)
 
 
 main()
