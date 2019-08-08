@@ -5,13 +5,46 @@
 {% block title %}POET - dthm4kaiako.ac.nz{% endblock title %}
 
 {% block navbar %}
-<nav id="poet-navbar" class="navbar navbar-light">
-    <a class="navbar-brand text-muted" href="{% url 'poet:home' %}">
-        <strong>POET</strong>
-    </a>
-</nav>
+    <nav id="poet-navbar" class="navbar navbar-light navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand text-muted pl-0" href="{% url 'poet:home' %}">
+                <strong>POET</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPOETContent"
+                aria-controls="navbarPOETContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarPOETContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'poet:home' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'poet:about' %}">
+                            About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'poet:contact' %}">
+                            Contact
+                        </a>
+                    </li>
+                    {% if perms.poet %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'poet:statistics' %}">
+                                Statistics
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 {% endblock navbar %}
 
 {% block css %}
-<link href="{% static 'css/poet.css' %}" rel="stylesheet">
+    <link href="{% static 'css/poet.css' %}" rel="stylesheet">
 {% endblock css %}

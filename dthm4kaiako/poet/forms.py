@@ -1,7 +1,8 @@
 """Forms for POET application."""
 
 from django import forms
-
+from django.conf import settings
+from django.core.mail import send_mail, mail_managers
 from django.db.models import Q, Count
 from poet.models import (
     Resource,
@@ -14,15 +15,10 @@ from poet.fields import (
     POChoiceField,
     FeedbackField,
 )
-from poet import settings
+from poet import settings as poet_settings
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Submit
-
-RESUME_BUTTON = (
-    '{% if active_survey %}<a class="btn btn-secondary" href={% url "poet:form" %}>'
-    'Resume incompleted survey'
-    '</a>{% endif %}'
-)
+from crispy_forms.layout import Layout, Submit
+from captcha.fields import ReCaptchaField
 
 
 class POETSurveySelectorForm(forms.Form):
@@ -37,7 +33,7 @@ class POETSurveySelectorForm(forms.Form):
                 distinct=True,
                 filter=Q(progress_outcomes__resources__active=True)
             )
-        ).filter(resource_count__gte=settings.NUM_RESOURCES_PER_FORM),
+        ).filter(resource_count__gte=poet_settings.NUM_RESOURCES_PER_FORM),
         empty_label=None,
         label='Select year levels:',
     )
@@ -50,7 +46,6 @@ class POETSurveySelectorForm(forms.Form):
         self.helper.layout = Layout(
             'po_group',
             Submit('submit', 'Begin survey', css_class="btn-success"),
-            HTML(RESUME_BUTTON),
         )
 
 
@@ -135,7 +130,7 @@ class POETSurveyForm(forms.Form):
             if field_id.startswith('choice'):
                 resource = field.resource
                 total_submissions = Submission.objects.filter(resource=resource).count()
-                if total_submissions < settings.MINIMUM_SUBMISSIONS_PER_RESOURCE:
+                if total_submissions < poet_settings.MINIMUM_SUBMISSIONS_PER_RESOURCE:
                     field.widget.incomplete_data = True
                 else:
                     count_data = ProgressOutcome.objects.filter(submissions__resource=resource).values(
@@ -148,3 +143,40 @@ class POETSurveyForm(forms.Form):
                 field.label = ''
             if field_id.startswith('feedback'):
                 field.widget = forms.HiddenInput()
+
+
+class POETContactForm(forms.Form):
+    """Form for contacting POET team."""
+
+    name = forms.CharField(required=True, label='Your name', max_length=100)
+    from_email = forms.EmailField(required=True, label='Email to contact you')
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
+    cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
+    captcha = ReCaptchaField()
+
+    def send_email(self):
+        """Send email if form is valid."""
+        name = self.cleaned_data['name']
+        subject = self.cleaned_data['subject']
+        from_email = self.cleaned_data['from_email']
+        message = self.cleaned_data['message']
+        mail_managers(
+            poet_settings.CONTACT_SUBJECT_TEMPLATE.format(subject),
+            poet_settings.CONTACT_MESSAGE_TEMPLATE.format(message, name, from_email),
+        )
+        if self.cleaned_data.get('cc_sender'):
+            send_mail(
+                poet_settings.CONTACT_SUBJECT_TEMPLATE.format(subject),
+                poet_settings.CONTACT_MESSAGE_TEMPLATE.format(message, name, from_email),
+                settings.DEFAULT_FROM_EMAIL,
+                [from_email],
+                fail_silently=False,
+            )
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Send email'))

@@ -8,10 +8,17 @@
 
 {% block content_container %}
     <div id="poet-results" class="col-12">
+        <p>
+            <strong>Thank you for your submission!</strong>
+            You're helping us to get a better picture of understanding the current relationship between progress outcomes and resources.
+            Below is the three resources with your selections, with crowdsourced results if enough data is available.
+        </p>
+
         {{ form }}
 
         <div class="text-center my-5">
-            <a href="{% url 'poet:home' %}" class="btn btn-primary">Return to POET homepage</a>
+            <a href="{% url 'poet:home' %}" class="btn btn-primary mb-3">Return to POET homepage</a>
+            <p>If you have questions or comments, feel free to <a href="{% url 'poet:contact' %}">contact us</a>.</p>
         </div>
     </div>
 {% endblock content_container %}

@@ -33,7 +33,6 @@ class HomeView(generic.TemplateView):
 
         raw_map_locations = {}
         for event in future_events:
-            print(event.pk, event.locations.all())
             for location in event.locations.all():
                 key = location.pk
                 if location.pk not in raw_map_locations:
