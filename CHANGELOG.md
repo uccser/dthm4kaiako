@@ -1,5 +1,31 @@
 # Changelog
 
+- Progress Outcome Evaluation Tool (POET) updates:
+    - Add about page.
+    - Add contact us page.
+    - Improve feedback messages to user.
+    - Add tooltips for progress outcome choices.
+    - Increase threshold for showing statistics.
+    - Add statistic pages for staff.
+    - Remove resume feature as it was confusing to users.
+- Dependencies changes:
+    - Update coverage from 4.5.3 to 4.5.4.
+    - Update django-anymail from 6.0.1 to 6.1.0.
+    - Update django-debug-toolbar from 1.11 to 2.0.
+    - Update django-extensions from 2.1.9 to 2.2.1.
+    - Update django-filter from 2.1.0 to 2.2.0.
+    - Update djangorestframework from 3.9.4 to 3.10.2.
+    - Update flake8 from 3.7.7 to 3.7.8.
+    - Update google-api-python-client from 1.7.9 to 1.7.10.
+    - Update mypy from 0.711 to 0.720.
+    - Update pillow from 6.0.0 to 6.1.0.
+    - Update pydocstyle from 3.0.0 to 4.0.0.
+    - Update pytest-django from 3.5.0 to 3.5.1.
+    - Update python-slugify from 3.0.2 to 3.0.3.
+    - Update pytz from 2019.1 to 2019.2.
+- Require reCAPTCHA for all contact forms on website.
+- Remove cron job tasks.
+
 ## 0.16.0
 
 - Add Progress Outcome Evaluation Tool (POET) application.
