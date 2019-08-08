@@ -85,6 +85,7 @@ class Resource(models.Model):
         """
         return reverse('poet:statistics_detail', kwargs={'pk': self.pk})
 
+
 class Submission(models.Model):
     """Model for a resource in a form submission."""
 

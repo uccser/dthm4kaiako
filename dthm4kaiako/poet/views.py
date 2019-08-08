@@ -137,6 +137,7 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
         context['total_submissions'] = Submission.objects.count()
         return context
 
+
 class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
     """View for POET statistics details page."""
 
