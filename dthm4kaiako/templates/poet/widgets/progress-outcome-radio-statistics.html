@@ -1,0 +1,9 @@
+{% load poet_templatetags %}
+
+<div class="custom-control custom-radio">
+    <input type="radio" id="{{ progress_outcome.id }}" value="{{ progress_outcome.code }}" class="custom-control-input" disabled>
+    <label class="custom-control-label" for="{{ progress_outcome.id }}">
+        {{ progress_outcome.short_label }}
+        {% render_heat_element %}
+    </label>
+</div>

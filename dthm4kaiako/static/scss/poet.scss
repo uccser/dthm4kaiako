@@ -35,6 +35,10 @@ label {
 .percentage_statement {
     font-size: 1.2rem;
 }
+.asteriskField {
+    color: red;
+    padding-left: 2px;
+}
 #div_id_po_group .asteriskField {
     display: none;
 }
@@ -154,4 +158,12 @@ $radio-x-position: 1.3rem;
 
 .resource-content {
     user-select: none;
+}
+
+.tooltip-inner {
+    max-width: 400px !important;
+    text-align: left !important;
+}
+.tooltip.show {
+    opacity: 1;
 }

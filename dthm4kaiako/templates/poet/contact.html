@@ -1,0 +1,13 @@
+{% extends "poet/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block page_heading %}
+    <h1>Contact Us</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    <p>Have a question, comment, or other feedback about POET? Please contact us below.</p>
+
+    {% crispy form %}
+{% endblock content %}

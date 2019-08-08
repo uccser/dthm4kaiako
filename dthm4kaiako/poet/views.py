@@ -1,13 +1,26 @@
 """Views for POET application."""
 
 from ipware import get_client_ip
+from json import dumps
 from django.forms import ValidationError
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.db.models import Q
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models.aggregates import Count
+from django.views.generic import (
+    ListView,
+    DetailView,
+    TemplateView,
+)
 from django.views.generic.edit import FormView
-from poet.forms import POETSurveySelectorForm, POETSurveyForm
+from poet.forms import (
+    POETSurveySelectorForm,
+    POETSurveyForm,
+    POETContactForm,
+)
 from poet.utils import select_resources_for_poet_form
 from poet.models import Submission, ProgressOutcome, Resource
 
@@ -93,5 +106,79 @@ def poet_form(request):
         form = POETSurveyForm()
         form.add_fields_from_resources(resources)
         context['form'] = form
-    context['progress_outcomes'] = {x.pk: x for x in ProgressOutcome.objects.exclude(learning_area__exact='')}
+    context['progress_outcomes'] = ProgressOutcome.objects.exclude(learning_area__exact='')
+    context['progress_outcomes_json'] = dumps(list(ProgressOutcome.objects.values()))
     return render(request, template, context)
+
+
+class StatisticsListView(PermissionRequiredMixin, ListView):
+    """View for POET statistics list page."""
+
+    model = ProgressOutcome
+    context_object_name = 'progress_outcomes'
+    template_name = 'poet/statistics.html'
+    permission_required = 'poet.view_submission'
+
+    def get_queryset(self):
+        """Get queryset for page.
+
+        Returns:
+        Progress outcomes with resources.
+        """
+        return ProgressOutcome.objects.all().prefetch_related('resources')
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event homepage view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['total_submissions'] = Submission.objects.count()
+        return context
+
+
+class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
+    """View for POET statistics details page."""
+
+    model = Resource
+    context_object_name = 'resource'
+    template_name = 'poet/statistics_detail.html'
+    permission_required = 'poet.view_submission'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event homepage view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['statistics'] = True
+        total_submissions = Submission.objects.filter(resource=self.object).count()
+        progress_outcomes = {x.code: x for x in ProgressOutcome.objects.annotate(
+            count=Count('submissions', filter=Q(submissions__resource=self.object)))}
+        for progress_outcome_code, progress_outcome in progress_outcomes.items():
+            progress_outcome.percentage = progress_outcome.count / total_submissions
+        context['total_submissions'] = total_submissions
+        context['progress_outcomes'] = progress_outcomes
+        context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
+        return context
+
+
+class AboutView(TemplateView):
+    """View for website about page."""
+
+    template_name = 'poet/about.html'
+
+
+class ContactView(FormView):
+    """View for website contact page."""
+
+    template_name = 'poet/contact.html'
+    form_class = POETContactForm
+
+    def form_valid(self, form):
+        """Send email if form is valid."""
+        form.send_email()
+        messages.success(self.request, 'Your email has been sent.')
+        return redirect(reverse('poet:home'))

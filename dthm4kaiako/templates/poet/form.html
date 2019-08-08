@@ -1,6 +1,6 @@
 {% extends "poet/base.html" %}
 
-{% load i18n %}
+{% load i18n static %}
 
 {% block page_heading %}
     <h1 class="text-center">POET Survey</h1>
@@ -16,7 +16,7 @@
             A list of all Progress Outcomes definitions are found at the <a href="#po-definintions">bottom of this page</a>.
         </p>
 
-        <form method="post" class="mb-3" novalidate>
+        <form method="post" class="mb-3">
             {% csrf_token %}
             {{ form }}
             <div class="text-center">
@@ -25,7 +25,7 @@
         </form>
 
         <h3 id="po-definintions">Progress Outcome Reference</h3>
-        {% for progress_outcome_id, progress_outcome in progress_outcomes.items %}
+        {% for progress_outcome in progress_outcomes %}
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">{{ progress_outcome.label }}</h5>
@@ -36,3 +36,11 @@
         {% endfor %}
     </div>
 {% endblock content_container %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        var progress_outcomes = {{ progress_outcomes_json|safe }};
+    </script>
+    <script src="{% static 'js/poet.js' %}"></script>
+{% endblock scripts %}

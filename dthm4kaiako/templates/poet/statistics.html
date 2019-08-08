@@ -1,0 +1,30 @@
+{% extends "poet/base.html" %}
+
+{% load static i18n %}
+
+{% block page_heading %}
+    <h1>POET Statistics</h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        <p><strong>Total submissions:</strong> {{ total_submissions }}</p>
+
+        {% for progress_outcome in progress_outcomes %}
+            <h2 class="border-bottom">{{ progress_outcome }}</h2>
+            {% if progress_outcome.resources.all %}
+                <ul>
+                    {% for resource in progress_outcome.resources.all %}
+                        <li>
+                            <a href="{{ resource.get_statistics_url }}">
+                                {{ resource.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No resources for this progress outcome.</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content_container %}

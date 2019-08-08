@@ -1,0 +1,13 @@
+{% if incomplete_data %}
+    <div class="alert alert-info" role="alert">
+       <strong>Thank you for your submission!</strong> We currently don't have enough data to show the distribution of results.
+       Please check back at a later time to see if results are available.
+    </div>
+{% else %}
+    {% if percentage_matching %}
+        <p class="text-center percentage_statement">
+            <strong>{{ percentage_matching|floatformat }}% of people agree with your selection</strong>
+        </p>
+    {% endif %}
+    {% include "poet/widgets/progress-outcome-table.html" %}
+{% endif %}

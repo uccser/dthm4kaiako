@@ -1,5 +1,5 @@
 code,label,short_label,learning_area_code,learning_area,technological_area_code,technological_area,progress_outcome_number,content
-NONE,"None apply","None apply",,,,,0,"No progress outcomes is most applicable to this resource."
+NONE,"None apply","None apply",,,,,0,"No progress outcome is applicable to this resource."
 UNKNOWN,"Unsure","Unsure",,,,,0,"I am unsure or don't know what progress outcome is most applicable to this resource."
 PO-CT-1,"CT PO1","PO1",TEC,Technology,CT,Computational Thinking for Digital Technologies,1,"In authentic contexts and taking account of end-users, students use their decomposition skills to break down simple non-computerised tasks into precise, unambiguous, step-by-step instructions (algorithmic thinking). They give these instructions, identify any errors in them as they are followed, and correct them (simple debugging)."
 PO-CT-2,"CT PO2","PO2",TEC,Technology,CT,Computational Thinking for Digital Technologies,2,"In authentic contexts and taking account of end-users, students give, follow and debug simple algorithms in computerised and non-computerised contexts. They use these algorithms to create simple programs involving outputs and sequencing (putting instructions one after the other) in age-appropriate programming environments."

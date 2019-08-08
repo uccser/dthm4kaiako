@@ -41,7 +41,7 @@ class POChoiceField(forms.ModelChoiceField):
             initial=kwargs.get('initial'),
             empty_label=None,
             widget=ProgressOutcomeTableRadioSelect(),
-            label='Which progress outcome applies best to this resource:'
+            label='Choose ONE progress outcome or option that applies BEST to this resource:'
         )
         # Used for summary calculations
         self.resource = resource

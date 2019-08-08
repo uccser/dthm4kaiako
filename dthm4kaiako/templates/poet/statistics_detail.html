@@ -1,0 +1,25 @@
+{% extends "poet/base.html" %}
+
+{% load static i18n %}
+
+{% block page_heading %}
+    <h1>
+        <small class="text-muted">POET Statistics</small><br>
+        {{ resource.title }}
+    </h1>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12">
+        <p><strong>Target progress outcome:</strong> {{ resource.target_progress_outcome.label }}</p>
+
+        <div class="resource-content my-3 p-3 border rounded">
+            <h4>{{ resource.title }}</h4>
+            {{ resource.content|safe }}
+        </div>
+
+        <p><strong>Total submissions for resource:</strong> {{ total_submissions }}</p>
+
+        {% include "poet/widgets/progress-outcome-table.html" %}
+    </div>
+{% endblock content_container %}
