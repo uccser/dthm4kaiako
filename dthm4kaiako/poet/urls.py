@@ -9,5 +9,6 @@ urlpatterns = [
     path('form/', views.poet_form, name='form'),
     path('statistics/', views.StatisticsListView.as_view(), name='statistics'),
     path('statistics/<int:pk>/', views.StatisticsDetailsView.as_view(), name='statistics_detail'),
+    path('about/', views.AboutView.as_view(), name='about'),
     path('contact-us/', views.ContactView.as_view(), name='contact'),
 ]

@@ -27,10 +27,10 @@ def render_heat_element(context, **kwargs):
     );
     width: {width:.2f}px;
     """
-    if 'form' in context:
-        percentage = context['percentage_data'].get(context['choice']['value'], 0)
-    else:
+    if 'progress_outcome' in context:
         percentage = context['progress_outcome'].percentage
+    else:
+        percentage = context['percentage_data'].get(context['choice']['value'], 0)
     opacity = 0.2 + (0.8 * percentage)
     width = int(DYNAMIC_HEAT_ELEMENT_WIDTH * percentage)
     element_context = {

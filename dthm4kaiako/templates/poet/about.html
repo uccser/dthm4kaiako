@@ -1,0 +1,36 @@
+{% extends "poet/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block page_heading %}
+    <h1>About</h1>
+{% endblock page_heading %}
+
+{% block content %}
+
+    <p>
+        POET is an initiative to be able to understand and develop understanding about DTHM resources and where they fit with the technological areas progress outcome statements.
+        There is a lot of resources coming out at the moment, some great, some not so great.
+        We want you to be able to look at a resource picked from a selection (based on the year levels you selected), and tell us where you think this resource best fits to the progress outcomes, or not at all.
+    </p>
+
+    <p>
+        Based upon the submissions, POET will give us a better idea where resources will fit within the Digital Technologies curriculum content, and any gaps in knowledge or resources that need to be filled.
+        We aim to publish our findings through POET once enough data is collected.
+        POET also provides a way for teachers to be able to understand or develop an understanding of where the resources fit.
+    </p>
+
+    <p>
+        As this is just the beginning, we don't have the answers yet, you are helping us to get to these answers.
+    </p>
+
+    <h4>Why crowdsoucing?</h4>
+    <p>
+        There is not always an clear and easy answer to these questions, so we want to be able to crowdsource where teachers put these resources.
+        Crowdsoucing is not new, it has been done in different forms for years, from <a href="https://millionaire.fandom.com/wiki/Ask_the_Audience">Ask the Audience in Who Wants To Be A Millionaire</a>, through to <a href="https://www.theatlantic.com/technology/archive/2010/07/the-wikileaks-crowdsourcing-begins/60402/">analysing and interpreting multiple documents as part of WikiLeaks</a>.
+        Crowdsourcing is a call to the masses via the internet; an invitation to people to come up with ideas and solutions on anything from a new company logo, to how to improve education in the developing world.
+        Read more about crowdsoucing on <a href="https://en.wikipedia.org/wiki/Crowdsourcing"></a>Wikipedia</a> and <a href="http://www.stuff.co.nz/technology/5174313/Crowdsourcing-Tapping-a-world-of-ideas">Stuff</a>.
+    </p>
+
+    <p>If you have questions or comments, feel free to <a href="{% url 'poet:contact' %}">contact us</a>.</p>
+{% endblock content %}

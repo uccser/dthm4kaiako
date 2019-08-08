@@ -10,7 +10,11 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models.aggregates import Count
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    TemplateView,
+)
 from django.views.generic.edit import FormView
 from poet.forms import (
     POETSurveySelectorForm,
@@ -158,6 +162,12 @@ class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
         context['progress_outcomes'] = progress_outcomes
         context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
         return context
+
+
+class AboutView(TemplateView):
+    """View for website about page."""
+
+    template_name = 'poet/about.html'
 
 
 class ContactView(FormView):
