@@ -42,12 +42,14 @@ def write_file(filename, updated_content):
 
 
 def main():
+    print("=" * 80)
     filename = get_filename()
-    print("File to read: {}".format(filename))
+    print("File to read: {}.".format(filename))
     file_content = read_file(filename)
     updated_content = replace_placeholders(file_content)
     write_file(filename, updated_content)
-    print("Updated file written.)
+    print("Updated file written.")
+    print("=" * 80)
 
 
 main()
