@@ -8,6 +8,13 @@ from poet.models import (
 )
 
 
+class ProgressOutcomeGroupAdmin(admin.ModelAdmin):
+    """Admin view for progress outcome group objects."""
+
+    model = ProgressOutcomeGroup
+    list_display = ('name', 'active')
+
+
 class ResourceAdmin(admin.ModelAdmin):
     """Admin view for resource objects."""
 
@@ -22,6 +29,6 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'resource', 'progress_outcome', 'datetime')
 
 
-admin.site.register(ProgressOutcomeGroup)
+admin.site.register(ProgressOutcomeGroup, ProgressOutcomeGroupAdmin)
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Submission, SubmissionAdmin)
