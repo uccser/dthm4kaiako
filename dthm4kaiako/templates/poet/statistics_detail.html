@@ -1,6 +1,6 @@
 {% extends "poet/base.html" %}
 
-{% load static i18n %}
+{% load static i18n render_html_field %}
 
 {% block page_heading %}
     <h1>
@@ -15,7 +15,7 @@
 
         <div class="resource-content my-3 p-3 border rounded">
             <h4>{{ resource.title }}</h4>
-            {{ resource.content|safe }}
+            {% render_html_field resource.content %}
         </div>
 
         <p><strong>Total submissions for resource:</strong> {{ total_submissions }}</p>

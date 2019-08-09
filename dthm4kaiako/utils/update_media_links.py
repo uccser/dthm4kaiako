@@ -3,7 +3,7 @@
 import re
 from django.conf import settings
 
-SRC_REGEX = re.compile("src=\"(?P<url>.+?)\"")
+SRC_REGEX = re.compile(r"src=\"(?P<url>.+?)\?(?P<url_tokens>.+?)\"")
 
 
 def update_media_links_in_rich_text(html_string):
@@ -29,8 +29,8 @@ def replace_url(match):
         Return string to replace match with.
     """
     url = match.group('url')
-    url_prefix = settings.get('GS_BUCKET_NAME')
-    if url_prefix and url.startswith(url_prefix):
-        return '{% static "{}" %}'.format(url[len(url_prefix):])
+    if hasattr(settings, 'GS_BUCKET_NAME'):
+        url_prefix = settings.GS_BUCKET_NAME
+        return 'src="{' + "% static '{}' %".format(url[len(url_prefix):]) + '}"'
     else:
         return match.group(0)
