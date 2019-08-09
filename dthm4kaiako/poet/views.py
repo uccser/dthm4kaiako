@@ -22,7 +22,11 @@ from poet.forms import (
     POETContactForm,
 )
 from poet.utils import select_resources_for_poet_form
-from poet.models import Submission, ProgressOutcome, Resource
+from poet.models import (
+    Submission,
+    ProgressOutcome,
+    Resource,
+)
 
 
 class HomeView(FormView):
@@ -165,6 +169,7 @@ class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
         context['total_submissions'] = total_submissions
         context['progress_outcomes'] = progress_outcomes
         context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
+        context['feedback_submissions'] = self.object.submissions.exclude(feedback__exact='')
         return context
 
 

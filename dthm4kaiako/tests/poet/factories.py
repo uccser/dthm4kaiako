@@ -71,6 +71,7 @@ class POETFormSubmissionFactory(DjangoModelFactory):
         lambda: random.choice(Resource.objects.all())
     )
     progress_outcome = LazyFunction(get_progress_outcome)
+    feedback = Faker('sentence')
 
     class Meta:
         """Metadata for class."""
