@@ -21,5 +21,14 @@
         <p><strong>Total submissions for resource:</strong> {{ total_submissions }}</p>
 
         {% include "poet/widgets/progress-outcome-table.html" %}
+
+        <h3>Feedback</h3>
+        {% if feedback_submissions %}
+            {% for submission in feedback_submissions %}
+                <p>{{ submission.feedback }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No feedback available.</p>
+        {% endif %}
     </div>
 {% endblock content_container %}

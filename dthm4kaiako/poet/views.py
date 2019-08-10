@@ -22,7 +22,11 @@ from poet.forms import (
     POETContactForm,
 )
 from poet.utils import select_resources_for_poet_form
-from poet.models import Submission, ProgressOutcome, Resource
+from poet.models import (
+    Submission,
+    ProgressOutcome,
+    Resource,
+)
 
 
 class HomeView(FormView):
@@ -158,10 +162,14 @@ class StatisticsDetailsView(PermissionRequiredMixin, DetailView):
         progress_outcomes = {x.code: x for x in ProgressOutcome.objects.annotate(
             count=Count('submissions', filter=Q(submissions__resource=self.object)))}
         for progress_outcome_code, progress_outcome in progress_outcomes.items():
-            progress_outcome.percentage = progress_outcome.count / total_submissions
+            if total_submissions:
+                progress_outcome.percentage = progress_outcome.count / total_submissions
+            else:
+                progress_outcome.percentage = 0
         context['total_submissions'] = total_submissions
         context['progress_outcomes'] = progress_outcomes
         context['progress_outcome_widget'] = 'poet/widgets/progress-outcome-radio-statistics.html'
+        context['feedback_submissions'] = self.object.submissions.exclude(feedback__exact='')
         return context
 
 
