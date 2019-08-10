@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ['*']
 
 # URL Configuration
 # ------------------------------------------------------------------------------
-DEPLOYMENT_TYPE = env("DEPLOYMENT", default=None)
+
 if DEPLOYMENT_TYPE == "prod":  # noqa: F405
     PREPEND_WWW = True
 else:
@@ -74,6 +74,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
 GS_FILE_OVERWRITE = False
+GS_DEFAULT_ACL = 'publicRead'
 
 STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME') + '/static/'  # noqa: F405,E501
 
