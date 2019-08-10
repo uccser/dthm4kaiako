@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.16.2
+
+- Progress Outcome Evaluation Tool (POET) updates:
+    - Feedback is now listed on admin statistics page.
+    - Fix bug where resource statistics page couldn't be loaded if no submissions existed for it.
+    - Add indicator for active progress outcome groups in admin interface.
+- Connected Django improved logging to GCP Stackdriver.
+- Fix bug where know reCAPTCHA keys were used.
+- Dependencies changes:
+    - Add google-cloud-logging 1.12.1.
+
 ## 0.16.1
 
 - Progress Outcome Evaluation Tool (POET) updates:
