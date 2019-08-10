@@ -162,24 +162,24 @@ LOGGING = {
             'formatter': 'verbose',
             'stream': sys.stdout,
         },
-	    'stackdriver_logging': {
-	        'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
-	        'client': log_client
-	    },
-	    'stackdriver_error_reporting': {
-	        'level': 'ERROR',
-	        'class': 'gcp_utils.stackdriver_logging.StackdriverErrorHandler',
-	    }
+        'stackdriver_logging': {
+            'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
+            'client': log_client
+        },
+        'stackdriver_error_reporting': {
+            'level': 'ERROR',
+            'class': 'gcp_utils.stackdriver_logging.StackdriverErrorHandler',
+        }
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'stackdriver_logging'],
-   	        'level': 'DEBUG',
-   	        'propagate': True,
+            'level': 'DEBUG',
+            'propagate': True,
         },
         'django.request': {
             'handlers': ['stackdriver_logging', 'mail_admins'],
-   	        'level': 'ERROR',
+            'level': 'ERROR',
             'propagate': True
         },
         'django.security.DisallowedHost': {
