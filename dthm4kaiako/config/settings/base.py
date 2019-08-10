@@ -427,7 +427,7 @@ LEARNING_AREA_CARDS_PRINT_TYPES = (LEARNING_AREA_CARDS_SINGLE_PRINT, LEARNING_AR
 
 # Other
 # ------------------------------------------------------------------------------
-DEPLOYMENT_TYPE = 'local'
+DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 
