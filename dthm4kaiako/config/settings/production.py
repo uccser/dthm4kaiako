@@ -166,10 +166,6 @@ LOGGING = {
             'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
             'client': log_client
         },
-        'stackdriver_error_reporting': {
-            'level': 'ERROR',
-            'class': 'gcp_utils.stackdriver_logging.StackdriverErrorHandler',
-        }
     },
     'loggers': {
         'django': {
