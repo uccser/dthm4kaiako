@@ -42,7 +42,7 @@ DATABASES = {
     }
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
+DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=0)  # noqa F405
 
 # SECURITY
 # ------------------------------------------------------------------------------
@@ -171,7 +171,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console', 'stackdriver_logging'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
