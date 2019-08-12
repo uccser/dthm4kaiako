@@ -24,18 +24,24 @@ jobs:
         - provider: script
           script: bash ./infrastructure/dev-deploy/deploy-app.sh
           skip_cleanup: true
+          on:
+            branch: cron-jobs
     - script: skip
       name: "Update Google Cloud SQL database"
       deploy:
         - provider: script
           script: bash ./infrastructure/dev-deploy/update-content.sh
           skip_cleanup: true
+          on:
+            branch: cron-jobs
     - script: skip
       name: "Copy static files to Google Storage Bucket"
       deploy:
         - provider: script
           script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
           skip_cleanup: true
+          on:
+            branch: cron-jobs
     - stage: production deployment
       script: skip
       name: "Deploy production website to Google App Engine"
