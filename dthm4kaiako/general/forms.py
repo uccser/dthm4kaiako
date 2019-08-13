@@ -7,8 +7,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from captcha.fields import ReCaptchaField
 
-SUBJECT_TEMPLATE = "[dthm4kaiako] - {}"
-MESSAGE_TEMPLATE = "{}\n\n-----\nMessage sent from {}\n{}"
+MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
 
 class ContactForm(forms.Form):
@@ -26,15 +25,15 @@ class ContactForm(forms.Form):
         name = self.cleaned_data['name']
         subject = self.cleaned_data['subject']
         from_email = self.cleaned_data['from_email']
-        message = self.cleaned_data['message']
+        message = MESSAGE_TEMPLATE.format(message=self.cleaned_data['message'], user=name, from_email=from_email),
         mail_managers(
-            SUBJECT_TEMPLATE.format(subject),
-            MESSAGE_TEMPLATE.format(message, name, from_email, from_email),
+            subject,
+            message
         )
         if self.cleaned_data.get('cc_sender'):
             send_mail(
-                SUBJECT_TEMPLATE.format(subject),
-                MESSAGE_TEMPLATE.format(message, name),
+                subject,
+                message,
                 settings.DEFAULT_FROM_EMAIL,
                 [from_email],
                 fail_silently=False,
