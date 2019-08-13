@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.3
+
+- Raise level of logging messages to Google Stackdriver to prevent excess logging.
+- Set lifetime of database connections to zero.
+- Tidy logic for sending 'Contact Us' emails.
+
 ## 0.16.2
 
 - Progress Outcome Evaluation Tool (POET) updates:
