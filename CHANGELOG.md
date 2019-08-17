@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.4
+
+- Improve statistics page for POET admin.
+- Dependencies changes:
+    - Update google-api-python-client from 1.7.10 to 1.7.11.
+    - Update pydocstyle from 4.0.0 to 4.0.1.
+    - Update pytest from 4.6.3 to 5.1.0.
+
 ## 0.16.3
 
 - Raise level of logging messages to Google Stackdriver to prevent excess logging.
