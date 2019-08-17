@@ -7,9 +7,8 @@ from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.db.models.aggregates import Count
 from django.views.generic import (
     ListView,
     DetailView,
@@ -119,7 +118,7 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
     """View for POET statistics list page."""
 
     model = ProgressOutcome
-    context_object_name = 'progress_outcomes'
+    context_object_name = 'resources'
     template_name = 'poet/statistics.html'
     permission_required = 'poet.view_submission'
 
@@ -129,7 +128,13 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
         Returns:
         Progress outcomes with resources.
         """
-        return ProgressOutcome.objects.all().prefetch_related('resources')
+        return Resource.objects.all().order_by(
+            'target_progress_outcome',
+            'title',
+        ).annotate(submission_count=Count('submissions')).prefetch_related(
+            'submissions',
+            'target_progress_outcome',
+        )
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the event homepage view.
@@ -138,6 +143,19 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
+        for resource in self.object_list:
+            if resource.submission_count > 0:
+                # Add most selected PO
+                # TODO: Perform as one query, possibly when requesting queryset
+                resource.crowdsourced_po = ProgressOutcome.objects.filter(
+                    submissions__resource=resource
+                ).annotate(
+                    submission_count=Count('submissions')
+                ).order_by('-submission_count').first()
+                percentage = (resource.crowdsourced_po.submission_count / resource.submission_count) * 100
+                resource.crowdsourced_po_percentage = percentage
+                if resource.target_progress_outcome != resource.crowdsourced_po:
+                    resource.po_different = True
         context['total_submissions'] = Submission.objects.count()
         return context
 

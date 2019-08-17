@@ -10,21 +10,52 @@
     <div class="col-12">
         <p><strong>Total submissions:</strong> {{ total_submissions }}</p>
 
-        {% for progress_outcome in progress_outcomes %}
-            <h2 class="border-bottom">{{ progress_outcome }}</h2>
-            {% if progress_outcome.resources.all %}
-                <ul>
-                    {% for resource in progress_outcome.resources.all %}
-                        <li>
-                            <a href="{{ resource.get_statistics_url }}">
-                                {{ resource.title }}
-                            </a>
-                        </li>
+        <div id="statistics-table" class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Active</th>
+                        <th scope="col">Resource</th>
+                        <th scope="col">Target Progress Outcome</th>
+                        <th scope="col">Crowdsourced Progress Outcome</th>
+                        <th scope="col">Submission Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resource in resources %}
+                        <tr>
+                            <td class="text-center">
+                                {% if resource.active %}
+                                    <img src="{% static 'img/icons/icons8-ok-48.png' %}" class="img-inline">
+                                {% else %}
+                                    <img src="{% static 'img/icons/icons8-cancel-48.png' %}" class="img-inline">
+                                {% endif %}
+                            </td>
+                            <th scope="row">
+                                <a href="{{ resource.get_statistics_url }}">
+                                    {{ resource.title }}
+                                </a>
+                            </th>
+                            <td>
+                                {{ resource.target_progress_outcome }}
+                            </td>
+                            <td>
+                                {% if resource.submission_count > 0 %}
+                                    <span class="{% if resource.po_different %}text-danger{% else %}text-success{% endif %}">
+                                        {{ resource.crowdsourced_po }}
+                                    </span>
+                                    ({{ resource.crowdsourced_po_percentage|floatformat }}%)
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ resource.submission_count }}
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p>No resources for this progress outcome.</p>
-            {% endif %}
-        {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock content_container %}
