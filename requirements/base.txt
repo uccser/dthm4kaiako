@@ -22,7 +22,7 @@ django-filter==2.2.0  # https://github.com/carltongibson/django-filter/
 django-ipware==2.1.0
 
 # Google Cloud Platform
-google-api-python-client==1.7.10
+google-api-python-client==1.7.11
 
 # Search
 # https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
