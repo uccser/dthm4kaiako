@@ -1,4 +1,6 @@
-<{%if po.percentage|floatformat == first_po.percentage|floatformat %}strong{% else %}small{% endif %}
-    class="{% if po.resource_target %}text-danger{% else %}text-success{% endif %}">
-    {{ po }} ({{ po.percentage|floatformat }}%)
-</{%if po.percentage|floatformat == first_po.percentage|floatformat %}strong{% else %}small{% endif %}><br>
+{% if po %}
+    <{%if po.percentage|floatformat == first_po.percentage|floatformat %}strong{% else %}small{% endif %}
+        class="{% if po.resource_target %}text-danger{% else %}text-success{% endif %}">
+        {{ po }} ({{ po.percentage|floatformat }}%)
+    </{%if po.percentage|floatformat == first_po.percentage|floatformat %}strong{% else %}small{% endif %}><br>
+{% endif %}
