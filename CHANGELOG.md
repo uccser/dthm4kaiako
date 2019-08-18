@@ -5,6 +5,7 @@
 - Show top three crowdsourced progress outcomes with submission threshold in POET admin.
 - Prevent images from overflowing from parent in resource descriptions.
 - Remove empty footer link.
+- Fix bug where email in contact form response was omitted.
 
 ## 0.16.4
 
