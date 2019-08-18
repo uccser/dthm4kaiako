@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.5
+
+- Show top three crowdsourced progress outcomes with submission threshold in POET admin.
+- Prevent images from overflowing from parent in resource descriptions.
+- Remove empty footer link.
+
 ## 0.16.4
 
 - Improve statistics page for POET admin.
