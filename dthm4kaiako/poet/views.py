@@ -145,17 +145,18 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         for resource in self.object_list:
             if resource.submission_count > 0:
-                # Add most selected PO
+                # Add top 3 selected progress outcomes
                 # TODO: Perform as one query, possibly when requesting queryset
-                resource.crowdsourced_po = ProgressOutcome.objects.filter(
+                resource.crowdsourced_pos = ProgressOutcome.objects.filter(
                     submissions__resource=resource
                 ).annotate(
                     submission_count=Count('submissions')
-                ).order_by('-submission_count').first()
-                percentage = (resource.crowdsourced_po.submission_count / resource.submission_count) * 100
-                resource.crowdsourced_po_percentage = percentage
-                if resource.target_progress_outcome != resource.crowdsourced_po:
-                    resource.po_different = True
+                ).order_by('-submission_count')[:3]
+                total_submission_count = Submission.objects.filter(resource=resource).count()
+                for crowdsourced_po in resource.crowdsourced_pos:
+                    crowdsourced_po.percentage = (crowdsourced_po.submission_count / total_submission_count) * 100
+                    if resource.target_progress_outcome != crowdsourced_po:
+                        crowdsourced_po.resource_target = True
         context['total_submissions'] = Submission.objects.count()
         return context
 
