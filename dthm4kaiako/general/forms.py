@@ -25,7 +25,7 @@ class ContactForm(forms.Form):
         name = self.cleaned_data['name']
         subject = self.cleaned_data['subject']
         from_email = self.cleaned_data['from_email']
-        message = MESSAGE_TEMPLATE.format(message=self.cleaned_data['message'], user=name, from_email=from_email),
+        message = MESSAGE_TEMPLATE.format(message=self.cleaned_data['message'], user=name, email=from_email),
         mail_managers(
             subject,
             message
