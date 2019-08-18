@@ -8,7 +8,10 @@
 
 {% block content_container %}
     <div class="col-12">
-        <p><strong>Total submissions:</strong> {{ total_submissions }}</p>
+        <p>
+            <strong>Total submissions:</strong> {{ total_submissions }}<br>
+            <strong>Submission threshold before statistics are publicly shown:</strong> {{ submission_threshold }}
+        </p>
 
         <div id="statistics-table" class="table-responsive">
             <table class="table table-striped">
@@ -40,11 +43,10 @@
                                 {{ resource.target_progress_outcome }}
                             </td>
                             <td>
-                                {% if resource.submission_count > 0 %}
-                                    <span class="{% if resource.po_different %}text-danger{% else %}text-success{% endif %}">
-                                        {{ resource.crowdsourced_po }}
-                                    </span>
-                                    ({{ resource.crowdsourced_po_percentage|floatformat }}%)
+                                {% if resource.crowdsourced_pos %}
+                                    {% include "poet/widgets/statistics-list-percentage.html" with po=resource.crowdsourced_pos.0 first_po=resource.crowdsourced_pos.0 only %}
+                                    {% include "poet/widgets/statistics-list-percentage.html" with po=resource.crowdsourced_pos.1 first_po=resource.crowdsourced_pos.0 only %}
+                                    {% include "poet/widgets/statistics-list-percentage.html" with po=resource.crowdsourced_pos.2 first_po=resource.crowdsourced_pos.0 only %}
                                 {% else %}
                                     N/A
                                 {% endif %}
