@@ -8,7 +8,10 @@
 
 {% block content_container %}
     <div class="col-12">
-        <p><strong>Total submissions:</strong> {{ total_submissions }}</p>
+        <p>
+            <strong>Total submissions:</strong> {{ total_submissions }}<br>
+            <strong>Submission threshold before statistics are publicly shown:</strong> {{ submission_threshold }}
+        </p>
 
         <div id="statistics-table" class="table-responsive">
             <table class="table table-striped">

@@ -20,12 +20,13 @@ from poet.forms import (
     POETSurveyForm,
     POETContactForm,
 )
-from poet.utils import select_resources_for_poet_form
 from poet.models import (
     Submission,
     ProgressOutcome,
     Resource,
 )
+from poet.utils import select_resources_for_poet_form
+from poet import settings as poet_settings
 
 
 class HomeView(FormView):
@@ -158,6 +159,7 @@ class StatisticsListView(PermissionRequiredMixin, ListView):
                     if resource.target_progress_outcome != crowdsourced_po:
                         crowdsourced_po.resource_target = True
         context['total_submissions'] = Submission.objects.count()
+        context['submission_threshold'] = poet_settings.MINIMUM_SUBMISSIONS_PER_RESOURCE
         return context
 
 
