@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.6
+
+- Fix bug where empty progress outcome data was shown in POET admin.
+
 ## 0.16.5
 
 - Show top three crowdsourced progress outcomes with submission threshold in POET admin.
