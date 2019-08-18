@@ -70,8 +70,13 @@ body {
   }
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .img-inline {
-    max-height: 1.5rem;
+  max-height: 1.5rem;
 }
 
 .img-y1 {
