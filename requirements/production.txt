@@ -10,5 +10,5 @@ google-cloud-logging==1.12.1
 
 # Extra packages due to missing bindings
 # See: https://github.com/uccser/dthm4kaiako/issues/363
-google-cloud-storage==1.18.0
+google-cloud-storage==1.19.1
 google-resumable-media[requests]==0.3.2
