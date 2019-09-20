@@ -23,6 +23,7 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users'),),
     path('poet/', include('poet.urls', namespace='poet')),
     path('learning-area-cards/', include('learning_area_cards.urls', namespace='learning_area_cards')),
+    path('s/', include('secret_pages.urls', namespace='secret_pages')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),

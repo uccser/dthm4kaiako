@@ -126,6 +126,7 @@ LOCAL_APPS = [
     'dtta.apps.DttaAppConfig',
     'learning_area_cards.apps.LearningAreaCardsAppConfig',
     'poet.apps.POETAppConfig',
+    'secret_pages.apps.SecretPagesAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -430,6 +431,7 @@ LEARNING_AREA_CARDS_PRINT_TYPES = (LEARNING_AREA_CARDS_SINGLE_PRINT, LEARNING_AR
 DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
+SECRET_PAGES_TEMPLATE_TEMPLATE = 'secret_pages/{}.html'
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------
