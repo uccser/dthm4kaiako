@@ -96,7 +96,7 @@ function css() {
 // scss (libsass)
 // --------------------------
 function scss() {
-  return gulp.src('static/scss/*.scss')
+  return gulp.src('static/scss/**/*.scss')
     .pipe(errorHandler(catchError))
     // sourcemaps + scss + error handling
     .pipe(gulpif(!production, sourcemaps.init()))
