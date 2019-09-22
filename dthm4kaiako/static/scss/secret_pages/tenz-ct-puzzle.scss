@@ -1,0 +1,76 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/variables";
+
+@import url('https://fonts.googleapis.com/css?family=Courgette&display=swap');
+
+$sky-colour: #d9ebf9;
+$ground-colour: #888052;
+
+body {
+    background-color: $ground-colour;
+}
+.background {
+    position: relative;
+}
+#sky {
+    background-color: $sky-colour;
+    z-index: 10;
+}
+#ground {
+    z-index: 5;
+    padding-bottom: 10rem;
+}
+.divider {
+    margin: 1rem 0;
+    width: 50%;
+    border-top: 2px solid #df4c32;
+}
+#karakia {
+    font-size: 1.5rem;
+    font-family: 'Courgette', cursive;
+}
+.box {
+    position: relative;
+    background-color: #ffffffd9;
+    padding: 2rem;
+    margin: 3rem 0rem;
+    z-index: 80;
+}
+#statement {
+    font-size: 1.5rem;
+}
+// Images
+img {
+    user-select: none;
+}
+#main-flax {
+    z-index: 50;
+    max-height: 100%;
+    position: relative;
+    bottom: -2px;
+    animation: skewFlax 3s infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    transform: skewX(1deg);
+    transform-origin: bottom center;
+}
+@include media-breakpoint-up(md) {
+    #main-flax {
+        position: absolute;
+        left: -50%;
+        bottom: -10%;
+    }
+}
+@keyframes skewFlax {
+  0% {
+    transform: skewX(0.5deg);
+  }
+  100% {
+    transform: skewX(-0.5deg);
+  }
+}
+#hills {
+    position: relative;
+    bottom: -5px;
+}

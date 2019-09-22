@@ -1,0 +1,96 @@
+{% extends "base-core.html" %}
+
+{% load static %}
+
+{% block title %}
+    Well done!
+{% endblock title %}
+
+{% block core_scripts %}
+{% endblock core_scripts %}
+
+{% block favicon %}
+    <link rel="icon" type="image/png"~ href="{% static 'img/secret_pages/tenz-ct-puzzle/favicon.png' %}">
+{% endblock favicon %}
+
+{% block body %}
+    <div id="sky" class="background">
+        <div class="container">
+            <div class="row justify-content-end justify-content-lg-center">
+                <div class="col-12 col-md-8 col-lg-7">
+                    <div id="karakia" class="box">
+                        <div id="karakia-mi">
+                            Hutia te rito o te harakeke,<br>
+                            Kei whea te kōmako e kō?<br>
+                            Kī mai ki ahau;<br>
+                            He aha te mea nui o te Ao?<br>
+                            Māku e kī atu,
+                            he tāngata, he tāngata, he tāngata
+                        </div>
+                        <div class="divider"></div>
+                        <div id="karakia-en">
+                            If the heart of the harakeke was removed,<br>
+                            where will the bellbird sing?<br>
+                            If I was asked what was the most important thing in the world;<br>
+                            I would be compelled to reply,<br>
+                            It is people, it is people, it is people.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img id="main-flax" src="{% static 'img/secret_pages/tenz-ct-puzzle/flax-with-bird.svg' %}" class="img-fluid mx-auto d-block">
+        <img id="hills" src="{% static 'img/secret_pages/tenz-ct-puzzle/hills-with-flax.svg' %}" class="img-fluid d-none d-md-block">
+    </div>
+    <div id="ground" class="background">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div id="statement" class="col-12">
+                    <blockquote class="blockquote box mb-0">
+                        <p class="mb-0">
+                            “Technology is never static. It is influenced by and in turn impacts on the cultural, ethical, environmental,
+                            political,
+                            and economic conditions of the day.”
+                        </p>
+                        <footer class="blockquote-footer pt-3">
+                            New Zealand Curriculum
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div id="logos" class="row text-center">
+                <div class="col-12">
+                    <div class="box">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                                <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
+                                    <img class="img-fluid" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
+                                </a>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                                <a href="https://tenz.org.nz/">
+                                    <img class="img-fluid" src="{% static 'img/logos/tenz-logo.svg' %}">
+                                </a>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                                <a href="https://kiatakatu.ac.nz/">
+                                    <img class="img-fluid" src="{% static 'img/logos/ktam-logo.svg' %}">
+                                </a>
+                            </div>
+                            <div id="copyright" class="col-12">
+                                <small>
+                                    "<a href="https://www.flickr.com/photos/sidm/6681523917">Bellbird</a>" by <a href="https://www.flickr.com/photos/sidm/">Sid Mosdell</a> is licensed under <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>, and was used as source for creating vector image of the bellbird.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block css %}
+    <link href="{% static 'css/secret_pages/tenz-ct-puzzle.css' %}" rel="stylesheet">
+{% endblock css %}

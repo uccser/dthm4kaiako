@@ -23,14 +23,16 @@
       </script>
     {% endif %}
 
-    <!-- Favicon (created by realfavicongenerator.net) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'img/favicons/site.webmanifest' %}">
-    <link rel="mask-icon" href="{% static 'img/favicons/safari-pinned-tab.svg' %}" color="#1f2730">
-    <meta name="msapplication-TileColor" content="#1f2730">
-    <meta name="theme-color" content="#1f2730">
+    {% block favicon %}
+      <!-- Favicon (created by realfavicongenerator.net) -->
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
+      <link rel="manifest" href="{% static 'img/favicons/site.webmanifest' %}">
+      <link rel="mask-icon" href="{% static 'img/favicons/safari-pinned-tab.svg' %}" color="#1f2730">
+      <meta name="msapplication-TileColor" content="#1f2730">
+      <meta name="theme-color" content="#1f2730">
+    {% endblock favicon %}
 
     <!-- Styling -->
     <link href="{% static 'css/website.css' %}" rel="stylesheet">
@@ -46,7 +48,9 @@
 
     {% block modal %}{% endblock modal %}
 
-    <script src="{% static 'js/website.js' %}"></script>
+    {% block core_scripts %}
+      <script src="{% static 'js/website.js' %}"></script>
+    {% endblock core_scripts %}
     {% block scripts %}
     {% endblock scripts %}
   </body>
