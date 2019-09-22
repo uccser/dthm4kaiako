@@ -4,11 +4,11 @@
 
 # Django
 # ------------------------------------------------------------------------------
-django-storages[google]==1.7.1  # https://github.com/jschneier/django-storages
+django-storages[google]==1.7.2  # https://github.com/jschneier/django-storages
 google-auth==1.6.3  # https://github.com/googleapis/google-auth-library-python
 google-cloud-logging==1.12.1
 
 # Extra packages due to missing bindings
 # See: https://github.com/uccser/dthm4kaiako/issues/363
-google-cloud-storage==1.18.0
-google-resumable-media[requests]==0.3.2
+google-cloud-storage==1.19.1
+google-resumable-media[requests]==0.4.1

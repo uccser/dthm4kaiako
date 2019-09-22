@@ -75,7 +75,7 @@ notifications:
     on_failure: change
 stages:
   - name: test
-  - name: develop deploy
+  - name: development deployment
     if: branch = develop
-  - name: production deploy
+  - name: production deployment
     if: branch = master

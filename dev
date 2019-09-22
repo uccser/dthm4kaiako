@@ -142,6 +142,17 @@ cmd_static_prod() {
 }
 defhelp static_prod 'Build production static files.'
 
+# Update and collect static files
+cmd_update_static() {
+  cmd_static
+
+  echo ""
+  cmd_collect_static
+  echo ""
+  echo -e "\n${GREEN}Static files are updated!${NC}"
+}
+defhelp update_static 'Update and collect static files.'
+
 # Run shell
 cmd_shell() {
   docker-compose exec django bash

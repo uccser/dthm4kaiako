@@ -1,6 +1,7 @@
 MIT License
 
 Copyright (c) 2019 University of Canterbury Computer Science Education Research
+This license applies to all files within this repository, except for the exclusions listed at the end of this file.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +20,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+EXCLUSIONS
+
+dthm4kaiako/static/img/logos/
+Files belong to their respective owners.
+
+dthm4kaiako/static/img/secret_pages/tenz-ct-puzzle/
+"Bellbird" (https://www.flickr.com/photos/sidm/6681523917) by Sid Mosdell (https://www.flickr.com/photos/sidm/) is licensed under CC BY 2.0, and was used as source for creating vector image of the bellbird.

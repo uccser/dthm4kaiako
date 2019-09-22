@@ -1,5 +1,5 @@
 pytz==2019.2  # https://github.com/stub42/pytz
-python-slugify==3.0.3  # https://github.com/un33k/python-slugify
+python-slugify==3.0.4  # https://github.com/un33k/python-slugify
 Pillow==6.1.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==19.1.0  # https://github.com/hynek/argon2_cffi
 redis>=2.10.6, < 3  # pyup: < 3 # https://github.com/antirez/redis
@@ -7,14 +7,14 @@ filetype==1.0.4  # https://github.com/h2non/filetype.py
 
 # Django
 django-model-utils==3.2.0  # https://github.com/jazzband/django-model-utils
-django-anymail[mailgun]==6.1.0  # https://github.com/anymail/django-anymail
-django-allauth==0.39.1  # https://github.com/pennersr/django-allauth
+django-anymail[mailgun]==7.0.0  # https://github.com/anymail/django-anymail
+django-allauth==0.40.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
 django-ckeditor==5.7.1  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
-django-recaptcha==2.0.4
+django-recaptcha==2.0.5
 django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
 djangorestframework==3.10.2  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
