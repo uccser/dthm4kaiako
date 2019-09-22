@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.17.0
+
+- Add secret pages application.
+- Update LICENSE to include license exclusions.
+- Dependencies changes:
+    - Update python-slugify from 3.0.3 to 3.0.4.
+    - Update django-anymail from 6.1.0 to 7.0.0.
+    - Update django-allauth from 0.39.1 to 0.40.0.
+    - Update django-recaptcha from 2.0.4 to 2.0.5.
+    - Update django-storages from 1.7.1 to 1.7.2.
+    - Update google-cloud-storage from 1.18.0 to 1.19.1.
+    - Update google-resumable-media from 0.3.2 to 0.4.1.
+
 ## 0.16.6
 
 - Fix bug where empty progress outcome data was shown in POET admin.
