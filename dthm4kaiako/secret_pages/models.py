@@ -26,11 +26,11 @@ class SecretPage(models.Model):
         """Check template exists and set to full path."""
         if self.template.endswith(TEMPLATE_EXTENSION):
             self.template = self.template[:-len(TEMPLATE_EXTENSION)]
-        self.template = settings.SECRET_PAGES_TEMPLATE_TEMPLATE.format(self.template)
+        template_path = settings.SECRET_PAGES_TEMPLATE_TEMPLATE.format(self.template)
         try:
-            get_template(self.template)
+            get_template(template_path)
         except TemplateDoesNotExist:
-            raise ValidationError('Template "{}" cannot be found.'.format(self.template))
+            raise ValidationError('Template "{}" cannot be found.'.format(template_path))
 
     def __str__(self):
         """Text representation of object.
