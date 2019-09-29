@@ -18,6 +18,7 @@
         <div class="container">
             <div class="row justify-content-end justify-content-lg-center">
                 <div class="col-12 col-md-8 col-lg-7">
+                    <h1 id="well-done" class="my-5 text-center">Well done!</h1>
                     <div id="karakia" class="box">
                         <div id="karakia-mi">
                             Hutia te rito o te harakeke,<br>
@@ -39,7 +40,9 @@
                 </div>
             </div>
         </div>
-        <img id="main-flax" src="{% static 'img/secret_pages/tenz-ct-puzzle/flax-with-bird.svg' %}" class="img-fluid mx-auto d-block">
+        <div id="main-flax-container">
+            <img id="main-flax" src="{% static 'img/secret_pages/tenz-ct-puzzle/flax-with-bird.svg' %}" class="img-fluid mx-auto d-block">
+        </div>
         <img id="hills" src="{% static 'img/secret_pages/tenz-ct-puzzle/hills-with-flax.svg' %}" class="img-fluid d-none d-md-block">
     </div>
     <div id="ground" class="background">
@@ -63,19 +66,24 @@
                 <div class="col-12">
                     <div class="box">
                         <div class="row justify-content-center align-items-center">
-                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                            <div class="col-12 col-sm-6 mb-5">
                                 <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
                                     <img class="img-fluid" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
                                 </a>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                            <div class="col-12 col-sm-6 mb-5">
                                 <a href="https://tenz.org.nz/">
                                     <img class="img-fluid" src="{% static 'img/logos/tenz-logo.svg' %}">
                                 </a>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-4 mb-5">
+                            <div class="col-12 col-sm-6 mb-5">
                                 <a href="https://kiatakatu.ac.nz/">
                                     <img class="img-fluid" src="{% static 'img/logos/ktam-logo.svg' %}">
+                                </a>
+                            </div>
+                            <div class="col-12 col-sm-6 mb-5">
+                                <a href="https://www.dthm4kaiako.ac.nz/">
+                                    {% include 'svg/logo.html' %}
                                 </a>
                             </div>
                             <div id="copyright" class="col-12">

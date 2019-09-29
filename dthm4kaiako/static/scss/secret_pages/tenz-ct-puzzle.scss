@@ -26,6 +26,10 @@ body {
     width: 50%;
     border-top: 2px solid #df4c32;
 }
+#well-done {
+    font-size: 3rem;
+    font-family: 'Courgette', cursive;
+}
 #karakia {
     font-size: 1.5rem;
     font-family: 'Courgette', cursive;
@@ -44,8 +48,11 @@ body {
 img {
     user-select: none;
 }
-#main-flax {
+#main-flax-container {
     z-index: 50;
+    height: 100%;
+}
+#main-flax {
     max-height: 100%;
     position: relative;
     bottom: -2px;
@@ -57,14 +64,18 @@ img {
 }
 @include media-breakpoint-up(md) {
     #main-flax {
+        height: 100vh;
+        max-height: 100%;
+    }
+    #main-flax-container {
         position: absolute;
-        left: -50%;
-        bottom: -10%;
+        transform: translateX(-50%);
+        bottom: -8%;
     }
 }
 @keyframes skewFlax {
   0% {
-    transform: skewX(0.5deg);
+    transform: skewX(1deg);
   }
   100% {
     transform: skewX(-0.5deg);

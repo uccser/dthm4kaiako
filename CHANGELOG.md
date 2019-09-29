@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.1
+
+- Minor changes to TENZ puzzle page.
+
 ## 0.17.0
 
 - Add secret pages application.
