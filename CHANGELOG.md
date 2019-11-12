@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.2
+
+- Update number of DTTA members.
+- Add list of DTTA committee members.
+- Use default Google App Engine settings for split health checks.
+
 ## 0.17.1
 
 - Minor changes to TENZ puzzle page.
