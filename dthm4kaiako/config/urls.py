@@ -8,7 +8,6 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
 from config.views import (
-    health_check,
     cron_rebuild_index,
 )
 admin.site.login = login_required(admin.site.login)
@@ -28,7 +27,6 @@ urlpatterns = [
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('api/', include('rest_framework.urls')),
-    path('_ah/health', health_check),
     path('cron/rebuild_index/', cron_rebuild_index),
     # Redirects
     path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),
