@@ -12,7 +12,7 @@ django-allauth==0.40.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
-django-ckeditor==5.7.1  # https://pypi.org/project/django-ckeditor/
+django-ckeditor==5.9.0  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
 django-recaptcha==2.0.5
 django-autoslug-iplweb==1.9.4  # https://github.com/justinmayer/django-autoslug
