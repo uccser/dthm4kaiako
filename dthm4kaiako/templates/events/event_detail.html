@@ -54,25 +54,23 @@
                     {{ event.price }}
                 {% endif %}
             </p>
-            {% if location %}
-                <p>
-                    <strong>Location:</strong> {{ location.get_full_address }}
-                </p>
-            {% elif locations %}
-                <p class="mb-0">
-                    <strong>Locations:</strong>
-                </p>
-                <ul>
+
+            <div class="d-flex flex-row mb-3">
+                <div class="pr-1"><strong>Location{{ locations|pluralize }}:</strong></div>
+                <div class="d-flex flex-column">
                     {% for location in locations %}
-                        <li>{{ location.get_full_address }}</li>
+                        <div>{{ location.get_full_address|escape|linebreaksbr }}</div>
+                        {% if not forloop.last %}
+                            <hr class="w-100 my-2">
+                        {% endif %}
                     {% endfor %}
-                </ul>
-            {% endif %}
+                </div>
+            </div>
         </div>
 
         <h3 id="event-description" class="event-heading">Description</h3>
         <div class="mb-3">
-            {{ event.description|safe }}
+            {{ event.description|safe }}q
         </div>
 
         {% if sponsors %}
@@ -92,19 +90,16 @@
             </ul>
         {% endif %}
 
-        {% if location or locations %}
-            <h3 id="event-location" class="event-heading">Location{{ locations|pluralize }}</h3>
-            {% if location %}
-                <p>
-                    {{ location.get_full_address }}
-                </p>
-            {% elif locations %}
-                <ul>
-                    {% for location in locations %}
-                    <li>{{ location.get_full_address }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        {% if locations %}
+            <h3 id="event-locations" class="event-heading">Location{{ locations|pluralize }}</h3>
+            <div class="mb-3">
+                {% for location in locations %}
+                    <p class="mb-0">{{ location.get_full_address|escape|linebreaksbr }}</p>
+                    {% if not forloop.last %}
+                        <hr class="w-100 my-2">
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% with ratio='1by1' %}
                 {% include "generic/map-element.html" %}
             {% endwith %}
@@ -160,8 +155,8 @@
                         Sponsor{{ sponsors|pluralize }}
                     </a>
                 {% endif %}
-                {% if location or locations %}
-                    <a class="nav-link" href="#event-location">
+                {% if locations %}
+                    <a class="nav-link" href="#event-locations">
                         Location{{ locations|pluralize }}
                     </a>
                 {% endif %}
@@ -179,7 +174,7 @@
 {% endblock content_container %}
 
 {% block scripts %}
-    {% if location %}
+    {% if locations.count == 1 %}
         {% include "generic/map-javascript.html" with map_location=location map_zoom=13 %}
     {% elif locations %}
         {% include "generic/map-javascript.html" with map_locations=locations map_zoom=5 %}
