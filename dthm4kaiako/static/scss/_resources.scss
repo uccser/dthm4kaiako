@@ -3,6 +3,10 @@ $hover-alpha: .1;
 // List view page
 .resource {
   border-color: rgba(0, 0, 0, 0.25);
+  .card-header {
+    border-bottom: none;
+    background-color: rgba($resources-brand-colour, 0.05);
+  }
 }
 
 // Detail view page
