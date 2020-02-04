@@ -96,8 +96,5 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['sponsors'] = self.object.sponsors.all()
         context['organisers'] = self.object.organisers.all()
         context['sessions'] = self.object.sessions.all().prefetch_related('locations')
-        if self.object.locations.count() == 1:
-            context['location'] = self.object.locations.first()
-        elif self.object.locations.count() > 1:
-            context['locations'] = self.object.locations.all()
+        context['locations'] = self.object.locations.all()
         return context
