@@ -171,6 +171,26 @@
                 Register to attend event
             </a>
 
+            {% if sponsors %}
+                <hr>
+                <div class="text-center">
+                    <small>This event is sponsored by</small>
+                </div>
+                <ul class="list-unstyled text-center">
+                    {% for sponsor in sponsors %}
+                    <li class="my-2">
+                        <a href="{{ sponsor.url }}" target="_blank">
+                            {% if sponsor.logo %}
+                                <img src="{{ sponsor.logo.url }}" class="img-y4" alt="{{ sponsor.name }}">
+                            {% else %}
+                                {{ sponsor.name }}
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
         </div>
     </div>
 {% endblock content_container %}
