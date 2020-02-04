@@ -10,7 +10,7 @@ django-model-utils==4.0.0  # https://github.com/jazzband/django-model-utils
 django-anymail[mailgun]==7.0.0  # https://github.com/anymail/django-anymail
 django-allauth==0.40.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.8.1  # https://github.com/django-crispy-forms/django-crispy-forms
-django-redis==4.10.0  # https://github.com/niwinz/django-redis
+django-redis==4.11.0  # https://github.com/niwinz/django-redis
 django-markdownx==2.0.28  # https://github.com/neutronX/django-markdownx
 django-ckeditor==5.7.1  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.1.12  # https://github.com/hellysmile/django-activeurl
