@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.17.3
+
+- Improve display of location addresses, by adding 'region' to the end of region names to avoid confusion with city names.
+- Show sponsor on event sidebar.
+- Fix bug where repeated sessions on consecutive event days did not display session times.
+- Update Travis CI configuration file to latest standard.
+- Dependencies changes:
+    - Update argon2-cffi from 19.1.0 to 19.2.0.
+    - Update coverage from 4.5.4 to 5.0.3.
+    - Update django-activeurl from 0.1.12 to 0.2.0.
+    - Update django-allauth from 0.40.0 to 0.41.0.
+    - Update django-autoslug-iplweb from 1.9.4 to 1.9.5.
+    - Update django-ckeditor from 5.7.1 to 5.9.0.
+    - Update django-coverage-plugin from 1.6.0 to 1.8.0.
+    - Update django-crispy-forms from 1.7.2. to 1.8.1.
+    - Update django-debug-toolbar from 2.0 to 2.2.
+    - Update django-extensions from 2.2.1 to 2.2.6.
+    - Update django-model-utils from 3.2.0 to 4.0.0.
+    - Update django-recaptcha from 2.0.5 to 2.0.6.
+    - Update django-redis from 4.10.0 to 4.11.0.
+    - Update django-storages from 1.7.2 from 1.9.1.
+    - Update djangorestframework from 3.10.2 to 3.11.0.
+    - Update flake8 from 3.7.8 to 3.7.9.
+    - Update google-auth from 1.6.3 to 1.11.0.
+    - Update google-cloud-logging from 1.12.1 to 1.14.0.
+    - Update google-cloud-storage from 1.19.1 to 1.25.0.
+    - Update google-resumable-media from 0.4.1 to 0.5.0.
+    - Update mypy from 0.720 to 0.761.
+    - Update Pillow from 6.1.0 to 7.0.0.
+    - Update psycopg2-binary from 2.8.3 to 2.8.4.
+    - Update pydocstyle from 4.0.1 to 5.0.2.
+    - Update pytest from 5.1.0 to 5.3.5.
+    - Update pytest-django from 3.5.1 to 3.8.0.
+    - Update python-slugify from 3.0.4 to 4.0.0.
+    - Update pytz from 2019.2 to 2019.3.
+    - Update Sphinx from 2.1.2 to 2.3.1.
+
 ## 0.17.2
 
 - Update number of DTTA members.
