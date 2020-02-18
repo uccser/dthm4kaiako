@@ -8,6 +8,11 @@
 
 {% block page_heading %}
     <div id="event-details">
+        {% if perms.events %}
+            <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-secondary float-right">
+                Edit event
+            </a>
+        {% endif %}
         <div class="h6 text-muted">
             {% for organiser in organisers %}
                 {% if organiser.logo %}
@@ -168,16 +173,6 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-
-            {% if perms.events %}
-                <hr>
-                <div class="text-center">
-                    <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-secondary">
-                        Edit event
-                    </a>
-                </div>
-            {% endif %}
-
         </div>
     </div>
 {% endblock content_container %}
