@@ -73,23 +73,6 @@
             {{ event.description|safe }}
         </div>
 
-        {% if sponsors %}
-            <h3 id="event-sponsors" class="event-heading">Sponsor{{ sponsors.count|pluralize }}</h3>
-            <ul class="list-unstyled">
-                {% for sponsor in sponsors %}
-                <li class="my-2">
-                    <a href="{{ sponsor.url }}" target="_blank">
-                        {% if sponsor.logo %}
-                        <img src="{{ sponsor.logo.url }}" class="img-y4" alt="{{ sponsor.name }}">
-                        {% else %}
-                            {{ sponsor.name }}
-                        {% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
         {% if locations %}
             <h3 id="event-locations" class="event-heading">Location{{ locations|pluralize }}</h3>
             <div class="mb-3">
@@ -152,11 +135,6 @@
                 <a class="nav-link" href="#event-description">
                     Description
                 </a>
-                {% if sponsors %}
-                    <a class="nav-link" href="#event-sponsors">
-                        Sponsor{{ sponsors|pluralize }}
-                    </a>
-                {% endif %}
                 {% if locations %}
                     <a class="nav-link" href="#event-locations">
                         Location{{ locations|pluralize }}
