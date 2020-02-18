@@ -196,9 +196,17 @@
 {% endblock content_container %}
 
 {% block scripts %}
-    {% if locations.count == 1 %}
-        {% include "generic/map-javascript.html" with map_location=location map_zoom=13 %}
-    {% elif locations %}
-        {% include "generic/map-javascript.html" with map_locations=locations map_zoom=5 %}
-    {% endif %}
+    <script>
+        var event_markers = [
+            {% for location in locations %}
+                {
+                    coords: { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+                    title: "{{ location.name|escape }}",
+                    text: "{{ location.get_full_address|escape|linebreaksbr }}",
+                },
+            {% endfor %}
+        ];
+        var map_zoom = {% if locations.count == 1 %}13{% else %}5{% endif %};
+    </script>
+    {% include "generic/map-javascript.html" %}
 {% endblock scripts %}

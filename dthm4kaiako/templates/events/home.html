@@ -21,5 +21,8 @@
 {% endblock content %}
 
 {% block scripts %}
+    <script>
+        var event_markers = {{ raw_map_locations|safe }};
+    </script>
     {% include "generic/map-javascript.html" %}
 {% endblock scripts %}
