@@ -154,7 +154,7 @@
                 <div class="text-center">
                     <small>This event is sponsored by</small>
                 </div>
-                <ul class="list-unstyled text-center">
+                <ul class="list-unstyled text-center mb-3">
                     {% for sponsor in sponsors %}
                     <li class="my-2">
                         <a href="{{ sponsor.url }}" target="_blank">
@@ -167,6 +167,15 @@
                     </li>
                     {% endfor %}
                 </ul>
+            {% endif %}
+
+            {% if perms.events %}
+                <hr>
+                <div class="text-center">
+                    <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-secondary">
+                        Edit event
+                    </a>
+                </div>
             {% endif %}
 
         </div>
