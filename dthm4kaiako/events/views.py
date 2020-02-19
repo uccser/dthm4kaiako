@@ -51,19 +51,42 @@ class HomeView(generic.TemplateView):
         return context
 
 
-class EventListView(generic.ListView):
-    """View for listing events."""
+class EventUpcomingView(generic.ListView):
+    """View for listing upcoming events."""
 
     model = Event
     context_object_name = 'events'
+    template_name = 'events/upcoming_events.html'
 
     def get_queryset(self):
-        """Only show published events.
+        """Only show published upcoming events.
 
         Returns:
-            Events filtered by published boolean.
+            Events filtered by published boolean that have not finished yet.
         """
-        return Event.objects.filter(published=True).order_by('start').prefetch_related(
+        return Event.objects.filter(published=True).filter(end__gte=now()).order_by('start').prefetch_related(
+            'organisers',
+            'locations',
+            'sponsors',
+        ).select_related(
+            'series',
+        )
+
+
+class EventPastView(generic.ListView):
+    """View for listing past events."""
+
+    model = Event
+    context_object_name = 'events'
+    template_name = 'events/past_events.html'
+
+    def get_queryset(self):
+        """Only show published past events.
+
+        Returns:
+            Events filtered by published boolean that have finshed in reverse order.
+        """
+        return Event.objects.filter(published=True).filter(end__lt=now()).order_by('-end').prefetch_related(
             'organisers',
             'locations',
             'sponsors',

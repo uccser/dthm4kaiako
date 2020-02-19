@@ -79,7 +79,6 @@ class EventUpcomingListFilter(admin.SimpleListFilter):
             }
 
 
-
 class EventAdmin(admin.ModelAdmin):
     """Admin view for an event."""
 
