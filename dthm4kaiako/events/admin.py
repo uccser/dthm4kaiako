@@ -110,7 +110,7 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('published', 'featured'),
         }),
     )
-    list_display = ('name', 'series', 'start', 'end', 'featured')
+    list_display = ('name', 'location_summary', 'series', 'start', 'end', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
 

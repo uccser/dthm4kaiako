@@ -241,6 +241,21 @@ class Event(models.Model):
         else:
             return self.name
 
+    def location_summary(self):
+        """Return string of event location.
+
+        Returns:
+            String of summary of event location or None if no locations.
+        """
+        locations = list(self.locations.all())
+        if len(locations) > 1:
+            return 'Multiple locations'
+        elif locations:
+            location = locations[0]
+            return '{}, {}'.format(location.city, location.get_region_display())
+        else:
+            return None
+
     def __str__(self):
         """Text representation of an event."""
         return self.name
