@@ -93,7 +93,7 @@
             {% endwith %}
         {% endif %}
 
-        {% if sessions %}
+        {% if event.show_schedule and sessions %}
             <h3 id="event-schedule" class="event-heading">Schedule</h3>
 
             {% for session in sessions %}
@@ -145,9 +145,11 @@
                         Location{{ locations|pluralize }}
                     </a>
                 {% endif %}
-                <a class="nav-link" href="#event-schedule">
-                    Schedule
-                </a>
+                {% if event.show_schedule %}
+                    <a class="nav-link" href="#event-schedule">
+                        Schedule
+                    </a>
+                {% endif %}
             </nav>
             <hr>
             <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">

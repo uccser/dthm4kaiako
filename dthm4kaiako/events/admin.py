@@ -107,7 +107,11 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('registration_link', ),
         }),
         ('Visibility', {
-            'fields': ('published', 'featured'),
+            'fields': (
+                'published',
+                'featured',
+                'show_schedule',
+            ),
         }),
     )
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'featured')
