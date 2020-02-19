@@ -1,7 +1,9 @@
 """Module for admin configuration for the events application."""
 import logging
 from django.contrib import admin
+from django.utils.timezone import now
 from django.contrib.gis.db import models as geomodels
+from django.utils.translation import gettext_lazy as _
 from events.models import (
     Event,
     Session,
@@ -30,6 +32,52 @@ class SessionInline(admin.StackedInline):
     fk_name = 'event'
     extra = 1
     min_num = 1
+
+
+class EventUpcomingListFilter(admin.SimpleListFilter):
+    title = _('time')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'time'
+
+    def lookups(self, request, model_admin):
+        """Return a list of tuples.
+
+        The first element in each tuple is the coded value for
+        the option that will appear in the URL query.
+        The second element is the human-readable name for
+        the option that will appear in the right sidebar.
+        """
+        return (
+            ('upcoming', _('Upcoming events')),
+            ('past', _('Past events')),
+            ('all', _('All events')),
+        )
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        if self.value() is None:
+            self.used_parameters[self.parameter_name] = 'upcoming'
+        if self.value() == 'upcoming':
+            return queryset.filter(end__gte=now())
+        elif self.value() == 'past':
+            return queryset.filter(end__lt=now())
+        else:
+            return queryset
+
+    def choices(self, changelist):
+        """Override default method to remove 'All' option."""
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == str(lookup),
+                'query_string': changelist.get_query_string({self.parameter_name: lookup}),
+                'display': title,
+            }
+
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -63,6 +111,7 @@ class EventAdmin(admin.ModelAdmin):
         }),
     )
     list_display = ('name', 'series', 'start', 'end', 'featured')
+    list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
 
     def save_related(self, request, form, formsets, change):
