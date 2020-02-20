@@ -2,10 +2,13 @@
 
 from django.views import generic
 from django.utils.timezone import now
+from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
 )
+from events.filters import UpcomingEventFilter, PastEventFilter
+from events.utils import create_filter_helper
 
 
 class HomeView(generic.TemplateView):
@@ -51,48 +54,43 @@ class HomeView(generic.TemplateView):
         return context
 
 
-class EventUpcomingView(generic.ListView):
+class EventUpcomingView(FilterView):
     """View for listing upcoming events."""
 
-    model = Event
+    # TODO: Add pagination
+    filterset_class = UpcomingEventFilter
     context_object_name = 'events'
     template_name = 'events/upcoming_events.html'
 
-    def get_queryset(self):
-        """Only show published upcoming events.
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the upcoming events view.
 
         Returns:
-            Events filtered by published boolean that have not finished yet.
+            Dictionary of context data.
         """
-        return Event.objects.filter(published=True).filter(end__gte=now()).order_by('start').prefetch_related(
-            'organisers',
-            'locations',
-            'sponsors',
-        ).select_related(
-            'series',
-        )
+        context = super().get_context_data(**kwargs)
+        context['filter_formatter'] = create_filter_helper("events:upcoming")
+        return context
 
 
-class EventPastView(generic.ListView):
+class EventPastView(FilterView):
     """View for listing past events."""
 
-    model = Event
+    # TODO: Add pagination
+    filterset_class = PastEventFilter
     context_object_name = 'events'
     template_name = 'events/past_events.html'
 
-    def get_queryset(self):
-        """Only show published past events.
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the past events view.
 
         Returns:
-            Events filtered by published boolean that have finshed in reverse order.
+            Dictionary of context data.
         """
-        return Event.objects.filter(published=True).filter(end__lt=now()).order_by('-end').prefetch_related(
-            'organisers',
-            'locations',
-            'sponsors',
-        ).select_related(
-            'series',
-        )
+        context = super().get_context_data(**kwargs)
+        context['filter_formatter'] = create_filter_helper("events:past")
+        return context
 
 
 class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):

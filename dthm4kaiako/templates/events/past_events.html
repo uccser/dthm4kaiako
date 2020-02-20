@@ -1,11 +1,23 @@
 {% extends "events/base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block page_heading %}
     <h1>Past events</h1>
 {% endblock page_heading %}
 
 {% block content %}
-    {% for event in events %}
+    <div class="card filter-card mb-3">
+        <div class="card-body">
+            {% crispy filter.form filter_formatter %}
+        </div>
+    </div>
+
+    {% for event in filter.qs %}
         {% include 'events/event_card.html' %}
+    {% empty %}
+        <p class="text-center">
+            <strong>Sorry!</strong> No past events found matching the selected filters.
+        </p>
     {% endfor %}
 {% endblock content %}
