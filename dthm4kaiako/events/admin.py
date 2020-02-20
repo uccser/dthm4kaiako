@@ -23,6 +23,15 @@ class LocationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         geomodels.PointField: {"widget": GooglePointFieldWidget}
     }
+    list_display = (
+        'name',
+        'room',
+        'street_address',
+        'suburb',
+        'city',
+        'region',
+    )
+    list_filter = ('region', )
 
 
 class SessionInline(admin.StackedInline):
