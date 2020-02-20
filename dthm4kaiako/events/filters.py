@@ -1,3 +1,5 @@
+"""Filters for events application."""
+
 import django_filters
 from django.utils.timezone import now
 from events.models import (
@@ -8,6 +10,7 @@ from events.models import (
 
 
 class UpcomingEventFilter(django_filters.FilterSet):
+    """Filter for showing upcoming events."""
 
     locations__region = django_filters.ChoiceFilter(
         choices=Location.REGION_CHOICES,
@@ -28,6 +31,8 @@ class UpcomingEventFilter(django_filters.FilterSet):
     )
 
     class Meta:
+        """Meta options."""
+
         model = Event
         fields = [
             'locations__region',
@@ -36,17 +41,22 @@ class UpcomingEventFilter(django_filters.FilterSet):
 
     @property
     def qs(self):
-        return super().qs.filter(published=True).filter(end__gte=now()
-            ).order_by('start').prefetch_related(
-                'organisers',
-                'locations',
-                'sponsors',
-            ).select_related(
-                'series',
-            ).distinct()
+        """Return filtered queryset of upcoming events."""
+        return super().qs.filter(
+            published=True
+        ).filter(
+            end__gte=now()
+        ).order_by('start').prefetch_related(
+            'organisers',
+            'locations',
+            'sponsors',
+        ).select_related(
+            'series',
+        ).distinct()
 
 
 class PastEventFilter(django_filters.FilterSet):
+    """Filter for showing past events."""
 
     locations__region = django_filters.ChoiceFilter(
         choices=Location.REGION_CHOICES,
@@ -67,6 +77,8 @@ class PastEventFilter(django_filters.FilterSet):
     )
 
     class Meta:
+        """Meta options."""
+
         model = Event
         fields = [
             'locations__region',
@@ -75,11 +87,15 @@ class PastEventFilter(django_filters.FilterSet):
 
     @property
     def qs(self):
-        return super().qs.filter(published=True).filter(end__lt=now()
-            ).order_by('-end').prefetch_related(
-                'organisers',
-                'locations',
-                'sponsors',
-            ).select_related(
-                'series',
-            ).distinct()
+        """Return filtered queryset of past events."""
+        return super().qs.filter(
+            published=True
+        ).filter(
+            end__lt=now()
+        ).order_by('-end').prefetch_related(
+            'organisers',
+            'locations',
+            'sponsors',
+        ).select_related(
+            'series',
+        ).distinct()

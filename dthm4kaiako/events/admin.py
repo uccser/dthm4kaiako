@@ -52,6 +52,8 @@ class SessionInline(admin.StackedInline):
 
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
+    """Custom filter for events admin."""
+
     title = _('time')
 
     # Parameter for the filter that will be used in the URL query.
@@ -72,8 +74,9 @@ class EventUpcomingListFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        """
-        Returns the filtered queryset based on the value
+        """Return filtered queryset.
+
+        The filtered queryset is based on the value
         provided in the query string and retrievable via
         `self.value()`.
         """
@@ -142,6 +145,8 @@ class EventAdmin(admin.ModelAdmin):
         form.instance.update_datetimes()
 
     class Media:
+        """Custom media file overrides."""
+
         css = {
             'all': ('css/admin-overrides.css', )
         }
