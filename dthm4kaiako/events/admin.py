@@ -32,6 +32,14 @@ class LocationAdmin(admin.ModelAdmin):
         'region',
     )
     list_filter = ('region', )
+    search_fields = (
+        'name',
+        'room',
+        'street_address',
+        'suburb',
+        'city',
+        'region',
+    )
 
 
 class SessionInline(admin.StackedInline):
@@ -125,12 +133,18 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
+    autocomplete_fields = ('locations', )
 
     def save_related(self, request, form, formsets, change):
         """Trigger update of event datetimes after sessions are saved."""
         super().save_related(request, form, formsets, change)
         # Update datetimes on event after saving sessions
         form.instance.update_datetimes()
+
+    class Media:
+        css = {
+            'all': ('css/admin-overrides.css', )
+        }
 
 
 admin.site.register(Event, EventAdmin)

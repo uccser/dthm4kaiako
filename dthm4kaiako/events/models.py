@@ -86,7 +86,7 @@ class Location(models.Model):
 
     def __str__(self):
         """Text representation of a location."""
-        return self.name
+        return self.get_full_address()
 
     def get_full_address(self):
         """Get full text representation of a location."""

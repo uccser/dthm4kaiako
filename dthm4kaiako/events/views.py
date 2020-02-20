@@ -62,7 +62,6 @@ class EventUpcomingView(FilterView):
     context_object_name = 'events'
     template_name = 'events/upcoming_events.html'
 
-
     def get_context_data(self, **kwargs):
         """Provide the context data for the upcoming events view.
 
