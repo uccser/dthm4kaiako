@@ -6,7 +6,7 @@ window.initMap = function() {
     } else {
         var center_lat_lng = { lat: -41, lng: 174 };
     }
-    var map_zoom = window.map_zoom || 6;
+    var map_zoom = window.map_zoom || 5;
     var map = new google.maps.Map(
         document.getElementById('map'),
         {
