@@ -86,7 +86,7 @@ class Location(models.Model):
 
     def __str__(self):
         """Text representation of a location."""
-        return self.name
+        return self.get_full_address()
 
     def get_full_address(self):
         """Get full text representation of a location."""
@@ -184,6 +184,7 @@ class Event(models.Model):
     registration_link = models.URLField(blank=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
+    show_schedule = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
@@ -240,6 +241,21 @@ class Event(models.Model):
             return '{}: {}'.format(self.series.abbreviation, self.name)
         else:
             return self.name
+
+    def location_summary(self):
+        """Return string of event location.
+
+        Returns:
+            String of summary of event location or None if no locations.
+        """
+        locations = list(self.locations.all())
+        if len(locations) > 1:
+            return 'Multiple locations'
+        elif locations:
+            location = locations[0]
+            return '{}, {}'.format(location.city, location.get_region_display())
+        else:
+            return None
 
     def __str__(self):
         """Text representation of an event."""

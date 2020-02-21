@@ -1,25 +1,42 @@
 {% extends "events/base.html" %}
 
 {% block page_heading %}
-    <h1>Events</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Events</h1>
+        {% if perms.events %}
+            <a href="{% url 'admin:app_list' 'events' %}" class="btn btn-sm btn-secondary">
+                Open event hub admin
+            </a>
+        {% endif %}
+    </div>
 {% endblock page_heading %}
 
-{% block content %}
-    <p>
-        Find and register for professional development events throughout New Zealand.
-        We plan to add the ability to search and filter events at a later stage.
-    </p>
+{% block content_container %}
+    <div class="col-12 col-md-6">
+        <p>
+            Find and register for professional development events throughout New Zealand.
+            We plan to add the ability to search and filter events at a later stage.
+        </p>
 
-    <h2>Upcoming events</h2>
-    {% for event in events %}
-        {% include 'events/event_card.html' %}
-    {% endfor %}
+        <a href="{% url 'events:upcoming' %}" class="btn btn-lg btn-primary btn-block mb-3">
+            Upcoming events
+        </a>
 
-    {% with ratio='4by3' %}
-        {% include "generic/map-element.html" %}
-    {% endwith %}
-{% endblock content %}
+        <a href="{% url 'events:past' %}" class="btn btn-lg btn-primary btn-block">
+            Past events
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <h5>Upcoming Events</h5>
+        {% with ratio='1by1' %}
+            {% include "generic/map-element.html" %}
+        {% endwith %}
+    </div>
+{% endblock content_container %}
 
 {% block scripts %}
+    <script>
+        var event_markers = {{ raw_map_locations|safe }};
+    </script>
     {% include "generic/map-javascript.html" %}
 {% endblock scripts %}

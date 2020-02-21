@@ -8,6 +8,11 @@
 
 {% block page_heading %}
     <div id="event-details">
+        {% if perms.events %}
+            <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-secondary float-right">
+                Edit event
+            </a>
+        {% endif %}
         <div class="h6 text-muted">
             {% for organiser in organisers %}
                 {% if organiser.logo %}
@@ -70,25 +75,8 @@
 
         <h3 id="event-description" class="event-heading">Description</h3>
         <div class="mb-3">
-            {{ event.description|safe }}q
+            {{ event.description|safe }}
         </div>
-
-        {% if sponsors %}
-            <h3 id="event-sponsors" class="event-heading">Sponsor{{ sponsors.count|pluralize }}</h3>
-            <ul class="list-unstyled">
-                {% for sponsor in sponsors %}
-                <li class="my-2">
-                    <a href="{{ sponsor.url }}" target="_blank">
-                        {% if sponsor.logo %}
-                        <img src="{{ sponsor.logo.url }}" class="img-y4" alt="{{ sponsor.name }}">
-                        {% else %}
-                            {{ sponsor.name }}
-                        {% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
 
         {% if locations %}
             <h3 id="event-locations" class="event-heading">Location{{ locations|pluralize }}</h3>
@@ -105,7 +93,7 @@
             {% endwith %}
         {% endif %}
 
-        {% if sessions %}
+        {% if event.show_schedule and sessions %}
             <h3 id="event-schedule" class="event-heading">Schedule</h3>
 
             {% for session in sessions %}
@@ -152,19 +140,16 @@
                 <a class="nav-link" href="#event-description">
                     Description
                 </a>
-                {% if sponsors %}
-                    <a class="nav-link" href="#event-sponsors">
-                        Sponsor{{ sponsors|pluralize }}
-                    </a>
-                {% endif %}
                 {% if locations %}
                     <a class="nav-link" href="#event-locations">
                         Location{{ locations|pluralize }}
                     </a>
                 {% endif %}
-                <a class="nav-link" href="#event-schedule">
-                    Schedule
-                </a>
+                {% if event.show_schedule %}
+                    <a class="nav-link" href="#event-schedule">
+                        Schedule
+                    </a>
+                {% endif %}
             </nav>
             <hr>
             <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
@@ -176,7 +161,7 @@
                 <div class="text-center">
                     <small>This event is sponsored by</small>
                 </div>
-                <ul class="list-unstyled text-center">
+                <ul class="list-unstyled text-center mb-3">
                     {% for sponsor in sponsors %}
                     <li class="my-2">
                         <a href="{{ sponsor.url }}" target="_blank">
@@ -190,15 +175,22 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-
         </div>
     </div>
 {% endblock content_container %}
 
 {% block scripts %}
-    {% if locations.count == 1 %}
-        {% include "generic/map-javascript.html" with map_location=location map_zoom=13 %}
-    {% elif locations %}
-        {% include "generic/map-javascript.html" with map_locations=locations map_zoom=5 %}
-    {% endif %}
+    <script>
+        var event_markers = [
+            {% for location in locations %}
+                {
+                    coords: { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+                    title: "{{ location.name|escape }}",
+                    text: "{{ location.get_full_address|escape|linebreaksbr }}",
+                },
+            {% endfor %}
+        ];
+        var map_zoom = {% if locations.count == 1 %}13{% else %}5{% endif %};
+    </script>
+    {% include "generic/map-javascript.html" %}
 {% endblock scripts %}

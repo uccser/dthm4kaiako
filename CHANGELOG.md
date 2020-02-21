@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.17.4
+
+- Redesign event hub to list events in two categories, upcoming events or past events. Both categories have filtering enabled on key attributes.
+- Allow event schedule to be hidden for simple events.
+- Fix bug where maps were not showing locations.
+- Fix bug were extra character showed in event descriptions.
+- Remove duplicate information on event pages.
+- Add buttons for event administrators to easily edit events from website.
+- Improve listing of locations in event admin.
+- Improve search for event locations in event admin.
+
 ## 0.17.3
 
 - Improve display of location addresses, by adding 'region' to the end of region names to avoid confusion with city names.

@@ -117,6 +117,7 @@ THIRD_PARTY_APPS = [
     'haystack',
     'mapwidgets',
     'captcha',
+    'django_filters',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
