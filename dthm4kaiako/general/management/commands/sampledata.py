@@ -183,7 +183,10 @@ class Command(management.base.BaseCommand):
         print('Event series created.')
 
         region_codes = dict()
+        region_suffix = ' region'
         for (code, name) in Location.REGION_CHOICES:
+            if name.endswith(region_suffix):
+                name = name[:-len(region_suffix)]
             region_codes[name] = code
         with open('general/management/commands/sample-data/nz-schools.csv') as csvfile:
             reader = csv.DictReader(csvfile)

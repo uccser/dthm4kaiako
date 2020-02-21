@@ -17,9 +17,12 @@
 
       <div class="collapse navbar-collapse" id="navbarSecondaryContent">
         <ul class="navbar-nav w-100">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'events:event_list' %}">All events</a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'events:upcoming' %}">Upcoming events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'events:past' %}">Past events</a>
+            </li>
         </ul>
       </div>
     </div>
