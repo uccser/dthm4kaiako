@@ -30,10 +30,6 @@ class HomeView(generic.TemplateView):
         ).select_related(
             'series',
         )
-        # Force evaluation of queryset
-        future_events = list(future_events)
-        context['events'] = future_events[:10]
-
         raw_map_locations = {}
         for event in future_events:
             for location in event.locations.all():

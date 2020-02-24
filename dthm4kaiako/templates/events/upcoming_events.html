@@ -13,11 +13,18 @@
         </div>
     </div>
 
-    {% for event in filter.qs %}
-        {% include 'events/event_card.html' %}
-    {% empty %}
+    {% if filter.qs %}
+        <p class="text-center">
+            <em>
+                Showing {{ filter.qs.count }} event{{ filter.qs.count|pluralize }}
+            </em>
+        </p>
+        {% for event in filter.qs %}
+            {% include 'events/event_card.html' %}
+        {% endfor %}
+    {% else %}
         <p class="text-center">
             <strong>Sorry!</strong> No upcoming events found matching the selected filters.
         </p>
-    {% endfor %}
+    {% endif %}
 {% endblock content %}
