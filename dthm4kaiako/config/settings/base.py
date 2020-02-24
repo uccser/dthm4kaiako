@@ -118,6 +118,7 @@ THIRD_PARTY_APPS = [
     'mapwidgets',
     'captcha',
     'django_filters',
+    'modelclone',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

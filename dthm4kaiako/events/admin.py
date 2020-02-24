@@ -13,6 +13,7 @@ from events.models import (
     Series,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
+from modelclone import ClonableModelAdmin
 
 logger = logging.getLogger(__name__)
 
@@ -47,8 +48,9 @@ class SessionInline(admin.StackedInline):
 
     model = Session
     fk_name = 'event'
-    extra = 1
+    extra = 3
     min_num = 1
+    autocomplete_fields = ('locations', )
 
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
@@ -99,7 +101,7 @@ class EventUpcomingListFilter(admin.SimpleListFilter):
             }
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(ClonableModelAdmin):
     """Admin view for an event."""
 
     model = Event
@@ -137,6 +139,7 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
+    save_on_top = True
 
     def save_related(self, request, form, formsets, change):
         """Trigger update of event datetimes after sessions are saved."""
