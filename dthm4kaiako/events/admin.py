@@ -133,7 +133,7 @@ class EventAdmin(admin.ModelAdmin):
             ),
         }),
     )
-    list_display = ('name', 'location_summary', 'series', 'start', 'end', 'featured')
+    list_display = ('name', 'location_summary', 'series', 'start', 'end', 'published', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
