@@ -31,6 +31,9 @@ $location-dark: #148086;
 
 .event {
   border-color: rgba(0, 0, 0, 0.25);
+  .event-card-sponsor {
+    max-height: 1.8rem;
+  }
   .featured-header {
     font-size: 0.8rem;
     padding: 0.4rem 1.25rem;
@@ -47,6 +50,9 @@ $location-dark: #148086;
     padding-right: 0.6rem;
     margin-right: 0.4rem;
     border-right: 1px solid $gray-500;
+  }
+  .card-header {
+    background-color: white;
   }
 }
 .event-heading {
