@@ -73,6 +73,11 @@ class EventFactory(DjangoModelFactory):
         """Add detail to event."""
         FAKER = faker.Faker()
 
+        # Set featured
+        # 20% chance
+        if random.randint(1, 5) == 1:
+            self.featured = True
+
         # Set location
         # 80% chance one location, otherwise multiple
         if random.randint(1, 5) == 1:
