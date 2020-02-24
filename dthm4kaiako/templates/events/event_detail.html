@@ -151,10 +151,13 @@
                     </a>
                 {% endif %}
             </nav>
-            <hr>
-            <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
-                Register to attend event
-            </a>
+
+            {% if event.registration_link %}
+                <hr>
+                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
+                    Register to attend event
+                </a>
+            {% endif %}
 
             {% if sponsors %}
                 <hr>
