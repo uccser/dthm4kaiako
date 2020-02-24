@@ -181,11 +181,23 @@ class Event(models.Model):
     name = models.CharField(max_length=200)
     description = RichTextUploadingField()
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
-    registration_link = models.URLField(blank=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
     show_schedule = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
+    REGISTRATION_TYPE_REGISTER = 1
+    REGISTRATION_TYPE_APPLY = 2
+    REGISTRATION_TYPE_EXTERNAL = 3
+    REGISTRATION_TYPE_CHOICES = (
+        (REGISTRATION_TYPE_REGISTER, _('Register to attend event')),
+        (REGISTRATION_TYPE_APPLY, _('Apply to attend event')),
+        (REGISTRATION_TYPE_EXTERNAL, _('Visit event website')),
+    )
+    registration_type = models.PositiveSmallIntegerField(
+        choices=REGISTRATION_TYPE_CHOICES,
+        default=REGISTRATION_TYPE_REGISTER,
+    )
+    registration_link = models.URLField(blank=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(

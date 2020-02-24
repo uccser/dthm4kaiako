@@ -125,7 +125,10 @@ class EventAdmin(ClonableModelAdmin):
         }),
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
-            'fields': ('registration_link', ),
+            'fields': (
+                'registration_link',
+                'registration_type',
+            ),
         }),
         ('Visibility', {
             'fields': (
