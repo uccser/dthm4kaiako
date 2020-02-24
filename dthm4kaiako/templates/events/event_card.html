@@ -9,7 +9,7 @@
     <div class="card-header align-middle">
         <div class="row">
             <div class="col-12 col-lg-10">
-                {% if event.organisers.all %}
+                {% if event.organisers.all or event.series %}
                     <div class="mb-2">
                         {% for organiser in event.organisers.all %}
                             {% if organiser.logo %}
@@ -20,6 +20,13 @@
                                 </small>
                             {% endif %}
                         {% endfor %}
+                        {% if event.series.logo %}
+                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                        {% elif event.series.abbreviation %}
+                            <small class="text-muted">
+                                Part of {{ event.series.abbreviation }} series
+                            </small>
+                        {% endif %}
                     </div>
                 {% endif %}
                 <h4 class="mb-0">
@@ -27,19 +34,6 @@
                         {{ event.name }}
                     </a>
                 </h4>
-                {% if event.series %}
-                    <small class="text-muted d-block mt-2">
-                        Part of the
-                        {% if event.series.logo %}
-                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                        {% else %}
-                            <span class="text-muted">
-                                {{ event.series.abbreviation }}
-                            </span>
-                        {% endif %}
-                        series
-                    </small>
-                {% endif %}
             </div>
             <div class="col text-left text-lg-right align-self-center">
                 {% if event.start|date:"j" != event.end|date:"j" %}

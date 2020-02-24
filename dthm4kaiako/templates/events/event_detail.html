@@ -13,63 +13,49 @@
                 Edit event
             </a>
         {% endif %}
-        <div class="h6 text-muted">
-            {% for organiser in organisers %}
-                {% if organiser.logo %}
-                    <img src="{{ organiser.logo.url }}" class="img-y4 mr-4" alt="{{ organiser.name }}">
-                {% else %}
-                    <span class="text-muted mr-4">
-                        {{ organiser.name }}
-                    </span>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <h1>
+
+        {% for organiser in organisers %}
+            {% if organiser.logo %}
+                <img src="{{ organiser.logo.url }}" class="img-inline-lg mr-4" alt="{{ organiser.name }}">
+            {% else %}
+                <span class="h6 mr-4">
+                    {{ organiser.name }}
+                </span>
+            {% endif %}
+        {% endfor %}
+        {% if event.series.logo %}
+            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+        {% endif %}
+
+        <h1 class="display-4">
             {{ event.name }}
         </h1>
-        {% if event.series %}
-            <div class="h6 text-muted">
-                Part of the
-                {% if event.series.logo %}
-                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                {% else %}
-                    <span class="text-muted">
-                        {{ event.series.name }}
-                    </span>
-                series
-                {% endif %}
-            </div>
-        {% endif %}
     </div>
 {% endblock page_heading %}
 
 {% block content_container %}
     <div class="col-12 col-md-8 order-2 order-md-1">
-        <div>
-            {% if event.accessible_online %}
-                {% include "events/badges/online.html" %}
+        {% if event.accessible_online %}
+            {% include "events/badges/online.html" %}
+        {% endif %}
+        <p class="mb-0 mt-3"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
+        <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
+        <p class="mb-0">
+            <strong>Cost:</strong>
+            {% if event.price == 0 %}
+                Free!
+            {% else %}
+                {{ event.price }}
             {% endif %}
-            <p class="mb-0 mt-3"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
-            <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
-            <p class="mb-0">
-                <strong>Cost:</strong>
-                {% if event.price == 0 %}
-                    Free!
-                {% else %}
-                    {{ event.price }}
-                {% endif %}
-            </p>
+        </p>
 
-            <div class="d-flex flex-row mb-3">
-                <div class="pr-1"><strong>Location{{ locations|pluralize }}:</strong></div>
-                <div class="d-flex flex-column">
-                    {% for location in locations %}
-                        <div>{{ location.get_full_address|escape|linebreaksbr }}</div>
-                        {% if not forloop.last %}
-                            <hr class="w-100 my-2">
-                        {% endif %}
-                    {% endfor %}
-                </div>
+
+        <div class="d-flex flex-row mb-3">
+            <div class="pr-1"><strong>Location{{ locations|pluralize }}:</strong></div>
+            <div class="d-flex flex-wrap">
+                {% for location in locations %}
+                    <div class="mr-5 mb-4">{{ location.get_full_address|escape|linebreaksbr }}</div>
+                {% endfor %}
             </div>
         </div>
 
@@ -80,12 +66,9 @@
 
         {% if locations %}
             <h3 id="event-locations" class="event-heading">Location{{ locations|pluralize }}</h3>
-            <div class="mb-3">
+            <div class="d-flex flex-wrap mb-3">
                 {% for location in locations %}
-                    <p class="mb-0">{{ location.get_full_address|escape|linebreaksbr }}</p>
-                    {% if not forloop.last %}
-                        <hr class="w-100 my-2">
-                    {% endif %}
+                <div class="mr-5 mb-4">{{ location.get_full_address|escape|linebreaksbr }}</div>
                 {% endfor %}
             </div>
             {% with ratio='1by1' %}
@@ -157,6 +140,20 @@
                 <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
                 </a>
+            {% endif %}
+
+            {% if event.series %}
+                <hr>
+                <div class="text-center">
+                    <small>This event is part of the following series</small>
+                </div>
+                {% if event.series.logo %}
+                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                {% else %}
+                    <div class="h6 text-muted text-center m-3">
+                        {{ event.series.name }}
+                    </div>
+                {% endif %}
             {% endif %}
 
             {% if sponsors %}
