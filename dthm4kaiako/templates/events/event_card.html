@@ -6,40 +6,36 @@
             Featured event
         </div>
     {% endif %}
-    <div class="card-header align-middle">
+    <div class="card-header title-header align-middle">
         <div class="row">
-            <div class="col-12 col-lg-7 col-xl-9">
-                {% if event.organisers.all %}
+            <div class="col-12 col-lg-9">
+                {% if event.organisers.all or event.series %}
                     <div class="mb-2">
                         {% for organiser in event.organisers.all %}
-                            {% if organiser.logo %}
-                                <img src="{{ organiser.logo.url }}" class="img-y2 mr-3" alt="{{ organiser.name }}">
-                            {% else %}
-                                <small class="text-muted mr-4">
-                                    {{ organiser.name }}
-                                </small>
-                            {% endif %}
+                            <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
+                                {% if organiser.logo %}
+                                    <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
+                                {% else %}
+                                    <small class="mr-4">
+                                        {{ organiser.name }}
+                                    </small>
+                                {% endif %}
+                            </a>
                         {% endfor %}
+                        {% if event.series.logo %}
+                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                        {% elif event.series.abbreviation %}
+                            <small class="text-muted">
+                                Part of {{ event.series.abbreviation }} series
+                            </small>
+                        {% endif %}
                     </div>
                 {% endif %}
-                <h5 class="mb-0">
+                <h4 class="mb-0">
                     <a href="{{ event.get_absolute_url }}">
                         {{ event.name }}
                     </a>
-                </h5>
-                {% if event.series %}
-                    <small class="text-muted d-block">
-                        Part of the
-                        {% if event.series.logo %}
-                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                        {% else %}
-                            <span class="text-muted">
-                                {{ event.series.abbreviation }}
-                            </span>
-                        {% endif %}
-                        series
-                    </small>
-                {% endif %}
+                </h4>
             </div>
             <div class="col text-left text-lg-right align-self-center">
                 {% if event.start|date:"j" != event.end|date:"j" %}
