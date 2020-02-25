@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.17.5
+
+- Hide registration link if no link is provided. (fixes #544)
+- Allow setting of type of event registration (normal/application based/external website). (fixes #543)
+- Show published status on event admin list. (fixes #540)
+- Add ability to duplicate events in admin interface.
+- Enable event badge and organiser links.
+- Update location picker for event sessions to use same widget as event locations. (fixes #542)
+- Fix bug where maps JavaScript was run when no map was available.
+- Update event card and detail pages to show series in a clearer way. (fixes #541)
+- Update AATEA logo. (fixes #546)
+- Show number of returned events from filters.
+- Set event sessions to be ordered by name, after start and end times.
+- Update sample data script to provide wider range of event data.
+
 ## 0.17.4
 
 - Redesign event hub to list events in two categories, upcoming events or past events. Both categories have filtering enabled on key attributes.
