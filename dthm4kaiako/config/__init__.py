@@ -1,6 +1,6 @@
 """Configuration for Django system."""
 
-__version__ = "0.17.4"
+__version__ = "0.17.5"
 __version_info__ = tuple(
     [
         int(num) if num.isdigit() else num
