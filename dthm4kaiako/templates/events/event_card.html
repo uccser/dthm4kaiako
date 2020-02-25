@@ -12,13 +12,15 @@
                 {% if event.organisers.all or event.series %}
                     <div class="mb-2">
                         {% for organiser in event.organisers.all %}
-                            {% if organiser.logo %}
-                                <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
-                            {% else %}
-                                <small class="text-muted mr-4">
-                                    {{ organiser.name }}
-                                </small>
-                            {% endif %}
+                            <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
+                                {% if organiser.logo %}
+                                    <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
+                                {% else %}
+                                    <small class="mr-4">
+                                        {{ organiser.name }}
+                                    </small>
+                                {% endif %}
+                            </a>
                         {% endfor %}
                         {% if event.series.logo %}
                             <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">

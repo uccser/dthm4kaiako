@@ -1,4 +1,4 @@
-<span class="location-badge">
+<a class="location-badge" href="{% url 'events:upcoming' %}?locations__region={{ location.region }}">
     {{ location.city }}{% if location.city != location.get_region_display %},
     {{ location.get_region_display }}{% endif %}
-</span>
+</a>
