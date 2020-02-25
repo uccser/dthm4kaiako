@@ -146,14 +146,14 @@
                 <hr>
                 <div class="text-center">
                     <small>This event is part of the following series</small>
+                    {% if event.series.logo %}
+                        <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                    {% else %}
+                        <div class="h6 text-center m-3">
+                            {{ event.series.name }}
+                        </div>
+                    {% endif %}
                 </div>
-                {% if event.series.logo %}
-                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                {% else %}
-                    <div class="h6 text-center m-3">
-                        {{ event.series.name }}
-                    </div>
-                {% endif %}
             {% endif %}
 
             {% if sponsors %}
