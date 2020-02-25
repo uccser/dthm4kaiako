@@ -2,6 +2,7 @@
 
 ## 0.17.6
 
+- Improve readabilty of event title and sponsors with increased whitespace.
 - Fix bug where event series image was not centered in sidebar.
 - Fix bug where event header images were not consistent sizes.
 
