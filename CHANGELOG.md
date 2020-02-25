@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.6
+
+- Improve readabilty of event title and sponsors with increased whitespace.
+- Fix bug where event series image was not centered in sidebar.
+- Fix bug where event header images were not consistent sizes.
+
 ## 0.17.5
 
 - Hide registration link if no link is provided. (fixes #544)
