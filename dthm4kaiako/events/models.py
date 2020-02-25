@@ -306,4 +306,4 @@ class Session(models.Model):
     class Meta:
         """Meta options for class."""
 
-        ordering = ['start', 'end']
+        ordering = ['start', 'end', 'name']
