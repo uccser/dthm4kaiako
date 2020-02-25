@@ -78,6 +78,11 @@ class EventFactory(DjangoModelFactory):
         if random.randint(1, 5) == 1:
             self.featured = True
 
+        # Set show schedule
+        # 50% chance
+        if random.randint(1, 2) == 1:
+            self.show_schedule = True
+
         # Set location
         # 80% chance one location, otherwise multiple
         if random.randint(1, 5) == 1:
