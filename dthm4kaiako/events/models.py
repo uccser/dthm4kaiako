@@ -231,6 +231,7 @@ class Event(models.Model):
         blank=True,
     )
     # TODO: Add validation that if no locations, then accessible_online must be true
+    # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
     def update_datetimes(self):
         """Update datetimes of event."""
