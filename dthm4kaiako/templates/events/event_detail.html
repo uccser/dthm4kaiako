@@ -142,6 +142,13 @@
                 </a>
             {% endif %}
 
+            {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
+                <hr>
+                <button class="btn btn-secondary btn-block btn-lg" role="button" disabled>
+                    {{ event.get_registration_type_display }}
+                </button>
+            {% endif %}
+
             {% if event.series %}
                 <hr>
                 <div class="text-center">

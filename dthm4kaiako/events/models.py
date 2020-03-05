@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.gis.db import models as geomodels
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from utils.get_upload_filepath import (
     get_event_organiser_upload_path,
@@ -188,10 +189,12 @@ class Event(models.Model):
     REGISTRATION_TYPE_REGISTER = 1
     REGISTRATION_TYPE_APPLY = 2
     REGISTRATION_TYPE_EXTERNAL = 3
+    REGISTRATION_TYPE_INVITE_ONLY = 4
     REGISTRATION_TYPE_CHOICES = (
         (REGISTRATION_TYPE_REGISTER, _('Register to attend event')),
         (REGISTRATION_TYPE_APPLY, _('Apply to attend event')),
         (REGISTRATION_TYPE_EXTERNAL, _('Visit event website')),
+        (REGISTRATION_TYPE_INVITE_ONLY, _('This event is invite only')),
     )
     registration_type = models.PositiveSmallIntegerField(
         choices=REGISTRATION_TYPE_CHOICES,
@@ -272,6 +275,27 @@ class Event(models.Model):
     def __str__(self):
         """Text representation of an event."""
         return self.name
+
+    def clean(self):
+        """Validate event model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        if self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and self.registration_link:
+            raise ValidationError(
+                {
+                    'registration_link':
+                    _('Registration link must be empty when event is set to invite only.')
+                }
+            )
+        if not self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and not self.registration_link:
+            raise ValidationError(
+                {
+                    'registration_link':
+                    _('Registration link must be given when event is not set to invite only.')
+                }
+            )
 
     class Meta:
         """Meta options for class."""
