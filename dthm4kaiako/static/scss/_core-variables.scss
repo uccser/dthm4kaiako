@@ -1,11 +1,16 @@
 // DTHM for kaiako
-$brand-colour: #2c4864;
+$brand-colour: #15385a;
 $brand-colour-light: lighten($brand-colour, 5%);
 $brand-colour-dark: darken($brand-colour, 5%);
 $brand-colour-darker: darken($brand-colour, 10%);
+$logo-colour: #abc837;
+$logo-colour-accent: #dde9af;
+
+// Get Started
+$get-started-brand-colour: #3d9441;
 
 // Resources
-$resources-brand-colour: #16842f;
+$resources-brand-colour: #74349a;
 
 // Events
 $events-brand-colour: #0976a9;
