@@ -1,0 +1,14 @@
+[
+    {
+        "origin": [
+            "https://www.dthm4kaiako.ac.nz"
+        ],
+        "responseHeader": [
+            "Content-Type"
+        ],
+        "method": [
+            "GET"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]
