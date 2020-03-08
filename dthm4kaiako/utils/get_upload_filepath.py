@@ -35,6 +35,21 @@ def get_resource_upload_path(component, filename):
     return join('resources', str(component.resource.pk), filename)
 
 
+def get_entity_upload_path(entity, filename):
+    """Create upload path for an entity by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Entity): Entity object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('user', 'entity', str(entity.pk), filename)
+
+
 def get_event_organiser_upload_path(organiser, filename):
     """Create upload path for an event organiser by primary key.
 

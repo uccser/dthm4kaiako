@@ -5,8 +5,8 @@ from django.utils.timezone import now
 from events.models import (
     Event,
     Location,
-    Organiser,
 )
+from users.models import Entity
 
 
 class UpcomingEventFilter(django_filters.FilterSet):
@@ -25,7 +25,7 @@ class UpcomingEventFilter(django_filters.FilterSet):
         empty_label='Show all',
     )
     organisers = django_filters.ModelChoiceFilter(
-        queryset=Organiser.objects.all(),
+        queryset=Entity.objects.all(),
         label='Organiser',
         empty_label='Show all',
     )
@@ -37,6 +37,8 @@ class UpcomingEventFilter(django_filters.FilterSet):
         fields = [
             'locations__region',
             'accessible_online',
+            'organisers'
+
         ]
 
     @property
@@ -71,7 +73,7 @@ class PastEventFilter(django_filters.FilterSet):
         empty_label='Show all',
     )
     organisers = django_filters.ModelChoiceFilter(
-        queryset=Organiser.objects.all(),
+        queryset=Entity.objects.all(),
         label='Organiser',
         empty_label='Show all',
     )
@@ -83,6 +85,7 @@ class PastEventFilter(django_filters.FilterSet):
         fields = [
             'locations__region',
             'accessible_online',
+            'organisers',
         ]
 
     @property

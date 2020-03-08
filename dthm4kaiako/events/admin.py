@@ -8,8 +8,6 @@ from events.models import (
     Event,
     Session,
     Location,
-    Organiser,
-    Sponsor,
     Series,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
@@ -138,6 +136,10 @@ class EventAdmin(ClonableModelAdmin):
             ),
         }),
     )
+    filter_horizontal = (
+        'organisers',
+        'sponsors',
+    )
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'published', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
     ordering = ('start', 'end', 'name')
@@ -160,6 +162,4 @@ class EventAdmin(ClonableModelAdmin):
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.register(Organiser)
-admin.site.register(Sponsor)
 admin.site.register(Series)

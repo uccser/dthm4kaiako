@@ -3,6 +3,7 @@
 from typing import Any, Sequence
 from django.contrib.auth import get_user_model
 import factory
+from users.models import Entity
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -31,3 +32,15 @@ class UserFactory(factory.DjangoModelFactory):
         """Metadata for UserFactory class."""
 
         model = get_user_model()
+
+
+class EntityFactory(factory.DjangoModelFactory):
+    """Factory for generating entities."""
+
+    name = factory.Faker('company')
+    url = factory.Faker('url')
+
+    class Meta:
+        """Metadata for class."""
+
+        model = Entity

@@ -13,6 +13,7 @@ from utils.get_upload_filepath import (
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
+from users.models import Entity
 
 
 class Location(models.Model):
@@ -109,50 +110,6 @@ class Location(models.Model):
         ordering = ['name', ]
 
 
-class Organiser(models.Model):
-    """Model for an event organiser."""
-
-    name = models.CharField(max_length=100)
-    url = models.URLField(blank=True)
-    logo = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to=get_event_organiser_upload_path,
-        help_text="Logo will be displayed instead of name if provided."
-    )
-
-    def __str__(self):
-        """Text representation of an event organiser."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-
-
-class Sponsor(models.Model):
-    """Model for an event sponsor."""
-
-    name = models.CharField(max_length=100)
-    url = models.URLField(blank=True)
-    logo = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to=get_event_sponsor_upload_path,
-        help_text="Logo will be displayed instead of name if provided."
-    )
-
-    def __str__(self):
-        """Text representation of an sponsor."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-
-
 class Series(models.Model):
     """Model for an event series."""
 
@@ -214,12 +171,12 @@ class Event(models.Model):
         blank=True,
     )
     sponsors = models.ManyToManyField(
-        Sponsor,
-        related_name='events',
+        Entity,
+        related_name='sponsored_events',
         blank=True,
     )
     organisers = models.ManyToManyField(
-        Organiser,
+        Entity,
         related_name='events',
         blank=True,
     )
