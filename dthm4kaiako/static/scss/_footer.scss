@@ -1,6 +1,13 @@
 .white-footer {
   border-top: 2px $brand-colour solid;
 }
+
+#sponsor-footer {
+    img {
+        max-height: 6rem;
+    }
+}
+
 #page-footer {
   background-color: $brand-colour;
   color: rgba($white, 0.6);

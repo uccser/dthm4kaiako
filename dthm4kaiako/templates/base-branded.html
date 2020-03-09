@@ -89,21 +89,21 @@
     </div>
   {% endblock body_container %}
 
-  <div class="container mt-5 py-5 d-print-none white-footer">
+  <div id="sponsor-footer" class="container mt-5 py-5 d-print-none white-footer">
     <div class="row align-items-center">
-      <div class="col-12 col-sm-6 col-md-4">
+      <div class="text-center col-12 col-sm-6 col-md-4">
         <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
-          <img class="img-fluid py-5" src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
+          <img class="img-fluid" src="{% static 'img/logos/uc-computer-science-education-logo-padded.png' %}">
         </a>
       </div>
-      <div class="col-12 col-sm-6 col-md-4{% block logo_reorder %}{% endblock logo_reorder %}">
+      <div class="text-center col-12 col-sm-6 col-md-4{% block logo_reorder %}{% endblock logo_reorder %}">
         <a href="{% url 'dtta:home' %}">
-          <img class="img-fluid px-3" src="{% static 'img/logos/dtta-logo.png' %}">
+          <img class="img-fluid" src="{% static 'img/logos/dtta-logo-padded.png' %}">
         </a>
       </div>
-      <div class="col-12 col-sm-6 col-md-4">
+      <div class="text-center col-12 col-sm-6 col-md-4">
         <a href="https://www.facebook.com/aateasolutions/">
-          <img class="img-fluid" src="{% static 'img/logos/aatea-logo.png' %}">
+          <img class="img-fluid" src="{% static 'img/logos/aatea-logo-padded.png' %}">
         </a>
       </div>
     </div>
