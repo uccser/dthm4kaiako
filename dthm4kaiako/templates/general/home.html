@@ -40,17 +40,19 @@
             <p class="lead">
                 A website for New Zealand Digital Technology and Hangarau Matihiko educators, created by:
             </p>
-            <div id="lead-logos" class="flex align-items-center">
-                <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
-                    <img src="{% static 'img/logos/uc-computer-science-education-logo-padded.png' %}">
-                </a>
-                <a href="{% url 'dtta:home' %}">
-                    <img src="{% static 'img/logos/dtta-logo-padded.png' %}">
-                </a>
-                <a href="https://www.facebook.com/aateasolutions/">
-                    <img src="{% static 'img/logos/aatea-logo-padded.png' %}">
-                </a>
-            </div>
+            {% spaceless %}
+                <div id="lead-logos" class="flex align-items-center">
+                    <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
+                        <img src="{% static 'img/logos/uc-computer-science-education-logo-padded.png' %}">
+                    </a>
+                    <a href="{% url 'dtta:home' %}">
+                        <img src="{% static 'img/logos/dtta-logo-padded.png' %}">
+                    </a>
+                    <a href="https://www.facebook.com/aateasolutions/">
+                        <img src="{% static 'img/logos/aatea-logo-padded.png' %}">
+                    </a>
+                </div>
+            {% endspaceless %}
         </div>
     </div>
 
