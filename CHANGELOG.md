@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.18.0
+
+- Add entity model for managing all organisations, companies, groups, etc and migrate data to this model.
+- Update brand icons and colours.
+- Add placeholder for upcoming 'Get Started' guide.
+- Add 'invite only' event registration type.
+- Darken events hub colour to meet AA contrast text rating.
+- Set CORS settings for static file servers.
+
 ## 0.17.6
 
 - Improve readabilty of event title and sponsors with increased whitespace.
