@@ -16,7 +16,13 @@ from resources.models import (
 class NZQAStandardAdmin(admin.ModelAdmin):
     """Configuration for displaying NZQA Standards in admin."""
 
-    list_display = ('level', 'abbreviation', 'name', 'credit_value', 'standard_type')
+    list_display = (
+        'level',
+        'abbreviation',
+        'name',
+        'credit_value',
+        'standard_type'
+    )
     ordering = ('level', 'abbreviation')
 
 
@@ -41,7 +47,62 @@ class ResourceAdmin(admin.ModelAdmin):
 
     model = Resource
     inlines = [ResourceComponentInline]
-    list_display = ('name', 'published')
+    list_display = (
+        'name',
+        'datetime_added',
+        'datetime_updated',
+        'published',
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                'fields': (
+                    'name',
+                    'description',
+                )
+            }
+        ),
+        ('Metadata', {
+            'fields': (
+                'languages',
+                'technological_areas',
+                'progress_outcomes',
+                'nzqa_standards',
+                'year_levels',
+                'curriculum_learning_areas',
+            ),
+        }),
+        ('Ownership', {
+            'description': 'Resources can be owned by both users and entities.',
+            'fields': (
+                'author_entities',
+                'author_users',
+            ),
+        }),
+        ('Visibility', {
+            'fields': (
+                'published',
+            ),
+        }),
+    )
+    filter_horizontal = (
+        'languages',
+        'technological_areas',
+        'progress_outcomes',
+        'nzqa_standards',
+        'year_levels',
+        'curriculum_learning_areas',
+        'author_entities',
+        'author_users',
+    )
+
+    class Media:
+        """Custom media file overrides."""
+
+        css = {
+            'all': ('css/admin-overrides.css', )
+        }
 
 
 admin.site.register(Language)
