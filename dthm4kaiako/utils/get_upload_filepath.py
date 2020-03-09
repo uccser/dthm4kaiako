@@ -50,36 +50,6 @@ def get_entity_upload_path(entity, filename):
     return join('user', 'entity', str(entity.pk), filename)
 
 
-def get_event_organiser_upload_path(organiser, filename):
-    """Create upload path for an event organiser by primary key.
-
-    Required by model FileField/ImageField.
-
-    Args:
-        component (Organiser): Organiser object file is being added to.
-        filename (str): Filename of file.
-
-    Returns:
-        String of path and filename for upload.
-    """
-    return join('events', 'organiser', str(organiser.pk), filename)
-
-
-def get_event_sponsor_upload_path(organiser, filename):
-    """Create upload path for an event sponsor by primary key.
-
-    Required by model FileField/ImageField.
-
-    Args:
-        component (Sponsor): Sponsor object file is being added to.
-        filename (str): Filename of file.
-
-    Returns:
-        String of path and filename for upload.
-    """
-    return join('events', 'sponsor', str(organiser.pk), filename)
-
-
 def get_event_series_upload_path(series, filename):
     """Create upload path for an event series by primary key.
 

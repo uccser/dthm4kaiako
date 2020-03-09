@@ -5,11 +5,7 @@ from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from utils.get_upload_filepath import (
-    get_event_organiser_upload_path,
-    get_event_sponsor_upload_path,
-    get_event_series_upload_path,
-)
+from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
