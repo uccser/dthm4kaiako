@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.18.1
+
+- Set path for loading SVGs.
+- Use padded logos to ensure even vertical sizing of logos.
+
 ## 0.18.0
 
 - Add entity model for managing all organisations, companies, groups, etc and migrate data to this model.
