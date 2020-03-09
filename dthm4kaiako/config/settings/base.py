@@ -435,6 +435,9 @@ DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SECRET_PAGES_TEMPLATE_TEMPLATE = 'secret_pages/{}.html'
+SVG_DIRS = [
+    os.path.join(str(STATIC_ROOT), 'svg')
+]
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------
