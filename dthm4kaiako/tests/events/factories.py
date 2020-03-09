@@ -6,38 +6,13 @@ from datetime import timedelta
 from tests.utils import random_boolean
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute
 from factory.faker import faker
+from users.models import Entity
 from events.models import (
-    Sponsor,
-    Organiser,
     Series,
     Event,
     Location,
     Session,
 )
-
-
-class SponsorFactory(DjangoModelFactory):
-    """Factory for generating event sponsors."""
-
-    name = Faker('company')
-    url = Faker('url')
-
-    class Meta:
-        """Metadata for class."""
-
-        model = Sponsor
-
-
-class OrganiserFactory(DjangoModelFactory):
-    """Factory for generating event organisers."""
-
-    name = Faker('company')
-    url = Faker('url')
-
-    class Meta:
-        """Metadata for class."""
-
-        model = Organiser
 
 
 class SeriesFactory(DjangoModelFactory):
@@ -97,21 +72,21 @@ class EventFactory(DjangoModelFactory):
         # 80% chance one organiser, otherwise multiple
         if random.randint(1, 5) == 1:
             self.organisers.add(*random.sample(
-                list(Organiser.objects.all()),
+                list(Entity.objects.all()),
                 random.randint(2, 3)
             ))
         else:
-            self.organisers.add(random.choice(Organiser.objects.all()))
+            self.organisers.add(random.choice(Entity.objects.all()))
 
         # Set sponsor
         # 80% chance one sponsor, otherwise multiple
         if random.randint(1, 5) == 1:
             self.sponsors.add(*random.sample(
-                list(Sponsor.objects.all()),
+                list(Entity.objects.all()),
                 random.randint(2, 4)
             ))
         else:
-            self.sponsors.add(random.choice(Sponsor.objects.all()))
+            self.sponsors.add(random.choice(Entity.objects.all()))
 
         # Set series
         # 50% chance of being in a series

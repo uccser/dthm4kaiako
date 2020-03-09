@@ -1,6 +1,6 @@
 {% extends "base-core.html" %}
 
-{% load static i18n activeurl %}
+{% load static i18n activeurl svg %}
 
 {% block body %}
   {% block navbar %}
@@ -39,7 +39,7 @@
       <p>
         A component of the
               <a id="svg-logo-inline" class="navbar-brand mr-0" href="{% url 'general:home' %}">
-                {% include 'svg/logo.html' %}
+                {% svg 'dthm4kaiako-logo-optimised' %}
               </a>
         website.</p>
       <p>

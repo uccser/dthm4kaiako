@@ -1,47 +1,81 @@
 {% extends "base-branded.html" %}
 
-{% load static %}
+{% load static svg %}
 
 {% block body_container %}
-    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-4">
+    <div id="welcome-jumbotron" class="jumbotron jumbotron-fluid py-4 mb-0">
         {% if messages %}
-        <div class="container" id="messages">
-            {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="container" id="messages">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show my-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
         {% endif %}
-        <div class="row">
-            <div class="col-12 text-center">
-                {% include 'svg/logo.html' %}
-                <div class="mb-4">
-                    {% if DEPLOYMENT_TYPE == 'dev' %}
-                        <div class="alert alert-warning d-inline-block" role="alert">
-                            You are viewing the test server, which only contains fake data for testing purposes.
-                        </div>
-                        <br>
-                    {% endif %}
-                    <a href="https://github.com/uccser/dthm4kaiako/releases" class="badge badge-warning">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="https://github.com/uccser/dthm4kaiako/releases" id="version-badge" class="badge badge-warning">
                         Alpha {{ VERSION_NUMBER }}
                     </a>
+                    {% svg 'dthm4kaiako-logo-optimised' %}
+                    {% if DEPLOYMENT_TYPE == 'dev' %}
+                        <div class="mb-4">
+                            <div class="alert alert-warning d-inline-block" role="alert">
+                                You are viewing the test server, which only contains fake data for testing purposes.
+                            </div>
+                            <br>
+                        </div>
+                    {% endif %}
                 </div>
-                <p class="lead">
-                    A website for New Zealand Digital Technology and Hangarau Matihiko educators
-                </p>
+            </div>
+        </div>
+    </div>
+    <div id="lead-container" class="container-fluid text-center mb-4 pt-3">
+        <div class="container">
+            <p class="lead">
+                A website for New Zealand Digital Technology and Hangarau Matihiko educators, created by:
+            </p>
+            <div id="lead-logos" class="flex align-items-center">
+                <a href="https://www.canterbury.ac.nz/engineering/schools/csse/research/cse/">
+                    <img src="{% static 'img/logos/uc-computer-science-education-logo.png' %}">
+                </a>
+                <a href="{% url 'dtta:home' %}">
+                    <img src="{% static 'img/logos/dtta-logo.png' %}">
+                </a>
+                <a href="https://www.facebook.com/aateasolutions/">
+                    <img src="{% static 'img/logos/aatea-logo.png' %}">
+                </a>
             </div>
         </div>
     </div>
 
     <div id="calls-to-action" class="container">
         <div class="row">
-            <div class="col-12 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="cta" id="cta-get-started">
+                    {% svg 'icons8-circled-play' %}
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Get Started</h5>
+                        <p class="card-text">
+                            View our guide on how to get started with Digital Technologies and Hangarau Matihiko.
+                        </p>
+                    </div>
+                    <a class="btn disabled" href="#" role="button">
+                        View get started guide
+                    </a>
+                    <div class="card-footer text-muted text-center">
+                        Coming April 2020
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="cta" id="cta-resources">
-                    <img class="card-img-top" src="{% static 'img/icons/icons8-versions-100-resources.png' %}">
+                    {% svg 'icons8-versions' %}
                     <div class="card-body">
                         <h5 class="card-title text-center">Resources</h5>
                         <p class="card-text">
@@ -52,13 +86,13 @@
                         View resources
                     </a>
                     <div class="card-footer text-muted text-center">
-                        Contains <strong>{{ resource_count }}</strong> resources
+                        <strong>{{ resource_count }}</strong> available resources
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="cta" id="cta-events">
-                    <img class="card-img-top" src="{% static 'img/icons/icons8-classroom-100-events.png' %}">
+                    {% svg 'icons8-classroom' %}
                     <div class="card-body">
                         <h5 class="card-title text-center">Events</h5>
                         <p class="card-text">
@@ -69,13 +103,13 @@
                         View events
                     </a>
                     <div class="card-footer text-muted text-center">
-                        Contains <strong>{{ upcoming_events }}</strong> upcoming events
+                        <strong>{{ upcoming_events }}</strong> upcoming events
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="cta" id="cta-dtta">
-                    <img class="card-img-top" src="{% static 'img/icons/icons8-user-groups-100-dtta.png' %}">
+                    {% svg 'icons8-user-groups' %}
                     <div class="card-body">
                         <h5 class="card-title text-center">Community</h5>
                         <p class="card-text">
@@ -86,7 +120,7 @@
                         View DTTA homepage
                     </a>
                     <div class="card-footer text-muted text-center">
-                        Contains <strong>1,000+</strong> members
+                        <strong>1,000+</strong> members
                     </div>
                 </div>
             </div>
@@ -98,7 +132,7 @@
             {% endif %}
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-3">
                 <div class="cta">
                     <img class="card-img-top" src="{% static 'img/icons/icons8-about-100.png' %}">
                     <div class="card-body">
@@ -112,7 +146,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-12 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-3">
                 <div class="cta">
                     <img class="card-img-top" src="{% static 'img/icons/icons8-faq-100.png' %}">
                     <div class="card-body">

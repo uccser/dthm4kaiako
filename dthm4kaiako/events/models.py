@@ -3,15 +3,13 @@
 
 from django.db import models
 from django.contrib.gis.db import models as geomodels
+from django.core.exceptions import ValidationError
 from django.urls import reverse
-from utils.get_upload_filepath import (
-    get_event_organiser_upload_path,
-    get_event_sponsor_upload_path,
-    get_event_series_upload_path,
-)
+from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
+from users.models import Entity
 
 
 class Location(models.Model):
@@ -108,50 +106,6 @@ class Location(models.Model):
         ordering = ['name', ]
 
 
-class Organiser(models.Model):
-    """Model for an event organiser."""
-
-    name = models.CharField(max_length=100)
-    url = models.URLField(blank=True)
-    logo = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to=get_event_organiser_upload_path,
-        help_text="Logo will be displayed instead of name if provided."
-    )
-
-    def __str__(self):
-        """Text representation of an event organiser."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-
-
-class Sponsor(models.Model):
-    """Model for an event sponsor."""
-
-    name = models.CharField(max_length=100)
-    url = models.URLField(blank=True)
-    logo = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to=get_event_sponsor_upload_path,
-        help_text="Logo will be displayed instead of name if provided."
-    )
-
-    def __str__(self):
-        """Text representation of an sponsor."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-
-
 class Series(models.Model):
     """Model for an event series."""
 
@@ -188,10 +142,12 @@ class Event(models.Model):
     REGISTRATION_TYPE_REGISTER = 1
     REGISTRATION_TYPE_APPLY = 2
     REGISTRATION_TYPE_EXTERNAL = 3
+    REGISTRATION_TYPE_INVITE_ONLY = 4
     REGISTRATION_TYPE_CHOICES = (
         (REGISTRATION_TYPE_REGISTER, _('Register to attend event')),
         (REGISTRATION_TYPE_APPLY, _('Apply to attend event')),
         (REGISTRATION_TYPE_EXTERNAL, _('Visit event website')),
+        (REGISTRATION_TYPE_INVITE_ONLY, _('This event is invite only')),
     )
     registration_type = models.PositiveSmallIntegerField(
         choices=REGISTRATION_TYPE_CHOICES,
@@ -211,12 +167,12 @@ class Event(models.Model):
         blank=True,
     )
     sponsors = models.ManyToManyField(
-        Sponsor,
-        related_name='events',
+        Entity,
+        related_name='sponsored_events',
         blank=True,
     )
     organisers = models.ManyToManyField(
-        Organiser,
+        Entity,
         related_name='events',
         blank=True,
     )
@@ -228,6 +184,7 @@ class Event(models.Model):
         blank=True,
     )
     # TODO: Add validation that if no locations, then accessible_online must be true
+    # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
     def update_datetimes(self):
         """Update datetimes of event."""
@@ -272,6 +229,27 @@ class Event(models.Model):
     def __str__(self):
         """Text representation of an event."""
         return self.name
+
+    def clean(self):
+        """Validate event model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        if self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and self.registration_link:
+            raise ValidationError(
+                {
+                    'registration_link':
+                    _('Registration link must be empty when event is set to invite only.')
+                }
+            )
+        if not self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and not self.registration_link:
+            raise ValidationError(
+                {
+                    'registration_link':
+                    _('Registration link must be given when event is not set to invite only.')
+                }
+            )
 
     class Meta:
         """Meta options for class."""

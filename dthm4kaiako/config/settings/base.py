@@ -119,6 +119,7 @@ THIRD_PARTY_APPS = [
     'captcha',
     'django_filters',
     'modelclone',
+    'svg',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

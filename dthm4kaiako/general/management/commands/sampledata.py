@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 from allauth.account.models import EmailAddress
+from tests.users.factories import EntityFactory
 from resources.models import (
     Language,
     TechnologicalArea,
@@ -24,8 +25,6 @@ from events.models import (
     Series,
 )
 from tests.events.factories import (
-    SponsorFactory,
-    OrganiserFactory,
     EventFactory,
 )
 # DTTA
@@ -93,6 +92,10 @@ class Command(management.base.BaseCommand):
         )
         print('User created.')
 
+        # Create entities
+        EntityFactory.create_batch(size=10)
+        print('Entities created.')
+
         # Resources
         Language.objects.create(name='English', css_class='language-en')
         Language.objects.create(name='Māori', css_class='language-mi')
@@ -153,10 +156,6 @@ class Command(management.base.BaseCommand):
         print('Resources created.')
 
         # Events
-        SponsorFactory.create_batch(size=10)
-        print('Event sponsors created.')
-        OrganiserFactory.create_batch(size=10)
-        print('Event organisers created.')
         event_series = {
             (
                 'Computer Science for High Schools',
