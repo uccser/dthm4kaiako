@@ -45,8 +45,11 @@ class ResourceComponentInline(admin.StackedInline):
 
 
 class ResourceForm(forms.ModelForm):
+    """Custom form for resources in admin."""
 
     class Meta:
+        """Meta options."""
+
         model = Resource
         fields = '__all__'
 

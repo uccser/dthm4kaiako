@@ -172,8 +172,9 @@ class ResourceFactory(DjangoModelFactory):
                     component_url=FAKER.url(),
                 )
 
+
 def add_entity_authors(self):
-    # Set author entities
+    """Set author entities."""
     # 80% chance one entity, otherwise multiple
     if random.randint(1, 5) == 1:
         self.author_entities.add(*random.sample(
@@ -183,8 +184,9 @@ def add_entity_authors(self):
     else:
         self.author_entities.add(random.choice(Entity.objects.all()))
 
+
 def add_user_authors(self):
-    # Set author user
+    """Set author user."""
     # 80% chance one user, otherwise multiple
     if random.randint(1, 5) == 1:
         self.author_users.add(*random.sample(
