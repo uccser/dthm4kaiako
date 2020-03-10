@@ -7,150 +7,187 @@
 {% endblock page_heading %}
 
 {% block content_container %}
-    <div class="col-12 col-md-6">
-        <h3 class="h4 pb-1 border-bottom">Description</h3>
-        {{ resource.description|safe }}
-    </div>
-    <div class="col-12 col-md-6">
-        <h3 class="h4 pb-1 border-bottom">Information</h3>
-        <ul class="list-unstyled">
-            <li>
-                <strong>Languages:</strong>
-                {% if resource.languages.exists %}
-                    {% for language in resource.languages.all %}
-                        {% include "resources/badges/language.html" %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <h3 class="h4 pb-1 mb-0 border-bottom">Details</h3>
+        <div id="info-panel">
+            <div class="info-item">
+                <div class="info-header">Author{{ author_count|pluralize }}</div>
+                <div id="info-authors" class="info-value">
+                    {% for entity in resource.author_entities.all %}
+                        <div>
+                            {% if entity.logo %}
+                                <img src="{{ entity.logo.url }}" class="img-inline mr-3" alt="{{ entity.name }}">
+                            {% else %}
+                                <small>
+                                    {{ entity.name }}
+                                </small>
+                            {% endif %}
+                        </div>
                     {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>Curriculum learning area:</strong>
-                {% if resource.curriculum_learning_areas.exists %}
-                    {% for curriculum_learning_area in resource.curriculum_learning_areas.all %}
-                        {% include "resources/badges/curriculum-learning-area.html" %}
+                    {% for author in resource.author_users.all %}
+                        <div>
+                            <small>
+                                {{ author }}
+                            </small>
+                        </div>
                     {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>Technological area:</strong>
-                {% if resource.technological_areas.exists %}
-                    {% for technological_area in resource.technological_areas.all %}
-                        {% include "resources/badges/technological-area.html" %}
-                    {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>Progress outcomes:</strong>
-                {% if resource.progress_outcomes.exists %}
-                    {% for progress_outcome in resource.progress_outcomes.all %}
-                        {% include "resources/badges/progress-outcome.html" %}
-                    {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>NZQA standards:</strong>
-                {% if resource.nzqa_standards.exists %}
-                    {% for nzqa_standard in resource.nzqa_standards.all %}
-                        {% include "resources/badges/nzqa-standard.html" %}
-                    {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>Year levels:</strong>
-                {% if resource.year_levels.exists %}
-                    {% for year_level in resource.year_levels.all %}
-                        {% include "resources/badges/year-level.html" %}
-                    {% endfor %}
-                {% else %}
-                    None listed
-                {% endif %}
-            </li>
-            <li>
-                <strong>Resource added:</strong>
-                <span title="{{ resource.datetime_added }}">
-                    {{ resource.datetime_added|timesince }} ago
-                </span>
-            </li>
-            <li>
-                <strong>Resource last updated:</strong>
-                <span title="{{ resource.datetime_updated }}">
-                    {{ resource.datetime_updated|timesince }} ago
-                </span>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-12">
-        {% if components %}
-        <h2 class="pb-1 border-bottom">Components</h2>
-        <p class="text-muted">
-            Click any of the components below to access them.
-        </p>
-
-        <div class="container resource-components mb-3">
-            {% for component in components %}
-            <a {% if component.component_url %} href="{{ component.component_url }}" target="_blank"
-               {% elif component.component_resource %} href="{{ component.component_resource.get_absolute_url }}"
-               {% elif component.component_file %} href="{{ component.component_file.url }}" download
-               {% endif %}
-                class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
-                <div class="col-12 col-md-auto">
-                    <img src="{% static component.icon_path %}" class="img-component-type">
                 </div>
-                <div class="col-12 col-md-auto flex-grow-1">
-                    <strong>
-                        {{ component.name }}
-                    </strong>
-                    <br>
-                    <small class="text-muted">
-                        {% if component.component_url %}
-                            {{ component.component_url|truncatechars:70 }}
-                        {% elif component.component_file %}
-                            {{ component.filename }}
-                        {% endif %}
-                    </small>
+            </div>
+            <div class="info-item">
+                <div class="info-header">Languages</div>
+                <div class="info-value">
+                    {% if resource.languages.exists %}
+                        {% for language in resource.languages.all %}
+                            {% include "resources/badges/language.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
                 </div>
-                <div class="col-12 col-md-auto">
-                    <small class="text-muted">
-                        {% if component.component_resource %}
-                            {{ component.component_resource.components.count }} components
-                        {% elif component.component_file %}
-                            {{ component.component_file.size|filesizeformat }}
-                        {% endif %}
-                    </small>
+            </div>
+            <div class="info-item">
+                <div class="info-header">Curriculum learning area</div>
+                <div class="info-value">
+                    {% if resource.curriculum_learning_areas.exists %}
+                        {% for curriculum_learning_area in resource.curriculum_learning_areas.all %}
+                            {% include "resources/badges/curriculum-learning-area.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
                 </div>
-            </a>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {% if components_of %}
-            <h2 class="pb-1 border-bottom">Components of</h2>
-            <p>This resource is also a component of the following resources:</p>
-
-            <div class="container resource-components">
-                {% for component_of in components_of %}
-                <a href="{{ component_of.resource.get_absolute_url }}" class="row resource-component align-items-center border rounded my-2 p-1 text-center text-md-left">
-                    <div class="col-12 col-md-auto flex-grow-1">
-                        <strong>
-                            {{ component_of.resource.name }}
-                        </strong>
+            </div>
+            <div class="info-item">
+                <div class="info-header">Technological area</div>
+                <div class="info-value">
+                    {% if resource.technological_areas.exists %}
+                        {% for technological_area in resource.technological_areas.all %}
+                            {% include "resources/badges/technological-area.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
                     </div>
-                    <div class="col-12 col-md-auto">
+            </div>
+            <div class="info-item">
+                <div class="info-header">Progress outcomes</div>
+                <div class="info-value">
+                    {% if resource.progress_outcomes.exists %}
+                        {% for progress_outcome in resource.progress_outcomes.all %}
+                           {% include "resources/badges/progress-outcome.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
+                    </div>
+            </div>
+            <div class="info-item">
+                <div class="info-header">NZQA standards</div>
+                <div class="info-value">
+                    {% if resource.nzqa_standards.exists %}
+                        {% for nzqa_standard in resource.nzqa_standards.all %}
+                            {% include "resources/badges/nzqa-standard.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-header">Year levels</div>
+                <div class="info-value">
+                    {% if resource.year_levels.exists %}
+                        {% for year_level in resource.year_levels.all %}
+                            {% include "resources/badges/year-level.html" %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">
+                            None listed
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-value" title="{{ resource.datetime_added }}">
+                    <strong>Added</strong> {{ resource.datetime_added|timesince }} ago
+                </div>
+                {% if resource.datetime_updated != resource.datetime_added %}
+                    <div class="info-value" title="{{ resource.datetime_updated }}">
+                        <strong>Updated</strong> {{ resource.datetime_updated|timesince }} ago
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-8">
+        <h3 class="h4 pb-1 border-bottom">Description</h3>
+        <div class="mb-4">
+            {{ resource.description|safe }}
+        </div>
+
+        {% if components %}
+            <h3 class="h4 pb-1 border-bottom">Components</h3>
+            <p class="text-muted">
+                Click any of the components below to access them.
+            </p>
+
+            <div id="resource-components" class="mb-3">
+                {% for component in components %}
+                <a {% if component.component_url %} href="{{ component.component_url }}" target="_blank"
+                {% elif component.component_resource %} href="{{ component.component_resource.get_absolute_url }}"
+                {% elif component.component_file %} href="{{ component.component_file.url }}" download
+                {% endif %}
+                    class="d-flex resource-component align-items-center border rounded my-2 py-1 px-2 text-center text-md-left overflow-hidden">
+                    <div class="">
+                        <img src="{% static component.icon_path %}" class="img-component-type mr-3">
+                    </div>
+                    <div class="flex-grow-1">
+                        <strong>
+                            {{ component.name }}
+                        </strong>
+                        <br>
                         <small class="text-muted">
-                            {{ component_of.resource.components.count }} component{{ component_of.resource.components.count|pluralize }}
+                            {% if component.component_url %}
+                                {{ component.component_url|truncatechars:70 }}
+                            {% elif component.component_file %}
+                                {{ component.component_file.size|filesizeformat }} - {{ component.filename }}
+                            {% elif component.component_resource %}
+                                {{ component.component_resource.components.count }} component{{ component.component_resource.components.count|pluralize }}
+                            {% endif %}
                         </small>
                     </div>
                 </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if components_of %}
+            <h3 class="h4 pb-1 border-bottom">Components of</h3>
+            <p>This resource is also a component of the following resources:</p>
+
+            <div id="resource-components-of">
+                {% for component_of in components_of %}
+                    <a href="{{ component_of.resource.get_absolute_url }}" class="d-flex resource-component align-items-center border rounded my-2 py-1 px-2 text-center text-md-left">
+                        <div class="flex-grow-1">
+                            <strong>
+                                {{ component_of.resource.name }}
+                            </strong>
+                            <br>
+                            <small class="text-muted">
+                                {{ component_of.resource.components.count }} component{{ component_of.resource.components.count|pluralize }}
+                            </small>
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         {% endif %}

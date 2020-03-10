@@ -17,7 +17,7 @@
             <label for="id_q" class="h4">Search</label>
             <div class="d-flex flex-column flex-md-row">
                 <div class="flex-grow mr-md-3">
-                    <input type="search" id="id_q" name="q" class="form-control form-control-lg w-100" placeholder="What resources are you searching for?">
+                    <input type="search" id="id_q" name="q" class="form-control form-control-lg w-100 mb-2" placeholder="What resources are you searching for?">
                 </div>
                 <div>
                     <button type="submit" class="btn btn-lg btn-block btn-success">Search</button>
@@ -31,10 +31,10 @@
     </div>
 
     {% for resource in latest_resources %}
-        <div class="col-12 col-md-3 col-xl-2 text-muted mb-1">
-            Added {{ resource.datetime_added|naturaltime }}:
+        <div class="col-12 col-lg-3 text-muted mb-1">
+            {% ifchanged %}Added {{ resource.datetime_added|naturaltime }}:{% endifchanged %}
         </div>
-        <div class="col-12 col-md-9 col-xl-10">
+        <div class="col-12 col-lg-9">
             {% include "resources/resource-card.html" %}
         </div>
     {% endfor %}

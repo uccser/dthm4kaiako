@@ -1,6 +1,7 @@
 """Module for factories for testing the resources application."""
 
 import random
+from django.contrib.auth import get_user_model
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction
 from factory.faker import faker
 from resources.models import (
@@ -13,10 +14,12 @@ from resources.models import (
     ProgressOutcome,
     YearLevel,
 )
+from users.models import Entity
 
 CONTENT_PRIMARY = 1
 CONTENT_SECONDARY = 2
 CONTENT_BOTH = 3
+User = get_user_model()
 
 
 class NZQAStandardFactory(DjangoModelFactory):
@@ -133,6 +136,18 @@ class ResourceFactory(DjangoModelFactory):
             )
         )
 
+        # 60% chance entity authors only
+        # 30% chance user authors only
+        # 10% chance entity and user authors
+        rand_author_int = random.randint(1, 10)
+        if rand_author_int <= 6:
+            add_entity_authors(self)
+        elif rand_author_int <= 9:
+            add_user_authors(self)
+        else:
+            add_entity_authors(self)
+            add_user_authors(self)
+
         # Add components
         number_of_components = random.randint(1, 9)
         for i in range(number_of_components):
@@ -156,3 +171,25 @@ class ResourceFactory(DjangoModelFactory):
                     resource=self,
                     component_url=FAKER.url(),
                 )
+
+def add_entity_authors(self):
+    # Set author entities
+    # 80% chance one entity, otherwise multiple
+    if random.randint(1, 5) == 1:
+        self.author_entities.add(*random.sample(
+            list(Entity.objects.all()),
+            random.randint(2, 3)
+        ))
+    else:
+        self.author_entities.add(random.choice(Entity.objects.all()))
+
+def add_user_authors(self):
+    # Set author user
+    # 80% chance one user, otherwise multiple
+    if random.randint(1, 5) == 1:
+        self.author_users.add(*random.sample(
+            list(User.objects.all()),
+            random.randint(2, min(User.objects.count(), 4))
+        ))
+    else:
+        self.author_users.add(random.choice(User.objects.all()))

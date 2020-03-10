@@ -10,7 +10,26 @@ $hover-alpha: .1;
 }
 
 // Detail view page
-.resource-components {
+#info-panel {
+    .info-item {
+        padding: 0.3rem 0.5rem;
+        .info-header {
+            font-weight: bold;
+        }
+    }
+    .info-item:nth-child(even) {
+        background-color: rgba($resources-brand-colour, 0.08);
+    }
+    #info-authors > div {
+        margin-bottom: 0.5rem;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+#resource-components,
+#resource-components-of {
   .img-component-type {
     height: 50px;
   }

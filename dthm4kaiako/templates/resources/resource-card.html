@@ -1,5 +1,27 @@
 <div class="resource card mb-3 w-100">
     <div class="card-header">
+        {% if resource.author_entities or resource.author_users %}
+            <div class="mb-2">
+                {% for entity in resource.author_entities.all %}
+                    <span>
+                        {% if entity.logo %}
+                            <img src="{{ entity.logo.url }}" class="img-inline mr-3" alt="{{ entity.name }}">
+                        {% else %}
+                            <small class="mr-4">
+                                {{ entity.name }}
+                            </small>
+                        {% endif %}
+                    </span>
+                {% endfor %}
+                {% for author in resource.author_users.all %}
+                    <span>
+                        <small class="mr-4">
+                            {{ author }}
+                        </small>
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
         <h5 class="d-inline-block mb-0">
             <a href="{{ resource.get_absolute_url }}">
                 {{ resource.name }}
