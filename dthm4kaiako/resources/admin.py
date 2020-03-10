@@ -1,6 +1,8 @@
 """Module for admin configuration for the resources application."""
 
 from django.contrib import admin
+from django import forms
+from django.utils.translation import gettext_lazy as _
 from resources.models import (
     Resource,
     ResourceComponent,
@@ -42,10 +44,27 @@ class ResourceComponentInline(admin.StackedInline):
     )
 
 
+class ResourceForm(forms.ModelForm):
+
+    class Meta:
+        model = Resource
+        fields = '__all__'
+
+    def clean(self):
+        """Validate form values.
+
+        Raises:
+            ValidationError if invalid values.
+        """
+        # Check at least one author exists
+        if self.cleaned_data['author_entities'].count() + self.cleaned_data['author_users'].count() == 0:
+            raise forms.ValidationError(_('At least one author (entity or user) must be listed.'))
+
+
 class ResourceAdmin(admin.ModelAdmin):
     """Admin view for resource objects."""
 
-    model = Resource
+    form = ResourceForm
     inlines = [ResourceComponentInline]
     list_display = (
         'name',
