@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.18.2
+
+- Store authors for resources (users and/or entities).
+    - Searching and filtering by authors will be added at a later time.
+- Improve layout of information for resources on their detail pages.
+- Alter resource and event card colours to match their hub's theme.
+- Fix CSS bug where hyperlinks appeared on whitespace between logos on homepage.
+- Add validation within admin interface to check at least one author for a resource.
+- Add spacing between resource components in admin.
+
 ## 0.18.1
 
 - Set path for loading SVGs.

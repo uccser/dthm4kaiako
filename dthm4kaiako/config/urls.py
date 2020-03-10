@@ -12,6 +12,7 @@ from config.views import (
 )
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
+admin.site.site_title = admin.site.site_header
 
 urlpatterns = [
     path('', include('general.urls', namespace='general')),

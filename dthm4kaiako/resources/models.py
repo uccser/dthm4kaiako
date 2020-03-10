@@ -6,16 +6,19 @@ import logging
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from autoslug import AutoSlugField
 import filetype
 from utils.get_upload_filepath import get_resource_upload_path
 from utils.google_drive_api import get_google_drive_mimetype
 from ckeditor_uploader.fields import RichTextUploadingField
+from users.models import Entity
 
 ICON_PATH = 'img/icons/'
 GOOGLE_DRIVE_REGEX = 'https://(drive|docs).google.com'
 logger = logging.getLogger(__name__)
+User = get_user_model()
 
 
 class Language(models.Model):
@@ -155,6 +158,16 @@ class Resource(models.Model):
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    author_entities = models.ManyToManyField(
+        Entity,
+        related_name='resources',
+        blank=True,
+    )
+    author_users = models.ManyToManyField(
+        User,
+        related_name='resources',
+        blank=True,
+    )
     published = models.BooleanField(default=False)
     languages = models.ManyToManyField(
         Language,

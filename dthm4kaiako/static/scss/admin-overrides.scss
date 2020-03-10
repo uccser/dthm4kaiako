@@ -4,3 +4,15 @@
         white-space: pre !important;
     }
 }
+
+// Add spacing between resource components
+#components-group {
+    .inline-related {
+        margin: 2rem 0;
+        border: 2px solid #cecece;
+        .module h2 {
+            background-color: #cedee6;
+            color: #44545c;
+        }
+    }
+}

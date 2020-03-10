@@ -30,7 +30,8 @@ $location-dark: #148086;
 }
 
 .event {
-  border-color: rgba(0, 0, 0, 0.25);
+  border-color: rgba($events-brand-colour, 0.3);
+  border-width: 2px;
   .event-card-sponsor {
     max-height: 1.8rem;
   }

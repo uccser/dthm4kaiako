@@ -56,6 +56,7 @@ class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
             Dictionary of context data.
         """
         context = super().get_context_data(**kwargs)
+        context['author_count'] = self.object.author_entities.count() + self.object.author_users.count()
         context['components'] = self.object.components.order_by('name')
         context['components_of'] = self.object.component_of.order_by('name')
         return context
