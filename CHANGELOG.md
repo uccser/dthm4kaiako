@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.3
+
+- Update 'Get Started' label from 'Coming April 2020' to 'Coming Late 2020'.
+
 ## 0.18.2
 
 - Store authors for resources (users and/or entities).
