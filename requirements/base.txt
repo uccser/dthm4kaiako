@@ -1,6 +1,6 @@
 pytz==2019.3  # https://github.com/stub42/pytz
 python-slugify==4.0.0  # https://github.com/un33k/python-slugify
-Pillow==7.0.0  # https://github.com/python-pillow/Pillow
+Pillow==7.2.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==19.2.0  # https://github.com/hynek/argon2_cffi
 redis>=2.10.6, < 3  # pyup: < 3 # https://github.com/antirez/redis
 filetype==1.0.4  # https://github.com/h2non/filetype.py
@@ -18,7 +18,7 @@ django-recaptcha==2.0.6
 django-autoslug-iplweb==1.9.5  # https://github.com/justinmayer/django-autoslug
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
-django-filter==2.2.0  # https://github.com/carltongibson/django-filter/
+django-filter==2.4.0  # https://github.com/carltongibson/django-filter/
 django-ipware==2.1.0
 django-modelclone==0.7.1
 django-inline-svg==0.1.1
