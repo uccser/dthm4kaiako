@@ -43,4 +43,4 @@ gcloud app deploy ./app.yaml --quiet --project=dthm4kaiako-dev
 
 # Publish cron jobs to Google App Engine.
 cp ./infrastructure/dev-deploy/cron.yaml ./cron.yaml
-gcloud app deploy ./cron.yaml --quiet --project=dthm4kaiako-dev --stop-previous-version
+gcloud app deploy ./cron.yaml --quiet --project=dthm4kaiako-dev --promote --stop-previous-version
