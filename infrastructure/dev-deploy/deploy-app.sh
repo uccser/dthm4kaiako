@@ -39,7 +39,7 @@ python ./infrastructure/replace_envs.py ./infrastructure/dev-deploy/app.yaml
 # If multiple services are deployed at a later stage, these should be checked
 # that the apps deploy to the correct services.
 # See: https://cloud.google.com/sdk/gcloud/reference/app/deploy
-gcloud app deploy ./app.yaml --quiet --project=dthm4kaiako-dev --stop-previous-version
+gcloud app deploy ./app.yaml --quiet --project=dthm4kaiako-dev --stop-previous-version --verbosity=debug
 
 # Publish cron jobs to Google App Engine.
 cp ./infrastructure/dev-deploy/cron.yaml ./cron.yaml
