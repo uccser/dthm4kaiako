@@ -1,0 +1,52 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Run test suite
+      run: ./dev ci test_suite
+    - name: Run style checker
+      run: ./dev ci style
+
+  develop-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' # only run this job if the branch is develop
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Deploy development website to Google App Engine
+      run: bash ./infrastructure/dev-deploy/deploy-app.sh
+    - name: Update development Google Cloud SQL database
+      run: bash ./infrastructure/dev-deploy/update-content.sh
+    - name: Copy development static files to Google Storage Bucket
+      run: bash ./infrastructure/dev-deploy/deploy-static-files.sh
+
+  production-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' # only run this job if the branch is master
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Deploy production website to Google App Engine
+      run: bash ./infrastructure/prod-deploy/deploy-app.sh
+    - name: Update production Google Cloud SQL database
+      run: bash ./infrastructure/prod-deploy/update-content.sh
+    - name: Copy production static files to Google Storage Bucket
+      run: bash ./infrastructure/prod-deploy/deploy-static-files.sh
