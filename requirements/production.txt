@@ -6,7 +6,7 @@
 # ------------------------------------------------------------------------------
 django-storages[google]==1.9.1  # https://github.com/jschneier/django-storages
 google-auth==1.11.0  # https://github.com/googleapis/google-auth-library-python
-google-cloud-logging==1.14.0
+google-cloud-logging==2.0.1
 
 # Extra packages due to missing bindings
 # See: https://github.com/uccser/dthm4kaiako/issues/363
