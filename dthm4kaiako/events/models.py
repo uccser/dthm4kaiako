@@ -183,6 +183,17 @@ class Event(models.Model):
         null=True,
         blank=True,
     )
+    applications = models.ForeignKey(
+        EventApplication,
+        on_delete=models.CASCADE,
+        related_name='event',
+        blank=True,
+    )
+    applicant_types = models.ManyToManyField(
+        ApplicantType,
+        related_name='events',
+        blank=True,
+    )
     # TODO: Add validation that if no locations, then accessible_online must be true
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
@@ -305,6 +316,58 @@ class EventApplication(models.Model):
         choices = STATUS_CHOICES,
         default=STATUS_PENDING,
     )
-    # Might not need this field if we have Event object as foreign key
+    # TODO: Might not need this field if we have Event object as foreign key
     vouchers = models.CharField(max_length=100, blank=True)
     staff_comments = models.CharField(max_length=500, blank=True)
+
+
+class ApplicantType(models.Model):
+    """Model for the applicant type. E.g. staff, attendee, vendor."""
+
+    # TODO: Add ID field
+    name = models.CharField(max_length=200)
+    cost = models.CharField(max_length=20)
+
+
+class RegistrationForm(models.Model):
+    """Model for a registration form."""
+
+    datetime_open = models.DateTimeField()
+    datetime_end = models.DateTimeField()
+    session_choices = models.ForeignKey(
+        RegistrationFormSessionChoice,
+        on_delete=models.CASCADE,
+        related_name='registraion_form',
+    )
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE
+    )
+    # TODO: terms_and_conditions
+
+
+class RegistrationFormSessionChoice(models.Model):
+    """Model for sessions that run at the same time."""
+
+    description = models.CharField(max_length=300, blank=True)
+    sessions = models.ForeignKey(
+        Session,
+        on_delete=models.CASCADE,
+        related_name='form_choices',
+    )
+
+
+class EventVoucher(models.Model):
+    """Model for an event voucher."""
+
+    code = models.CharField(
+        max_length=20,
+        primary_key=True
+    )
+    active = models.BooleanField(default=False)
+    # TODO: add percentage_off field
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='vouchers'
+    )
