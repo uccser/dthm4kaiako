@@ -305,5 +305,6 @@ class EventApplication(models.Model):
         choices = STATUS_CHOICES,
         default=STATUS_PENDING,
     )
+    # Might not need this field if we have Event object as foreign key
     vouchers = models.CharField(max_length=100, blank=True)
-    staff_comments = models.CharField(max_length=500, blank=True)\
+    staff_comments = models.CharField(max_length=500, blank=True)
