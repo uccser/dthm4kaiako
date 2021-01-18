@@ -294,11 +294,11 @@ class EventApplication(models.Model):
     datetime_updated = models.DateTimeField(auto_now=True)
     STATUS_PENDING = 'P'
     STATUS_ACCEPTED = 'A'
-    STATUS_DENIED = 'D'
+    STATUS_CANCELLED = 'C'
     STATUS_CHOICES = (
         (STATUS_PENDING, _('Pending')),
         (STATUS_ACCEPTED, _('Accepted')),
-        (STATUS_DENIED, _('Denied')),
+        (STATUS_CANCELLED, _('Cancelled')),
     )
     status = models.CharField(
         max_length=1,
