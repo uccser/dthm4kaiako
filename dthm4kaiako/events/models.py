@@ -285,3 +285,25 @@ class Session(models.Model):
         """Meta options for class."""
 
         ordering = ['start', 'end', 'name']
+
+
+class EventApplication(models.Model):
+    """Model for an event application."""
+
+    datetime_submitted = models.DateTimeField(auto_now_add=True)
+    datetime_updated = models.DateTimeField(auto_now=True)
+    STATUS_PENDING = 'P'
+    STATUS_ACCEPTED = 'A'
+    STATUS_DENIED = 'D'
+    STATUS_CHOICES = (
+        (STATUS_PENDING, _('Pending')),
+        (STATUS_ACCEPTED, _('Accepted')),
+        (STATUS_DENIED, _('Denied')),
+    )
+    status = models.CharField(
+        max_length=1,
+        choices = STATUS_CHOICES,
+        default=STATUS_PENDING,
+    )
+    vouchers = models.CharField(max_length=100, blank=True)
+    staff_comments = models.CharField(max_length=500, blank=True)\
