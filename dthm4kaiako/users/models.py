@@ -12,6 +12,48 @@ class User(AbstractUser):
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
+    # >>>>>>>>>>>>>>>>>>> BELOW NEEDS TO BE MULTISELECT <<<<<<<<<<<<<<<<<<<
+    # DIETARY_GLUTEN_FREE = 'GF'
+    # DIETARY_DAIRY_FREE = 'DF'
+    # DIETARY_VEGETARIAN = 'V'
+    # DIETARY_VEGAN = 'VE'
+    # DIETARY_HALAL = 'H'
+    # DIETARY_KETO = 'K'
+    # DIETARY_PALEO = 'P'
+    # DIETARY_FODMAP = 'FM'
+    # DIETARY_NUT_ALLERGY = 'N'
+    # DIETARY_FISH_ALLERGY = 'FA'
+    # DIETARY_NONE = 'NO'
+    # DIETARY_CHOICES = (
+    #     (DIETARY_GLUTEN_FREE, _('Gluten Free')),
+    #     (DIETARY_DAIRY_FREE, _('Dairy Free')),
+    #     (DIETARY_VEGETARIAN, _('Vegetarian')),
+    #     (DIETARY_VEGAN, _('Vegan')),
+    #     (DIETARY_HALAL, _('Halal')),
+    #     (DIETARY_KETO, _('Keto')),
+    #     (DIETARY_PALEO, _('Paleo')),
+    #     (DIETARY_FODMAP, _('FODMAP')),
+    #     (DIETARY_NUT_ALLERGY, _('Nut allergies')),
+    #     (DIETARY_FISH_ALLERGY, _('Fish and shellfish allergies')),
+    #     (DIETARY_NONE, _('None')),
+    # )
+    # dietary_requirements = models.CharField(
+    #     max_length=2,
+    #     choices = DIETARY_CHOICES,
+    #     default=DIETARY_NONE,
+    # )
+    workplace = models.CharField(max_length=350, verbose_name='workplace')
+    city = models.CharField(max_length=150, verbose_name='city')
+    cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number')
+    medical_notes = models.CharField(max_length=350, verbose_name='medical notes')
+    event_applications = models.ForeignKey(
+        EventApplication,
+        on_delete=models.CASCADE,
+        related_name='applications',
+        null=True,
+        blank=True,
+    )
+    billing_address = models.CharField(max_length=350, verbose_name='billing address')
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
@@ -60,3 +102,9 @@ class Entity(models.Model):
 
         ordering = ['name', ]
         verbose_name_plural = 'entities'
+
+
+# class DietaryRequirement(models.Model):
+#     """Model for a dietary requirement."""
+
+#     name = models.CharField(max_length=100, unique=True)
