@@ -324,9 +324,8 @@ class EventApplication(models.Model):
 class ApplicantType(models.Model):
     """Model for the applicant type. E.g. staff, attendee, vendor."""
 
-    # TODO: Add ID field
     name = models.CharField(max_length=200)
-    cost = models.CharField(max_length=20)
+    cost = models.FloatField()
 
 
 class RegistrationForm(models.Model):
