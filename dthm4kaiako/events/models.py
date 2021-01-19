@@ -339,11 +339,11 @@ class RegistrationForm(models.Model):
         on_delete=models.CASCADE,
         related_name='registraion_form',
     )
+    terms_and_conditions = models.TextField()
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE
     )
-    # TODO: terms_and_conditions
 
 
 class RegistrationFormSessionChoice(models.Model):
