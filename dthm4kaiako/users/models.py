@@ -12,7 +12,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
-    # >>>>>>>>>>>>>>>>>>> TODO: BELOW NEEDS TO BE MULTISELECT <<<<<<<<<<<<<<<<<<<
+    # TODO: Change to own model. Should be Many to Many relationship
     # DIETARY_GLUTEN_FREE = 'GF'
     # DIETARY_DAIRY_FREE = 'DF'
     # DIETARY_VEGETARIAN = 'V'
