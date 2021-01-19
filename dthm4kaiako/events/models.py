@@ -306,10 +306,12 @@ class EventApplication(models.Model):
     STATUS_PENDING = 'P'
     STATUS_ACCEPTED = 'A'
     STATUS_CANCELLED = 'C'
+    STATUS_DECLINED = 'D'
     STATUS_CHOICES = (
         (STATUS_PENDING, _('Pending')),
         (STATUS_ACCEPTED, _('Accepted')),
         (STATUS_CANCELLED, _('Cancelled')),
+        (STATUS_DECLINED, _('Declined')),
     )
     status = models.CharField(
         max_length=1,
@@ -326,6 +328,11 @@ class ApplicantType(models.Model):
 
     name = models.CharField(max_length=200)
     cost = models.FloatField()
+    applications = models.ForeignKey(
+        EventApplication,
+        on_delete=models.CASCADE,
+        related_name='applicant_type'
+    )
 
 
 class RegistrationForm(models.Model):
