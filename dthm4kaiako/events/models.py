@@ -318,6 +318,10 @@ class EventApplication(models.Model):
         choices = STATUS_CHOICES,
         default=STATUS_PENDING,
     )
+    voucher = models.OneToOneField(
+        Voucher,
+        on_delete=models.CASCADE
+    )
     # TODO: Might not need this field if we have Event object as foreign key
     vouchers = models.CharField(max_length=100, blank=True)
     staff_comments = models.CharField(max_length=500, blank=True)
@@ -371,7 +375,7 @@ class EventVoucher(models.Model):
         primary_key=True
     )
     active = models.BooleanField(default=False)
-    # TODO: add percentage_off field
+    new_cost = models.FloatField()
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
