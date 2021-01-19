@@ -322,8 +322,6 @@ class EventApplication(models.Model):
         Voucher,
         on_delete=models.CASCADE
     )
-    # TODO: Might not need this field if we have Event object as foreign key
-    vouchers = models.CharField(max_length=100, blank=True)
     staff_comments = models.CharField(max_length=500, blank=True)
 
 
