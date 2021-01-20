@@ -13,7 +13,17 @@ class SignupForm(ModelForm):
         """Metadata for SignupForm class."""
 
         model = get_user_model()
-        fields = ['first_name', 'last_name']
+        fields = [
+            'email',
+            'first_name',
+            'last_name',
+            'workplace',
+            'city',
+            'cell_phone_number',
+            'medical_notes',
+            'event_applications',
+            'billing_address',
+        ]
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
@@ -22,6 +32,12 @@ class SignupForm(ModelForm):
         """
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        user.workplace = self.cleaned_data['workplace']
+        user.city = self.cleaned_data['city']
+        user.cell_phone_number = self.cleaned_data['cell_phone_number']
+        user.medical_notes = self.cleaned_data['medical_notes']
+        user.event_applications = self.cleaned_data['event_applications']
+        user.billing_address = self.cleaned_data['billing_address']
         user.save()
 
 
@@ -32,7 +48,17 @@ class UserChangeForm(forms.UserChangeForm):
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = ('email', 'last_name')
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'workplace',
+            'city',
+            'cell_phone_number',
+            'medical_notes',
+            'event_applications',
+            'billing_address',
+        )
 
 
 class UserCreationForm(forms.UserCreationForm):
@@ -42,4 +68,14 @@ class UserCreationForm(forms.UserCreationForm):
         """Metadata for UserCreationForm class."""
 
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'workplace',
+            'city',
+            'cell_phone_number',
+            'medical_notes',
+            'event_applications',
+            'billing_address',
+        )

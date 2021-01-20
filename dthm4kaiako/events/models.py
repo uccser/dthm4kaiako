@@ -184,13 +184,14 @@ class Event(models.Model):
         blank=True,
     )
     applications = models.ForeignKey(
-        EventApplication,
+        'EventApplication',
         on_delete=models.CASCADE,
         related_name='event',
         blank=True,
+        null=True,
     )
     applicant_types = models.ManyToManyField(
-        ApplicantType,
+        'ApplicantType',
         related_name='events',
         blank=True,
     )
@@ -319,8 +320,8 @@ class EventApplication(models.Model):
         default=STATUS_PENDING,
     )
     voucher = models.OneToOneField(
-        Voucher,
-        on_delete=models.CASCADE
+        'EventVoucher',
+        on_delete=models.CASCADE,
     )
     staff_comments = models.CharField(max_length=500, blank=True)
 
@@ -334,6 +335,17 @@ class ApplicantType(models.Model):
         EventApplication,
         on_delete=models.CASCADE,
         related_name='applicant_type'
+    )
+
+
+class RegistrationFormSessionChoice(models.Model):
+    """Model for sessions that run at the same time."""
+
+    description = models.CharField(max_length=300, blank=True)
+    sessions = models.ForeignKey(
+        Session,
+        on_delete=models.CASCADE,
+        related_name='form_choices',
     )
 
 
@@ -351,17 +363,6 @@ class RegistrationForm(models.Model):
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE
-    )
-
-
-class RegistrationFormSessionChoice(models.Model):
-    """Model for sessions that run at the same time."""
-
-    description = models.CharField(max_length=300, blank=True)
-    sessions = models.ForeignKey(
-        Session,
-        on_delete=models.CASCADE,
-        related_name='form_choices',
     )
 
 

@@ -18,7 +18,17 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
     model = User
-    fields = ['first_name', 'last_name']
+    fields = [
+        'email',
+        'first_name',
+        'last_name',
+        'workplace',
+        'city',
+        'cell_phone_number',
+        'medical_notes',
+        'event_applications',
+        'billing_address',
+    ]
 
     def get_success_url(self):
         """URL to route to on successful update."""

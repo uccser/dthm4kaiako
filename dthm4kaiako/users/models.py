@@ -42,18 +42,18 @@ class User(AbstractUser):
     #     choices = DIETARY_CHOICES,
     #     default=DIETARY_NONE,
     # )
-    workplace = models.CharField(max_length=350, verbose_name='workplace')
-    city = models.CharField(max_length=150, verbose_name='city')
-    cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number')
-    medical_notes = models.CharField(max_length=350, verbose_name='medical notes')
+    workplace = models.CharField(max_length=350, verbose_name='workplace', default='')
+    city = models.CharField(max_length=150, verbose_name='city', default='')
+    cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number', default='')
+    medical_notes = models.TextField(verbose_name='medical notes', default='')
     event_applications = models.ForeignKey(
-        EventApplication,
+        'events.EventApplication',
         on_delete=models.CASCADE,
-        related_name='applications',
+        related_name='user',
         null=True,
         blank=True,
     )
-    billing_address = models.CharField(max_length=350, verbose_name='billing address')
+    billing_address = models.TextField(verbose_name='billing address', default='')
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
