@@ -357,12 +357,15 @@ class RegistrationForm(models.Model):
     session_choices = models.ForeignKey(
         RegistrationFormSessionChoice,
         on_delete=models.CASCADE,
-        related_name='registraion_form',
+        related_name='registration_form',
+        blank=True,
+        null=True,
     )
     terms_and_conditions = models.TextField()
     event = models.OneToOneField(
         Event,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='registration_form',
     )
 
 

@@ -13,17 +13,7 @@ class SignupForm(ModelForm):
         """Metadata for SignupForm class."""
 
         model = get_user_model()
-        fields = [
-            'email',
-            'first_name',
-            'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'medical_notes',
-            'event_applications',
-            'billing_address',
-        ]
+        fields = '__all__'
 
     def signup(self, request, user):
         """Extra logic when a user signs up.
@@ -48,18 +38,7 @@ class UserChangeForm(forms.UserChangeForm):
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = (
-            'email',
-            'first_name',
-            'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'medical_notes',
-            'event_applications',
-            'billing_address',
-        )
-
+        fields = '__all__'
 
 class UserCreationForm(forms.UserCreationForm):
     """Form class for creating user."""
@@ -68,14 +47,4 @@ class UserCreationForm(forms.UserCreationForm):
         """Metadata for UserCreationForm class."""
 
         model = User
-        fields = (
-            'email',
-            'first_name',
-            'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'medical_notes',
-            'event_applications',
-            'billing_address',
-        )
+        fields = '__all__'
