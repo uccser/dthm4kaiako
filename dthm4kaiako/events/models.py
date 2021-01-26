@@ -322,6 +322,8 @@ class EventApplication(models.Model):
     voucher = models.OneToOneField(
         'EventVoucher',
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
     staff_comments = models.CharField(max_length=500, blank=True)
 

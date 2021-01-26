@@ -4,7 +4,7 @@ import random
 import pytz
 import datetime
 from datetime import timedelta
-from tests.utils import random_boolean
+from tests.utils import random_boolean, random_event_application_status
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute, Iterator
 from factory.faker import faker
 from users.models import Entity
@@ -14,6 +14,7 @@ from events.models import (
     Location,
     Session,
     RegistrationForm,
+    EventApplication,
 )
 
 
@@ -112,11 +113,19 @@ class EventFactory(DjangoModelFactory):
             start_time = end_time
         self.update_datetimes()
 
+        # Add applications
+        number_of_applications = random.randint(10, 50)
+        for i in range(number_of_applications):
+            status = random_event_application_status()
+            staff_comments = Faker('paragraph', nb_sentences=10)
+            EventApplication.objects.create(
+                status=status,
+                staff_comments=staff_comments,
+            )
+
 
 class RegistrationFormFactory(DjangoModelFactory):
     """Factory for generating registration forms."""
-
-    # FAKER = faker.Faker()
 
     datetime_open = datetime.datetime.now()
     datetime_end = datetime_open + timedelta(days=7)
@@ -128,27 +137,3 @@ class RegistrationFormFactory(DjangoModelFactory):
 
         model = RegistrationForm
 
-    # number_of_sessions = random.randint(1, 5)
-    # start_time = datetime_open
-    # for i in range(number_of_sessions):
-    #     duration = random.choice([30, 60, 120, 180])
-    #     end_time = start_time + timedelta(minutes=duration)
-    #     Session.objects.create(
-    #         name=FAKER.sentence(),
-    #         description=FAKER.paragraph(nb_sentences=10),
-    #         event=event,
-    #         url=FAKER.url(),
-    #         start=start_time,
-    #         end=end_time,
-    #     )
-    #     # 50% chance two sessions run at the same time
-    #     if random.randint(1, 2) == 1:
-    #         Session.objects.create(
-    #             name=FAKER.sentence(),
-    #             description=FAKER.paragraph(nb_sentences=10),
-    #             event=event,
-    #             url=FAKER.url(),
-    #             start=start_time,
-    #             end=end_time,
-    #         )
-    #     start_time = end_time
