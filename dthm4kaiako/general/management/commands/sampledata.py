@@ -27,6 +27,7 @@ from events.models import (
 from tests.events.factories import (
     EventFactory,
     RegistrationFormFactory,
+    # ApplicantTypeFactory,
 )
 # DTTA
 from tests.dtta.factories import (
@@ -210,6 +211,9 @@ class Command(management.base.BaseCommand):
 
         RegistrationFormFactory.create_batch(size=10)
         print('Registration forms created.')
+
+        # ApplicantTypeFactory.create_batch(size=60)
+        # print('Applicant types created.')
 
         # DTTA
         NewsArticleFactory.create_batch(size=20)

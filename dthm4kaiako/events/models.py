@@ -183,17 +183,12 @@ class Event(models.Model):
         null=True,
         blank=True,
     )
-    applications = models.ForeignKey(
-        'EventApplication',
-        on_delete=models.CASCADE,
-        related_name='event',
-        blank=True,
-        null=True,
-    )
-    applicant_types = models.ManyToManyField(
+    applicant_types = models.ForeignKey(
         'ApplicantType',
+        on_delete=models.CASCADE,
         related_name='events',
         blank=True,
+        null=True,
     )
     # TODO: Add validation that if no locations, then accessible_online must be true
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -326,6 +321,12 @@ class EventApplication(models.Model):
         null=True,
     )
     staff_comments = models.CharField(max_length=500, blank=True)
+    event = models.ForeignKey(
+        'Event',
+        on_delete=models.CASCADE,
+        related_name='applications',
+        default=None,
+    )
 
 
 class ApplicantType(models.Model):
@@ -336,7 +337,9 @@ class ApplicantType(models.Model):
     applications = models.ForeignKey(
         EventApplication,
         on_delete=models.CASCADE,
-        related_name='applicant_type'
+        related_name='applicant_type',
+        blank=True,
+        null=True,
     )
 
 

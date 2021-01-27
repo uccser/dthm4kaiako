@@ -15,6 +15,7 @@ from events.models import (
     Session,
     RegistrationForm,
     EventApplication,
+    ApplicantType,
 )
 
 
@@ -114,13 +115,14 @@ class EventFactory(DjangoModelFactory):
         self.update_datetimes()
 
         # Add applications
-        number_of_applications = random.randint(10, 50)
+        number_of_applications = random.randint(10, 20)
         for i in range(number_of_applications):
             status = random_event_application_status()
             staff_comments = Faker('paragraph', nb_sentences=10)
             EventApplication.objects.create(
                 status=status,
                 staff_comments=staff_comments,
+                event=self,
             )
 
 
@@ -137,3 +139,14 @@ class RegistrationFormFactory(DjangoModelFactory):
 
         model = RegistrationForm
 
+
+# class ApplicantTypeFactory(DjangoModelFactory):
+#     """Factory for generating applicant types."""
+
+#     name = Faker("color_name")
+#     cost = Faker("random_int")
+
+#     class Meta:
+#         """Metadata for class."""
+
+#         model = ApplicantType
