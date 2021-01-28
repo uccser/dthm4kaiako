@@ -9,6 +9,7 @@ from events.models import (
     Session,
     Location,
     Series,
+    RegistrationForm,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
@@ -49,6 +50,12 @@ class SessionInline(admin.StackedInline):
     extra = 3
     min_num = 1
     autocomplete_fields = ('locations', )
+
+
+class RegistrationFormInline(admin.StackedInline):
+    """Inline view for event registration form."""
+
+    model = RegistrationForm
 
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
@@ -103,7 +110,7 @@ class EventAdmin(ClonableModelAdmin):
     """Admin view for an event."""
 
     model = Event
-    inlines = [SessionInline]
+    inlines = [SessionInline, RegistrationFormInline]
     fieldsets = (
         (
             None,
