@@ -9,6 +9,9 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
+from events.forms import EventRegistrationForm
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(generic.TemplateView):
@@ -114,3 +117,12 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['sessions'] = self.object.sessions.all().prefetch_related('locations')
         context['locations'] = self.object.locations.all()
         return context
+
+
+class EventRegistrationView(LoginRequiredMixin, generic.FormView):
+    template_name = 'events/event_registration_form.html'
+    form_class = EventRegistrationForm
+
+    def get_success_url(self):
+        """URL to route to on successful update."""
+        return reverse("events:thanks")

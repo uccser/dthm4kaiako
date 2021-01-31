@@ -135,19 +135,19 @@
                 {% endif %}
             </nav>
 
-            {% if event.registration_link %}
-                <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
-                    {{ event.get_registration_type_display }}
-                </a>
-            {% endif %}
+            <!-- {% if event.registration_link %} -->
+            <hr>
+            <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' %}" role="button">
+                Register
+            </a>
+            <!-- {% endif %} -->
 
-            {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
+            <!-- {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
                 <hr>
                 <button class="btn btn-secondary btn-block btn-lg" role="button" disabled>
                     {{ event.get_registration_type_display }}
                 </button>
-            {% endif %}
+            {% endif %} -->
 
             {% if event.series %}
                 <hr>
