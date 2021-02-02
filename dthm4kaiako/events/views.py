@@ -124,5 +124,5 @@ class EventRegistrationView(LoginRequiredMixin, generic.FormView):
     form_class = EventRegistrationForm
 
     def get_success_url(self):
-        """URL to route to on successful update."""
+        """URL to route to on successful registration."""
         return reverse("events:thanks")
