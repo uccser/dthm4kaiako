@@ -167,8 +167,18 @@ class EventAdmin(ClonableModelAdmin):
             'all': ('css/admin-overrides.css', )
         }
 
+class EventApplicationAdmin(admin.ModelAdmin):
+    """Inline view for event applications."""
+
+    readonly_fields = (
+        'datetime_submitted',
+        'datetime_updated',
+        'event',
+        'user',
+    )
+
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Series)
-admin.site.register(EventApplication)
+admin.site.register(EventApplication, EventApplicationAdmin)
