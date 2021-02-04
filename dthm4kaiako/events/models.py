@@ -9,7 +9,7 @@ from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
-from users.models import Entity
+from users.models import Entity, User
 
 
 class Location(models.Model):
@@ -326,6 +326,13 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='applications',
         default=None,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='event_applications',
+        null=True,
+        blank=True,
     )
 
 

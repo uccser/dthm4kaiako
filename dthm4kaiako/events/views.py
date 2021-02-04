@@ -6,12 +6,16 @@ from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
+    EventApplication,
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
 from events.forms import EventRegistrationForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 
 class HomeView(generic.TemplateView):
@@ -119,10 +123,33 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         return context
 
 
-class EventRegistrationView(LoginRequiredMixin, generic.FormView):
-    template_name = 'events/event_registration_form.html'
-    form_class = EventRegistrationForm
 
-    def get_success_url(self):
-        """URL to route to on successful registration."""
-        return reverse("events:thanks")
+@login_required
+def register(request, pk):
+    """View for registering for an event
+
+    Args:
+        request (Request): The HTTP request.
+        pk (int): The primary key for the Event the user is registering for.
+    """
+
+    event = Event.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EventRegistrationForm(request.POST)
+
+        if form.is_valid():
+            # need to check if event application already exists??
+            event_application = EventApplication.objects.create(
+                event=event,
+            )
+            request.user.event_applications.add(event_application)
+            return HttpResponseRedirect(reverse("events:thanks"))
+
+    else:
+        form = EventRegistrationForm()
+
+    return render(
+        request,
+        'events/event_registration_form.html',
+        {'form': form, 'event': event}
+    )

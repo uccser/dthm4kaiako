@@ -17,6 +17,10 @@
 {% block content_container %}
   <form class="form-horizontal" method="post" action="">
     {% csrf_token %}
+    <div class="form-group">
+      <h4>Terms and conditions:</h4>
+      {{ event.registration_form.terms_and_conditions }}
+    </div>
     {{ form|crispy }}
     <div class="control-group">
       <div class="controls">

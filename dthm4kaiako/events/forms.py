@@ -1,12 +1,9 @@
 """Forms for events application."""
 
-from django.forms import ModelForm
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from django import forms
 
 
-class EventRegistrationForm(ModelForm):
+class EventRegistrationForm(forms.Form):
     """Form for a user to register for an event."""
 
-    pass
+    terms_and_conditions_accepted = forms.BooleanField(required=True)

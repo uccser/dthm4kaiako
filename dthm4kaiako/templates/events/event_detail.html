@@ -137,7 +137,7 @@
 
             <!-- {% if event.registration_link %} -->
             <hr>
-            <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' %}" role="button">
+            <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
                 Register
             </a>
             <!-- {% endif %} -->

@@ -46,13 +46,6 @@ class User(AbstractUser):
     city = models.CharField(max_length=150, verbose_name='city', default='')
     cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number', default='')
     medical_notes = models.TextField(verbose_name='medical notes', default='')
-    event_applications = models.ForeignKey(
-        'events.EventApplication',
-        on_delete=models.CASCADE,
-        related_name='user',
-        null=True,
-        blank=True,
-    )
     billing_address = models.TextField(verbose_name='billing address', default='')
 
     USERNAME_FIELD = 'id'
