@@ -36,7 +36,6 @@ class EventFactory(DjangoModelFactory):
 
     name = Faker('sentence', nb_words=3)
     description = Faker('paragraph', nb_sentences=50)
-    registration_link = Faker('url')
     published = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
     end = LazyAttribute(lambda obj: obj.start)
@@ -51,6 +50,11 @@ class EventFactory(DjangoModelFactory):
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to event."""
         FAKER = faker.Faker()
+
+        # Set registration_link
+        # 20% chance
+        if random.randint(1, 5) == 1:
+            self.registration_link = Faker('url')
 
         # Set featured
         # 20% chance
@@ -132,7 +136,7 @@ class RegistrationFormFactory(DjangoModelFactory):
     datetime_open = datetime.datetime.now()
     datetime_end = datetime_open + timedelta(days=7)
     terms_and_conditions = Faker('paragraph', nb_sentences=50)
-    event = Iterator(Event.objects.all())
+    event = Iterator(Event.objects.filter(registration_link=''))
 
     class Meta:
         """Metadata for class."""
