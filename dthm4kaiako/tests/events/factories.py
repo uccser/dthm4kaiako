@@ -54,7 +54,7 @@ class EventFactory(DjangoModelFactory):
         # Set registration_link
         # 20% chance
         if random.randint(1, 5) == 1:
-            self.registration_link = Faker('url')
+            self.registration_link = FAKER.url()
 
         # Set featured
         # 20% chance
