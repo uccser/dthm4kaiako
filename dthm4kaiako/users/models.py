@@ -12,39 +12,14 @@ class User(AbstractUser):
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
-    # TODO: Change to own model. Should be Many to Many relationship
-    # DIETARY_GLUTEN_FREE = 'GF'
-    # DIETARY_DAIRY_FREE = 'DF'
-    # DIETARY_VEGETARIAN = 'V'
-    # DIETARY_VEGAN = 'VE'
-    # DIETARY_HALAL = 'H'
-    # DIETARY_KETO = 'K'
-    # DIETARY_PALEO = 'P'
-    # DIETARY_FODMAP = 'FM'
-    # DIETARY_NUT_ALLERGY = 'N'
-    # DIETARY_FISH_ALLERGY = 'FA'
-    # DIETARY_NONE = 'NO'
-    # DIETARY_CHOICES = (
-    #     (DIETARY_GLUTEN_FREE, _('Gluten Free')),
-    #     (DIETARY_DAIRY_FREE, _('Dairy Free')),
-    #     (DIETARY_VEGETARIAN, _('Vegetarian')),
-    #     (DIETARY_VEGAN, _('Vegan')),
-    #     (DIETARY_HALAL, _('Halal')),
-    #     (DIETARY_KETO, _('Keto')),
-    #     (DIETARY_PALEO, _('Paleo')),
-    #     (DIETARY_FODMAP, _('FODMAP')),
-    #     (DIETARY_NUT_ALLERGY, _('Nut allergies')),
-    #     (DIETARY_FISH_ALLERGY, _('Fish and shellfish allergies')),
-    #     (DIETARY_NONE, _('None')),
-    # )
-    # dietary_requirements = models.CharField(
-    #     max_length=2,
-    #     choices = DIETARY_CHOICES,
-    #     default=DIETARY_NONE,
-    # )
     workplace = models.CharField(max_length=350, verbose_name='workplace', default='')
     city = models.CharField(max_length=150, verbose_name='city', default='')
     cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number', default='')
+    dietary_requirements = models.ManyToManyField(
+        'DietaryRequirement',
+        related_name='dietary_requirements',
+        blank=True,
+    )
     medical_notes = models.TextField(verbose_name='medical notes', default='')
     billing_address = models.TextField(verbose_name='billing address', default='')
 
@@ -97,7 +72,11 @@ class Entity(models.Model):
         verbose_name_plural = 'entities'
 
 
-# class DietaryRequirement(models.Model):
-#     """Model for a dietary requirement."""
+class DietaryRequirement(models.Model):
+    """Model for a dietary requirement."""
 
-#     name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        """Text representation of an session."""
+        return self.name

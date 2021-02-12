@@ -162,7 +162,7 @@ class EventAdmin(ClonableModelAdmin):
         }
 
 class EventApplicationAdmin(admin.ModelAdmin):
-    """Inline view for event applications."""
+    """Admin view for event applications."""
 
     readonly_fields = (
         'datetime_submitted',
@@ -173,7 +173,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
 
 
 class RegistrationFormAdmin(admin.ModelAdmin):
-    """Inline view for event locations."""
+    """Admin view for event locations."""
 
     list_display = (
         'event',

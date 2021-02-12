@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import DetailView, RedirectView, UpdateView
+from users.forms import UserUpdateForm
 
 User = get_user_model()
 
@@ -18,17 +19,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """View for updating user data."""
 
     model = User
-    fields = [
-        'email',
-        'first_name',
-        'last_name',
-        'workplace',
-        'city',
-        'cell_phone_number',
-        'medical_notes',
-        'event_applications',
-        'billing_address',
-    ]
+    form_class = UserUpdateForm
 
     def get_success_url(self):
         """URL to route to on successful update."""

@@ -24,6 +24,7 @@ from events.models import (
     Location,
     Series,
 )
+from users.models import DietaryRequirement
 from tests.events.factories import (
     EventFactory,
     RegistrationFormFactory,
@@ -61,6 +62,18 @@ class Command(management.base.BaseCommand):
         print('Database wiped.')
 
         User = get_user_model()
+
+        # Create dietary requirements
+        DietaryRequirement.objects.create(name='Gluten free')
+        DietaryRequirement.objects.create(name='Dairy free')
+        DietaryRequirement.objects.create(name='Vegetarian')
+        DietaryRequirement.objects.create(name='Vegan')
+        DietaryRequirement.objects.create(name='Halal')
+        DietaryRequirement.objects.create(name='Keto')
+        DietaryRequirement.objects.create(name='Paleo')
+        DietaryRequirement.objects.create(name='FODMAP')
+        DietaryRequirement.objects.create(name='Nut allergies')
+        DietaryRequirement.objects.create(name='Fish and shellfish allergies')
 
         # Create admin account
         admin = User.objects.create_superuser(
