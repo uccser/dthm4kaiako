@@ -40,9 +40,10 @@ class SignupForm(ModelForm):
         user.workplace = self.cleaned_data['workplace']
         user.city = self.cleaned_data['city']
         user.cell_phone_number = self.cleaned_data['cell_phone_number']
-        user.dietary_requirements = self.cleaned_data['dietary_requirements']
         user.medical_notes = self.cleaned_data['medical_notes']
         user.billing_address = self.cleaned_data['billing_address']
+        dietary_requirements = self.cleaned_data['dietary_requirements']
+        user.dietary_requirements.set(dietary_requirements)
         user.save()
 
 
