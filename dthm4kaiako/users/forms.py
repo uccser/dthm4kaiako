@@ -51,49 +51,21 @@ class SignupForm(ModelForm):
 class UserChangeForm(forms.UserChangeForm):
     """Form class for changing user."""
 
-    dietary_requirements = ModelMultipleChoiceField(
-        queryset=DietaryRequirement.objects.all(),
-        widget=CheckboxSelectMultiple,
-    )
-
     class Meta(forms.UserChangeForm.Meta):
         """Metadata for UserChangeForm class."""
 
         model = User
-        fields = (
-            'first_name',
-            'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'dietary_requirements',
-            'medical_notes',
-            'billing_address',
-        )
+        fields = ('email', 'last_name')
 
 
 class UserCreationForm(forms.UserCreationForm):
     """Form class for creating user."""
 
-    dietary_requirements = ModelMultipleChoiceField(
-        queryset=DietaryRequirement.objects.all(),
-        widget=CheckboxSelectMultiple,
-    )
-
     class Meta(forms.UserCreationForm.Meta):
         """Metadata for UserCreationForm class."""
 
         model = User
-        fields = (
-            'first_name',
-            'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'dietary_requirements',
-            'medical_notes',
-            'billing_address',
-        )
+        fields = ('email', 'first_name', 'last_name')
 
 
 class UserUpdateForm(ModelForm):
