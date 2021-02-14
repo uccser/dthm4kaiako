@@ -10,10 +10,10 @@ User = get_user_model()
 class SignupForm(ModelForm):
     """Sign up for user registration."""
 
-    dietary_requirements = ModelMultipleChoiceField(
-        queryset=DietaryRequirement.objects.all(),
-        widget=CheckboxSelectMultiple,
-    )
+    # dietary_requirements = ModelMultipleChoiceField(
+    #     queryset=DietaryRequirement.objects.all(),
+    #     widget=CheckboxSelectMultiple,
+    # )
 
     class Meta:
         """Metadata for SignupForm class."""
@@ -22,12 +22,12 @@ class SignupForm(ModelForm):
         fields = (
             'first_name',
             'last_name',
-            'workplace',
-            'city',
-            'cell_phone_number',
-            'dietary_requirements',
-            'medical_notes',
-            'billing_address',
+            # 'workplace',
+            # 'city',
+            # 'cell_phone_number',
+            # 'dietary_requirements',
+            # 'medical_notes',
+            # 'billing_address',
         )
 
     def signup(self, request, user):
@@ -37,13 +37,14 @@ class SignupForm(ModelForm):
         """
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.workplace = self.cleaned_data['workplace']
-        user.city = self.cleaned_data['city']
-        user.cell_phone_number = self.cleaned_data['cell_phone_number']
-        user.medical_notes = self.cleaned_data['medical_notes']
-        user.billing_address = self.cleaned_data['billing_address']
-        dietary_requirements = self.cleaned_data['dietary_requirements']
-        user.dietary_requirements.set(dietary_requirements)
+        # probably don't need these for sign up??
+        # user.workplace = self.cleaned_data['workplace']
+        # user.city = self.cleaned_data['city']
+        # user.cell_phone_number = self.cleaned_data['cell_phone_number']
+        # user.medical_notes = self.cleaned_data['medical_notes']
+        # user.billing_address = self.cleaned_data['billing_address']
+        # dietary_requirements = self.cleaned_data['dietary_requirements']
+        # user.dietary_requirements.set(dietary_requirements)
         user.save()
 
 

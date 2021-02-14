@@ -222,7 +222,7 @@ class Command(management.base.BaseCommand):
         EventFactory.create_batch(size=50)
         print('Events created.')
 
-        RegistrationFormFactory.create_batch(size=40)
+        RegistrationFormFactory.create_batch(size=30)
         print('Registration forms created.')
 
         # ApplicantTypeFactory.create_batch(size=60)
