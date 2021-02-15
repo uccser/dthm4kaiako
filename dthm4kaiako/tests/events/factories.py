@@ -15,7 +15,6 @@ from events.models import (
     Session,
     RegistrationForm,
     EventApplication,
-    ApplicantType,
 )
 
 
@@ -142,15 +141,3 @@ class RegistrationFormFactory(DjangoModelFactory):
         """Metadata for class."""
 
         model = RegistrationForm
-
-
-# class ApplicantTypeFactory(DjangoModelFactory):
-#     """Factory for generating applicant types."""
-
-#     name = Faker("color_name")
-#     cost = Faker("random_int")
-
-#     class Meta:
-#         """Metadata for class."""
-
-#         model = ApplicantType

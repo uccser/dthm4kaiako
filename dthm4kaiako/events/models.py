@@ -334,6 +334,7 @@ class EventApplication(models.Model):
         null=True,
         blank=True,
     )
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
         """Text representation of an event."""

@@ -170,6 +170,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'user',
         'datetime_submitted',
         'datetime_updated',
+        'paid',
     )
     readonly_fields = (
         'event',
@@ -178,7 +179,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'datetime_updated',
     )
     # Might also want to filter by time like in EventUpcomingListFilter?
-    list_filter = ('event',)
+    list_filter = ('event', 'paid')
 
 
 class RegistrationFormAdmin(admin.ModelAdmin):
