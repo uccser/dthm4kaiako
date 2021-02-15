@@ -12,7 +12,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
-    workplace = models.CharField(max_length=350, verbose_name='workplace', default='')
+    workplace = models.CharField(max_length=350, verbose_name='workplace', default='', blank=True)
     city = models.CharField(max_length=150, verbose_name='city', default='')
     cell_phone_number = models.CharField(max_length=20, verbose_name='cell phone number', default='')
     dietary_requirements = models.ManyToManyField(
@@ -20,7 +20,7 @@ class User(AbstractUser):
         related_name='dietary_requirements',
         blank=True,
     )
-    medical_notes = models.TextField(verbose_name='medical notes', default='')
+    medical_notes = models.TextField(verbose_name='medical notes', default='', blank=True)
     billing_address = models.TextField(verbose_name='billing address', default='')
 
     USERNAME_FIELD = 'id'

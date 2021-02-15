@@ -64,6 +64,7 @@ class Command(management.base.BaseCommand):
         User = get_user_model()
 
         # Create dietary requirements
+        DietaryRequirement.objects.create(name='None')
         DietaryRequirement.objects.create(name='Gluten free')
         DietaryRequirement.objects.create(name='Dairy free')
         DietaryRequirement.objects.create(name='Vegetarian')

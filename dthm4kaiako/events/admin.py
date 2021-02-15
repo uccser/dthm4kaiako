@@ -190,6 +190,7 @@ class RegistrationFormAdmin(admin.ModelAdmin):
         'datetime_end',
     )
 
+
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Series)
