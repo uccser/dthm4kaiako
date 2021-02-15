@@ -177,6 +177,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'datetime_submitted',
         'datetime_updated',
     )
+    # Might also want to filter by time like in EventUpcomingListFilter?
     list_filter = ('event',)
 
 
