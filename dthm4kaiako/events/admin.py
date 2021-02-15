@@ -177,6 +177,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'datetime_submitted',
         'datetime_updated',
     )
+    list_filter = ('event',)
 
 
 class RegistrationFormAdmin(admin.ModelAdmin):
