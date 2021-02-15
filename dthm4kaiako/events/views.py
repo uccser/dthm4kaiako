@@ -11,6 +11,7 @@ from events.models import (
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
 from events.forms import EventRegistrationForm
+from users.forms import UserUpdateForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -133,23 +134,42 @@ def register(request, pk):
         pk (int): The primary key for the Event the user is registering for.
     """
 
+    user = request.user
     event = Event.objects.get(pk=pk)
     if request.method == 'POST':
-        form = EventRegistrationForm(request.POST)
+        event_form = EventRegistrationForm(request.POST)
+        user_form = UserUpdateForm(request.POST)
 
-        if form.is_valid():
-            # need to check if event application already exists??
-            event_application = EventApplication.objects.create(
-                event=event,
-            )
-            request.user.event_applications.add(event_application)
+        if event_form.is_valid() and user_form.is_valid():
+            # save user data
+            user.first_name = user_form.cleaned_data['first_name']
+            user.last_name = user_form.cleaned_data['last_name']
+            user.workplace = user_form.cleaned_data['workplace']
+            user.city = user_form.cleaned_data['city']
+            user.cell_phone_number = user_form.cleaned_data['cell_phone_number']
+            user.medical_notes = user_form.cleaned_data['medical_notes']
+            user.billing_address = user_form.cleaned_data['billing_address']
+            dietary_requirements = user_form.cleaned_data['dietary_requirements']
+            user.dietary_requirements.set(dietary_requirements)
+            # check if event application already exists
+            # TODO: handle voucher field once implemented
+            if user.event_applications.filter(event=event).exists():
+                # update application
+                pass
+            else:
+                event_application = EventApplication.objects.create(
+                    event=event,
+                    user=user,
+                )
+            user.save()
             return HttpResponseRedirect(reverse("events:thanks"))
 
     else:
-        form = EventRegistrationForm()
+        event_form = EventRegistrationForm()
+        user_form = UserUpdateForm()
 
     return render(
         request,
         'events/event_registration_form.html',
-        {'form': form, 'event': event}
+        {'event_form': event_form, 'user_form': user_form, 'event': event}
     )
