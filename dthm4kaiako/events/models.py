@@ -335,6 +335,10 @@ class EventApplication(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        """Text representation of an event."""
+        return self.event.name
+
 
 class ApplicantType(models.Model):
     """Model for the applicant type. E.g. staff, attendee, vendor."""

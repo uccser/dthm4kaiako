@@ -161,14 +161,21 @@ class EventAdmin(ClonableModelAdmin):
             'all': ('css/admin-overrides.css', )
         }
 
+
 class EventApplicationAdmin(admin.ModelAdmin):
     """Admin view for event applications."""
 
-    readonly_fields = (
-        'datetime_submitted',
-        'datetime_updated',
+    list_display = (
         'event',
         'user',
+        'datetime_submitted',
+        'datetime_updated',
+    )
+    readonly_fields = (
+        'event',
+        'user',
+        'datetime_submitted',
+        'datetime_updated',
     )
 
 
