@@ -220,6 +220,7 @@ class Command(management.base.BaseCommand):
                     )
         print('Event locations created.')
 
+        # ApplicantType objects are created with Event objects
         EventFactory.create_batch(size=50)
         print('Events created.')
 

@@ -183,13 +183,7 @@ class Event(models.Model):
         null=True,
         blank=True,
     )
-    applicant_types = models.ForeignKey(
-        'ApplicantType',
-        on_delete=models.CASCADE,
-        related_name='events',
-        blank=True,
-        null=True,
-    )
+
     # TODO: Add validation that if no locations, then accessible_online must be true
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
@@ -346,6 +340,12 @@ class ApplicantType(models.Model):
 
     name = models.CharField(max_length=200)
     cost = models.FloatField()
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='applicant_types',
+        default=None,
+    )
     applications = models.ForeignKey(
         EventApplication,
         on_delete=models.CASCADE,
@@ -353,6 +353,14 @@ class ApplicantType(models.Model):
         blank=True,
         null=True,
     )
+
+    class Meta:
+        unique_together = ['name', 'event']
+
+
+    def __str__(self):
+        """Text representation of an session."""
+        return self.name
 
 
 class RegistrationFormSessionChoice(models.Model):

@@ -15,6 +15,7 @@ from events.models import (
     Session,
     RegistrationForm,
     EventApplication,
+    ApplicantType,
 )
 
 
@@ -116,6 +117,14 @@ class EventFactory(DjangoModelFactory):
             )
             start_time = end_time
         self.update_datetimes()
+
+        # Add applicant types
+        for name in ['Staff', 'Attendee', 'Vendor']:
+            ApplicantType.objects.create(
+                name=name,
+                cost=random.randint(0, 250),
+                event=self,
+            )
 
         # Add applications
         # number_of_applications = random.randint(10, 20)
