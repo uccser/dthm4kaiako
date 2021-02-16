@@ -179,7 +179,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'datetime_updated',
     )
     # Might also want to filter by time like in EventUpcomingListFilter?
-    list_filter = ('event', 'paid')
+    list_filter = ('paid', 'event',)
 
 
 class RegistrationFormAdmin(admin.ModelAdmin):
