@@ -329,6 +329,14 @@ class EventApplication(models.Model):
         blank=True,
     )
     paid = models.BooleanField(default=False)
+    applicant_type = models.ForeignKey(
+        'ApplicantType',
+        on_delete=models.CASCADE,
+        related_name='applications',
+        blank=True,
+        null=True,
+    )
+
 
     def __str__(self):
         """Text representation of an event."""
@@ -345,13 +353,6 @@ class ApplicantType(models.Model):
         on_delete=models.CASCADE,
         related_name='applicant_types',
         default=None,
-    )
-    applications = models.ForeignKey(
-        EventApplication,
-        on_delete=models.CASCADE,
-        related_name='applicant_type',
-        blank=True,
-        null=True,
     )
 
     class Meta:

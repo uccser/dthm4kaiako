@@ -18,11 +18,12 @@
   <form class="form-horizontal" method="post" action="">
     {% csrf_token %}
     {{ user_form|crispy }}
+    {{ event_form|crispy }}
     <div class="form-group">
       <h4>Terms and conditions:</h4>
       {{ event.registration_form.terms_and_conditions }}
     </div>
-    {{ event_form|crispy }}
+    {{ terms_and_conditions_form|crispy }}
     <div class="control-group">
       <div class="controls">
         <button type="submit" class="btn btn-primary">Register</button>

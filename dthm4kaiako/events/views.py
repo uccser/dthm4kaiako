@@ -10,7 +10,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
-from events.forms import EventRegistrationForm
+from events.forms import EventRegistrationForm, TermsAndConditionsForm
 from users.forms import UserUpdateForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -138,9 +138,12 @@ def register(request, pk):
     event = Event.objects.get(pk=pk)
     if request.method == 'POST':
         event_form = EventRegistrationForm(request.POST)
+        # Have to overwrite queryset again
+        event_form.fields['applicant_type'].queryset = event.applicant_types.all()
         user_form = UserUpdateForm(request.POST)
+        terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-        if event_form.is_valid() and user_form.is_valid():
+        if user_form.is_valid() and event_form.is_valid() and terms_and_conditions_form.is_valid():
             # save user data
             user.first_name = user_form.cleaned_data['first_name']
             user.last_name = user_form.cleaned_data['last_name']
@@ -155,21 +158,33 @@ def register(request, pk):
             # TODO: handle voucher field once implemented
             if user.event_applications.filter(event=event).exists():
                 # update application
-                pass
+                application = user.event_applications.filter(event=event)
+                applicant_type = event_form.cleaned_data['applicant_type']
+                application.applicant_type = applicant_type
+                application.save()
             else:
+                applicant_type = event_form.cleaned_data['applicant_type']
                 event_application = EventApplication.objects.create(
                     event=event,
                     user=user,
+                    applicant_type=applicant_type
                 )
             user.save()
             return HttpResponseRedirect(reverse("events:thanks"))
 
     else:
-        event_form = EventRegistrationForm()
         user_form = UserUpdateForm()
+        event_form = EventRegistrationForm()
+        event_form.fields['applicant_type'].queryset = event.applicant_types.all()
+        terms_and_conditions_form = TermsAndConditionsForm()
 
     return render(
         request,
         'events/event_registration_form.html',
-        {'event_form': event_form, 'user_form': user_form, 'event': event}
+        {
+            'event_form': event_form,
+            'user_form': user_form,
+            'terms_and_conditions_form': terms_and_conditions_form,
+            'event': event,
+        }
     )
