@@ -5,7 +5,7 @@
 # Django
 # ------------------------------------------------------------------------------
 django-storages[google]==1.11.1  # https://github.com/jschneier/django-storages
-google-auth==1.25.0  # https://github.com/googleapis/google-auth-library-python
+google-auth==1.27.0  # https://github.com/googleapis/google-auth-library-python
 google-cloud-logging==2.2.0
 
 # Extra packages due to missing bindings
