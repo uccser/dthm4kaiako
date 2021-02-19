@@ -1,6 +1,4 @@
-# This Dockerfile is based off the Google App Engine Python runtime image
-# https://github.com/GoogleCloudPlatform/python-runtime
-FROM ghcr.io/uccser/django-with-weasyprint:2.2.18
+FROM ghcr.io/uccser/django:2.2.18-with-weasyprint
 
 RUN apt-get update \
     && apt-get install -y \
@@ -14,8 +12,8 @@ ENV DJANGO_PRODUCTION=False
 COPY requirements /requirements
 RUN /docker_venv/bin/pip3 install -r /requirements/local.txt
 
-RUN mkdir /dthm4kaiako/
-WORKDIR /dthm4kaiako/
+RUN mkdir -p /dthm4kaiako/dthm4kaiako/
+WORKDIR /dthm4kaiako/dthm4kaiako/
 
 # Copy and install fonts
 COPY dthm4kaiako/static/fonts/ /usr/share/fonts/

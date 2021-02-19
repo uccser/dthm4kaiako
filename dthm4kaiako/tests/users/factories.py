@@ -6,7 +6,7 @@ import factory
 from users.models import Entity
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     """Factory for generating users."""
 
     email = factory.Faker("email")
@@ -34,7 +34,7 @@ class UserFactory(factory.DjangoModelFactory):
         model = get_user_model()
 
 
-class EntityFactory(factory.DjangoModelFactory):
+class EntityFactory(factory.django.DjangoModelFactory):
     """Factory for generating entities."""
 
     name = factory.Faker('company')
