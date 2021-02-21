@@ -16,6 +16,7 @@ from events.models import (
     RegistrationForm,
     EventApplication,
     ApplicantType,
+    EventVoucher,
 )
 
 
@@ -126,16 +127,18 @@ class EventFactory(DjangoModelFactory):
                 event=self,
             )
 
-        # Add applications
-        # number_of_applications = random.randint(10, 20)
-        # for i in range(number_of_applications):
-        #     status = random_event_application_status()
-        #     staff_comments = Faker('paragraph', nb_sentences=10)
-        #     EventApplication.objects.create(
-        #         status=status,
-        #         staff_comments=staff_comments,
-        #         event=self,
-        #     )
+        # 20% chance of event voucher
+        if random.randint(1, 5) == 1:
+            code = FAKER.lexify(text='??????')
+            discount = random.choice([10, 20, 30, 40, 50])
+            name = f"{discount}% discount"
+            EventVoucher.objects.create(
+                name=name,
+                code=code,
+                active=True,
+                discount=discount,
+                event=self,
+            )
 
 
 class RegistrationFormFactory(DjangoModelFactory):

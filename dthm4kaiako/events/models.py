@@ -360,7 +360,7 @@ class ApplicantType(models.Model):
 
 
     def __str__(self):
-        """Text representation of an session."""
+        """Text representation of an applicant type."""
         return self.name
 
 
@@ -398,14 +398,22 @@ class RegistrationForm(models.Model):
 class EventVoucher(models.Model):
     """Model for an event voucher."""
 
+    name = models.CharField(
+        max_length=50,
+        default=''
+    )
     code = models.CharField(
         max_length=20,
         primary_key=True
     )
     active = models.BooleanField(default=False)
-    new_cost = models.FloatField()
+    discount = models.IntegerField(default=0)
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
         related_name='vouchers'
     )
+
+    def __str__(self):
+        """Text representation of an event voucher."""
+        return str(self.event) + " - " + self.name
