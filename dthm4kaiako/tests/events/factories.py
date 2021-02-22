@@ -7,7 +7,7 @@ from datetime import timedelta
 from tests.utils import random_boolean, random_event_application_status
 from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute, Iterator
 from factory.faker import faker
-from users.models import Entity
+from users.models import Entity, User
 from events.models import (
     Series,
     Event,
@@ -132,12 +132,14 @@ class EventFactory(DjangoModelFactory):
             code = FAKER.lexify(text='??????')
             discount = random.choice([10, 20, 30, 40, 50])
             name = f"{discount}% discount"
+            user = random.choice(User.objects.all())
             EventVoucher.objects.create(
                 name=name,
                 code=code,
                 active=True,
                 discount=discount,
                 event=self,
+                user=user,
             )
 
 

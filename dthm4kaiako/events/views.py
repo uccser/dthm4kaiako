@@ -7,6 +7,7 @@ from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
     EventApplication,
+    EventVoucher,
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
@@ -142,6 +143,14 @@ def register(request, pk):
         event_form.fields['applicant_type'].queryset = event.applicant_types.all()
         user_form = UserUpdateForm(request.POST)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
+        if 'voucher' in request.POST and request.POST['voucher'] != '':
+            try:
+                voucher = EventVoucher.objects.get(
+                    code=request.POST['voucher'],
+                    user=request.user
+                )
+            except EventVoucher.DoesNotExist:
+                event_form.add_error('voucher', 'Sorry, that is not a valid voucher code.')
 
         if user_form.is_valid() and event_form.is_valid() and terms_and_conditions_form.is_valid():
             # save user data

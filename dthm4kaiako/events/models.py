@@ -413,7 +413,14 @@ class EventVoucher(models.Model):
         on_delete=models.CASCADE,
         related_name='vouchers'
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='vouchers',
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         """Text representation of an event voucher."""
-        return str(self.event) + " - " + self.name
+        return str(self.user) + " - " + str(self.event) + " - " + self.name
