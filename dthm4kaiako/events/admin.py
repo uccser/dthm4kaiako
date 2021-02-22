@@ -185,6 +185,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'user',
         'datetime_submitted',
         'datetime_updated',
+        'voucher',
     )
     # Might also want to filter by time like in EventUpcomingListFilter?
     list_filter = ('paid', 'event',)
@@ -200,9 +201,23 @@ class RegistrationFormAdmin(admin.ModelAdmin):
     )
 
 
+class EventVoucherAdmin(admin.ModelAdmin):
+    """Admin view for event vouchers."""
+
+    list_display = (
+        'code',
+        'event',
+        'user',
+        'discount',
+        'active',
+    )
+
+    list_filter = ('event', 'user',)
+
+
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Series)
 admin.site.register(EventApplication, EventApplicationAdmin)
 admin.site.register(RegistrationForm, RegistrationFormAdmin)
-admin.site.register(EventVoucher)
+admin.site.register(EventVoucher, EventVoucherAdmin)
