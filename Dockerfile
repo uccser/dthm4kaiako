@@ -1,5 +1,3 @@
-# This Dockerfile is based off the Google App Engine Python runtime image
-# https://github.com/GoogleCloudPlatform/python-runtime
 FROM uccser/django:2.1.5
 
 # Add metadata to Docker image
