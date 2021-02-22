@@ -164,7 +164,7 @@ def register(request, pk):
             dietary_requirements = user_form.cleaned_data['dietary_requirements']
             user.dietary_requirements.set(dietary_requirements)
             # check if event application already exists
-            # TODO: handle voucher field once implemented
+            # TODO: Handle event cost logic
             if user.event_applications.filter(event=event).exists():
                 # update application
                 application = user.event_applications.filter(event=event)
