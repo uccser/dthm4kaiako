@@ -14,4 +14,5 @@ urlpatterns = [
     path('event/', RedirectView.as_view(pattern_name='events:home'), name='event'),
     path('register/<int:pk>/', views.register, name='register'),
     path('thanks/', TemplateView.as_view(template_name="events/thanks.html"), name='thanks'),
+    path('event-applications/', views.EventApplicationView.as_view(), name='event_applications'),
 ]

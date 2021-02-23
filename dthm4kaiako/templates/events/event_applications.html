@@ -1,0 +1,42 @@
+{% extends "base-branded.html" %}
+{% load static %}
+
+{% block title %}Event applications: {{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <h2>Event applications for {{ user.get_full_name }}</h2>
+      </div>
+    </div>
+
+    {% if user_event_applications %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Date submitted</th>
+            <th scope="col">Date updated</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for application in user_event_applications %}
+          <tr>
+            <td>{{ application.event.name }}</td>
+            <td>{{ application.datetime_submitted }}</td>
+            <td>{{ application.datetime_updated }}</td>
+            <td>{{ application.status }}</td>
+            <td><a href="#">Edit application</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <h4>You currently have no event applications!</h4>
+    {% endif %}
+  </div>
+{% endblock content %}

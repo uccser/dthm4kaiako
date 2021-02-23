@@ -197,3 +197,24 @@ def register(request, pk):
             'event': event,
         }
     )
+
+
+class EventApplicationView(LoginRequiredMixin, generic.ListView):
+
+    model = EventApplication
+    template_name = 'events/event_applications.html'
+
+    def get_object(self):
+        """Get object for template."""
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event applications view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['user_event_applications'] = EventApplication.objects.filter(user=self.request.user)
+        return context
