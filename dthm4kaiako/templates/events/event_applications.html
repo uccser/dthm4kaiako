@@ -30,7 +30,7 @@
             <td>{{ application.datetime_submitted }}</td>
             <td>{{ application.datetime_updated }}</td>
             <td>{{ application.get_status_display }}</td>
-            <td><a href="#">Edit application</a></td>
+            <td><a href="{% url 'events:register' application.event.pk %}">Edit application</a></td>
           </tr>
         {% endfor %}
         </tbody>

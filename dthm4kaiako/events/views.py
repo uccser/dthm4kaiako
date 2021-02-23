@@ -18,6 +18,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
 
 
 class HomeView(generic.TemplateView):
@@ -143,10 +144,11 @@ def register(request, pk):
         event_form.fields['applicant_type'].queryset = event.applicant_types.all()
         user_form = UserUpdateForm(request.POST)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
-        if 'voucher' in request.POST and request.POST['voucher'] != '':
+        voucher = request.POST['voucher']
+        if voucher:
             try:
                 voucher = EventVoucher.objects.get(
-                    code=request.POST['voucher'],
+                    code=voucher,
                     user=request.user
                 )
             except EventVoucher.DoesNotExist:
@@ -163,28 +165,47 @@ def register(request, pk):
             user.billing_address = user_form.cleaned_data['billing_address']
             dietary_requirements = user_form.cleaned_data['dietary_requirements']
             user.dietary_requirements.set(dietary_requirements)
+            user.save()
             # check if event application already exists
             # TODO: Handle event cost logic
             if user.event_applications.filter(event=event).exists():
                 # update application
-                application = user.event_applications.filter(event=event)
+                application = user.event_applications.get(event=event)
                 applicant_type = event_form.cleaned_data['applicant_type']
                 application.applicant_type = applicant_type
+                if voucher:
+                    application.voucher = voucher
                 application.save()
+                messages.success(request, 'Event application successfully updated.')
+                return HttpResponseRedirect(reverse("events:event_applications"))
             else:
                 applicant_type = event_form.cleaned_data['applicant_type']
                 event_application = EventApplication.objects.create(
                     event=event,
                     user=user,
-                    applicant_type=applicant_type
+                    applicant_type=applicant_type,
                 )
-            user.save()
-            return HttpResponseRedirect(reverse("events:thanks"))
+                if voucher:
+                    event_application.voucher = voucher
+                    event_application.save()
+                messages.success(request, 'Event application submitted successfully.')
+                return HttpResponseRedirect(
+                    reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})
+                )
 
     else:
-        user_form = UserUpdateForm()
-        event_form = EventRegistrationForm()
+        user_form = UserUpdateForm(instance=user)
+        # If the application exists, pre-populate form
+        if user.event_applications.filter(event=event).exists():
+            application = user.event_applications.get(event=event)
+            event_form = EventRegistrationForm(initial={
+                'applicant_type': application.applicant_type,
+                'voucher': application.voucher,
+            })
+        else:
+            event_form = EventRegistrationForm()
         event_form.fields['applicant_type'].queryset = event.applicant_types.all()
+        # We don't pre-populate this as it should be re-checked by the user every time they submit the form
         terms_and_conditions_form = TermsAndConditionsForm()
 
     return render(

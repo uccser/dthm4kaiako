@@ -423,4 +423,4 @@ class EventVoucher(models.Model):
 
     def __str__(self):
         """Text representation of an event voucher."""
-        return str(self.user) + " - " + str(self.event) + " - " + self.name
+        return self.code
