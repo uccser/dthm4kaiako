@@ -29,7 +29,7 @@
             <td>{{ application.event.name }}</td>
             <td>{{ application.datetime_submitted }}</td>
             <td>{{ application.datetime_updated }}</td>
-            <td>{{ application.status }}</td>
+            <td>{{ application.get_status_display }}</td>
             <td><a href="#">Edit application</a></td>
           </tr>
         {% endfor %}
