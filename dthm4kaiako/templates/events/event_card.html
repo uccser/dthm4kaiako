@@ -11,6 +11,13 @@
             <div class="col-12 col-lg-9">
                 {% if event.organisers.all or event.series %}
                     <div class="mb-2">
+                        {% if event.series.logo %}
+                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                        {% elif event.series.abbreviation %}
+                            <small class="text-muted">
+                                Part of {{ event.series.abbreviation }} series
+                            </small>
+                        {% endif %}
                         {% for organiser in event.organisers.all %}
                             <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
                                 {% if organiser.logo %}
@@ -22,13 +29,6 @@
                                 {% endif %}
                             </a>
                         {% endfor %}
-                        {% if event.series.logo %}
-                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                        {% elif event.series.abbreviation %}
-                            <small class="text-muted">
-                                Part of {{ event.series.abbreviation }} series
-                            </small>
-                        {% endif %}
                     </div>
                 {% endif %}
                 <h4 class="mb-0">
