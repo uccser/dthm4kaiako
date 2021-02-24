@@ -76,7 +76,7 @@ class UserUpdateForm(ModelForm):
         widget=CheckboxSelectMultiple,
     )
 
-    class Meta(forms.UserCreationForm.Meta):
+    class Meta:
         """Metadata for UserUpdateForm class."""
 
         model = User

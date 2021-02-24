@@ -28,7 +28,6 @@ from users.models import DietaryRequirement
 from tests.events.factories import (
     EventFactory,
     RegistrationFormFactory,
-    # ApplicantTypeFactory,
 )
 # DTTA
 from tests.dtta.factories import (
