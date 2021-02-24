@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.18.3
+
+- Update release timeframe for 'Getting Started' guide.
+- Set ordering for event sessions in admin interface.
+- Reorder event icons to show series before organisers.
+- Update Docker images to use our new images hosted on GitHub Container Registry.
+- Setup Dependabot for managing updating dependencies.
+- Add GitHub issue and pull request templates.
+- Disable steps for automated develop deployment (server offline).
+- Dependencies changes:
+    - Update argon2-cffi from 19.2.0 to 20.1.0.
+    - Update coverage from 5.0.3 to 5.4.
+    - Update django-allauth from 0.41.0 to 0.44.0.
+    - Update django-anymail from 7.0.0 to 8.2.
+    - Update django-ckeditor from 5.9.0 to 6.0.0.
+    - Update django-crispy-forms to 1.8.1 to 1.11.0.
+    - Update django-debug-toolbar from 2.2 to 3.2.
+    - Update django-extensions from 2.2.6 to 3.1.1.
+    - Update django-filter from 2.2.0 to 2.4.0.
+    - Update django-ipware from 2.1.0 to 3.0.2.
+    - Update django-markdown from 2.0.28 to 3.0.1.
+    - Update django-model-utils from 4.0.0.
+    - Update django-storages from 1.9.1 to 1.11.1.
+    - Update djangorestframework from 3.11.0 to 3.12.3.
+    - Update factory-boy from 2.12.0 to 3.2.0.
+    - Update filetype 1.0.4 to 1.0.7.
+    - Update flake8 from 3.7.9 to 3.8.4.
+    - Update google-api-python-client from 1.7.11 to 1.12.8.
+    - Update google-auth from 1.11.0 to 1.25.0.
+    - Update google-cloud-logging from 1.14.0 to 2.2.0.
+    - Update google-cloud-storage from 1.25.0 to 1.35.1.
+    - Update google-resumable-media from 0.5.0 to 1.2.0.
+    - Update mypy from 0.761 to 0.800.
+    - Update Pillow from 7.0.0 to 8.1.0.
+    - Update psycopg2-binary from 2.8.4 to 2.8.6.
+    - Update pydocstyle from 5.0.2 to 5.1.1.
+    - Update pytest from 5.3.5 to 6.2.2.
+    - Update pytest-django from 3.8.0 to 4.1.0.
+    - Update pytest-sugar from 0.9.2 to 0.9.4.
+    - Update python-slugify from 4.0.0 to 4.0.1.
+    - Update pytz from 2019.3 to 2021.1.
+    - Update Sphinx from 2.3.1 to 3.4.3.
+    - Remove redis.
+    - Remove django-redis.
+
 ## 0.18.2
 
 - Store authors for resources (users and/or entities).
