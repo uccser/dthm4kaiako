@@ -48,6 +48,7 @@ class SessionInline(admin.StackedInline):
     fk_name = 'event'
     extra = 3
     min_num = 1
+    ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
 
 
