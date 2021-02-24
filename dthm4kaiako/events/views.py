@@ -118,11 +118,17 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         Returns:
             Dictionary of context data.
         """
+        user = self.request.user
         context = super().get_context_data(**kwargs)
         context['sponsors'] = self.object.sponsors.all()
         context['organisers'] = self.object.organisers.all()
         context['sessions'] = self.object.sessions.all().prefetch_related('locations')
         context['locations'] = self.object.locations.all()
+        # check if user has applied to event already
+        if user.is_authenticated and EventApplication.objects.filter(user=user, event=self.object.pk).exists():
+            context['applied'] = True
+        else:
+            context['applied'] = False
         return context
 
 

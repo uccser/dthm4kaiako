@@ -142,9 +142,15 @@
                 </a>
             {% elif event.registration_form %}
                 <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
-                    {{ event.get_registration_type_display }}
-                </a>
+                {% if applied %}
+                    <a class="btn btn-warning btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                        Edit application
+                    </a>
+                {% else %}
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                        {{ event.get_registration_type_display }}
+                    </a>
+                {% endif %}
             {% endif %}
 
             {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
