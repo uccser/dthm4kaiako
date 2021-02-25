@@ -9,7 +9,7 @@ from tests.users.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)
-def media_storage(settings, tmpdir):
+def media_storage(settings=settings, tmpdir=''):
     """Pytest setup for media storage."""
     settings.MEDIA_ROOT = tmpdir.strpath
 

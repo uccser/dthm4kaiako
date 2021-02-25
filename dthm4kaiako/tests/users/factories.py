@@ -15,6 +15,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def password(self, create: bool, extracted: Sequence[Any], **kwargs):
+        """Create password for user."""
         password = (
             extracted
             if extracted
@@ -28,7 +29,6 @@ class UserFactory(factory.django.DjangoModelFactory):
             ).evaluate(None, None, extra={"locale": None})
         )
         self.set_password(password)
-
 
     class Meta:
         """Metadata for UserFactory class."""
