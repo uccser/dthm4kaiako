@@ -1,4 +1,4 @@
-FROM uccser/django:2.1.5
+FROM ghcr.io/uccser/django:2.2.18
 
 # Add metadata to Docker image
 LABEL maintainer="csse-education-research@canterbury.ac.nz"
