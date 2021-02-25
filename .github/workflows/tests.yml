@@ -1,12 +1,17 @@
-name: Test suite
+name: Tests
 on: [push, pull_request]
 jobs:
-  test:
+  test-suite:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Run test suite
       run: ./dev ci test_suite
+  style-checker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: Run style checker
       run: ./dev ci style
