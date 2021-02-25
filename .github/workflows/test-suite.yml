@@ -1,0 +1,12 @@
+name: Test suite
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Run test suite
+      run: ./dev ci test_suite
+    - name: Run style checker
+      run: ./dev ci style
