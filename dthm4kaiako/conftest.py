@@ -4,6 +4,7 @@ import pytest
 from django.conf import settings
 from django.test import RequestFactory
 
+from users.models import User
 from tests.users.factories import UserFactory
 
 
@@ -14,7 +15,7 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user() -> settings.AUTH_USER_MODEL:
+def user() -> User:
     """Pytest setup for user model."""
     return UserFactory()
 
