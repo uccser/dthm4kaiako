@@ -16,28 +16,28 @@ jobs:
     script: "./dev ci test_suite"
   - script: "./dev ci style"
     name: Run style checker
-  - stage: development deployment
-    script: skip
-    name: Deploy development website to Google App Engine
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/dev-deploy/deploy-app.sh
-      on:
-        branch: develop
-  - script: skip
-    name: Update development Google Cloud SQL database
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/dev-deploy/update-content.sh
-      on:
-        branch: develop
-  - script: skip
-    name: Copy development static files to Google Storage Bucket
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
-      on:
-        branch: develop
+  # - stage: development deployment
+  #   script: skip
+  #   name: Deploy development website to Google App Engine
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/dev-deploy/deploy-app.sh
+  #     on:
+  #       branch: develop
+  # - script: skip
+  #   name: Update development Google Cloud SQL database
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/dev-deploy/update-content.sh
+  #     on:
+  #       branch: develop
+  # - script: skip
+  #   name: Copy development static files to Google Storage Bucket
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
+  #     on:
+  #       branch: develop
   - stage: production deployment
     script: skip
     name: Deploy production website to Google App Engine
@@ -68,7 +68,7 @@ notifications:
     on_failure: change
 stages:
 - name: test
-- name: development deployment
-  if: branch = develop
+# - name: development deployment
+#   if: branch = develop
 - name: production deployment
   if: branch = master

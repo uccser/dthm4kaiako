@@ -4,17 +4,18 @@ import pytest
 from django.conf import settings
 from django.test import RequestFactory
 
+from users.models import User
 from tests.users.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)
-def media_storage(settings, tmpdir):
+def media_storage(tmpdir):
     """Pytest setup for media storage."""
     settings.MEDIA_ROOT = tmpdir.strpath
 
 
 @pytest.fixture
-def user() -> settings.AUTH_USER_MODEL:
+def user() -> User:
     """Pytest setup for user model."""
     return UserFactory()
 

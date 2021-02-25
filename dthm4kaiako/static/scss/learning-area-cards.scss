@@ -65,9 +65,12 @@ div {
     .la-card-front-container {
         background-color: white;
         height: $card-height - ($card-margin * 2);
-        margin: $card-margin;
+        width: $card-width - ($card-margin * 2);
         padding: $card-margin;
         position: relative;
+        top: $card-margin;
+        left: $card-margin;
+        right: $card-margin;
         ul {
             padding-left: 0.7rem;
         }

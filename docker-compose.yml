@@ -12,7 +12,7 @@ services:
       dockerfile: ./Dockerfile-local
     command: /dthm4kaiako/dthm4kaiako/docker-development-entrypoint.sh
     volumes:
-      - .:/dthm4kaiako
+      - .:/dthm4kaiako/
     environment:
       - PORT=8080
       - USE_DOCKER=yes
