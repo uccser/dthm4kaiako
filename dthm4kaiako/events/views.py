@@ -11,7 +11,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
-from events.forms import EventRegistrationForm, TermsAndConditionsForm
+from events.forms import EventForm, TermsAndConditionsForm
 from users.forms import UserUpdateForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -145,7 +145,7 @@ def register(request, pk):
     user = request.user
     event = Event.objects.get(pk=pk)
     if request.method == 'POST':
-        event_form = EventRegistrationForm(request.POST)
+        event_form = EventForm(request.POST)
         # Have to overwrite queryset again
         event_form.fields['applicant_type'].queryset = event.applicant_types.all()
         user_form = UserUpdateForm(request.POST)
@@ -204,12 +204,12 @@ def register(request, pk):
         # If the application exists, pre-populate form
         if user.event_applications.filter(event=event).exists():
             application = user.event_applications.get(event=event)
-            event_form = EventRegistrationForm(initial={
+            event_form = EventForm(initial={
                 'applicant_type': application.applicant_type,
                 'voucher': application.voucher,
             })
         else:
-            event_form = EventRegistrationForm()
+            event_form = EventForm()
         event_form.fields['applicant_type'].queryset = event.applicant_types.all()
         # We don't pre-populate this as it should be re-checked by the user every time they submit the form
         terms_and_conditions_form = TermsAndConditionsForm()

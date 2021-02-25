@@ -10,6 +10,7 @@ from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
 from users.models import Entity, User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Location(models.Model):
@@ -407,7 +408,13 @@ class EventVoucher(models.Model):
         primary_key=True
     )
     active = models.BooleanField(default=False)
-    discount = models.IntegerField(default=0)
+    discount = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100),
+        ],
+    )
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,

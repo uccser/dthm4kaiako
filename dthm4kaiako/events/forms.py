@@ -4,7 +4,7 @@ from django import forms
 from events.models import ApplicantType
 
 
-class EventRegistrationForm(forms.Form):
+class EventForm(forms.Form):
     """Form for a user to register for an event."""
 
     applicant_type = forms.ModelChoiceField(ApplicantType.objects.none())
@@ -14,7 +14,7 @@ class EventRegistrationForm(forms.Form):
 class TermsAndConditionsForm(forms.Form):
     """Form for accepting terms and conditions.
 
-    This is separate from EventRegistrationForm so we can render T's & C's at the end of the form.
+    This is separate from EventForm so we can render T's & C's at the end of the form.
     """
 
     terms_and_conditions_accepted = forms.BooleanField(required=True)
