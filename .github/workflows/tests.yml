@@ -1,15 +1,17 @@
 name: Tests
+
 on: [push, pull_request]
+
 jobs:
   test-suite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Run test suite
       run: ./dev ci test_suite
   style-checker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
