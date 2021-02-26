@@ -24,12 +24,28 @@ jobs:
         project: dthm4kaiako-dev
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         export_default_credentials: true
-    - name: Setup Python3
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+    - name: Copy app.yaml file to root directory
+      run: mv ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
     - name: Create app.yaml file
-      run: python ./infrastructure/replace_envs.py ./infrastructure/dev-deploy/app.yaml
+      uses: ikuanyshbekov/app-yaml-env-compiler@v1.1
+      env:
+        DEPLOYMENT: $DEPLOYMENT
+        INCLUDE_INCONTEXT_L10N: ${{ secrets.INCLUDE_INCONTEXT_L10N }}
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        GOOGLE_CLOUD_SQL_DATABASE_USERNAME: ${{ secrets.GOOGLE_CLOUD_SQL_DATABASE_USERNAME }}
+        GOOGLE_CLOUD_SQL_DATABASE_PASSWORD: ${{ secrets.GOOGLE_CLOUD_SQL_DATABASE_PASSWORD }}
+        GOOGLE_CLOUD_SQL_CONNECTION_NAME: ${{ secrets.GOOGLE_CLOUD_SQL_CONNECTION_NAME }}
+        GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME }}
+        GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
+        GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
+        RECAPTCHA_PRIVATE_KEY: ${{ secrets.RECAPTCHA_PRIVATE_KEY }}
+        MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+        SAMPLE_DATA_ADMIN_PASSWORD: ${{ secrets.SAMPLE_DATA_ADMIN_PASSWORD }}
+        SAMPLE_DATA_USER_PASSWORD: ${{ secrets.SAMPLE_DATA_USER_PASSWORD }}
+        ELASTICSEARCH_CONNECTION_NAME: ${{ secrets.ELASTICSEARCH_CONNECTION_NAME }}
     # Current doesn't run system 'start' or 'run' commands
     - name: Deploy app
       uses: google-github-actions/deploy-appengine@main
