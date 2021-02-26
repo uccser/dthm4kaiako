@@ -15,6 +15,7 @@ jobs:
     name: Deploy dev website to Google App Engine
     runs-on: ubuntu-20.04
     environment: dev-deployment
+    steps:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Setup Google Could SDK
