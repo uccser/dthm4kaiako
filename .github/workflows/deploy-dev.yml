@@ -29,7 +29,7 @@ jobs:
       with:
         python-version: '3.x'
     - name: Create app.yaml file
-      uses: python ./infrastructure/replace_envs.py ./infrastructure/dev-deploy/app.yaml
+      run: python ./infrastructure/replace_envs.py ./infrastructure/dev-deploy/app.yaml
     # Current doesn't run system 'start' or 'run' commands
     - name: Deploy app
       uses: google-github-actions/deploy-appengine@main
