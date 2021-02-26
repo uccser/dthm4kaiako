@@ -21,7 +21,7 @@ jobs:
     - name: Setup Google Could SDK
       uses: google-github-actions/setup-gcloud@master
       with:
-        project: dthm4kaiako-dev
+        project_id: dthm4kaiako-dev
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         export_default_credentials: true
     - name: Copy app.yaml file to root directory
