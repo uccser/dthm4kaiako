@@ -27,7 +27,7 @@ jobs:
     - name: Copy app.yaml file to root directory
       run: mv ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
     - name: Create app.yaml file
-      uses: ikuanyshbekov/app-yaml-env-compiler@v1.1
+      uses: uccser/app-yaml-env-compiler@master
       env:
         DEPLOYMENT: $DEPLOYMENT
         INCLUDE_INCONTEXT_L10N: ${{ secrets.INCLUDE_INCONTEXT_L10N }}
