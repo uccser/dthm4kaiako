@@ -2,8 +2,6 @@
 
 export DJANGO_SETTINGS_MODULE="config.settings.production"
 
-source ./dthm4kaiako/load-prod-envs.sh
-
 echo "Compiling message files"
 /docker_venv/bin/python3 ./manage.py compilemessages
 
