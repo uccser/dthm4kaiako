@@ -10,7 +10,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-local
-    command: /dthm4kaiako/dthm4kaiako/docker-development-entrypoint.sh
+    command: /dthm4kaiako/dthm4kaiako/docker-local-development-entrypoint.sh
     volumes:
       - .:/dthm4kaiako/
     environment:
