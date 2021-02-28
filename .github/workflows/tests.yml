@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test-suite:
+    name: Test suite
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout repository
@@ -11,6 +12,7 @@ jobs:
     - name: Run test suite
       run: ./dev ci test_suite
   style-checker:
+    name: Style checker
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout repository
