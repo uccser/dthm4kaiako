@@ -1,29 +1,22 @@
 FROM ghcr.io/uccser/django:2.2.18
 
-# Add metadata to Docker image
-LABEL maintainer="csse-education-research@canterbury.ac.nz"
-
-# Set terminal to be noninteractive
-ARG DEBIAN_FRONTEND=noninteractive
-ENV DJANGO_PRODUCTION=True
-
 RUN apt-get update \
     && apt-get install -y \
     binutils \
     libproj-dev \
-    gdal-bin \
-    --no-install-recommends --no-install-suggests \
-    && apt-get -y --purge autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    gdal-bin
 
+ENV DJANGO_PRODUCTION=True
+LABEL maintainer="csse-education-research@canterbury.ac.nz"
 EXPOSE 8080
-RUN mkdir /dthm4kaiako
-WORKDIR /dthm4kaiako
 
-# Copy and install Python dependencies
+# Copy and install dependencies inside virtual environment
 COPY requirements /requirements
 RUN /docker_venv/bin/pip3 install -r /requirements/production.txt
 
-ADD ./dthm4kaiako /dthm4kaiako/
+RUN mkdir /dthm4kaiako
+WORKDIR /dthm4kaiako
 
+# Copy website and set entrypoint
+COPY ./dthm4kaiako /dthm4kaiako/
 CMD /dthm4kaiako/docker-production-entrypoint.sh
