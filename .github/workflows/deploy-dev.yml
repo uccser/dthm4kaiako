@@ -50,16 +50,48 @@ jobs:
     - name: Deploy app
       uses: google-github-actions/deploy-appengine@main
       with:
+        project_id: dthm4kaiako-dev
+        credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         deliverables: app.yaml ./infrastructure/dev-deploy/cron.yaml
 
   # update-database:
   #   name: Update dev Google Cloud SQL database
   #   runs-on: ubuntu-20.04
   #   environment: dev-deployment
+  #   env:
+  #     DEPLOYMENT: $DEPLOYMENT
+  #     INCLUDE_INCONTEXT_L10N: ${{ secrets.INCLUDE_INCONTEXT_L10N }}
+  #     DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  #     GOOGLE_CLOUD_SQL_DATABASE_USERNAME: ${{ secrets.GOOGLE_CLOUD_SQL_DATABASE_USERNAME }}
+  #     GOOGLE_CLOUD_SQL_DATABASE_PASSWORD: ${{ secrets.GOOGLE_CLOUD_SQL_DATABASE_PASSWORD }}
+  #     GOOGLE_CLOUD_SQL_CONNECTION_NAME: ${{ secrets.GOOGLE_CLOUD_SQL_CONNECTION_NAME }}
+  #     GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME }}
+  #     GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME }}
+  #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #     GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
+  #     GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+  #     RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
+  #     RECAPTCHA_PRIVATE_KEY: ${{ secrets.RECAPTCHA_PRIVATE_KEY }}
+  #     MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+  #     SAMPLE_DATA_ADMIN_PASSWORD: ${{ secrets.SAMPLE_DATA_ADMIN_PASSWORD }}
+  #     SAMPLE_DATA_USER_PASSWORD: ${{ secrets.SAMPLE_DATA_USER_PASSWORD }}
+  #     ELASTICSEARCH_CONNECTION_NAME: ${{ secrets.ELASTICSEARCH_CONNECTION_NAME }}
+  #   steps:
   #   - name: Checkout repository
   #     uses: actions/checkout@v2
-  #   - name: Update database
-  #     run: ./infrastructure/dev-deploy/update-content.sh
+  #   - name: Copy docker-compose.yml file to root directory for Cloud SQL Proxy
+  #     run: cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
+  #   - name: Start system
+  #     run: ./dev start
+  #   - name: Migrate database
+  #     run: ./dev migrate
+  #   - name: Regenerate sample data
+  #     run: ./dev sampledata
+  #   - name: Load card data
+  #     run: ./dev load_card_data
+  #   - name: Load POET data
+  #     run: ./dev load_poet_data
+
   # deploy-static-files:
   #   name: Deploy dev static files to Google Storage Bucket
   #   runs-on: ubuntu-20.04
