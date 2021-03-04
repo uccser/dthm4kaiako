@@ -18,5 +18,5 @@ RUN mkdir /dthm4kaiako
 WORKDIR /dthm4kaiako
 
 # Copy website and set entrypoint
-COPY ./dthm4kaiako /dthm4kaiako/
+COPY ./dthm4kaiako/ /dthm4kaiako/
 CMD /dthm4kaiako/docker-production-entrypoint.sh

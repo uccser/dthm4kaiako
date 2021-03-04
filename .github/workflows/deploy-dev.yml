@@ -16,6 +16,8 @@ env:
   GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME }}
   GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME: ${{ secrets.GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME }}
   GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  GOOGLE_APPLICATION_CREDENTIALS_FILEPATH: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_FILEPATH }}
+  GOOGLE_APPLICATION_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
   GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
   GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
   RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
@@ -33,12 +35,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    - name: Create Google Service Account credential file
+      run: python3 ./infrastructure/write_gcp_credentials.py
     - name: Setup Google Could SDK
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: dthm4kaiako-dev
-        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        export_default_credentials: true
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
     - name: Copy app.yaml file to root directory
       run: mv ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
     - name: Create app.yaml file
@@ -48,7 +51,6 @@ jobs:
       uses: google-github-actions/deploy-appengine@main
       with:
         project_id: dthm4kaiako-dev
-        credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         deliverables: app.yaml ./infrastructure/dev-deploy/cron.yaml
 
   # update-database:
