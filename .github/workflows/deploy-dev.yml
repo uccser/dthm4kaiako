@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 env:
-  DEPLOYMENT: dev
   INCLUDE_INCONTEXT_L10N: false
   DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
   GOOGLE_CLOUD_SQL_DATABASE_USERNAME: ${{ secrets.GOOGLE_CLOUD_SQL_DATABASE_USERNAME }}
@@ -32,6 +31,8 @@ jobs:
     name: Deploy dev website to Google App Engine
     runs-on: ubuntu-20.04
     environment: dev-deployment
+    env:
+      DEPLOYMENT: dev
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -46,32 +47,33 @@ jobs:
       run: mv ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
     - name: Create app.yaml file
       uses: uccser/app-yaml-env-compiler@master
-    # Current doesn't run system 'start' or 'run' commands
     - name: Deploy app
       uses: google-github-actions/deploy-appengine@main
       with:
         project_id: dthm4kaiako-dev
         deliverables: app.yaml ./infrastructure/dev-deploy/cron.yaml
 
-  # update-database:
-  #   name: Update dev Google Cloud SQL database
-  #   runs-on: ubuntu-20.04
-  #   environment: dev-deployment
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v2
-  #   - name: Copy docker-compose.yml file to root directory for Cloud SQL Proxy
-  #     run: cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
-  #   - name: Start system
-  #     run: ./dev start
-  #   - name: Migrate database
-  #     run: ./dev migrate
-  #   - name: Regenerate sample data
-  #     run: ./dev sampledata
-  #   - name: Load card data
-  #     run: ./dev load_card_data
-  #   - name: Load POET data
-  #     run: ./dev load_poet_data
+  update-database:
+    name: Update dev Google Cloud SQL database
+    runs-on: ubuntu-20.04
+    environment: dev-deployment
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Create Google Service Account credential file
+      run: python3 ./infrastructure/write_gcp_credentials.py
+    - name: Copy docker-compose.yml file to root directory for Cloud SQL Proxy
+      run: cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
+    - name: Start system
+      run: ./dev start
+    - name: Migrate database
+      run: ./dev migrate
+    - name: Regenerate sample data
+      run: ./dev sampledata
+    - name: Load card data
+      run: ./dev load_card_data
+    - name: Load POET data
+      run: ./dev load_poet_data
 
   # deploy-static-files:
   #   name: Deploy dev static files to Google Storage Bucket
