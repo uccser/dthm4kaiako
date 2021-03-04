@@ -1,6 +1,7 @@
 """Settings for production environment, built upon base settings."""
 
 import sys
+import json
 from .base import *  # noqa
 from .base import env
 from google.oauth2 import service_account
@@ -72,7 +73,8 @@ INSTALLED_APPS += ['storages']  # noqa F405
 # https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
+GS_CREDENTIALS_JSON = json.loads(env('GOOGLE_APPLICATION_CREDENTIALS'))
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(GS_CREDENTIALS_JSON)
 GS_FILE_OVERWRITE = False
 GS_DEFAULT_ACL = 'publicRead'
 
