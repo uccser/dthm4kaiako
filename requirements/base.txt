@@ -22,7 +22,7 @@ django-modelclone==0.7.1
 django-inline-svg==0.1.1
 
 # Google Cloud Platform
-google-api-python-client==1.12.8
+google-api-python-client==2.0.2
 
 # Search
 # https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
