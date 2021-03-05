@@ -1,9 +1,10 @@
 #!/bin/bash
 
-export DJANGO_SETTINGS_MODULE="config.settings.production"
-
 echo "Compiling message files"
 /docker_venv/bin/python3 ./manage.py compilemessages
+
+ls
+ls ./dthm4kaiako/
 
 # Start gunicorn service
 echo "Starting gunicorn"

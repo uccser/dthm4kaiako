@@ -7,6 +7,7 @@ RUN apt-get update \
     gdal-bin
 
 ENV DJANGO_PRODUCTION=True
+ENV DJANGO_SETTINGS_MODULE="config.settings.production"
 LABEL maintainer="csse-education-research@canterbury.ac.nz"
 EXPOSE 8080
 
