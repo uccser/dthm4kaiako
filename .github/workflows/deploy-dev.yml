@@ -44,7 +44,7 @@ jobs:
         project_id: dthm4kaiako-dev
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
     - name: Copy app.yaml file to root directory
-      run: mv ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
+      run: cp ./infrastructure/dev-deploy/app.yaml $GITHUB_WORKSPACE
     - name: Create app.yaml file
       uses: uccser/app-yaml-env-compiler@master
     - name: Deploy app
@@ -64,16 +64,17 @@ jobs:
       run: python3 ./infrastructure/write_gcp_credentials.py
     - name: Copy docker-compose.yml file to root directory for Cloud SQL Proxy
       run: cp ./infrastructure/cloud-sql-proxy/docker-compose.yml ./docker-compose.yml
-    - name: Start system
-      run: ./dev start
-    - name: Migrate database
-      run: ./dev migrate
-    - name: Regenerate sample data
-      run: ./dev sampledata
-    - name: Load card data
-      run: ./dev load_card_data
-    - name: Load POET data
-      run: ./dev load_poet_data
+    - run: docker-compose up
+    # - name: Start system
+    #   run: ./dev start
+    # - name: Migrate database
+    #   run: ./dev migrate
+    # - name: Regenerate sample data
+    #   run: ./dev sampledata
+    # - name: Load card data
+    #   run: ./dev load_card_data
+    # - name: Load POET data
+    #   run: ./dev load_poet_data
 
   # deploy-static-files:
   #   name: Deploy dev static files to Google Storage Bucket
