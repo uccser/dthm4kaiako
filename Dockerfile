@@ -14,9 +14,8 @@ EXPOSE 8080
 COPY requirements /requirements
 RUN /docker_venv/bin/pip3 install -r /requirements/production.txt
 
-RUN mkdir /dthm4kaiako
-WORKDIR /dthm4kaiako
-
-# Copy website and set entrypoint
+# Copy website and run entrypoint script
+RUN mkdir /dthm4kaiako/
 COPY ./dthm4kaiako/ /dthm4kaiako/
+WORKDIR /dthm4kaiako/
 CMD /dthm4kaiako/docker-production-entrypoint.sh
