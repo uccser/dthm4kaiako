@@ -1,4 +1,4 @@
-"""Views for general application."""
+"""Views for secret pages application."""
 
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
