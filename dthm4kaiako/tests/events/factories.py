@@ -35,6 +35,7 @@ class EventFactory(DjangoModelFactory):
     description = Faker('paragraph', nb_sentences=50)
     registration_link = Faker('url')
     published = True
+    show_schedule = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
     end = LazyAttribute(lambda obj: obj.start)
     accessible_online = LazyFunction(random_boolean)
@@ -54,9 +55,9 @@ class EventFactory(DjangoModelFactory):
             self.featured = True
 
         # Set show schedule
-        # 50% chance
-        if random.randint(1, 2) == 1:
-            self.show_schedule = True
+        # 10% chance to hide
+        if random.randint(1, 10) == 1:
+            self.show_schedule = False
 
         # Set location
         # 80% chance one location, otherwise multiple
