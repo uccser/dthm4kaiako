@@ -13,7 +13,7 @@ pytest-sugar==0.9.4  # https://github.com/Frozenball/pytest-sugar
 # ------------------------------------------------------------------------------
 flake8==3.9.0  # https://github.com/PyCQA/flake8
 coverage==5.5  # https://github.com/nedbat/coveragepy
-pydocstyle==5.1.1
+pydocstyle==6.0.0
 
 # Django
 # ------------------------------------------------------------------------------
