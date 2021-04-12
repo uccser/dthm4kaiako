@@ -4,7 +4,8 @@ import random
 import pytz
 from datetime import timedelta
 from tests.utils import random_boolean
-from factory import DjangoModelFactory, Faker, post_generation, LazyFunction, LazyAttribute
+from factory import Faker, post_generation, LazyFunction, LazyAttribute
+from factory.django import DjangoModelFactory
 from factory.faker import faker
 from users.models import Entity
 from events.models import (
@@ -46,7 +47,6 @@ class EventFactory(DjangoModelFactory):
     @post_generation
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to event."""
-        FAKER = faker.Faker()
 
         # Set featured
         # 20% chance
@@ -99,13 +99,26 @@ class EventFactory(DjangoModelFactory):
         for i in range(number_of_sessions):
             duration = random.choice([30, 60, 120, 180])
             end_time = start_time + timedelta(minutes=duration)
-            Session.objects.create(
-                name=FAKER.sentence(),
-                description=FAKER.paragraph(nb_sentences=10),
-                event=self,
-                url=FAKER.url(),
-                start=start_time,
-                end=end_time,
-            )
+            for i in range(random.randint(1, 3)):
+                session = Session.objects.create(
+                    # TODO: Figure out how to use faker properly, as it doesn't evaluate here the standard way
+                    name=faker.Faker().sentence(),
+                    description=faker.Faker().paragraph(nb_sentences=10),
+                    event=self,
+                    url=faker.Faker().url(),
+                    start=start_time,
+                    end=end_time,
+                )
+                # Set location
+                # 80% chance one location, otherwise multiple
+                if random.randint(1, 5) == 1:
+                    session.locations.add(*random.sample(
+                        list(Location.objects.all()),
+                        random.randint(2, 4)
+                    ))
+                else:
+                    session.locations.add(random.choice(Location.objects.all()))
+                session.save()
+            # Set start time for next session as end time for this session
             start_time = end_time
         self.update_datetimes()
