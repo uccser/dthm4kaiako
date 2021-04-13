@@ -48,7 +48,6 @@ class EventFactory(DjangoModelFactory):
     @post_generation
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to event."""
-
         # Set featured
         # 20% chance
         if random.randint(1, 5) == 1:

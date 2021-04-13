@@ -63,7 +63,6 @@ class ResourceFactory(DjangoModelFactory):
     @post_generation
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to resource."""
-
         # Set language
         # 25% chance both languages, otherwise one
         if random.randint(1, 4) == 1:

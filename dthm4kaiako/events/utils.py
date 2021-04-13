@@ -19,6 +19,7 @@ class Day():
     """Class for organising time slots in schedule."""
 
     def __init__(self, datetime):
+        """Create day object for tracking time slots."""
         self.date = localdate(datetime)
         self.time_slots = []
 
@@ -27,6 +28,7 @@ class TimeSlot():
     """Class for organising sessions in schedule."""
 
     def __init__(self, start_datetime, end_datetime):
+        """Create time slot object for tracking sessions."""
         self.start = localtime(start_datetime)
         self.end = localtime(end_datetime)
         self.sessions = []
@@ -92,7 +94,6 @@ def organise_schedule_data(sessions):
         else:
             previous_time_slot.sessions.append(session)
     return schedule_data
-
 
 
 def create_filter_helper(reset_url_pattern):
