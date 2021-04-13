@@ -72,52 +72,58 @@
             {{ event.description|safe }}
         </div>
 
-        {% if event.show_schedule and sessions %}
+        {% if event.show_schedule and schedule %}
             <h3 id="event-schedule" class="event-heading">Schedule</h3>
 
-            {% for session in sessions %}
-                <div class="row mb-3">
-                    {% ifchanged session.start|date:"d" %}
-                        <div class="col-12 offset-md-3 col-md-9 mb-2">
-                            <h4>{{ session.start|date:"l j F, Y" }}</h4>
-                        </div>
-                    {% endifchanged %}
+            {% for day in schedule %}
+                <div class="mb-2">
+                    {% comment %} Date for day in schedule {% endcomment %}
+                    <h4 class="schedule-day pb-1">{{ day.date|date:"l j F, Y" }}</h4>
 
-                    {% ifchanged session.start|time session.end|time session.start|date:"d" %}
-                        <div class="col-12 mb-2 schedule-line"></div>
-                        <div class="col-md-3 text-center text-md-right">
-                            <h5>
-                                {{ session.start|time:"g:i a" }}<br class="hidden-sm-down">
-                                <small class="text-muted">until {{ session.end|time:"g:i a" }}</small>
-                            </h5>
-                        </div>
-                    {% else %}
-                        <div class="col-12 offset-md-3 col-md-9 mb-2 schedule-line-thin"></div>
-                        <div class="col-md-3"></div>
-                    {% endifchanged %}
-
-                    <div class="col-md-9">
-                        <h5>
-                            {{ session.name }}
-                        </h5>
-                        <div class="mb-2 session-description">
-                            {{ session.description|safe }}
-                        </div>
-                        {% if session.locations %}
-                            <div><small class="text-muted">Location{{ session.locations.all|pluralize }}</small></div>
-                            {% for location in session.locations.all %}
-                                <div>
-                                    <a href="{{ location.get_absolute_url }}">
-                                        {% if location.room %}
-                                            {{ location.room }}
-                                        {% else %}
-                                            {{ location.name }}
+                    {% for time_slot in day.time_slots %}
+                        <div class="schedule-time-slot row">
+                            {% if not forloop.first %}
+                                <div class="col-12"><div class="my-2 schedule-divider"></div></div>
+                            {% endif %}
+                            <div class="col-12 col-md-3 text-center text-md-right">
+                                <h5 class="schedule-time-slot-time">
+                                    {{ time_slot.start|time:"g:i a" }}<br class="hidden-sm-down">
+                                    <small class="text-muted">
+                                        until {{ time_slot.end|time:"g:i a" }}
+                                    </small>
+                                </h5>
+                            </div>
+                            <div class="col-12 col-md-9 schedule-time-slot-sessions">
+                                {% for session in time_slot.sessions %}
+                                    {% if not forloop.first %}
+                                        <div class="my-2 schedule-divider-thin"></div>
+                                    {% endif %}
+                                    <div class="session">
+                                        <h5>
+                                            {{ session.name }}
+                                        </h5>
+                                        <div class="mb-2 session-description">
+                                            {{ session.description|safe }}
+                                        </div>
+                                        {% if session.locations %}
+                                            <div><small class="text-muted">Location{{ session.locations.all|pluralize }}</small></div>
+                                            {% for location in session.locations.all %}
+                                                <div>
+                                                    <a href="{{ location.get_absolute_url }}">
+                                                        {% if location.room %}
+                                                            {{ location.room }}
+                                                        {% else %}
+                                                            {{ location.name }}
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
                                         {% endif %}
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
         {% endif %}
