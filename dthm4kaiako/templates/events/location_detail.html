@@ -1,0 +1,33 @@
+{% extends "events/base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h3 class="display-6 mt-4 text-muted">Location</h3>
+{% endblock page_heading %}
+
+{% block content_container %}
+    <div class="col-12 col-md-6">
+        <h2>{{ location.get_full_address|escape|linebreaksbr }}</h2>
+        <p>{{ location.description }}</p>
+    </div>
+    <div class="col-12 col-md-6">
+        {% with ratio='1by1' %}
+            {% include "generic/map-element.html" %}
+        {% endwith %}
+    </div>
+{% endblock content_container %}
+
+{% block scripts %}
+    <script>
+        var event_markers = [
+                {
+                    coords: { lat: {{ location.coords.y }}, lng: {{ location.coords.x }} },
+                    title: "{{ location.name|escape }}",
+                    text: "{{ location.get_full_address|escape|linebreaksbr }}",
+                },
+        ];
+        var map_zoom = 18;
+    </script>
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}

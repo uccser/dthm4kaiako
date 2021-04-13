@@ -6,6 +6,7 @@ from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
+    Location,
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper
@@ -114,3 +115,10 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['sessions'] = self.object.sessions.all().prefetch_related('locations')
         context['locations'] = self.object.locations.all()
         return context
+
+
+class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
+    """View for a specific location."""
+
+    model = Location
+    context_object_name = 'location'

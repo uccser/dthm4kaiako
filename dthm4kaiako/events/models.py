@@ -86,6 +86,14 @@ class Location(models.Model):
         """Text representation of a location."""
         return self.get_full_address()
 
+    def get_absolute_url(self):
+        """Return URL of location on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('events:location', kwargs={'pk': self.pk})
+
     def get_full_address(self):
         """Get full text representation of a location."""
         address = ''
