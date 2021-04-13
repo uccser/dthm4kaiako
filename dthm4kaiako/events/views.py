@@ -6,9 +6,10 @@ from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
+    Location,
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
-from events.utils import create_filter_helper
+from events.utils import create_filter_helper, organise_schedule_data
 
 
 class HomeView(generic.TemplateView):
@@ -111,6 +112,15 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['sponsors'] = self.object.sponsors.all()
         context['organisers'] = self.object.organisers.all()
-        context['sessions'] = self.object.sessions.all().prefetch_related('locations')
+        context['schedule'] = organise_schedule_data(
+            self.object.sessions.all().prefetch_related('locations')
+        )
         context['locations'] = self.object.locations.all()
         return context
+
+
+class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
+    """View for a specific location."""
+
+    model = Location
+    context_object_name = 'location'

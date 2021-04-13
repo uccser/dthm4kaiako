@@ -61,11 +61,29 @@ $location-dark: #148086;
   padding-bottom: 0.2rem;
   border-bottom: 1px solid $events-brand-colour;
 }
-.schedule-line {
-  border-top: 2px solid $gray-300;
+
+// Schedule
+.schedule-divider {
+    border-top: 2px solid $gray-500;
 }
-.schedule-line-thin {
-  border-top: 1px solid $gray-300;
+.schedule-divider-thin {
+    border-top: 1px solid $gray-300;
+}
+.schedule-day {
+    position: sticky;
+    top: 0;
+    background-color: rgba(white, 0.9);
+    border-bottom: 2px solid $gray-500;
+    z-index: 100;
+}
+.schedule-time-slot {
+    .schedule-time-slot-time {
+        position: sticky;
+        top: 2rem;
+    }
+}
+.session-description {
+    font-size: 0.9rem;
 }
 
 .filter-card {

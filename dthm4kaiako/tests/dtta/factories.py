@@ -1,6 +1,7 @@
 """Module for factories for testing the DTTA application."""
 
-from factory import DjangoModelFactory, Faker
+from factory import Faker
+from factory.django import DjangoModelFactory
 from dtta.models import (
     NewsArticle,
     Page,
