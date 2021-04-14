@@ -105,7 +105,7 @@
                                         <div class="mb-2 session-description">
                                             {{ session.description|safe }}
                                         </div>
-                                        {% if session.locations %}
+                                        {% if session.locations.all %}
                                             <div><small class="text-muted">Location{{ session.locations.all|pluralize }}</small></div>
                                             {% for location in session.locations.all %}
                                                 <div>
