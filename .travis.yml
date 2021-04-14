@@ -38,28 +38,28 @@ jobs:
   #     script: bash ./infrastructure/dev-deploy/deploy-static-files.sh
   #     on:
   #       branch: develop
-  - stage: production deployment
-    script: skip
-    name: Deploy production website to Google App Engine
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/prod-deploy/deploy-app.sh
-      on:
-        branch: master
-  - script: skip
-    name: Update production Google Cloud SQL database
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/prod-deploy/update-content.sh
-      on:
-        branch: master
-  - script: skip
-    name: Copy production static files to Google Storage Bucket
-    deploy:
-    - provider: script
-      script: bash ./infrastructure/prod-deploy/deploy-static-files.sh
-      on:
-        branch: master
+  # - stage: production deployment
+  #   script: skip
+  #   name: Deploy production website to Google App Engine
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/prod-deploy/deploy-app.sh
+  #     on:
+  #       branch: master
+  # - script: skip
+  #   name: Update production Google Cloud SQL database
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/prod-deploy/update-content.sh
+  #     on:
+  #       branch: master
+  # - script: skip
+  #   name: Copy production static files to Google Storage Bucket
+  #   deploy:
+  #   - provider: script
+  #     script: bash ./infrastructure/prod-deploy/deploy-static-files.sh
+  #     on:
+  #       branch: master
 notifications:
   email: false
   slack:

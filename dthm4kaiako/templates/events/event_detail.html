@@ -77,8 +77,8 @@
 
             {% for day in schedule %}
                 <div class="mb-2">
-                    {% comment %} Date for day in schedule {% endcomment %}
-                    <h4 class="schedule-day pb-1">{{ day.date|date:"l j F, Y" }}</h4>
+                    <div id="schedule-day-{{ forloop.counter }}"></div>
+                    <h4 class="schedule-day py-2">{{ day.date|date:"l j F, Y" }}</h4>
 
                     {% for time_slot in day.time_slots %}
                         <div class="schedule-time-slot row">
@@ -102,10 +102,10 @@
                                         <h5>
                                             {{ session.name }}
                                         </h5>
-                                        <div class="mb-2 session-description">
+                                        <div class="mb-1 session-description">
                                             {{ session.description|safe }}
                                         </div>
-                                        {% if session.locations %}
+                                        {% if session.locations.all %}
                                             <div><small class="text-muted">Location{{ session.locations.all|pluralize }}</small></div>
                                             {% for location in session.locations.all %}
                                                 <div>
@@ -143,10 +143,19 @@
                     <a class="nav-link" href="#event-schedule">
                         Schedule
                     </a>
+                    {% if schedule|length > 1 %}
+                        {% for day in schedule %}
+                            <a class="nav-link ml-4" href="#schedule-day-{{ forloop.counter }}">
+                                <small>
+                                    {{ day.date|date:"l j F, Y" }}
+                                </small>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
             </nav>
 
-            {% if event.registration_link %}
+            {% if event.registration_link and not event.has_ended %}
                 <hr>
                 <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
