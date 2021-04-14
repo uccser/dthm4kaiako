@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.18.5
+
+- Hide session location in schedule if empty. (fixes #745)
+- Render location description correctly. (fixes #746)
+- Update spacing on schedule.
+- Add shortcut to event schedule days. (fixes #747)
+- Hide registration link for past events.
+- Disable steps for automated production deployment.
+
 ## 0.18.4
 
 - Update event schedule to include session locations.
