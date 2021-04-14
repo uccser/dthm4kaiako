@@ -155,7 +155,7 @@
                 {% endif %}
             </nav>
 
-            {% if event.registration_link %}
+            {% if event.registration_link and not event.has_ended %}
                 <hr>
                 <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
