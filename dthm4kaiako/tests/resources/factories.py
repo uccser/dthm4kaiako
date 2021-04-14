@@ -2,7 +2,8 @@
 
 import random
 from django.contrib.auth import get_user_model
-from factory import DjangoModelFactory, Faker, post_generation, LazyFunction
+from factory import Faker, post_generation, LazyFunction
+from factory.django import DjangoModelFactory
 from factory.faker import faker
 from resources.models import (
     Resource,
@@ -62,8 +63,6 @@ class ResourceFactory(DjangoModelFactory):
     @post_generation
     def add_detail(self, create, extracted, **kwargs):
         """Add detail to resource."""
-        FAKER = faker.Faker()
-
         # Set language
         # 25% chance both languages, otherwise one
         if random.randint(1, 4) == 1:
@@ -151,8 +150,7 @@ class ResourceFactory(DjangoModelFactory):
         # Add components
         number_of_components = random.randint(1, 9)
         for i in range(number_of_components):
-
-            component_name = FAKER.sentence()
+            component_name = faker.Faker().sentence()
             component_type = random.choice(list(ResourceComponent.COMPONENT_TYPE_DATA))
             resource_count = Resource.objects.count()
 
@@ -169,7 +167,7 @@ class ResourceFactory(DjangoModelFactory):
                 ResourceComponent.objects.create(
                     name=component_name,
                     resource=self,
-                    component_url=FAKER.url(),
+                    component_url=faker.Faker().url(),
                 )
 
 

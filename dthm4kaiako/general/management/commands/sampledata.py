@@ -192,6 +192,7 @@ class Command(management.base.BaseCommand):
             for row in random.sample(list(reader), 100):
                 if row['Longitude'] and row['Latitude'] and row['Region']:
                     Location.objects.create(
+                        room='Room A',
                         name=row['Name'],
                         street_address=row['Street'],
                         suburb=row['Suburb'],

@@ -2,12 +2,12 @@
 
 import random
 from factory import (
-    DjangoModelFactory,
     Faker,
     LazyFunction,
     post_generation,
+    Iterator,
 )
-from factory import Iterator
+from factory.django import DjangoModelFactory
 from poet.models import (
     Resource,
     ProgressOutcome,

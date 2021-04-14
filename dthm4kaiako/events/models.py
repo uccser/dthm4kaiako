@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.utils.timezone import now
 from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -85,6 +86,14 @@ class Location(models.Model):
     def __str__(self):
         """Text representation of a location."""
         return self.get_full_address()
+
+    def get_absolute_url(self):
+        """Return URL of location on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('events:location', kwargs={'pk': self.pk})
 
     def get_full_address(self):
         """Get full text representation of a location."""
@@ -225,6 +234,15 @@ class Event(models.Model):
             return '{}, {}'.format(location.city, location.get_region_display())
         else:
             return None
+
+    @property
+    def has_ended(self):
+        """Return true if event has ended.
+
+        Returns:
+            Boolean if event has ended.
+        """
+        return now() > self.end
 
     def __str__(self):
         """Text representation of an event."""
