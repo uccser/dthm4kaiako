@@ -81,9 +81,12 @@ $location-dark: #148086;
         position: sticky;
         top: 2rem;
     }
-}
-.session-description {
-    font-size: 0.9rem;
+    .session-description {
+        font-size: 0.9rem;
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 
 .filter-card {
