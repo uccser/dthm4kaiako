@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.18.4
+
+- Update event schedule to include session locations.
+- Update event schedule to be easier to read with sticky elements.
+- Move event location information to separate page.
+- Update timezone setting to use canonical name.
+ Dependencies changes:
+    - Update Pillow from 8.1.0 to 8.2.0.
+    - Update django-crispy-forms from 1.11.0 to 1.11.2.
+    - Update djangorestframework from 3.12.2 to 3.12.4.
+    - Update google-api-python-client from 1.12.8 to 2.1.0.
+    - Update Sphinx from 3.4.3 to 3.5.4.
+    - Update mypy from 0.800 to 0.812.
+    - Update pytest from 6.2.2 to 6.2.3.
+    - Update flake8 from 3.8.4 to 3.9.0.
+    - Update coverage from 5.4 to 5.5.
+    - Update pydocstyle from 5.1.1 to 6.0.0.
+    - Update django-extensions from 3.1.1 to 3.1.2.
+    - Update pytest-django from 4.1.0 to 4.2.0.
+    - Update google-auth from 1.25.0 to 1.28.1.
+    - Update google-cloud-logging from 2.2.0 to 2.3.1.
+    - Update google-cloud-storage from 1.35.1 to 1.37.1.
+
 ## 0.18.3
 
 - Update release timeframe for 'Getting Started' guide.
