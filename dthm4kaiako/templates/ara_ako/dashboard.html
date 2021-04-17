@@ -1,0 +1,38 @@
+{% extends "base-core.html" %}
+
+{% load static  svg %}
+
+{% block body %}
+    <div id="dashboard">
+        <div class="dashboard-section dashboard-event">
+            {% svg 'ara-ako-logo' %}
+            <div id="event-date">
+                {% if ara_ako_event.event.start|date:"j" != ara_ako_event.event.end|date:"j" %}
+                    {% if ara_ako_event.event.start|date:"F" == ara_ako_event.event.end|date:"F" %}
+                        {{ ara_ako_event.event.start|date:"j" }}
+                    {% else %}
+                        {{ ara_ako_event.event.start|date:"j F" }}
+                    {% endif %}
+                    to
+                {% endif %}
+                {{ ara_ako_event.event.end|date:" j F Y" }}
+            </div>
+        </div>
+        <div class="dashboard-section dashboard-time">
+            <div id="clock"></div>
+        </div>
+        <div id="dashboard-schedule" class="dashboard-section"></div>
+    </div>
+{% endblock body %}
+
+{% block css %}
+    <link href="{% static 'css/ara-ako.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block scripts %}
+    <script>
+        const EVENT_SLUG = {{ ara_ako_event.slug }};
+        const JSON_URL = '{% url 'ara_ako:dashboard_json' %}';
+    </script>
+    <script src="{% static 'js/ara-ako-dashboard.js' %}"></script>
+{% endblock scripts %}

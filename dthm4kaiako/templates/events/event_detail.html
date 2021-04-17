@@ -75,57 +75,7 @@
         {% if event.show_schedule and schedule %}
             <h3 id="event-schedule" class="event-heading">Schedule</h3>
 
-            {% for day in schedule %}
-                <div class="mb-2">
-                    <div id="schedule-day-{{ forloop.counter }}"></div>
-                    <h4 class="schedule-day py-2">{{ day.date|date:"l j F, Y" }}</h4>
-
-                    {% for time_slot in day.time_slots %}
-                        <div class="schedule-time-slot row">
-                            {% if not forloop.first %}
-                                <div class="col-12"><div class="my-2 schedule-divider"></div></div>
-                            {% endif %}
-                            <div class="col-12 col-md-3 text-center text-md-right">
-                                <h5 class="schedule-time-slot-time">
-                                    {{ time_slot.start|time:"g:i a" }}<br class="hidden-sm-down">
-                                    <small class="text-muted">
-                                        until {{ time_slot.end|time:"g:i a" }}
-                                    </small>
-                                </h5>
-                            </div>
-                            <div class="col-12 col-md-9 schedule-time-slot-sessions">
-                                {% for session in time_slot.sessions %}
-                                    {% if not forloop.first %}
-                                        <div class="my-2 schedule-divider-thin"></div>
-                                    {% endif %}
-                                    <div class="session">
-                                        <h5>
-                                            {{ session.name }}
-                                        </h5>
-                                        <div class="mb-1 session-description">
-                                            {{ session.description|safe }}
-                                        </div>
-                                        {% if session.locations.all %}
-                                            <div><small class="text-muted">Location{{ session.locations.all|pluralize }}</small></div>
-                                            {% for location in session.locations.all %}
-                                                <div>
-                                                    <a href="{{ location.get_absolute_url }}">
-                                                        {% if location.room %}
-                                                            {{ location.room }}
-                                                        {% else %}
-                                                            {{ location.name }}
-                                                        {% endif %}
-                                                    </a>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
+            {% include "events/event_schedule.html" %}
         {% endif %}
     </div>
 

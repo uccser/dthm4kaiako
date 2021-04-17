@@ -1,22 +1,39 @@
-{% extends "base-unbranded.html" %}
+{% extends "ara_ako/base.html" %}
 
 {% load static %}
 
-{% block page_heading %}
-    {# Ara Ako logo #}
-{% endblock page_heading %}
-
 {% block content_container %}
-    <div class="col-12 text-center mb-3">
-        Description text
-    </div>
-    <div class="col-12 col-md-6">
-        <h2>Events</h2>
+    <div class="col-12 col-md-6 mb-3">
+        <p>
+            Ara Ako is all about developing DT & HM learning resources for you and others to use based on local curriculum kaupapa and contexts.
+            Work in small teams to dive deeper into DT & HM concepts while developing a project-based programme of learning or create supporting resources for teachers new to DT & HM.
+        </p>
+        <p>
+            We will provide:
+        </p>
+        <ul>
+            <li>An incredible atmosphere of fun and creativity</li>
+            <li>Knowledgable DT & HM advisors and support for groups</li>
+            <li>High class facilities for group work including breakout spaces</li>
+            <li>A lot of scrumptious food</li>
+            <li>A few surprises along the way</li>
+        </ul>
+        <p>
+            All educators with a drive to create are invited to apply to attend these events.
+            We’re aiming to bring together a range of attendees based on teaching medium, region, and year levels.
+            It doesn’t matter if you’ve been in education for one year or a lifetime, what is important is that you are ready to create for the community.
+        </p>
     </div>
     <div class="col-12 col-md-6 mb-3">
+        <h4>Events</h4>
+        <ul>
+            {% for ara_ako_event in ara_ako_events %}
+                <li>
+                    <a href="{{ ara_ako_event.get_absolute_url }}">
+                        {{ ara_ako_event.event.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock content_container %}
-
-{% block css %}
-    <link href="{% static 'css/ara-ako.css' %}" rel="stylesheet">
-{% endblock css %}
