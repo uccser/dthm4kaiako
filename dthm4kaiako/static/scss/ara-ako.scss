@@ -1,0 +1,47 @@
+$ara-ako-blue: #3953a4;
+$ara-ako-green: #00b92e;
+
+#dashboard {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    "event schedule"
+    "time schedule";
+    .dashboard-section {
+        margin: 1rem;
+    }
+    .dashboard-event {
+        grid-area: event;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        #event-date {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            color: $ara-ako-green;
+        }
+    }
+    .dashboard-time {
+        grid-area: time;
+        width: 60vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        #clock {
+            font-size: 18rem;
+            font-family: monospace;
+            font-weight: bold;
+            color: $ara-ako-blue;
+        }
+    }
+    #dashboard-schedule {
+        grid-area: schedule;
+    }
+}

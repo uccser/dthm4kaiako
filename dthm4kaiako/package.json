@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "4.3.1",
+    "dayjs": "1.10.4",
     "details-element-polyfill": "2.3.1",
     "fuse.js": "3.4.4",
     "popper.js": "1.15.0",

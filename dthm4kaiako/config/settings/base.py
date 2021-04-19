@@ -130,6 +130,7 @@ LOCAL_APPS = [
     'learning_area_cards.apps.LearningAreaCardsAppConfig',
     'poet.apps.POETAppConfig',
     'secret_pages.apps.SecretPagesAppConfig',
+    'ara_ako.apps.AraAkoAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

@@ -1,0 +1,20 @@
+{% extends "ara_ako/base.html" %}
+
+{% load static %}
+
+{% block content_container %}
+    <div class="col-12 text-center">
+        <h1 class="h2">{{ ara_ako_event }}</h1>
+        <p>
+            {% if ara_ako_event.event.start|date:"j" != ara_ako_event.event.end|date:"j" %}
+                {% if ara_ako_event.event.start|date:"F" == ara_ako_event.event.end|date:"F" %}
+                    {{ ara_ako_event.event.start|date:"j" }}
+                {% else %}
+                    {{ ara_ako_event.event.start|date:"j F" }}
+                {% endif %}
+                to
+            {% endif %}
+            {{ ara_ako_event.event.end|date:" j F Y" }}
+        </p>
+    </div>
+{% endblock content_container %}

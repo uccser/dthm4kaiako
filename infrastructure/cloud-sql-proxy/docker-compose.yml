@@ -9,7 +9,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: ./infrastructure/cloud-sql-proxy/Dockerfile
+      dockerfile: ./Dockerfile
     volumes:
       - ./dthm4kaiako:/dthm4kaiako/
     environment:
