@@ -28,7 +28,7 @@ google-api-python-client==2.1.0
 # https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
 git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261876a32bac2bbec94f
 # https://github.com/elastic/elasticsearch-py
-elasticsearch==5.5.3  # pyup: >=5,<6
+elasticsearch==7.13.3  # pyup: >=5,<6
 
 # Geolocation
 git+https://github.com/erdem/django-map-widgets.git@v0.2.2  # https://github.com/erdem/django-map-widgets
