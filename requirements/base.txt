@@ -16,7 +16,7 @@ django-recaptcha==2.0.6
 django-autoslug-iplweb==1.9.5  # https://github.com/justinmayer/django-autoslug
 djangorestframework==3.12.4  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
-django-filter==2.4.0  # https://github.com/carltongibson/django-filter/
+django-filter==21.1  # https://github.com/carltongibson/django-filter/
 django-ipware==3.0.2
 django-modelclone==0.7.1
 django-inline-svg==0.1.1
