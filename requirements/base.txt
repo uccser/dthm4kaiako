@@ -10,7 +10,7 @@ django-anymail[mailgun]==8.2  # https://github.com/anymail/django-anymail
 django-allauth==0.44.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.11.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
-django-ckeditor==6.0.0  # https://pypi.org/project/django-ckeditor/
+django-ckeditor==6.2.0  # https://pypi.org/project/django-ckeditor/
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
 django-recaptcha==2.0.6
 django-autoslug-iplweb==1.9.5  # https://github.com/justinmayer/django-autoslug
