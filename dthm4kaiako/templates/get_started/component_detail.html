@@ -1,0 +1,56 @@
+{% extends "get_started/base.html" %}
+
+{% load static %}
+
+{% block page_heading %}
+    <h2 class="display-4 text-center text-muted">Get started</h2>
+    <h1 class="display-2 text-center">{{ component.name }}</h1>
+{% endblock page_heading %}
+
+{% block content %}
+    {% if component.video_url %}
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="{{ component.video_url }}" class="embed-responsive-item" width="1920" height="1080" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    {% endif %}
+
+    <div class="my-3">
+        {{ component.description|safe }}
+    </div>
+
+    {% if component.resource %}
+        <h3 class="h4 pb-1 border-bottom">Resources</h3>
+        <p class="text-muted">
+            Click any of the items below to access them.
+        </p>
+
+        <div id="resource-components" class="mb-3">
+            {% for resource_component in component.resource.components.all %}
+            <a {% if resource_component.component_url %} href="{{ resource_component.component_url }}" target="_blank"
+            {% elif resource_component.component_resource %} href="{{ resource_component.component_resource.get_absolute_url }}"
+            {% elif resource_component.component_file %} href="{{ resource_component.component_file.url }}" download
+            {% endif %}
+                class="d-flex resource-component align-items-center border rounded my-2 py-1 px-2 text-center text-md-left overflow-hidden">
+                <div class="">
+                    <img src="{% static resource_component.icon_path %}" class="img-component-type mr-3">
+                </div>
+                <div class="flex-grow-1">
+                    <strong>
+                        {{ resource_component.name }}
+                    </strong>
+                    <br>
+                    <small class="text-muted">
+                        {% if resource_component.component_url %}
+                            {{ resource_component.component_url|truncatechars:70 }}
+                        {% elif resource_component.component_file %}
+                            {{ resource_component.component_file.size|filesizeformat }} - {{ resource_component.filename }}
+                        {% elif resource_component.component_resource %}
+                            {{ resource_component.component_resource.components.count }} component{{ resource_component.component_resource.components.count|pluralize }}
+                        {% endif %}
+                    </small>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock content %}

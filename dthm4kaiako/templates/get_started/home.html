@@ -1,0 +1,23 @@
+{% extends "get_started/base.html" %}
+
+{% load humanize %}
+
+{% block page_heading %}
+    <div class="text-center">
+        <h1 class="display-1 text-center">Kia ora!</h1>
+        <p class="lead">
+            Wanting to learn what Digital Technologies or Hangarau Matihiko is all about?<br>
+            You're in the right place!
+        </p>
+    </div>
+{% endblock page_heading %}
+
+{% block content %}
+    <div class="row justify-items-center">
+        {% for component in components %}
+            <div class="col-12 col-md-8 col-lg-6 mb-2">
+                {% include "get_started/component-card.html" %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

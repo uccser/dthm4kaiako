@@ -1,0 +1,14 @@
+<div class="component card mb-3 w-100">
+    <div class="card-header">
+        <h5 class="d-inline-block mb-0">
+            <span class="text-muted">{{ forloop.counter }}</span>
+            {% if component.visibility == component.VISIBILITY_PUBLISHED %}
+                <a href="{{ component.get_absolute_url }}">
+                    {{ component.name }}
+                </a>
+            {% elif component.visibility == component.VISIBILITY_COMING_SOON %}
+                {{ component.name }} (Coming soon)
+            {% endif %}
+        </h5>
+    </div>
+</div>
