@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Generated and collected static files directories
+dthm4kaiako/build/**
+!dthm4kaiako/build/.keep
+dthm4kaiako/staticfiles/**
+!dthm4kaiako/staticfiles/.keep
+
 # Distribution / packaging
 .Python
 build/
@@ -48,9 +54,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-
-# Django stuff:
-staticfiles/
 
 # Sphinx documentation
 docs/_build/
