@@ -54,6 +54,13 @@
           {% endblocktrans %}
         </small>
       </p>
+      <p class="mb-0">
+        <small>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/uccser/dthm4kaiako/releases">
+            {{ VERSION_NUMBER }}{% if not PRODUCTION_ENVIRONMENT %} - {{ GIT_SHA }}{% endif %}
+          </a>
+        </small>
+      </p>
     </div>
   </footer>
 {% endblock body %}

@@ -1,8 +1,11 @@
 # DTHM for kaiako
 
-[![Build Status](https://travis-ci.org/uccser/dthm4kaiako.svg?branch=develop)](https://travis-ci.org/uccser/dthm4kaiako)
-
 A website for Digital Technology & Hangarau Matihiko educators in New Zealand.
+
+[Production website](https://www.dthm4kaiako.ac.nz/) | [Development website](https://dthm4kaiako-dev.csse.canterbury.ac.nz/)
+:-: | :-:
+`master` branch | `develop` branch
+[![Test and deploy](https://github.com/uccser/dthm4kaiako/actions/workflows/test-and-deploy.yaml/badge.svg?branch=master)](https://github.com/uccser/dthm4kaiako/actions/workflows/test-and-deploy.yaml) | [![Test and deploy](https://github.com/uccser/dthm4kaiako/actions/workflows/test-and-deploy.yaml/badge.svg?branch=develop)](https://github.com/uccser/cdthm4kaiako/actions/workflows/test-and-deploy.yaml)
 
 ## License
 

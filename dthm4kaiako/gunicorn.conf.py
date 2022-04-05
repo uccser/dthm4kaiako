@@ -1,10 +1,13 @@
-"""Configuration file for gunicorn."""
+# Reference: https://pythonspeed.com/articles/gunicorn-in-docker/
 
-from multiprocessing import cpu_count
+# Workers
+workers = 2
+threads = 4
+worker_tmp_dir = "/dev/shm"
 
-# Worker count from http://docs.gunicorn.org/en/stable/design.html#how-many-workers
-workers = cpu_count() * 2 + 1
-# Details from https://cloud.google.com/appengine/docs/flexible/python/runtime
-worker_class = "gevent"
+# Network
 forwarded_allow_ips = "*"
-secure_scheme_headers = {"X-APPENGINE-HTTPS": "on"}
+
+# Logging
+errorlog = "-"
+accesslog = "-"

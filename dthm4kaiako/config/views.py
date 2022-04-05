@@ -1,18 +1,15 @@
 """Views for the general application."""
 
-from django.http import HttpResponse
-from django.core.management import call_command
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from config import __version__
 
 
-def cron_rebuild_index(request):
-    """Rebuild search index when triggered by cron job.
-
-    Returns:
-        200 HTTP response when valid cron job call is made.
-        403 HTTP resoponse when invalid source.
-    """
-    if request.META.get('HTTP_X_APPENGINE_CRON'):
-        call_command('rebuild_index', noinput='')
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse(status=403)
+@require_http_methods(["GET"])
+def get_release_and_commit(request):
+    """Return JSON containing the version number and Git commit hash."""
+    return JsonResponse({
+        "VERSION_NUMBER": __version__,
+        "GIT_SHA": settings.GIT_SHA,
+    })

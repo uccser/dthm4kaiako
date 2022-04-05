@@ -1,4 +1,8 @@
-"""Settings for production environment, built upon base settings."""
+"""
+Django settings for production environment.
+
+- Load secret values from files.
+"""
 
 import sys
 from .base import *  # noqa
@@ -6,20 +10,28 @@ from .base import env
 from google.oauth2 import service_account
 from google.cloud import logging as google_cloud_logging
 
-# GENERAL
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-SECRET_KEY = env('DJANGO_SECRET_KEY')
-# SECURITY WARNING: App Engine's security features ensure that it is safe to
-# have ALLOWED_HOSTS = ['*'] when the app is deployed. If you deploy a Django
-# app not on App Engine, make sure to set an appropriate host here.
+# TODO: Review
 # See https://docs.djangoproject.com/en/1.10/ref/settings/
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
+
+with open(env("DEPLOYMENT_ENVIRONMENT_FILE")) as file:  # noqa: F405
+    DEPLOYMENT_ENVIRONMENT = file.read().strip()
+PRODUCTION_ENVIRONMENT = DEPLOYMENT_ENVIRONMENT == "production"
+STAGING_ENVIRONMENT = DEPLOYMENT_ENVIRONMENT == "staging"
+
+
+# SECRET CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
+with open(env("DJANGO_SECRET_KEY_FILE")) as file:  # noqa: F405
+    SECRET_KEY = file.read().strip()
+
 
 # URL Configuration
 # ------------------------------------------------------------------------------
 
-if DEPLOYMENT_TYPE == "prod":  # noqa: F405
+if PRODUCTION_ENVIRONMENT:  # noqa: F405
     PREPEND_WWW = True
 else:
     PREPEND_WWW = False
@@ -29,41 +41,53 @@ SECURE_REDIRECT_EXEMPT = [
     r'^/?cron/.*',
 ]
 
-# DATABASES
-# ------------------------------------------------------------------------------
+# DATABASE CONFIGURATION
+# ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+
+# Read in secret values
+with open(env("POSTGRES_DB_FILE")) as file:  # noqa: F405
+    POSTGRES_DB = file.read().strip()
+with open(env("POSTGRES_USER_FILE")) as file:  # noqa: F405
+    POSTGRES_USER = file.read().strip()
+with open(env("POSTGRES_PASSWORD_FILE")) as file:  # noqa: F405
+    POSTGRES_PASSWORD = file.read().strip()
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'dthm4kaiako',
-        'USER': env('GOOGLE_CLOUD_SQL_DATABASE_USERNAME'),  # noqa: F405
-        'PASSWORD': env('GOOGLE_CLOUD_SQL_DATABASE_PASSWORD'),  # noqa: F405
-        'HOST': '/cloudsql/' + env('GOOGLE_CLOUD_SQL_CONNECTION_NAME'),  # noqa: F405
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": POSTGRES_DB,
+        "USER": POSTGRES_USER,
+        "PASSWORD": POSTGRES_PASSWORD,
+        "HOST": env("POSTGRES_HOST"),  # noqa: F405
+        "PORT": env("POSTGRES_PORT"),  # noqa: F405
+        "ATOMIC_REQUESTS": True,
     }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=0)  # noqa F405
 
-# SECURITY
+
+# SECURITY CONFIGURATION
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
-SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=True)
-# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
-SESSION_COOKIE_SECURE = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
-CSRF_COOKIE_SECURE = True
-# https://docs.djangoproject.com/en/dev/topics/security/#ssl-https
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-seconds
-# TODO: set this to 60 seconds first and then to 518400 once you prove the former works
-SECURE_HSTS_SECONDS = 60
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-include-subdomains
-SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS', default=True)
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-preload
-SECURE_HSTS_PRELOAD = env.bool('DJANGO_SECURE_HSTS_PRELOAD', default=True)
-# https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
-SECURE_CONTENT_TYPE_NOSNIFF = env.bool('DJANGO_SECURE_CONTENT_TYPE_NOSNIFF', default=True)
+# See https://docs.djangoproject.com/en/dev/ref/middleware/#module-django.middleware.security
+# and https://docs.djangoproject.com/en/dev/howto/deployment/checklist/#run-manage-py-check-deploy
+
+# set this to 60 seconds and then to 518400 when you can prove it works
+# SECURE_HSTS_SECONDS = 60
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)  # noqa: F405
+# SECURE_CONTENT_TYPE_NOSNIFF = env.bool("DJANGO_SECURE_CONTENT_TYPE_NOSNIFF", default=True)  # noqa: F405
+# SECURE_BROWSER_XSS_FILTER = True
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = True
+# SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)  # noqa: F405
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
+# X_FRAME_OPTIONS = "DENY"
+
+# API KEYS
+# ------------------------------------------------------------------------------
+with open(env("GOOGLE_DRIVE_API_KEY_FILE")) as file:  # noqa: F405
+    GOOGLE_DRIVE_API_KEY = file.read().strip()
 
 # STORAGES
 # ------------------------------------------------------------------------------
@@ -76,7 +100,11 @@ GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOG
 GS_FILE_OVERWRITE = False
 GS_DEFAULT_ACL = 'publicRead'
 
-STATIC_URL = 'https://storage.googleapis.com/' + env('GOOGLE_CLOUD_STORAGE_BUCKET_STATIC_NAME') + '/static/'  # noqa: F405,E501
+# MAPS (django-map-widgets)
+# ------------------------------------------------------------------------------
+with open(env("GOOGLE_MAPS_API_KEY_FILE")) as file:  # noqa: F405
+    GOOGLE_MAPS_API_KEY = file.read().strip()
+MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -93,8 +121,11 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
+with open(env("MAILGUN_API_KEY_FILE")) as file:  # noqa: F405
+    MAILGUN_API_KEY = file.read().strip()
+
 ANYMAIL = {
-    'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
+    'MAILGUN_API_KEY': MAILGUN_API_KEY,
 }
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 DEFAULT_FROM_EMAIL = env(
@@ -105,95 +136,34 @@ DEFAULT_FROM_EMAIL = env(
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[dthm4kaiako] ')
+# Email settings for all AllAuth
+ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
+
 
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
 # ADMIN_URL = env('DJANGO_ADMIN_URL')
 
-# Anymail (Mailgun)
-# ------------------------------------------------------------------------------
-# https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
-# INSTALLED_APPS += ['anymail']  # noqa F405
-# EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-# # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
-# ANYMAIL = {
-#     'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
-#     'MAILGUN_SENDER_DOMAIN': env('MAILGUN_DOMAIN')
-# }
 
-# Gunicorn
+# reCAPTCHA
 # ------------------------------------------------------------------------------
-INSTALLED_APPS += ['gunicorn']  # noqa F405
+with open(env("RECAPTCHA_PUBLIC_KEY_FILE")) as file:  # noqa: F405
+    RECAPTCHA_PUBLIC_KEY = file.read().strip()
+
+with open(env("RECAPTCHA_PRIVATE_KEY_FILE")) as file:  # noqa: F405
+    RECAPTCHA_PRIVATE_KEY = file.read().strip()
+
 
 # LOGGING
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See https://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 
-log_client = google_cloud_logging.Client()
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s '
-                      '%(process)d %(thread)d %(message)s'
-        },
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-            'stream': sys.stdout,
-        },
-        'stackdriver_logging': {
-            'class': 'google.cloud.logging.handlers.CloudLoggingHandler',
-            'client': log_client
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'stackdriver_logging'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['stackdriver_logging', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': True
-        },
-        'django.security.DisallowedHost': {
-            'level': 'ERROR',
-            'handlers': ['console', 'mail_admins'],
-            'propagate': True
-        }
-    }
-}
-
-# Search - Django Haystack
+# Sample Data
 # ------------------------------------------------------------------------------
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
-        'URL': env('ELASTICSEARCH_CONNECTION_NAME'),
-        'INDEX_NAME': 'haystack',
-    },
-}
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+with open(env("SAMPLE_DATA_ADMIN_PASSWORD_FILE")) as file:  # noqa: F405
+    SAMPLE_DATA_ADMIN_PASSWORD = file.read().strip()
+
+with open(env("SAMPLE_DATA_USER_PASSWORD_FILE")) as file:  # noqa: F405
+    SAMPLE_DATA_USER_PASSWORD = file.read().strip()

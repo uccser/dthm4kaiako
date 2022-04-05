@@ -1,7 +1,6 @@
 """Views for resource application."""
 
 from django.views import generic
-from haystack.generic_views import SearchView
 from rest_framework import viewsets
 from utils.mixins import RedirectToCosmeticURLMixin
 from resources.serializers import ResourceSerializer
@@ -10,7 +9,7 @@ from resources.models import (
     ResourceComponent,
     Language,
 )
-from resources.forms import ResourceSearchForm
+# from resources.forms import ResourceSearchForm
 
 
 class ResourceHomeView(generic.TemplateView):
@@ -62,22 +61,22 @@ class ResourceDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         return context
 
 
-class ResourceSearchView(SearchView):
-    """View for resource search."""
+# class ResourceSearchView(SearchView):
+#     """View for resource search."""
 
-    template_name = 'resources/search.html'
-    form_class = ResourceSearchForm
-    load_all = False
+#     template_name = 'resources/search.html'
+#     form_class = ResourceSearchForm
+#     load_all = False
 
-    def get_context_data(self, *args, **kwargs):
-        """Return context dictionary for resource search view.
+#     def get_context_data(self, *args, **kwargs):
+#         """Return context dictionary for resource search view.
 
-        Returns:
-            Dictionary of context values.
-        """
-        context = super().get_context_data(*args, **kwargs)
-        context['search'] = bool(self.request.GET)
-        return context
+#         Returns:
+#             Dictionary of context values.
+#         """
+#         context = super().get_context_data(*args, **kwargs)
+#         context['search'] = bool(self.request.GET)
+#         return context
 
 
 class ResourceAPIViewSet(viewsets.ReadOnlyModelViewSet):
