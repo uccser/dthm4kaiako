@@ -2,14 +2,13 @@
 
 from django.conf import settings
 from django.urls import include, path
+from django.http.response import HttpResponse
 from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
-from config.views import (
-    cron_rebuild_index,
-)
+from config.views import get_release_and_commit
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 admin.site.site_title = admin.site.site_header
@@ -30,10 +29,11 @@ urlpatterns = [
     # Admin application
     path(settings.ADMIN_URL, admin.site.urls),
     # Utility applications
+    path('healthcheck/', HttpResponse),
+    path('status/', view=get_release_and_commit, name="get-release-and-commit"),
     path('markdownx/', include('markdownx.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('api/', include('rest_framework.urls')),
-    path('cron/rebuild_index/', cron_rebuild_index),
     # Redirects
     path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),
 ] + static(

@@ -1,34 +1,35 @@
+# Django
+django==3.2.12
+django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
+django-allauth==0.50.0  # https://github.com/pennersr/django-allauth
+django-anymail[mailgun]==8.5  # https://github.com/anymail/django-anymail
+django-autoslug==1.9.8  # https://github.com/justinmayer/django-autoslug
+django-ckeditor==6.2.0  # https://pypi.org/project/django-ckeditor/
+django-cors-headers==3.11.0
+django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-crispy-forms
+django-environ==0.8.1
+django-filter==21.1  # https://github.com/carltongibson/django-filter/
+django-inline-svg==0.1.1
+django-ipware==4.0.2
+django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
+django-map-widgets==0.3.3  # https://github.com/erdem/django-map-widgets
+django-model-utils==4.2.0  # https://github.com/jazzband/django-model-utils
+django-modelclone==0.7.1
+django-recaptcha==3.0.0
+djangorestframework==3.13.1  # https://github.com/encode/django-rest-framework
+
+# Web serving
+gunicorn==20.1.0
+whitenoise==6.0.0
+
+# Database APIs
+psycopg2==2.9.3
+
 pytz==2021.1
 python-slugify==4.0.1
 Pillow==8.2.0
 argon2-cffi==20.1.0
 filetype==1.0.7  # https://github.com/h2non/filetype.py
 
-# Django
-django-model-utils==4.1.1  # https://github.com/jazzband/django-model-utils
-django-anymail[mailgun]==8.2  # https://github.com/anymail/django-anymail
-django-allauth==0.44.0  # https://github.com/pennersr/django-allauth
-django-crispy-forms==1.11.2  # https://github.com/django-crispy-forms/django-crispy-forms
-django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
-django-ckeditor==6.0.0  # https://pypi.org/project/django-ckeditor/
-django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
-django-recaptcha==2.0.6
-django-autoslug-iplweb==1.9.5  # https://github.com/justinmayer/django-autoslug
-djangorestframework==3.12.4  # https://github.com/encode/django-rest-framework
-coreapi==2.3.3  # https://github.com/core-api/python-client
-django-filter==2.4.0  # https://github.com/carltongibson/django-filter/
-django-ipware==3.0.2
-django-modelclone==0.7.1
-django-inline-svg==0.1.1
-
 # Google Cloud Platform
 google-api-python-client==2.1.0
-
-# Search
-# https://github.com/django-haystack/django-haystack with ElasticSearch 5 support
-git+git://github.com/django-haystack/django-haystack.git@802b0f6f4b3b99314453261876a32bac2bbec94f
-# https://github.com/elastic/elasticsearch-py
-elasticsearch==5.5.3  # pyup: >=5,<6
-
-# Geolocation
-git+https://github.com/erdem/django-map-widgets.git@v0.2.2  # https://github.com/erdem/django-map-widgets

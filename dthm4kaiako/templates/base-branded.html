@@ -13,7 +13,7 @@
         {% svg 'dthm4kaiako-logo-optimised' %}
       </a>
 
-      {% if DEPLOYMENT_TYPE == 'dev' %}
+      {% if STAGING_ENVIRONMENT %}
         <span class="badge badge-warning">Test server</span>
       {% endif %}
 
@@ -213,8 +213,8 @@
       </p>
       <p class="mb-0">
         <small>
-          <a href="https://github.com/uccser/dthm4kaiako/releases">
-            {{ VERSION_NUMBER }}
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/uccser/dthm4kaiako/releases">
+            {{ VERSION_NUMBER }}{% if not PRODUCTION_ENVIRONMENT %} - {{ GIT_SHA }}{% endif %}
           </a>
         </small>
       </p>

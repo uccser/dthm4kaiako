@@ -1,7 +1,6 @@
 """Index for resource application."""
 
 from django.template.loader import render_to_string
-from haystack import indexes
 from resources.models import Resource, Language
 
 

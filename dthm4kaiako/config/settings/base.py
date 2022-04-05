@@ -1,7 +1,16 @@
-"""Base settings to build other settings files upon."""
+"""
+Base Django settings for DTHM for Kaiako project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/dev/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/dev/ref/settings/
+"""
 
 import os.path
 import environ
+import logging.config
 from utils.get_upload_filepath import get_upload_path_for_date
 
 
@@ -14,7 +23,6 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool('DJANGO_DEBUG', False)
-DJANGO_PRODUCTION = env.bool('DJANGO_PRODUCTION')
 
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -104,6 +112,7 @@ DJANGO_APPS = [
     'django.forms',
 ]
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'anymail',
     'crispy_forms',
     'allauth',
@@ -114,7 +123,6 @@ THIRD_PARTY_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'django_activeurl',
-    'haystack',
     'mapwidgets',
     'captcha',
     'django_filters',
@@ -187,7 +195,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -202,7 +212,7 @@ MIDDLEWARE = [
 STATIC_ROOT = os.path.join(str(ROOT_DIR.path('staticfiles')), '')
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 BUILD_ROOT = os.path.join(str(ROOT_DIR.path('build')), '')
 STATICFILES_DIRS = [
@@ -214,12 +224,14 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = os.path.join(str(ROOT_DIR.path('media')), '')
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
+
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -228,6 +240,7 @@ TEMPLATES = [
     {
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
             str(ROOT_DIR.path('templates')),
@@ -235,12 +248,6 @@ TEMPLATES = [
         'OPTIONS': {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
             'debug': DEBUG,
-            # https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
-            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ],
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -262,6 +269,7 @@ TEMPLATES = [
                 'query_replace': 'config.templatetags.query_replace',
                 'render_html_field': 'config.templatetags.render_html_field',
                 'poet_templatetags': 'poet.templatetags',
+                'read_static_file': 'config.templatetags.read_static_file',
             },
         },
     },
@@ -272,12 +280,14 @@ TEMPLATES = [
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
 # FIXTURES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
 FIXTURE_DIRS = (
     str(ROOT_DIR.path('fixtures')),
 )
+
 
 # SECURITY
 # ------------------------------------------------------------------------------
@@ -290,10 +300,12 @@ SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = 'DENY'
 
+
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+
 
 # ADMIN
 # ------------------------------------------------------------------------------
@@ -366,47 +378,57 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 10
 }
 
-# Google Cloud API
-GOOGLE_DRIVE_API_KEY = env('GOOGLE_DRIVE_API_KEY')
-GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
+# LOGGING
+# ------------------------------------------------------------------------------
+# Based off https://lincolnloop.com/blog/django-logging-right-way/
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+logging.config.dictConfig({
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(asctime)s %(name)-20s %(levelname)-10s %(message)s",
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
         },
     },
-    'loggers': {
-        'root': {
+    "loggers": {
+        # Root logger
+        "": {
+            "level": env("LOG_LEVEL", default="INFO"),
+            "handlers": ["console", ],
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": env("LOG_LEVEL", default="INFO"),
+            "propagate": False,
+        },
+        # Project specific logger
+        "dthm4kaiako": {
+            "level": env("LOG_LEVEL", default="INFO"),
+            "handlers": ["console", ],
+            # Required to avoid double logging with root logger
+            "propagate": False,
+        },
+        'gunicorn.error': {
+            "level": env("LOG_LEVEL", default="INFO"),
             'handlers': ['console'],
             'propagate': False,
-            'level': 'DEBUG',
+        },
+        'gunicorn.access': {
+            "level": env("LOG_LEVEL", default="INFO"),
+            'handlers': ['console'],
+            'propagate': False,
         },
     },
-}
+})
 
 
-# Search (django-haystack)
-# ------------------------------------------------------------------------------
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch5_backend.Elasticsearch5SearchEngine',
-        'URL': 'elasticsearch:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
-
-# Maps (django-map-widgets)
+# MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------
 MAP_WIDGETS = {
     "GooglePointFieldWidget": (
@@ -416,8 +438,8 @@ MAP_WIDGETS = {
             {'componentRestrictions': {'country': 'nz'}}),
         ("markerFitZoom", 12),
     ),
-    "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY,
 }
+
 
 # Learning Area Cards
 # ------------------------------------------------------------------------------
@@ -430,23 +452,25 @@ LEARNING_AREA_CARDS_SINGLE_PRINT = 'Single'
 LEARNING_AREA_CARDS_DOUBLE_PRINT = 'Double'
 LEARNING_AREA_CARDS_PRINT_TYPES = (LEARNING_AREA_CARDS_SINGLE_PRINT, LEARNING_AREA_CARDS_DOUBLE_PRINT)
 
+
 # Other
 # ------------------------------------------------------------------------------
-DEPLOYMENT_TYPE = env("DEPLOYMENT", default='local')
+DEPLOYED = env.bool("DEPLOYED")
+GIT_SHA = env("GIT_SHA", default=None)
+if GIT_SHA:
+    GIT_SHA = GIT_SHA[:8]
+else:
+    GIT_SHA = "local development"
+PRODUCTION_ENVIRONMENT = False
+STAGING_ENVIRONMENT = False
 SAMPLE_DATA_ADMIN_PASSWORD = env('SAMPLE_DATA_ADMIN_PASSWORD', default='password')
 SAMPLE_DATA_USER_PASSWORD = env('SAMPLE_DATA_USER_PASSWORD', default='password')
 SECRET_PAGES_TEMPLATE_TEMPLATE = 'secret_pages/{}.html'
-SVG_DIRS = [
-    os.path.join(str(STATIC_ROOT), 'svg')
+SVG_DIRS = [os.path.join(str(ROOT_DIR.path("staticfiles")), "svg")]
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+X_FRAME_OPTIONS = "SAMEORIGIN"
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://canterbury.ac.nz"
 ]
-
-# reCAPTCHA
-# ------------------------------------------------------------------------------
-if DEPLOYMENT_TYPE == 'local':
-    # Use test keys
-    RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-    RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-else:
-    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
-    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
