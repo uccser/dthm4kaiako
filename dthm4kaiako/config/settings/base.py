@@ -108,6 +108,8 @@ DJANGO_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.gis',
+    # Full text search
+    'django.contrib.postgres',
     # Include forms application as default renderer is overwritten
     'django.forms',
 ]
