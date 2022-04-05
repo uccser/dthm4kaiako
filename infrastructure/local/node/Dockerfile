@@ -20,6 +20,7 @@ WORKDIR /app
 RUN chown -R node:node /app
 
 USER node
-COPY --chown=node:node ./dthm4kaiako/ /app
+RUN mkdir /app/build
+COPY --chown=node:node ./dthm4kaiako/package.json /app
 RUN npm install && npm cache clean --force
 ENV PATH ./node_modules/.bin/:$PATH
