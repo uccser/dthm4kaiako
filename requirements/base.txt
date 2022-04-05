@@ -32,4 +32,4 @@ argon2-cffi==20.1.0
 filetype==1.0.7  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
-google-api-python-client==2.1.0
+google-api-python-client==2.42.0
