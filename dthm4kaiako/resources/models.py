@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 from autoslug import AutoSlugField
 import filetype
 from utils.get_upload_filepath import get_resource_upload_path
@@ -158,6 +160,7 @@ class Resource(models.Model):
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    search_vector = SearchVectorField(null=True)
     author_entities = models.ManyToManyField(
         Entity,
         related_name='resources',
@@ -214,6 +217,20 @@ class Resource(models.Model):
             Name of resource (str).
         """
         return self.name
+
+    def index_contents(self):
+        return {
+            'A': self.name,
+            'B': self.description,
+            # Add in text of relationships for searching text
+            # 'B': ' '.join(self.tags.values_list('tag', flat=True)),
+        }
+
+    class Meta:
+        """Meta options for model."""
+        indexes = [
+            GinIndex(fields=['search_vector'])
+        ]
 
 
 class ResourceComponent(models.Model):
@@ -383,7 +400,7 @@ class ResourceComponent(models.Model):
             self.component_type = self.TYPE_RESOURCE
         else:
             self.component_type = self.get_file_type()
-        logging.info('Component {} detected as type {}'.format(self.name, self.component_type))
+        logging.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
         super().save(*args, **kwargs)
 
     def get_url_type(self):
@@ -420,15 +437,17 @@ class ResourceComponent(models.Model):
 
         file_obj = self.component_file.open()
         if filetype.image(file_obj):
-            return self.TYPE_IMAGE
+            file_type_code = self.TYPE_IMAGE
         elif filetype.video(file_obj):
-            return self.TYPE_VIDEO
+            file_type_code = self.TYPE_VIDEO
         elif filetype.audio(file_obj):
-            return self.TYPE_AUDIO
+            file_type_code = self.TYPE_AUDIO
         elif filetype.archive(file_obj):
-            return self.TYPE_ARCHIVE
+            file_type_code = self.TYPE_ARCHIVE
         else:
-            return self.TYPE_OTHER
+            file_type_code = self.TYPE_OTHER
+        file_obj.close()
+        return file_type_code
 
     def clean(self):
         """Only allow one type of data in a resource component."""
