@@ -8,3 +8,6 @@ class ResourcesAppConfig(AppConfig):
 
     name = 'resources'
     verbose_name = 'Resource Hub'
+
+    def ready(self):
+        from resources import signals

@@ -429,7 +429,6 @@ logging.config.dictConfig({
     },
 })
 
-
 # MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------
 MAP_WIDGETS = {

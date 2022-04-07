@@ -14,5 +14,5 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('resource/<int:pk>/', views.ResourceDetailView.as_view()),
     path('resource/<int:pk>/<slug:slug>/', views.ResourceDetailView.as_view(), name='resource'),
-    # path('search/', views.ResourceSearchView.as_view(), name='search'),
+    path('search/', views.ResourceSearchView.as_view(), name='search'),
 ]

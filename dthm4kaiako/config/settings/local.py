@@ -109,3 +109,10 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # ------------------------------------------------------------------------------
 # Load SVGs from build folder for quicker loading
 SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg")) # noqa: F405
+
+# LOGGING
+# ------------------------------------------------------------------------------
+# Based off https://lincolnloop.com/blog/django-logging-right-way/
+# Suppress these loggers in local development for less noise in logs
+logging.getLogger('gunicorn.access').handlers = []
+logging.getLogger('gunicorn.error').handlers = []
