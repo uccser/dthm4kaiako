@@ -31,16 +31,38 @@ class HomeView(generic.base.TemplateView):
         return context
 
 
+# Quick hack to allow modification of page while new software is developed.
 class AboutView(generic.base.TemplateView):
     """View for DTTA about page."""
 
-    template_name = 'dtta/about.html'
+    template_name = 'dtta/page_detail.html'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the DTTA about view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context["page"] = Page.objects.filter(page_type=Page.PAGE_ABOUT, published=True).first()
+        return context
 
 
+# Quick hack to allow modification of page while new software is developed.
 class MembershipView(generic.base.TemplateView):
     """View for DTTA membership page."""
 
-    template_name = 'dtta/membership.html'
+    template_name = 'dtta/page_detail.html'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the DTTA membership view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        context["page"] = Page.objects.filter(page_type=Page.PAGE_MEMBERSHIP, published=True).first()
+        return context
 
 
 class PageDetailView(RedirectToCosmeticURLMixin, generic.DetailView):

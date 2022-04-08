@@ -10,9 +10,24 @@ from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 class Page(models.Model):
     """Model for a flat page on DTTA website."""
 
+    PAGE_PLANNING = 1
+    PAGE_DOCUMENT = 2
+    PAGE_ABOUT = 3
+    PAGE_MEMBERSHIP = 4
+    PAGE_CHOICES = (
+        (PAGE_PLANNING, 'Planning'),
+        (PAGE_DOCUMENT, 'Documents'),
+        (PAGE_ABOUT, 'About'),
+        (PAGE_MEMBERSHIP, 'Membership'),
+    )
+
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', always_update=True, null=True)
     date = models.DateField()
+    page_type = models.PositiveSmallIntegerField(
+        choices=PAGE_CHOICES,
+        default=PAGE_PLANNING,
+    )
     order_number = models.PositiveSmallIntegerField(default=1)
     published = models.BooleanField(default=False)
     content = RichTextUploadingField()
