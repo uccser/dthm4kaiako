@@ -33,6 +33,7 @@
               <li class="nav-item mr-auto">
                 <a class="nav-link" href="{% url 'general:about' %}">About</a>
               </li>
+              {% comment %} Disabled while user registrations are not required.
               {% if request and request.user.is_authenticated %}
               {# URL provided by django-allauth/account/urls.py #}
                 <li class="nav-item">
@@ -48,6 +49,7 @@
                 {# URL provided by django-allauth/account/urls.py #}
                 <a id="log-in-link" class="nav-item nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
               {% endif %}
+              {% endcomment %}
             </ul>
           {% endactiveurl %}
         {% endif %}

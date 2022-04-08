@@ -324,7 +324,7 @@ MANAGERS = ADMINS
 # django-allauth
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ALLOW_REGISTRATION = True
+ACCOUNT_ALLOW_REGISTRATION = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
