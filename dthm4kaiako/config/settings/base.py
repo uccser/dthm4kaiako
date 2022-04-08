@@ -134,6 +134,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
     'users.apps.UsersAppConfig',
+    'get_started.apps.GetStartedAppConfig',
     'resources.apps.ResourcesAppConfig',
     'events.apps.EventsAppConfig',
     'dtta.apps.DttaAppConfig',

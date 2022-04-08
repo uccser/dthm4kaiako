@@ -4,10 +4,14 @@
 
 {% block page_heading %}
     <div class="text-center">
-        <h1 class="display-1 text-center">Kia ora!</h1>
+        <h1 class="display-3 text-center">Kia ora!</h1>
         <p class="lead">
             Wanting to learn what Digital Technologies or Hangarau Matihiko is all about?<br>
             You're in the right place!
+        </p>
+
+        <p>
+            We are developing the getting started guide in our spare time, so there is no planned timeframe for releasing new sections.
         </p>
     </div>
 {% endblock page_heading %}
@@ -15,7 +19,7 @@
 {% block content %}
     <div class="row justify-items-center">
         {% for component in components %}
-            <div class="col-12 col-md-8 col-lg-6 mb-2">
+            <div class="col-12 col-md-8 col-lg-7 mb-2">
                 {% include "get_started/component-card.html" %}
             </div>
         {% endfor %}

@@ -19,6 +19,7 @@ urlpatterns = [
     path('dtta/', include('dtta.urls', namespace='dtta')),
     path('events/', include('events.urls', namespace='events'),),
     path('users/', include('users.urls', namespace='users'),),
+    path('get-started/', include('get_started.urls', namespace='get_started')),
     path('resources/', include('resources.urls', namespace='resources')),
     path('ara-ako/', include('ara_ako.urls', namespace='ara_ako')),
     path('poet/', include('poet.urls', namespace='poet')),
