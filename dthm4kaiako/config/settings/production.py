@@ -89,17 +89,6 @@ DATABASES = {
 with open(env("GOOGLE_DRIVE_API_KEY_FILE")) as file:  # noqa: F405
     GOOGLE_DRIVE_API_KEY = file.read().strip()
 
-# STORAGES
-# ------------------------------------------------------------------------------
-# https://django-storages.readthedocs.io/en/latest/#installation
-INSTALLED_APPS += ['storages']  # noqa F405
-# https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(env('GOOGLE_APPLICATION_CREDENTIALS'))
-GS_FILE_OVERWRITE = False
-GS_DEFAULT_ACL = 'publicRead'
-
 # MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------
 with open(env("GOOGLE_MAPS_API_KEY_FILE")) as file:  # noqa: F405

@@ -54,7 +54,7 @@ services:
             placement:
                 constraints:
                     - node.role==worker
-                    - node.labels.role==apps
+                    - node.labels.role==apps-file-storage
             restart_policy:
                 condition: on-failure
             labels:
@@ -71,6 +71,10 @@ services:
         networks:
             - uccser-public
             - backend
+        volumes:
+            - type: bind
+              source: /srv/dthm4kaiako/media/
+              target: /app/dthm4kaiako/media/:z
 
     postgres:
         <<: *default-opts
@@ -102,7 +106,7 @@ services:
         networks:
             - backend
         volumes:
-            - postgres-data:/var/lib/postgresql/data:Z
+            - postgres-data:/var/lib/postgresql/data:z
             - postgres-data-backups:/backups:z
 
 configs:

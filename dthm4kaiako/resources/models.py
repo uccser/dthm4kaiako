@@ -436,17 +436,16 @@ class ResourceComponent(models.Model):
                 return type_code
 
         file_obj = self.component_file.open()
-        if filetype.image(file_obj):
+        if filetype.helpers.is_image(file_obj):
             file_type_code = self.TYPE_IMAGE
-        elif filetype.video(file_obj):
+        elif filetype.helpers.is_video(file_obj):
             file_type_code = self.TYPE_VIDEO
-        elif filetype.audio(file_obj):
+        elif filetype.helpers.is_audio(file_obj):
             file_type_code = self.TYPE_AUDIO
-        elif filetype.archive(file_obj):
+        elif filetype.helpers.is_archive(file_obj):
             file_type_code = self.TYPE_ARCHIVE
         else:
             file_type_code = self.TYPE_OTHER
-        file_obj.close()
         return file_type_code
 
     def clean(self):
