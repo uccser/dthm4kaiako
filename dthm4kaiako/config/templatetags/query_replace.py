@@ -6,9 +6,11 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
 @register.simple_tag(takes_context=True)
 def query_replace(context, **kwargs):
     """Render URL query string with given values replaced.
+
     Args:
         context (dict): Dictionary of view context.
     Returns:

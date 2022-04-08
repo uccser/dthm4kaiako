@@ -8,7 +8,6 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from resources.models import Resource
 
 
-
 class Component(models.Model):
     """Model for an get started component."""
 

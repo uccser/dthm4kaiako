@@ -9,6 +9,11 @@ def dtta_menu(request):
     Returns:
         Dictionary containing items for DTTA navbar.
     """
-    pages = Page.objects.filter(published=True).order_by('order_number')
+    planning_pages = Page.objects.filter(page_type=Page.PAGE_PLANNING, published=True).order_by('order_number')
+    document_pages = Page.objects.filter(page_type=Page.PAGE_DOCUMENT, published=True).order_by('order_number')
     projects = Project.objects.filter(published=True).order_by('order_number')
-    return {"DTTA_PAGES": pages, "DTTA_PROJECTS": projects}
+    return {
+        "DTTA_PLANNING_PAGES": planning_pages,
+        "DTTA_DOCUMENT_PAGES": document_pages,
+        "DTTA_PROJECTS": projects,
+    }

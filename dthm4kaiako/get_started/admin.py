@@ -17,4 +17,5 @@ class ComponentAdmin(admin.ModelAdmin):
     ordering = ('order_number', )
     save_on_top = True
 
+
 admin.site.register(Component, ComponentAdmin)

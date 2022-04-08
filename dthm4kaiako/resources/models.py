@@ -219,15 +219,23 @@ class Resource(models.Model):
         return self.name
 
     def index_contents(self):
+        """Return dictionary for search indexing.
+
+        Returns:
+            Dictionary of content for search indexing. The dictionary keys
+            are the weightings of content, and the dictionary values
+            are strings of content to index.
+        """
         return {
             'A': self.name,
             'B': self.description,
             # Add in text of relationships for searching text
-            # 'B': ' '.join(self.tags.values_list('tag', flat=True)),
+            # 'C': ' '.join(self.tags.values_list('tag', flat=True)),
         }
 
     class Meta:
         """Meta options for model."""
+
         indexes = [
             GinIndex(fields=['search_vector'])
         ]

@@ -93,8 +93,8 @@ GOOGLE_DRIVE_API_KEY = env('GOOGLE_DRIVE_API_KEY', default='GOOGLE_DRIVE_API_KEY
 
 # MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------
-GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', default='GOOGLE_MAPS_API_KEY_FOR_LOCAL_DEVELOPMENT')
-MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', default='')
+MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY  # noqa F405
 
 # reCAPTCHA
 # ------------------------------------------------------------------------------
@@ -106,11 +106,11 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # SVG
 # ------------------------------------------------------------------------------
 # Load SVGs from build folder for quicker loading
-SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg")) # noqa: F405
+SVG_DIRS.append(os.path.join(str(ROOT_DIR.path("build")), "svg"))  # noqa: F405
 
 # LOGGING
 # ------------------------------------------------------------------------------
 # Based off https://lincolnloop.com/blog/django-logging-right-way/
 # Suppress these loggers in local development for less noise in logs
-logging.getLogger('gunicorn.access').handlers = []
-logging.getLogger('gunicorn.error').handlers = []
+logging.getLogger('gunicorn.access').handlers = []  # noqa F405
+logging.getLogger('gunicorn.error').handlers = []  # noqa F405

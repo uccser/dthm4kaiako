@@ -10,4 +10,5 @@ class ResourcesAppConfig(AppConfig):
     verbose_name = 'Resource Hub'
 
     def ready(self):
-        from resources import signals
+        """Import signals once appliation is ready."""
+        from resources import signals  # noqa

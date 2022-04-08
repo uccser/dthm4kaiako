@@ -4,11 +4,8 @@ Django settings for production environment.
 - Load secret values from files.
 """
 
-import sys
 from .base import *  # noqa
 from .base import env
-from google.oauth2 import service_account
-from google.cloud import logging as google_cloud_logging
 
 # TODO: Review
 # See https://docs.djangoproject.com/en/1.10/ref/settings/
@@ -93,7 +90,7 @@ with open(env("GOOGLE_DRIVE_API_KEY_FILE")) as file:  # noqa: F405
 # ------------------------------------------------------------------------------
 with open(env("GOOGLE_MAPS_API_KEY_FILE")) as file:  # noqa: F405
     GOOGLE_MAPS_API_KEY = file.read().strip()
-MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY
+MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY  # noqa: F405
 
 # TEMPLATES
 # ------------------------------------------------------------------------------

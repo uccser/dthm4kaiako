@@ -1,14 +1,20 @@
-# Based off https://simonwillison.net/2017/Oct/5/django-postgresql-faceted-search/
+"""Signals for the resources application.
+
+Based off https://simonwillison.net/2017/Oct/5/django-postgresql-faceted-search/
+"""
+
 
 from django.dispatch import receiver
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import (
+    post_save,
+    # m2m_changed,
+)
 from django.db.models import Value
 from django.contrib.postgres.search import SearchVector
 from django.db import transaction
 from resources.models import (
     Resource,
 )
-import operator
 
 
 SEARCH_INDEX_UPDATE_MODELS = (
@@ -18,6 +24,7 @@ SEARCH_INDEX_UPDATE_MODELS = (
 
 @receiver(post_save)
 def on_save(sender, **kwargs):
+    """Trigger functions after model save."""
     if issubclass(sender, SEARCH_INDEX_UPDATE_MODELS):
         transaction.on_commit(make_updater(kwargs['instance']))
 
@@ -35,6 +42,7 @@ def on_save(sender, **kwargs):
 
 
 def make_updater(instance):
+    """Return function for updating search index of resource."""
     components = instance.index_contents()
     pk = instance.pk
 
