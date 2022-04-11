@@ -1,0 +1,9 @@
+# Test dependencies
+
+coverage==6.2
+django-coverage-plugin==1.8.0  # https://github.com/nedbat/django_coverage_plugin
+django-test-without-migrations==0.6
+factory-boy==3.2.0  # https://github.com/FactoryBoy/factory_boy
+
+flake8==3.9.2
+pydocstyle==6.1.1

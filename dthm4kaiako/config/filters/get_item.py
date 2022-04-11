@@ -1,17 +1,20 @@
-"""Template filter for getting a value from a dictionary."""
+"""Module for the custom get_item template tag."""
 
-from django.template.defaulttags import register
+from django import template
+
+register = template.Library()
 
 
-@register.filter
-def get_item(dictionary, key):
-    """Return value from dictionary.
+@register.simple_tag
+def get_item(dictionary, key, default=None):
+    """Get value for key in dictionary, otherwise return default.
 
     Args:
-        dictionary (dict): Dictionary to retrieve value from.
-        key (str): Key to perform lookup.
+        dictionary (dict): Dictionary of values.
+        key (str): Key of value in dictionary.
+        default (str): Default value to return if key not found.
 
     Returns:
-        Value of key in dictionary.
+        Value from dictionary or default.
     """
-    return dictionary.get(key)
+    return dictionary.get(key, default)

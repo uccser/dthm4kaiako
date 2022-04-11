@@ -1,3 +1,5 @@
+{% load get_item %}
+
 <div id="po-table">
     <div id="po-label-1-10" class="po-label">Progress outcomes for years 1-10</div>
     <div class="po-label ncea">NCEA 1</div>
@@ -12,7 +14,8 @@
         {% if not statistics %}
             {% include widget.optgroups.9.1.0.template_name with choice=widget.optgroups.9.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-1' %}
+            {% get_item progress_outcomes 'PO-DDDO-1' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-dddo">
@@ -21,35 +24,40 @@
         {% if not statistics %}
             {% include widget.optgroups.10.1.0.template_name with choice=widget.optgroups.10.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-2' %}
+            {% get_item progress_outcomes 'PO-DDDO-2' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-dddo justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.11.1.0.template_name with choice=widget.optgroups.11.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-3' %}
+            {% get_item progress_outcomes 'PO-DDDO-3' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-dddo justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.12.1.0.template_name with choice=widget.optgroups.12.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-4' %}
+            {% get_item progress_outcomes 'PO-DDDO-4' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-dddo justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.13.1.0.template_name with choice=widget.optgroups.13.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-5' %}
+            {% get_item progress_outcomes 'PO-DDDO-5' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-dddo justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.14.1.0.template_name with choice=widget.optgroups.14.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-DDDO-6' %}
+            {% get_item progress_outcomes 'PO-DDDO-6' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div id="curriculum-level-strand-title-ct" class="curriculum-level-strand-title justify-content-center">
@@ -59,7 +67,8 @@
         {% if not statistics %}
             {% include widget.optgroups.1.1.0.template_name with choice=widget.optgroups.1.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-1' %}
+            {% get_item progress_outcomes 'PO-CT-1' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct">
@@ -68,47 +77,54 @@
         {% if not statistics %}
             {% include widget.optgroups.2.1.0.template_name with choice=widget.optgroups.2.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-2' %}
+            {% get_item progress_outcomes 'PO-CT-2' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct justify-content-center">
         {% if not statistics %}
             {% include widget.optgroups.3.1.0.template_name with choice=widget.optgroups.3.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-3' %}
+            {% get_item progress_outcomes 'PO-CT-3' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct justify-content-around">
         {% if not statistics %}
             {% include widget.optgroups.4.1.0.template_name with choice=widget.optgroups.4.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-4' %}
+            {% get_item progress_outcomes 'PO-CT-4' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
         {% if not statistics %}
             {% include widget.optgroups.5.1.0.template_name with choice=widget.optgroups.5.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-5' %}
+            {% get_item progress_outcomes 'PO-CT-5' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.6.1.0.template_name with choice=widget.optgroups.6.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-6' %}
+            {% get_item progress_outcomes 'PO-CT-6' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.7.1.0.template_name with choice=widget.optgroups.7.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-7' %}
+            {% get_item progress_outcomes 'PO-CT-7' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
     <div class="curriculum-level-node curriculum-level-ct justify-content-end">
         {% if not statistics %}
             {% include widget.optgroups.8.1.0.template_name with choice=widget.optgroups.8.1.0 %}
         {% else %}
-            {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'PO-CT-8' %}
+            {% get_item progress_outcomes 'PO-CT-8' as progress_outcome %}
+            {% include progress_outcome_widget %}
         {% endif %}
     </div>
 </div>
@@ -116,11 +132,13 @@
     {% if not statistics %}
         {% include widget.optgroups.0.1.0.template_name with choice=widget.optgroups.0.1.0 %}
     {% else %}
-        {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'NONE' %}
+        {% get_item progress_outcomes 'NONE' as progress_outcome %}
+        {% include progress_outcome_widget %}
     {% endif %}
     {% if not statistics %}
         {% include widget.optgroups.15.1.0.template_name with choice=widget.optgroups.15.1.0 %}
     {% else %}
-        {% include progress_outcome_widget with progress_outcome=progress_outcomes|get_item:'UNKNOWN' %}
+        {% get_item progress_outcomes 'UNKNOWN' as progress_outcome %}
+        {% include progress_outcome_widget %}
     {% endif %}
 </div>

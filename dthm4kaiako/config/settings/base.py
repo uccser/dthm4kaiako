@@ -270,7 +270,6 @@ TEMPLATES = [
                 'markdown': 'config.filters.markdown',
                 'get_item': 'config.filters.get_item',
                 'query_replace': 'config.templatetags.query_replace',
-                'render_html_field': 'config.templatetags.render_html_field',
                 'poet_templatetags': 'poet.templatetags',
                 'read_static_file': 'config.templatetags.read_static_file',
             },

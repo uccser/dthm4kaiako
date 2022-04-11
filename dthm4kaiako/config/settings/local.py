@@ -101,7 +101,6 @@ MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY  # noqa F405
 # Use test keys
 RECAPTCHA_PUBLIC_KEY = '6LeG0TIcAAAAACAMZ92F_Yvd6TQ62YdOkpqZAVh4'
 RECAPTCHA_PRIVATE_KEY = '6LeG0TIcAAAAAH52RGgEPsHHHfh_uzMur6Ml2j7t'
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 # SVG
 # ------------------------------------------------------------------------------

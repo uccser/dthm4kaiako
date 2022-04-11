@@ -56,3 +56,12 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 EMAIL_HOST = "localhost"
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
+
+
+# TESTING
+# ----------------------------------------------------------------------------
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
+INSTALLED_APPS += [  # noqa: F405
+    "test_without_migrations",
+]
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
