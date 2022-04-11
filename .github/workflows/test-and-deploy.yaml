@@ -114,6 +114,46 @@ jobs:
           path: static-files.tar.gz
           retention-days: 3
 
+  create-learning-area-cards:
+    name: Create learning area cards
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
+    runs-on: ubuntu-20.04
+    needs: [
+      test-django-system-check,
+      test-content,
+      test-general,
+      test-management,
+      test-style,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start system
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create production static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+      - name: Collect staticfiles
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load learning area cards application data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
+      - name: Create learning area cards
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py create_cards
+      - name: Archive learning area cards
+        run: tar czf learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards/ .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: learning-area-cards
+          path: learning-area-cards.tar.gz
+          retention-days: 3
+
   publish-docker-image:
     name: Create and publish Docker image
     if: |
@@ -123,6 +163,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [
       create-static-files,
+      create-learning-area-cards,
     ]
     steps:
       - name: Checkout repository
@@ -140,6 +181,8 @@ jobs:
         run: |
           mkdir -p dthm4kaiako/staticfiles
           tar -xz --file artifacts/static-files/static-files.tar.gz --directory dthm4kaiako/staticfiles
+          mkdir -p dthm4kaiako/staticfiles/learning_area_cards
+          tar -xz --file artifacts/learning-area-cards/learning-area-cards.tar.gz --directory dthm4kaiako/learning_area_cards
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1.10.0
