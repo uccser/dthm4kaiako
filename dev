@@ -131,8 +131,7 @@ defhelp exec "Execute command in given container."
 
 # Run load_card_data command
 cmd_load_card_data() {
-  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py load_achievement_objectives
-  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py load_progress_outcomes
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py load_card_data
 }
 defhelp load_card_data "Load card data."
 

@@ -40,7 +40,7 @@ jobs:
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
       - name: Migrate database
         run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
-      - name: Load learning area cards data
+      - name: Load learning area cards application data
         run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
       - name: Load POET data
         run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_poet_data
