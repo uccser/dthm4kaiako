@@ -108,7 +108,7 @@ jobs:
         run: tar czf static-files.tar.gz --directory dthm4kaiako/staticfiles/ .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: static-files
           path: static-files.tar.gz
@@ -148,7 +148,7 @@ jobs:
       - name: Archive learning area cards
         run: tar czf learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards/ .
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: learning-area-cards
           path: learning-area-cards.tar.gz
