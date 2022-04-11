@@ -2,5 +2,5 @@
 -r base.txt
 -r test.txt
 
-django-debug-toolbar==3.2  # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar==3.2.4  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.1.2  # https://github.com/django-extensions/django-extensions
