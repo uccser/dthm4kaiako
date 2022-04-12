@@ -50,6 +50,7 @@ function pathsConfig(appName) {
         scss_source: `${staticSourceRoot}/scss`,
         js_source: `${staticSourceRoot}/js`,
         images_source: `${staticSourceRoot}/img`,
+        svg_source: `${staticSourceRoot}/svg`,
         files_source: `${staticSourceRoot}/files`,
         vendor_js_source: [
             `${vendorsRoot}/jquery/dist/jquery.js`,
@@ -62,6 +63,7 @@ function pathsConfig(appName) {
         css_output: `${staticOutputRoot}/css`,
         fonts_output: `${staticOutputRoot}/fonts`,
         images_output: `${staticOutputRoot}/img`,
+        svg_output: `${staticOutputRoot}/svg`,
         js_output: `${staticOutputRoot}/js`,
         files_output: `${staticOutputRoot}/files`,
     }
@@ -174,6 +176,11 @@ function files() {
         .pipe(dest(paths.files_output))
 }
 
+// SVGs
+function svg() {
+    return src(`${paths.svg_source}/**/*`)
+        .pipe(dest(paths.svg_output))
+}
 
 // Watch
 function watchPaths() {
@@ -190,6 +197,7 @@ const generateAssets = parallel(
     js,
     vendorJs,
     img,
+    svg,
     files
 )
 
