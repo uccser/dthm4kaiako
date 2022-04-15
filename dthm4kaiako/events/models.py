@@ -10,7 +10,7 @@ from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
-from users.models import Entity
+from users.models import Entity, User
 
 
 class Location(models.Model):
@@ -192,7 +192,7 @@ class Event(models.Model):
         null=True,
         blank=True,
     )
-    # TODO: Add validation that if no locations, then accessible_online must be true
+    # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
     def update_datetimes(self):
@@ -237,7 +237,7 @@ class Event(models.Model):
 
     @property
     def has_ended(self):
-        """Return true if event has ended.
+        """Return True if event has ended.
 
         Returns:
             Boolean if event has ended.
@@ -305,6 +305,29 @@ class Session(models.Model):
         ordering = ['start', 'end', 'name']
 
 
+class ApplicantType(models.Model):
+    """Model for an application type."""
+    name = models.CharField(max_length=100)
+    cost = models.PositiveSmallIntegerField(default=0)
+    event = models.ForeignKey(
+        Event,
+        related_name="application types",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        """Text representation of an application type."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+        verbose_name_plural = 'application type'
+
+
 class EventApplication(models.Model):
     """Model for an event application."""
 
@@ -339,9 +362,7 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='applications',
     )
-    paid = model.BooleanField(
-        null=true,
-    )
+    paid = models.BooleanField()
 
     class Meta:
         """Meta options for class."""
@@ -350,33 +371,11 @@ class EventApplication(models.Model):
         verbose_name_plural = 'event applications'
 
 
-class ApplicantType(models.Model):
-    """Model for an application type."""
-    name = models.CharField(max_length=100)
-    cost = models.PositiveSmallIntegerField(default=0)
-    event = models.ForeignKey(
-        Event,
-        related_name="application types",
-        null=true,
-        blank=true,
-    )
-
-    def __str__(self):
-        """Text representation of an application type."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-        verbose_name_plural = 'application type'
-
-
-class RegistrationForm(model.Model):
+class RegistrationForm(models.Model):
     """Model for a registration form."""
     open_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
-    terms_and_conditions = models.RichTextUploadingField()
+    terms_and_conditions = RichTextUploadingField()
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
