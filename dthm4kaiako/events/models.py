@@ -324,7 +324,7 @@ class EventApplication(models.Model):
         default=PENDING,
     )
     application_type = models.ForeignKey(
-        ApplicationType,
+        ApplicantType,
         on_delete=models.CASCADE,
         related_name='applications',
     )
@@ -350,7 +350,7 @@ class EventApplication(models.Model):
         verbose_name_plural = 'event applications'
 
 
-class ApplicationType(models.Model):
+class ApplicantType(models.Model):
     """Model for an application type."""
     name = models.CharField(max_length=100)
     cost = models.PositiveSmallIntegerField(default=0)
