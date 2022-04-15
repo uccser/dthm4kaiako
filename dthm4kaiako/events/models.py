@@ -1,4 +1,4 @@
-"""Models for resources application."""
+"""Models for events application."""
 
 
 from django.db import models
@@ -303,3 +303,83 @@ class Session(models.Model):
         """Meta options for class."""
 
         ordering = ['start', 'end', 'name']
+
+
+class EventApplication(models.Model):
+    """Model for an event application."""
+
+    PENDING = 1
+    APPROVED = 2
+    REJECTED = 3
+    APPLICATION_STATUSES = (
+        (PENDING, _('Pending')),
+        (APPROVED, _('Approved')),
+        (REJECTED, _('Rejected')),
+    )
+
+    submitted = models.DateTimeField()
+    updated = models.DateTimeField()
+    status = models.PositiveSmallIntegerField(
+        choices=APPLICATION_STATUSES,
+        default=PENDING,
+    )
+    application_type = models.ForeignKey(
+        ApplicationType,
+        on_delete=models.CASCADE,
+        related_name='applications',
+    )
+    staff_comments = RichTextUploadingField(blank=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='event applications',
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='applications',
+    )
+    paid = model.BooleanField(
+        null=true,
+    )
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['event', 'status']
+        verbose_name_plural = 'event applications'
+
+
+class ApplicationType(models.Model):
+    """Model for an application type."""
+    name = models.CharField(max_length=100)
+    cost = models.PositiveSmallIntegerField(default=0)
+    event = models.ForeignKey(
+        Event,
+        related_name="application types",
+        null=true,
+        blank=true,
+    )
+
+    def __str__(self):
+        """Text representation of an application type."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+        verbose_name_plural = 'application type'
+
+
+class RegistrationForm(model.Model):
+    """Model for a registration form."""
+    open_datetime = models.DateTimeField()
+    end_datetime = models.DateTimeField()
+    terms_and_conditions = models.RichTextUploadingField()
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name="registration form"
+    )

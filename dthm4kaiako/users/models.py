@@ -25,6 +25,22 @@ class User(AbstractUser):
         return self.first_name
 
 
+class DietaryRequirement(models.Model):
+    """Model for a dietary requirement e.g. vegetarian."""
+    name = models.CharField(max_length=20)
+    users = model.ManyToManyField(User)
+
+    def __str__(self):
+        """Text representation of a dietary requirement."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+        verbose_name_plural = 'dietary requirements'
+
+
 class Entity(models.Model):
     """Model for an entity (organisation, company, group, etc)."""
 
