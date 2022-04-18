@@ -162,7 +162,7 @@ class Event(models.Model):
         choices=REGISTRATION_TYPE_CHOICES,
         default=REGISTRATION_TYPE_REGISTER,
     )
-    registration_link = models.URLField(blank=True)
+    registration_link = models.URLField(blank=True) #TODO: update to registration form 
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(
@@ -311,7 +311,7 @@ class ApplicantType(models.Model):
     cost = models.PositiveSmallIntegerField(default=0)
     event = models.ForeignKey(
         Event,
-        related_name="application types",
+        related_name="application_types",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -355,7 +355,7 @@ class EventApplication(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='event applications',
+        related_name='event_applications',
     )
     event = models.ForeignKey(
         Event,
@@ -375,10 +375,10 @@ class RegistrationForm(models.Model):
     """Model for a registration form."""
     open_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
-    terms_and_conditions = RichTextUploadingField()
+    terms_and_conditions = RichTextUploadingField(blank=True)
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="registration form"
+        related_name="registration_form"
     )

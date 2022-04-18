@@ -12,6 +12,8 @@ urlpatterns = [
     path('event/<int:pk>/', views.EventDetailView.as_view()),
     path('event/<int:pk>/<slug:slug>/', views.EventDetailView.as_view(), name='event'),
     path('location/<int:pk>/', views.LocationDetailView.as_view(), name='location'),
+    path('event/<int:pk>/<slug:slug>/register', views.EventRegistrationView.as_view(), name='event-registration'),
+    path('event/<int:pk>/<slug:slug>/successful-registeration', views.EventRegistrationSuccessView.as_view(), name='successful-registration'),
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),
     path('location/', RedirectView.as_view(pattern_name='events:home')),

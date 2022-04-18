@@ -124,3 +124,18 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
     model = Location
     context_object_name = 'location'
+
+
+class EventRegistrationView(generic.FormView):
+    """View for a specific event's registration form."""
+
+    model = Event
+    context_object_name = 'registration-form'
+    template_name = 'events/register.html'
+
+
+class EventRegistrationSuccessView(generic.TemplateView):
+    """View for a specific event's registration form."""
+
+    template_name = 'events/registration_success.html'
+
