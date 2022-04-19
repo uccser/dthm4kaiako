@@ -373,8 +373,8 @@ class EventApplication(models.Model):
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    open_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    available_from = models.DateTimeField()
+    end = models.DateTimeField()
     terms_and_conditions = RichTextUploadingField(blank=True)
     event = models.OneToOneField(
         Event,
