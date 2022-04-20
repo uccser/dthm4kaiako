@@ -391,3 +391,8 @@ class RegistrationForm(models.Model):
         """
         return reverse('events:event-registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+

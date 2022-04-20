@@ -7,9 +7,11 @@ from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
     Event,
     Location,
+    EventApplication,
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
+from .forms import AddForm
 
 
 class HomeView(generic.TemplateView):
@@ -126,12 +128,18 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     context_object_name = 'location'
 
 
-class EventRegistrationView(RedirectToCosmeticURLMixin, generic.FormView):
+class EventApplicationView(generic.FormView):
     """View for a specific event's registration form."""
 
-    model = Event
+    template_name = 'events/apply.html'
+    model = EventApplication
+    form_class = AddForm
+    success_url = '/events/' # TODO: update as this is temporary
     context_object_name = 'registration_form'
-    template_name = 'events/register.html'
+
+    def form_valid(self, form):
+            form.save()
+            return super().form_valid(form)
 
 class EventRegistrationSuccessView(generic.TemplateView):
     """View for a specific event's registration form."""

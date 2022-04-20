@@ -28,7 +28,7 @@ class User(AbstractUser):
 class DietaryRequirement(models.Model):
     """Model for a dietary requirement e.g. vegetarian."""
     name = models.CharField(max_length=20)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, related_name='dietary_requirement')
 
     def __str__(self):
         """Text representation of a dietary requirement."""
