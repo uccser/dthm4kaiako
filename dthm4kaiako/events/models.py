@@ -382,3 +382,12 @@ class RegistrationForm(models.Model):
         primary_key=True,
         related_name="registration_form"
     )
+
+    def get_absolute_url(self):
+        """Return URL of event registration form on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('events:event-registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
+
