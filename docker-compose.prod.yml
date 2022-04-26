@@ -73,7 +73,7 @@ services:
             - backend
         volumes:
             - type: bind
-              source: /srv/dthm4kaiako/media/
+              source: /srv/user-uploads/dthm4kaiako/media/
               target: /app/dthm4kaiako/media/:z
 
     postgres:

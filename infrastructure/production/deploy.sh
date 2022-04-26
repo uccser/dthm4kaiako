@@ -15,6 +15,9 @@ checkEnvVariableExists() {
 checkEnvVariableExists DTHM4KAIAKO_IMAGE_TAG
 checkEnvVariableExists DTHM4KAIAKO_ROUTER_RULE
 
+# Create folder for user uploads if it doesn't exist
+mkdir -p /srv/user-uploads/dthm4kaiako/media/
+
 # Update Django service
 docker stack deploy dthm4kaiako -c docker-compose.prod.yml
 
