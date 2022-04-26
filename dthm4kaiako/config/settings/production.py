@@ -104,6 +104,8 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
         ]
     ),
 ]
+# Disable APP_DIRS when custom loaders are specified.
+TEMPLATES[0]['APP_DIRS'] = False  # noqa F405
 
 # EMAIL
 # ------------------------------------------------------------------------------
