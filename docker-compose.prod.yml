@@ -26,6 +26,8 @@ x-django-config:
         MAILGUN_API_KEY_FILE: /run/secrets/dthm4kaiako_mailgun_api_key
         GOOGLE_DRIVE_API_KEY_FILE: /run/secrets/dthm4kaiako_google_drive_api_key
         GOOGLE_MAPS_API_KEY_FILE: /run/secrets/dthm4kaiako_google_maps_api_key
+        SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_admin_password
+        SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_user_password
         RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_public_key
         RECAPTCHA_PRIVATE_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_private_key
     configs:
