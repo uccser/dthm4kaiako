@@ -13,9 +13,9 @@ x-default-opts:
 
 x-django-config:
     &django-config
-    image: ghcr.io/uccser/dthm4kaiako:${dthm4kaiako_IMAGE_TAG}
+    image: ghcr.io/uccser/dthm4kaiako:${DTHM4KAIAKO_IMAGE_TAG}
     environment:
-        dthm4kaiako_DOMAIN: ${dthm4kaiako_DOMAIN}
+        dthm4kaiako_DOMAIN: ${DTHM4KAIAKO_DOMAIN}
         POSTGRES_HOST: postgres
         POSTGRES_PORT: "5432"
         DEPLOYMENT_ENVIRONMENT_FILE: /dthm4kaiako_deployment_environment
@@ -62,7 +62,7 @@ services:
                 - "traefik.docker.network=uccser-public"
                 - "traefik.http.services.dthm4kaiako-django.loadbalancer.server.port=8000"
                 - "traefik.http.routers.dthm4kaiako-django.service=dthm4kaiako-django"
-                - "traefik.http.routers.dthm4kaiako-django.rule=${dthm4kaiako_ROUTER_RULE}"
+                - "traefik.http.routers.dthm4kaiako-django.rule=${DTHM4KAIAKO_ROUTER_RULE}"
                 - "traefik.http.routers.dthm4kaiako-django.entryPoints=web"
                 # Redirect non-www to www, only triggers in production swarm.
                 - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.regex=^https://dthm4kaiako(.*)"
