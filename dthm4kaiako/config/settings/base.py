@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import os.path
 import environ
 import logging.config
-from utils.get_upload_filepath import get_upload_path_for_date
 
 
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
@@ -339,7 +338,7 @@ SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 # ckeditor
 # ------------------------------------------------------------------------------
-CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
+CKEDITOR_UPLOAD_PATH = 'text-editor'
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default': {
