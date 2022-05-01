@@ -33,38 +33,6 @@ def get_entity_upload_path(entity, filename):
     return join('user', 'entity', str(entity.pk), filename)
 
 
-# Unused - Left for migrations
-def get_event_organiser_upload_path(organiser, filename):
-    """Create upload path for an event organiser by primary key.
-
-    Required by model FileField/ImageField.
-
-    Args:
-        component (Organiser): Organiser object file is being added to.
-        filename (str): Filename of file.
-
-    Returns:
-        String of path and filename for upload.
-    """
-    return join('events', 'organiser', str(organiser.pk), filename)
-
-
-# Unused - Left for migrations
-def get_event_sponsor_upload_path(organiser, filename):
-    """Create upload path for an event sponsor by primary key.
-
-    Required by model FileField/ImageField.
-
-    Args:
-        component (Sponsor): Sponsor object file is being added to.
-        filename (str): Filename of file.
-
-    Returns:
-        String of path and filename for upload.
-    """
-    return join('events', 'sponsor', str(organiser.pk), filename)
-
-
 def get_event_series_upload_path(series, filename):
     """Create upload path for an event series by primary key.
 
@@ -92,4 +60,39 @@ def get_dtta_news_article_source_upload_path(source, filename):
     Returns:
         String of path and filename for upload.
     """
-    return join('dtta', 'news-article-source', str(source.slug), filename)
+    return join('dtta', 'news-article-source', str(source.pk), filename)
+
+
+# --------------------------------------------------------------------------
+
+
+# UNUSED - Left for migrations
+def get_event_organiser_upload_path(organiser, filename):
+    """Create upload path for an event organiser by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Organiser): Organiser object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('events', 'organiser', str(organiser.pk), filename)
+
+
+# UNUSED - Left for migrations
+def get_event_sponsor_upload_path(organiser, filename):
+    """Create upload path for an event sponsor by primary key.
+
+    Required by model FileField/ImageField.
+
+    Args:
+        component (Sponsor): Sponsor object file is being added to.
+        filename (str): Filename of file.
+
+    Returns:
+        String of path and filename for upload.
+    """
+    return join('events', 'sponsor', str(organiser.pk), filename)
