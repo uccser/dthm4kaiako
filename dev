@@ -141,6 +141,12 @@ cmd_load_poet_data() {
 }
 defhelp load_poet_data "Load poet data."
 
+# Run update_data command
+cmd_update_data() {
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py update_data "$@"
+}
+defhelp load_poet_data "Run update_data command."
+
 # Run create_cards command
 cmd_create_cards() {
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py create_cards

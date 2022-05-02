@@ -78,6 +78,21 @@ services:
             - uccser-public
             - backend
 
+    task-update-data:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py update_data
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
+
     postgres:
         <<: *default-opts
         image: postgis/postgis:13-3.2
