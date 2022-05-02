@@ -77,10 +77,6 @@ services:
         networks:
             - uccser-public
             - backend
-        volumes:
-            - type: bind
-              source: /srv/user-uploads/dthm4kaiako/media/
-              target: /app/dthm4kaiako/media/:z
 
     postgres:
         <<: *default-opts
