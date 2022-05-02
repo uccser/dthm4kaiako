@@ -134,6 +134,10 @@ secrets:
         external: true
     dthm4kaiako_google_maps_api_key:
         external: true
+    dthm4kaiako_google_service_account:
+        external: true
+    dthm4kaiako_google_cloud_storage_bucket_media_name:
+        external: true
     dthm4kaiako_sample_data_admin_password:
         external: true
     dthm4kaiako_sample_data_user_password:
