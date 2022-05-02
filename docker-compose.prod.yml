@@ -26,6 +26,8 @@ x-django-config:
         MAILGUN_API_KEY_FILE: /run/secrets/dthm4kaiako_mailgun_api_key
         GOOGLE_DRIVE_API_KEY_FILE: /run/secrets/dthm4kaiako_google_drive_api_key
         GOOGLE_MAPS_API_KEY_FILE: /run/secrets/dthm4kaiako_google_maps_api_key
+        GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/dthm4kaiako_google_service_account
+        GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME: /run/secrets/dthm4kaiako_google_cloud_storage_bucket_media_name
         SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_admin_password
         SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_user_password
         RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_public_key
@@ -40,6 +42,8 @@ x-django-config:
         - dthm4kaiako_mailgun_api_key
         - dthm4kaiako_google_drive_api_key
         - dthm4kaiako_google_maps_api_key
+        - dthm4kaiako_google_service_account
+        - dthm4kaiako_google_cloud_storage_bucket_media_name
         - dthm4kaiako_sample_data_admin_password
         - dthm4kaiako_sample_data_user_password
         - dthm4kaiako_recaptcha_public_key
@@ -56,7 +60,7 @@ services:
             placement:
                 constraints:
                     - node.role==worker
-                    - node.labels.role==apps-file-storage
+                    - node.labels.role==apps
             restart_policy:
                 condition: on-failure
             labels:

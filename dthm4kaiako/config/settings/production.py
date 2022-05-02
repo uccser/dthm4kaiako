@@ -92,6 +92,15 @@ with open(env("GOOGLE_MAPS_API_KEY_FILE")) as file:  # noqa: F405
     GOOGLE_MAPS_API_KEY = file.read().strip()
 MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY  # noqa: F405
 
+# STORAGES
+# ------------------------------------------------------------------------------
+# https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
+INSTALLED_APPS += ['storages']  # noqa F405
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')  # noqa: F405
+GS_FILE_OVERWRITE = False
+GS_DEFAULT_ACL = 'publicRead'
+
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
