@@ -11,7 +11,6 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the update_data command is given."""
-
         # Only run in staging environment or local development
         if settings.STAGING_ENVIRONMENT or settings.DEBUG:
             management.call_command('sample_data')
