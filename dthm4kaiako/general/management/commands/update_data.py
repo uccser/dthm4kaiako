@@ -10,11 +10,11 @@ class Command(management.base.BaseCommand):
     help = "Update data in database."
 
     def handle(self, *args, **options):
-        """Automatically called when the sampledata command is given."""
+        """Automatically called when the update_data command is given."""
 
         # Only run in staging environment or local development
         if settings.STAGING_ENVIRONMENT or settings.DEBUG:
-            management.call_command('sampledata')
+            management.call_command('sample_data')
             print('Sample data added.\n')
 
         management.call_command('load_card_data')

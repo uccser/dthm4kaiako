@@ -145,7 +145,7 @@ defhelp load_poet_data "Load poet data."
 cmd_update_data() {
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py update_data "$@"
 }
-defhelp load_poet_data "Run update_data command."
+defhelp update_data "Run update_data command."
 
 # Run create_cards command
 cmd_create_cards() {
@@ -158,10 +158,10 @@ cmd_createsuperuser() {
 }
 defhelp createsuperuser "Create superuser in Django system."
 
-cmd_sampledata() {
-  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py sampledata
+cmd_sample_data() {
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django python ./manage.py sample_data
 }
-defhelp sampledata "Add sample data to website."
+defhelp sample_data "Add sample data to website."
 
 # View Docker logs
 cmd_logs() {

@@ -1,4 +1,4 @@
-"""Module for the custom Django sampledata command."""
+"""Module for the custom Django sample_data command."""
 
 import csv
 import random
@@ -43,12 +43,12 @@ from tests.poet.factories import (
 
 
 class Command(management.base.BaseCommand):
-    """Required command class for the custom Django sampledata command."""
+    """Required command class for the custom Django sample_data command."""
 
     help = "Add sample data to database."
 
     def handle(self, *args, **options):
-        """Automatically called when the sampledata command is given."""
+        """Automatically called when the sample_data command is given."""
         if settings.PRODUCTION_ENVIRONMENT and not settings.DEBUG:
             raise management.base.CommandError(
                 'This command can only be executed in DEBUG mode on non-production website.'
