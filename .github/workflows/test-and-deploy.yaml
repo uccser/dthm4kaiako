@@ -47,6 +47,27 @@ jobs:
       - name: Collect static files
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
+  test-sample-data:
+    name: Tests - Sample data
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load content with sample data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
   test-general:
     name: Tests - General
     runs-on: ubuntu-20.04
@@ -84,6 +105,7 @@ jobs:
     needs: [
       test-django-system-check,
       test-content,
+      test-sample-data,
       test-general,
       test-management,
       test-style,
@@ -124,6 +146,7 @@ jobs:
     needs: [
       test-django-system-check,
       test-content,
+      test-sample-data,
       test-general,
       test-management,
       test-style,
