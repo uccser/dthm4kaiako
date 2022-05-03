@@ -37,3 +37,13 @@ filetype==1.0.10  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
 google-api-python-client==2.46.0
+
+# Sample data generation
+# ----------------------
+# Checks are used in scripts to prevent sample data being added in production.
+# Alternative system was investigated that uses a different Dockerfiles for updating data,
+# however this system was very complicated for preventing dependencies for creating sample
+# data from existing in the production environment.
+# Including the dependencies in all versions allows for a much simplier system for
+# contributors to understand.
+factory-boy==3.2.0

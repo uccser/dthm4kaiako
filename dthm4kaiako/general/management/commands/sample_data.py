@@ -49,9 +49,9 @@ class Command(management.base.BaseCommand):
 
     def handle(self, *args, **options):
         """Automatically called when the sample_data command is given."""
-        if settings.PRODUCTION_ENVIRONMENT and not settings.DEBUG:
+        if settings.PRODUCTION_ENVIRONMENT:
             raise management.base.CommandError(
-                'This command can only be executed in DEBUG mode on non-production website.'
+                'This command can only be executed on non-production website or local development.'
             )
 
         # Clear all data
