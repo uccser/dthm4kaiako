@@ -164,7 +164,7 @@ class Event(models.Model):
         choices=REGISTRATION_TYPE_CHOICES,
         default=REGISTRATION_TYPE_REGISTER,
     )
-    registration_link = models.URLField(blank=True) #TODO: update to registration form 
+    registration_link = models.URLField(blank=True, null=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(
@@ -238,11 +238,16 @@ class Event(models.Model):
             return None
 
     def save(self, *args, **kwargs):
-        # registration_form = RegistrationForm.objects.create(event_id=self.pk)
-        # registration_form.event = self
-        # registration_form.save()
         return super().save(*args, **kwargs)
 
+    @property
+    def is_register_or_apply(self):
+        """ Returns True if the event is an event which users can register or apply to attend.
+
+            Returns:
+                Boolean if the event is an event which users can register or apply to attend.
+        """
+        return self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER
 
     @property
     def has_ended(self):
@@ -270,13 +275,14 @@ class Event(models.Model):
                     _('Registration link must be empty when event is set to invite only.')
                 }
             )
-        if not self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and not self.registration_link:
-            raise ValidationError(
-                {
-                    'registration_link':
-                    _('Registration link must be given when event is not set to invite only.')
-                }
-            )
+        # TODO: check if this is redundant
+        # if not self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and not self.registration_link:
+        #     raise ValidationError(
+        #         {
+        #             'registration_link':
+        #             _('Registration link must be given when event is not set to invite only.')
+        #         }
+        #     )
 
     class Meta:
         """Meta options for class."""
