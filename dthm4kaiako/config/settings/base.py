@@ -313,7 +313,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 ADMIN_URL = 'admin/'
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [
-    ("""UCCSER""", 'csse-education-research@canterbury.ac.nz'),
+    ('UCCSER', 'csse-education-research@canterbury.ac.nz'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -387,7 +387,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "console": {
-            "format": "%(asctime)s %(name)-20s %(levelname)-10s %(message)s",
+            "format": "%(asctime)s %(levelname)-6s %(lineno)-4s%(name)-15s %(message)s",
         },
     },
     "handlers": {
