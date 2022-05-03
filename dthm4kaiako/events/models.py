@@ -11,6 +11,8 @@ from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.translation import gettext_lazy as _
 from users.models import Entity, User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Location(models.Model):
@@ -236,9 +238,9 @@ class Event(models.Model):
             return None
 
     def save(self, *args, **kwargs):
-        registration_form = RegistrationForm.objects.create(event_id=self.pk)
-        registration_form.event = self
-        registration_form.save()
+        # registration_form = RegistrationForm.objects.create(event_id=self.pk)
+        # registration_form.event = self
+        # registration_form.save()
         return super().save(*args, **kwargs)
 
 
@@ -402,4 +404,10 @@ class RegistrationForm(models.Model):
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
+
+@receiver(post_save, sender=Event)
+def create_registration_form(sender, instance, created, **kwargs):
+    """Create a registration form when an event is created."""
+    if created:
+        RegistrationForm.objects.create(event=instance)
 
