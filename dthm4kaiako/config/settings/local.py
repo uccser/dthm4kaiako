@@ -2,6 +2,7 @@
 
 from .base import *  # noqa
 from .base import env
+import logging
 
 # GENERAL
 # ------------------------------------------------------------------------------

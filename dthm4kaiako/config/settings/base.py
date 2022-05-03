@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os.path
 import environ
-import logging.config
 
 
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
@@ -383,7 +382,7 @@ REST_FRAMEWORK = {
 # ------------------------------------------------------------------------------
 # Based off https://lincolnloop.com/blog/django-logging-right-way/
 
-logging.config.dictConfig({
+LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
@@ -404,29 +403,22 @@ logging.config.dictConfig({
             "handlers": ["console", ],
         },
         "django": {
-            "handlers": ["console"],
-            "level": env("LOG_LEVEL", default="INFO"),
-            "propagate": False,
-        },
-        # Project specific logger
-        "dthm4kaiako": {
             "level": env("LOG_LEVEL", default="INFO"),
             "handlers": ["console", ],
-            # Required to avoid double logging with root logger
             "propagate": False,
         },
         'gunicorn.error': {
             "level": env("LOG_LEVEL", default="INFO"),
-            'handlers': ['console'],
+            'handlers': ['console', ],
             'propagate': False,
         },
         'gunicorn.access': {
             "level": env("LOG_LEVEL", default="INFO"),
-            'handlers': ['console'],
+            'handlers': ['console', ],
             'propagate': False,
         },
     },
-})
+}
 
 # MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------

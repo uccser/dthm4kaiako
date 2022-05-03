@@ -97,7 +97,8 @@ MAP_WIDGETS["GOOGLE_MAP_API_KEY"] = GOOGLE_MAPS_API_KEY  # noqa: F405
 # https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
 INSTALLED_APPS += ['storages']  # noqa F405
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = env('GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME')  # noqa: F405
+with open(env("GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME_FILE")) as file:  # noqa: F405
+    GS_BUCKET_NAME = file.read().strip()
 GS_FILE_OVERWRITE = False
 GS_DEFAULT_ACL = 'publicRead'
 
@@ -150,11 +151,6 @@ with open(env("RECAPTCHA_PUBLIC_KEY_FILE")) as file:  # noqa: F405
 
 with open(env("RECAPTCHA_PRIVATE_KEY_FILE")) as file:  # noqa: F405
     RECAPTCHA_PRIVATE_KEY = file.read().strip()
-
-
-# LOGGING
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
 
 
 # Sample Data

@@ -27,7 +27,7 @@ x-django-config:
         GOOGLE_DRIVE_API_KEY_FILE: /run/secrets/dthm4kaiako_google_drive_api_key
         GOOGLE_MAPS_API_KEY_FILE: /run/secrets/dthm4kaiako_google_maps_api_key
         GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/dthm4kaiako_google_service_account
-        GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME: /run/secrets/dthm4kaiako_google_cloud_storage_bucket_media_name
+        GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME_FILE: /run/secrets/dthm4kaiako_google_cloud_storage_bucket_media_name
         SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_admin_password
         SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_user_password
         RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_public_key
