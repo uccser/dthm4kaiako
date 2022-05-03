@@ -371,7 +371,7 @@ class EventApplication(models.Model):
         related_name='applications',
     )
     paid = models.BooleanField()
-    userEditable = models.BooleanField()
+    userEditable = models.BooleanField(default=False) #TODO: change to True once implement
 
     class Meta:
         """Meta options for class."""
