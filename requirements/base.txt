@@ -46,4 +46,4 @@ google-api-python-client==2.46.0
 # data from existing in the production environment.
 # Including the dependencies in all versions allows for a much simplier system for
 # contributors to understand.
-factory-boy==3.2.0
+factory-boy==3.2.1
