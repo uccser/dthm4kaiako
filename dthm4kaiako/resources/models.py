@@ -408,7 +408,7 @@ class ResourceComponent(models.Model):
             self.component_type = self.TYPE_RESOURCE
         else:
             self.component_type = self.get_file_type()
-        logging.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
+        logger.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
         super().save(*args, **kwargs)
 
     def get_url_type(self):
