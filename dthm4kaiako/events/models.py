@@ -235,6 +235,13 @@ class Event(models.Model):
         else:
             return None
 
+    def save(self, *args, **kwargs):
+        registration_form = RegistrationForm.objects.create(event_id=self.pk)
+        registration_form.event = self
+        registration_form.save()
+        return super().save(*args, **kwargs)
+
+
     @property
     def has_ended(self):
         """Return True if event has ended.
@@ -306,7 +313,8 @@ class Session(models.Model):
 
 
 class ApplicantType(models.Model):
-    """Model for an application type."""
+    """Model for an application type.
+       Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
     name = models.CharField(max_length=100)
     cost = models.PositiveSmallIntegerField(default=0)
     event = models.ForeignKey(
@@ -340,8 +348,8 @@ class EventApplication(models.Model):
         (REJECTED, _('Rejected')),
     )
 
-    submitted = models.DateTimeField()
-    updated = models.DateTimeField()
+    submitted = models.DateTimeField(auto_now_add=True) # user does not edit
+    updated = models.DateTimeField(auto_now=True) # user does not edit
     status = models.PositiveSmallIntegerField(
         choices=APPLICATION_STATUSES,
         default=PENDING,
@@ -363,6 +371,7 @@ class EventApplication(models.Model):
         related_name='applications',
     )
     paid = models.BooleanField()
+    userEditable = models.BooleanField()
 
     class Meta:
         """Meta options for class."""
@@ -373,8 +382,8 @@ class EventApplication(models.Model):
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    available_from = models.DateTimeField()
-    end = models.DateTimeField()
+    start = models.DateTimeField(auto_now=True)
+    end = models.DateTimeField(auto_now=True)
     terms_and_conditions = RichTextUploadingField(blank=True)
     event = models.OneToOneField(
         Event,
@@ -389,10 +398,8 @@ class RegistrationForm(models.Model):
         Returns:
             URL as a string.
         """
-        return reverse('events:event-registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
+        return reverse('events:event_registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
 

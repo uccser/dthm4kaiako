@@ -107,7 +107,7 @@
 
             {% if event.registration_link and not event.has_ended %}
                 <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_form.get_absolute_url }}" role="button">
+                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_form }}" role="button">
                     {{ event.get_registration_type_display }}
                 </a>                
             {% endif %}
