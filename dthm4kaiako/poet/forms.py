@@ -154,7 +154,7 @@ class POETContactForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
     cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     def send_email(self):
         """Send email if form is valid."""
