@@ -1,7 +1,7 @@
 # Test dependencies
 
 coverage==6.2
-django-coverage-plugin==1.8.0  # https://github.com/nedbat/django_coverage_plugin
+django-coverage-plugin==2.0.2  # https://github.com/nedbat/django_coverage_plugin
 django-test-without-migrations==0.6
 
 flake8==3.9.2
