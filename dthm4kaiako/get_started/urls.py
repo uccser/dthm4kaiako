@@ -1,4 +1,4 @@
-"""URL routing for events application."""
+"""URL routing for get_started application."""
 
 from django.urls import path
 from get_started import views
