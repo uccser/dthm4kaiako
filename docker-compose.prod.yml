@@ -71,8 +71,8 @@ services:
                 - "traefik.http.routers.dthm4kaiako-django.rule=${DTHM4KAIAKO_ROUTER_RULE}"
                 - "traefik.http.routers.dthm4kaiako-django.entryPoints=web"
                 # Redirect non-www to www, only triggers in production swarm.
-                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.regex=^https://dthm4kaiako(.*)"
-                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.replacement=https://www.dthm4kaiako$${1}"
+                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.regex=^https://dthm4kaiako.ac.nz(.*)"
+                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.replacement=https://www.dthm4kaiako.ac.nz$${1}"
                 - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.permanent=true"
         networks:
             - uccser-public
