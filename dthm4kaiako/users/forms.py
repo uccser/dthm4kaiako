@@ -2,12 +2,16 @@
 
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 User = get_user_model()
 
 
 class SignupForm(ModelForm):
     """Sign up for user registration."""
+
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     class Meta:
         """Metadata for SignupForm class."""

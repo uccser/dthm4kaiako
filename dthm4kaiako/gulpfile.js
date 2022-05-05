@@ -9,7 +9,6 @@ const pjson = require('./package.json')
 // Plugins
 const autoprefixer = require('autoprefixer')
 const browserify = require('browserify')
-const browserSync = require('browser-sync').create()
 const buffer = require('vinyl-buffer');
 const c = require('ansi-colors')
 const concat = require('gulp-concat')
@@ -23,7 +22,6 @@ const log = require('fancy-log')
 const pixrem = require('pixrem')
 const postcss = require('gulp-postcss')
 const postcssFlexbugFixes = require('postcss-flexbugs-fixes')
-const reload = browserSync.reload
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps')
 const spawn = require('child_process').spawn
@@ -57,7 +55,6 @@ function pathsConfig(appName) {
             `${vendorsRoot}/popper.js/dist/umd/popper.js`,
             `${vendorsRoot}/bootstrap/dist/js/bootstrap.js`,
             `${vendorsRoot}/details-element-polyfill/dist/details-element-polyfill.js`,
-            `${vendorsRoot}/multiple-select/dist/multiple-select-es.js`,
         ],
         // Output files
         css_output: `${staticOutputRoot}/css`,
@@ -203,7 +200,6 @@ const generateAssets = parallel(
 
 // Set up dev environment
 const dev = parallel(
-    // initBrowserSync,
     watchPaths
 )
 // TODO: Look at cleaning build folder
