@@ -15,7 +15,7 @@ x-django-config:
     &django-config
     image: ghcr.io/uccser/dthm4kaiako:${DTHM4KAIAKO_IMAGE_TAG}
     environment:
-        dthm4kaiako_DOMAIN: ${DTHM4KAIAKO_DOMAIN}
+        DTHM4KAIAKO_DOMAIN: ${DTHM4KAIAKO_DOMAIN}
         POSTGRES_HOST: postgres
         POSTGRES_PORT: "5432"
         DEPLOYMENT_ENVIRONMENT_FILE: /dthm4kaiako_deployment_environment
