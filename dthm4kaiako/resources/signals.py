@@ -29,11 +29,10 @@ def on_save(sender, **kwargs):
         transaction.on_commit(make_updater(kwargs['instance']))
 
 
-@receiver(m2m_changed)
 def on_m2m_changed(sender, **kwargs):
     """Update search indexes on m2m relationship changes.
 
-    When a many to many (M2M) relationship is changed, the
+    When a registered many to many (m2m) relationship is changed, the
     search index should be updated for models that require is.
     This only applies to the text search, filter searches are always
     up to date.
@@ -44,9 +43,9 @@ def on_m2m_changed(sender, **kwargs):
     """
     instance = kwargs['instance']
     model = kwargs['model']
-    if issubclass(model, SEARCH_INDEX_UPDATE_MODELS):
+    if isinstance(instance, SEARCH_INDEX_UPDATE_MODELS):
         transaction.on_commit(make_updater(instance))
-    elif isinstance(instance, SEARCH_INDEX_UPDATE_MODELS):
+    elif issubclass(model, SEARCH_INDEX_UPDATE_MODELS):
         for obj in model.objects.filter(pk__in=kwargs['pk_set']):
             transaction.on_commit(make_updater(obj))
 
@@ -71,3 +70,14 @@ def make_updater(instance):
         )
 
     return on_commit
+
+
+# Register specific fields as a lot of m2m relationships exist in this website.
+m2m_changed.connect(on_m2m_changed, sender=Resource.author_entities.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.author_users.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.languages.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.technological_areas.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.progress_outcomes.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.nzqa_standards.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.year_levels.through)
+m2m_changed.connect(on_m2m_changed, sender=Resource.curriculum_learning_areas.through)
