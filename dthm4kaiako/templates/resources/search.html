@@ -10,7 +10,7 @@
     <div class="col-12 mb-3">
         <form method="get" action="." id="resource-search">
             <input type="search" id="id_q" name="q" class="form-control form-control-lg" placeholder="What resources are you searching for?"
-                aria-describedby="searchHelpText" {% if form.q.value != None %}value="{{ form.q.value|stringformat:'s' }}"{% endif %}>
+                aria-describedby="searchHelpText" {% if query %}value="{{ query|stringformat:'s' }}"{% endif %}>
             <small id="searchHelpText" class="form-text text-muted pl-3">
                 Leave blank to search all items.
             </small>
@@ -26,10 +26,10 @@
                 <div class="form-row boxed-text-content">
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Languages</strong>
-                        {% for language in form.lang.field.queryset %}
+                        {% for language in languages %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="lang" id="id_lang_{{ language.pk }}"
-                                value="{{ language.pk }}" {% if language.pk|stringformat:'i' in form.lang.value %}checked{% endif %}>
+                                value="{{ language.pk }}" {% if language.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_lang_{{ language.pk }}">
                                 {% include 'resources/badges/language.html' with no_link=True %}
                             </label>
@@ -39,10 +39,10 @@
 
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Year levels</strong>
-                        {% for year_level in form.year_level.field.queryset %}
+                        {% for year_level in year_levels %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="year_level" id="id_yl_{{ year_level.pk }}"
-                                value="{{ year_level.pk }}" {% if year_level.pk|stringformat:'i' in form.year_level.value %}checked{% endif %}>
+                                value="{{ year_level.pk }}" {% if year_level.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_yl_{{ year_level.pk }}">
                                 {% include 'resources/badges/year-level.html' with no_link=True %}
                             </label>
@@ -51,12 +51,12 @@
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Curriculum learning areas</strong>
-                        {% for curriculum_learning_area in form.curriculum_area.field.queryset %}
+                        {% for curriculum_learning_area in curriculum_learning_areas %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="curriculum_area"
                                 id="id_ca_{{ curriculum_learning_area.pk }}"
                                 value="{{ curriculum_learning_area.pk }}"
-                                {% if curriculum_learning_area.pk|stringformat:'i' in form.curriculum_area.value %}checked{% endif %}>
+                                {% if curriculum_learning_area.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_ca_{{ curriculum_learning_area.pk }}">
                                 {% include 'resources/badges/curriculum-learning-area.html' with no_link=True %}
                             </label>
@@ -65,10 +65,10 @@
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Technological areas</strong>
-                        {% for technological_area in form.tech_area.field.queryset %}
+                        {% for technological_area in technological_areas %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="tech_area" id="id_ta_{{ technological_area.pk }}"
-                                value="{{ technological_area.pk }}" {% if technological_area.pk|stringformat:'i' in form.tech_area.value %}checked{% endif %}>
+                                value="{{ technological_area.pk }}" {% if technological_area.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_ta_{{ technological_area.pk }}">
                                 {% include 'resources/badges/technological-area.html' with no_link=True %}
                             </label>
@@ -77,10 +77,10 @@
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>Progress outcomes</strong>
-                        {% for progress_outcome in form.progress_outcome.field.queryset %}
+                        {% for progress_outcome in progress_outcomes %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="progress_outcome" id="id_po_{{ progress_outcome.pk }}"
-                                value="{{ progress_outcome.pk }}" {% if progress_outcome.pk|stringformat:'i' in form.progress_outcome.value %}checked{% endif %}>
+                                value="{{ progress_outcome.pk }}" {% if progress_outcome.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_po_{{ progress_outcome.pk }}">
                                 {% include 'resources/badges/progress-outcome.html' with no_link=True %}
                             </label>
@@ -89,10 +89,10 @@
                     </div>
                     <div class="form-group col-md-6 col-lg-3">
                         <strong>NZQA standards</strong>
-                        {% for nzqa_standard in form.nzqa_standard.field.queryset %}
+                        {% for nzqa_standard in nzqa_standards %}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="nzqa_standard" id="id_ns_{{ nzqa_standard.pk }}"
-                                value="{{ nzqa_standard.pk }}" {% if nzqa_standard.pk|stringformat:'i' in form.nzqa_standard.value %}checked{% endif %}>
+                                value="{{ nzqa_standard.pk }}" {% if nzqa_standard.selected %}checked{% endif %}>
                             <label class="form-check-label" for="id_ns_{{ nzqa_standard.pk }}">
                                 {% include 'resources/badges/nzqa-standard.html' with no_link=True %}
                             </label>
@@ -113,17 +113,18 @@
 
             <p class="text-center">
                 <em>
-                    Showing {% if is_paginated %}results {{ page_obj.start_index }} to {{ page_obj.end_index }} of {% endif %}{{ paginator.count }} result{{ paginator.count|pluralize }}
+                    Showing {% if is_paginated %}results {{ page_obj.start_index }} to {{ page_obj.end_index }} of {% endif %}{{ results_count }} result{{ results_count|pluralize }}
                 </em>
             </p>
 
-            {% for result in page_obj.object_list %}
-                {{ result.html_result|safe }}
+            {% for resource in results %}
+                {% include "resources/resource-card.html" %}
+                <small>{{ result.rank }}</small>
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
 
-            {% if paginator.num_pages > 1 %}
+            {% comment %} {% if paginator.num_pages > 1 %}
             <div class="text-center">
                 {% if page_obj.has_previous %}
                     <a class="btn btn-link"
@@ -144,7 +145,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}

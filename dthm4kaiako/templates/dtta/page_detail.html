@@ -7,7 +7,9 @@
 {% block content %}
     {{ page.content|safe }}
 
-    <p>
-        This page was published on {{ page.date }}.
+    <p class="text-muted">
+        <small>
+            This page was last modified on {{ page.date }}.
+        </small>
     </p>
 {% endblock content %}

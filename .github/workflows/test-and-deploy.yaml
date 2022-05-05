@@ -1,0 +1,234 @@
+name: Test and deploy
+
+on:
+  workflow_dispatch:
+  push:
+  release:
+    types: [published]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test-django-system-check:
+    name: Tests - Django system check
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Run Django system check
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py check --fail-level WARNING
+
+  test-content:
+    name: Tests - Content
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load learning area cards application data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
+      - name: Load POET data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_poet_data
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
+  test-sample-data:
+    name: Tests - Sample data
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load content with sample data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
+  test-general:
+    name: Tests - General
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run general tests
+        run: ./dev ci test_general
+
+  test-management:
+    name: Tests - Management
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run management tests
+        run: ./dev ci test_management
+
+  test-style:
+    name: Tests - Style
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run style tests
+        run: ./dev ci style
+
+  create-static-files:
+    name: Create static files
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
+    runs-on: ubuntu-20.04
+    needs: [
+      test-django-system-check,
+      test-content,
+      test-sample-data,
+      test-general,
+      test-management,
+      test-style,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+
+      - name: Start system
+        run: docker-compose -f docker-compose.local.yml up -d
+
+      - name: Create production static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+
+      - name: Collect staticfiles
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+
+      - name: Archive static files
+        run: tar czf static-files.tar.gz --directory dthm4kaiako/staticfiles/ .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: static-files
+          path: static-files.tar.gz
+          retention-days: 3
+
+  create-learning-area-cards:
+    name: Create learning area cards
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
+    runs-on: ubuntu-20.04
+    needs: [
+      test-django-system-check,
+      test-content,
+      test-sample-data,
+      test-general,
+      test-management,
+      test-style,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start system
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create production static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+      - name: Collect staticfiles
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load learning area cards application data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
+      - name: Create learning area cards
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py create_cards
+      - name: Archive learning area cards
+        run: tar czf learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards/ .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: learning-area-cards
+          path: learning-area-cards.tar.gz
+          retention-days: 3
+
+  publish-docker-image:
+    name: Create and publish Docker image
+    if: |
+      (github.ref == 'refs/heads/develop')
+      || startsWith(github.ref, 'refs/heads/research-study-')
+      || github.event_name == 'release'
+    runs-on: ubuntu-20.04
+    needs: [
+      create-static-files,
+      create-learning-area-cards,
+    ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts/
+
+      - name: Show file tree of artifacts directory
+        run: ls -R -l artifacts/
+
+      - name: Unpack all artifacts
+        run: |
+          mkdir -p dthm4kaiako/staticfiles
+          tar -xz --file artifacts/static-files/static-files.tar.gz --directory dthm4kaiako/staticfiles
+          mkdir -p dthm4kaiako/staticfiles/learning_area_cards
+          tar -xz --file artifacts/learning-area-cards/learning-area-cards.tar.gz --directory dthm4kaiako/learning_area_cards
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=tag,priority=1
+            type=ref,event=branch,priority=2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.7.0
+        with:
+          file: ./infrastructure/production/django/Dockerfile
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            GIT_SHA=${{ github.sha }}

@@ -1,0 +1,17 @@
+{% extends "base-unbranded.html" %}
+
+{% load static svg %}
+
+{% block title %}Ara Ako - dthm4kaiako.ac.nz{% endblock title %}
+
+{% block page_heading %}
+    <div class="row justify-content-center my-4">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+            {% svg 'ara-ako-logo' %}
+        </div>
+    </div>
+{% endblock page_heading %}
+
+{% block css %}
+    <link href="{% static 'css/ara-ako.css' %}" rel="stylesheet">
+{% endblock css %}

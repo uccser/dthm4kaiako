@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+    django:
+        build:
+            context: .
+            dockerfile: ./infrastructure/local/django/Dockerfile
+        image: dthm4kaiako_local_django
+        volumes:
+            - ./dthm4kaiako/:/app/:z
+        env_file:
+            - ./infrastructure/local/django/.envs
+            - ./infrastructure/local/postgres/.envs
+        command: /start
+        networks:
+            - uccser-development-proxy
+            - backend
+        labels:
+            # General labels
+            - "traefik.enable=true"
+            - "traefik.docker.network=uccser-development-proxy"
+            - "traefik.http.services.dthm4kaiako-django.loadbalancer.server.port=8000"
+            # HTTPS
+            - "traefik.http.routers.dthm4kaiako-django.entryPoints=web-secure"
+            - "traefik.http.routers.dthm4kaiako-django.service=dthm4kaiako-django"
+            - "traefik.http.routers.dthm4kaiako-django.rule=Host(`dthm4kaiako.localhost`)"
+            - "traefik.http.routers.dthm4kaiako-django.tls=true"
+
+    # Node server for creating static files
+    node:
+        build:
+            context: .
+            dockerfile: ./infrastructure/local/node/Dockerfile
+        image: dthm4kaiako_local_node
+        volumes:
+            # https://burnedikt.com/dockerized-node-development-and-mounting-node-volumes/#exclude-node_modules-from-the-mount
+            - ./dthm4kaiako/package.json:/app/package.json:z
+            - ./dthm4kaiako/gulpfile.js:/app/gulpfile.js:z
+            - ./dthm4kaiako/static:/app/static:z
+            - ./dthm4kaiako/build:/app/build:z
+        command: npm run dev
+        networks:
+            - backend
+
+    postgres:
+        image: postgis/postgis:13-3.2
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            start_period: 10s
+            interval: 10s
+            timeout: 5s
+            retries: 3
+        env_file:
+            - ./infrastructure/local/postgres/.envs
+        networks:
+            - backend
+
+networks:
+    backend:
+        driver: bridge
+    uccser-development-proxy:
+        external: true

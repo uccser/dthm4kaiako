@@ -10,9 +10,24 @@ from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 class Page(models.Model):
     """Model for a flat page on DTTA website."""
 
+    PAGE_PLANNING = 1
+    PAGE_DOCUMENT = 2
+    PAGE_ABOUT = 3
+    PAGE_MEMBERSHIP = 4
+    PAGE_CHOICES = (
+        (PAGE_PLANNING, 'Planning'),
+        (PAGE_DOCUMENT, 'Documents'),
+        (PAGE_ABOUT, 'About'),
+        (PAGE_MEMBERSHIP, 'Membership'),
+    )
+
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', always_update=True, null=True)
     date = models.DateField()
+    page_type = models.PositiveSmallIntegerField(
+        choices=PAGE_CHOICES,
+        default=PAGE_PLANNING,
+    )
     order_number = models.PositiveSmallIntegerField(default=1)
     published = models.BooleanField(default=False)
     content = RichTextUploadingField()
@@ -111,6 +126,23 @@ class NewsArticleSource(models.Model):
             Name of news article source (str).
         """
         return self.name
+
+    def save(self, *args, **kwargs):
+        """Override save method to ensure logo is saved to correct directory.
+
+        The method saves the file once the instance has a primary key,
+        as the upload_to function of the file uses this key.
+
+        This method is adapted from the answer at:
+        https://stackoverflow.com/a/58853713/10345299
+        """
+        if self.pk is None:
+            saved_image = self.logo
+            self.logo = None
+            super().save(*args, **kwargs)
+            self.logo = saved_image
+            kwargs.pop('force_insert', None)
+        super().save(*args, **kwargs)
 
 
 class NewsArticle(models.Model):

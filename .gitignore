@@ -1,3 +1,16 @@
+# Generated and collected static files directories
+dthm4kaiako/build/**
+!dthm4kaiako/build/.keep
+dthm4kaiako/media/**
+!dthm4kaiako/media/.keep
+dthm4kaiako/staticfiles/**
+!dthm4kaiako/staticfiles/.keep
+
+# TODO: Store package-lock.json within repository and ensure it remains up to date
+
+# VS Code
+settings.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -48,9 +61,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-
-# Django stuff:
-staticfiles/
 
 # Sphinx documentation
 docs/_build/
@@ -268,10 +278,3 @@ tags
 pyvenv.cfg
 pip-selfcheck.json
 .env
-
-
-### Project template
-load_secrets.sh
-dthm4kaiako/media/
-
-.pytest_cache/

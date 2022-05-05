@@ -1,14 +1,9 @@
-# PRECAUTION: avoid production dependencies that aren't in development
-
--r ./base.txt
+# Pro-tip: Try not to put anything here.
+# Avoid dependencies in production that
+# aren't in development.
+-r base.txt
 
 # Django
 # ------------------------------------------------------------------------------
-django-storages[google]==1.11.1  # https://github.com/jschneier/django-storages
 google-auth==1.28.1  # https://github.com/googleapis/google-auth-library-python
-google-cloud-logging==2.3.1
-
-# Extra packages due to missing bindings
-# See: https://github.com/uccser/dthm4kaiako/issues/363
-google-cloud-storage==1.37.1
-google-resumable-media[requests]==1.2.0
+django-storages[google]==1.12.3

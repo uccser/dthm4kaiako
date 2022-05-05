@@ -1,4 +1,0 @@
-cron:
-- description: "Rebuild search index"
-  url: /cron/rebuild_index/
-  schedule: every 5 mins

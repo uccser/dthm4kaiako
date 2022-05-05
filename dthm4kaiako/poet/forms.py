@@ -19,6 +19,7 @@ from poet import settings as poet_settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 
 class POETSurveySelectorForm(forms.Form):
@@ -153,7 +154,7 @@ class POETContactForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
     cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     def send_email(self):
         """Send email if form is valid."""

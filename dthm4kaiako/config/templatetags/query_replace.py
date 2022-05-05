@@ -1,6 +1,8 @@
 """Module for the custom query_replace template tag."""
 
+from urllib.parse import urlencode
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -11,11 +13,9 @@ def query_replace(context, **kwargs):
 
     Args:
         context (dict): Dictionary of view context.
-
     Returns:
         Rendered query string.
     """
-    querydict = context['request'].GET.copy()
-    for key, value in kwargs.items():
-        querydict[key] = value
-    return querydict.urlencode()
+    query = context["request"].GET.dict()
+    query.update(kwargs)
+    return mark_safe(urlencode(query))

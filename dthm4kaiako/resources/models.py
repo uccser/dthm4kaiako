@@ -8,10 +8,13 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 from autoslug import AutoSlugField
 import filetype
 from utils.get_upload_filepath import get_resource_upload_path
 from utils.google_drive_api import get_google_drive_mimetype
+from utils.search_utils import concat_field_values
 from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import Entity
 
@@ -158,6 +161,7 @@ class Resource(models.Model):
     description = RichTextUploadingField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
+    search_vector = SearchVectorField(null=True)
     author_entities = models.ManyToManyField(
         Entity,
         related_name='resources',
@@ -214,6 +218,36 @@ class Resource(models.Model):
             Name of resource (str).
         """
         return self.name
+
+    def index_contents(self):
+        """Return dictionary for search indexing.
+
+        Returns:
+            Dictionary of content for search indexing. The dictionary keys
+            are the weightings of content, and the dictionary values
+            are strings of content to index.
+        """
+        return {
+            'A': self.name,
+            'B': self.description,
+            'C': concat_field_values(
+                self.author_entities.values_list('name'),
+                self.author_users.values_list('first_name', 'last_name'),
+                self.languages.values_list('name'),
+                self.technological_areas.values_list('name', 'abbreviation'),
+                self.progress_outcomes.values_list('name', 'abbreviation'),
+                self.nzqa_standards.values_list('name', 'abbreviation'),
+                self.year_levels.values_list('level'),
+                self.curriculum_learning_areas.values_list('name'),
+            ),
+        }
+
+    class Meta:
+        """Meta options for model."""
+
+        indexes = [
+            GinIndex(fields=['search_vector'])
+        ]
 
 
 class ResourceComponent(models.Model):
@@ -383,7 +417,7 @@ class ResourceComponent(models.Model):
             self.component_type = self.TYPE_RESOURCE
         else:
             self.component_type = self.get_file_type()
-        logging.info('Component {} detected as type {}'.format(self.name, self.component_type))
+        logger.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
         super().save(*args, **kwargs)
 
     def get_url_type(self):
@@ -419,16 +453,17 @@ class ResourceComponent(models.Model):
                 return type_code
 
         file_obj = self.component_file.open()
-        if filetype.image(file_obj):
-            return self.TYPE_IMAGE
-        elif filetype.video(file_obj):
-            return self.TYPE_VIDEO
-        elif filetype.audio(file_obj):
-            return self.TYPE_AUDIO
-        elif filetype.archive(file_obj):
-            return self.TYPE_ARCHIVE
+        if filetype.helpers.is_image(file_obj):
+            file_type_code = self.TYPE_IMAGE
+        elif filetype.helpers.is_video(file_obj):
+            file_type_code = self.TYPE_VIDEO
+        elif filetype.helpers.is_audio(file_obj):
+            file_type_code = self.TYPE_AUDIO
+        elif filetype.helpers.is_archive(file_obj):
+            file_type_code = self.TYPE_ARCHIVE
         else:
-            return self.TYPE_OTHER
+            file_type_code = self.TYPE_OTHER
+        return file_type_code
 
     def clean(self):
         """Only allow one type of data in a resource component."""

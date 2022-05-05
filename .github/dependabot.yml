@@ -9,20 +9,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 10
   - package-ecosystem: "npm"
     directory: "/dthm4kaiako/"
     schedule:
       interval: "daily"
-    # Temporary disable NPM update
-    open-pull-requests-limit: 0
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 99
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 10
