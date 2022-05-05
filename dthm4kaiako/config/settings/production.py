@@ -33,10 +33,6 @@ if PRODUCTION_ENVIRONMENT:  # noqa: F405
 else:
     PREPEND_WWW = False
 
-# Exempt Google App Engine cron job URLs from HTTPS to function correctly.
-SECURE_REDIRECT_EXEMPT = [
-    r'^/?cron/.*',
-]
 
 # DATABASE CONFIGURATION
 # ----------------------------------------------------------------------------
