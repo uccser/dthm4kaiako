@@ -54,6 +54,16 @@ class SessionInline(admin.StackedInline):
     ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
 
+class RegistrationFormInline(admin.StackedInline):
+    """Inline view for event registration form."""
+
+    model = RegistrationForm
+    fk_name = 'event'
+    extra = 0
+    min_num = 1
+    # ordering = ('start', 'end', 'name')
+    # autocomplete_fields = ('locations', )
+
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
     """Custom filter for events admin."""
@@ -107,7 +117,7 @@ class EventAdmin(ClonableModelAdmin):
     """Admin view for an event."""
 
     model = Event
-    inlines = [SessionInline]
+    inlines = [SessionInline, RegistrationFormInline]
     fieldsets = (
         (
             None,
