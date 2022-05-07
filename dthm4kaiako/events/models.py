@@ -390,8 +390,8 @@ class EventApplication(models.Model):
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    start = models.DateTimeField(auto_now=True)
-    end = models.DateTimeField(auto_now=True)
+    open_datetime = models.DateTimeField(null=True) # TODO: sanity test these
+    close_datetime = models.DateTimeField(null=True) # TODO: sanity test these
     terms_and_conditions = RichTextUploadingField(blank=True)
     event = models.OneToOneField(
         Event,
