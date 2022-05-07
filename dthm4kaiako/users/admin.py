@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from users.forms import UserChangeForm, UserCreationForm
-from users.models import Entity
+from users.models import Entity, DietaryRequirement
 
 User = get_user_model()
 
@@ -18,4 +18,5 @@ class UserAdmin(auth_admin.UserAdmin):
     list_display = ['email', 'first_name', 'last_name', 'is_superuser']
 
 
-admin.site.register(Entity)
+admin.site.register(Entity),
+admin.site.register(DietaryRequirement),
