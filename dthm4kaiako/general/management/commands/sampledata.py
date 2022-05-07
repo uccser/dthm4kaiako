@@ -19,6 +19,10 @@ from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
 )
+# Users
+from users.models import (
+    DietaryRequirement,
+)
 # Events
 from events.models import (
     Location,
@@ -57,6 +61,22 @@ class Command(management.base.BaseCommand):
         # Clear all data
         management.call_command('flush', interactive=False)
         print('Database wiped.')
+
+        # Create common dietary requirements
+        DietaryRequirement.objects.create(name="None")
+        DietaryRequirement.objects.create(name="Dairy free")
+        DietaryRequirement.objects.create(name="Gluten free")
+        DietaryRequirement.objects.create(name="Vegetarian")
+        DietaryRequirement.objects.create(name="Vegan")
+        DietaryRequirement.objects.create(name="Paleo")
+        DietaryRequirement.objects.create(name="FODMAP")
+        DietaryRequirement.objects.create(name="Nut allergies")
+        DietaryRequirement.objects.create(name="Fish and shellfish allergies")
+        DietaryRequirement.objects.create(name="Paleo")
+        DietaryRequirement.objects.create(name="Keto")
+        DietaryRequirement.objects.create(name="Halal")
+        print('Dietary requirements created.')
+
 
         User = get_user_model()
 
@@ -205,7 +225,7 @@ class Command(management.base.BaseCommand):
                     )
         print('Event locations created.')
 
-        EventFactory.create_batch(size=50)
+        EventFactory.create_batch(size=10) #TODO: set back to 50 after finished sanity testing the event register button
         print('Events created.')
 
         # DTTA
