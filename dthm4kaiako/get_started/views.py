@@ -1,4 +1,4 @@
-"""Views for events application."""
+"""Views for get_started application."""
 
 from django.views import generic
 from get_started.models import Component

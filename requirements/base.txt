@@ -1,5 +1,5 @@
 # Django
-django==3.2.12
+django==3.2.13
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
 django-allauth==0.50.0  # https://github.com/pennersr/django-allauth
 django-anymail[mailgun]==8.5  # https://github.com/anymail/django-anymail
@@ -17,7 +17,6 @@ django-model-utils==4.2.0  # https://github.com/jazzband/django-model-utils
 django-modelclone==0.7.1
 django-recaptcha==3.0.0
 djangorestframework==3.13.1  # https://github.com/encode/django-rest-framework
-django-test-without-migrations
 
 # Web serving
 gunicorn==20.1.0
@@ -26,7 +25,7 @@ whitenoise==6.0.0
 # Database APIs
 psycopg2==2.9.3
 
-pytz==2021.1
+pytz==2022.1
 python-slugify==4.0.1
 argon2-cffi==20.1.0
 
@@ -36,4 +35,14 @@ Pillow==8.2.0
 filetype==1.0.10  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
-google-api-python-client==2.1.0
+google-api-python-client==2.46.0
+
+# Sample data generation
+# ----------------------
+# Checks are used in scripts to prevent sample data being added in production.
+# Alternative system was investigated that uses a different Dockerfiles for updating data,
+# however this system was very complicated for preventing dependencies for creating sample
+# data from existing in the production environment.
+# Including the dependencies in all versions allows for a much simplier system for
+# contributors to understand.
+factory-boy==3.2.0

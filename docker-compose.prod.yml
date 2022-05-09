@@ -13,9 +13,9 @@ x-default-opts:
 
 x-django-config:
     &django-config
-    image: ghcr.io/uccser/dthm4kaiako:${dthm4kaiako_IMAGE_TAG}
+    image: ghcr.io/uccser/dthm4kaiako:${DTHM4KAIAKO_IMAGE_TAG}
     environment:
-        dthm4kaiako_DOMAIN: ${dthm4kaiako_DOMAIN}
+        DTHM4KAIAKO_DOMAIN: ${DTHM4KAIAKO_DOMAIN}
         POSTGRES_HOST: postgres
         POSTGRES_PORT: "5432"
         DEPLOYMENT_ENVIRONMENT_FILE: /dthm4kaiako_deployment_environment
@@ -26,6 +26,10 @@ x-django-config:
         MAILGUN_API_KEY_FILE: /run/secrets/dthm4kaiako_mailgun_api_key
         GOOGLE_DRIVE_API_KEY_FILE: /run/secrets/dthm4kaiako_google_drive_api_key
         GOOGLE_MAPS_API_KEY_FILE: /run/secrets/dthm4kaiako_google_maps_api_key
+        GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/dthm4kaiako_google_service_account
+        GOOGLE_CLOUD_STORAGE_BUCKET_MEDIA_NAME_FILE: /run/secrets/dthm4kaiako_google_cloud_storage_bucket_media_name
+        SAMPLE_DATA_ADMIN_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_admin_password
+        SAMPLE_DATA_USER_PASSWORD_FILE: /run/secrets/dthm4kaiako_sample_data_user_password
         RECAPTCHA_PUBLIC_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_public_key
         RECAPTCHA_PRIVATE_KEY_FILE: /run/secrets/dthm4kaiako_recaptcha_private_key
     configs:
@@ -38,6 +42,8 @@ x-django-config:
         - dthm4kaiako_mailgun_api_key
         - dthm4kaiako_google_drive_api_key
         - dthm4kaiako_google_maps_api_key
+        - dthm4kaiako_google_service_account
+        - dthm4kaiako_google_cloud_storage_bucket_media_name
         - dthm4kaiako_sample_data_admin_password
         - dthm4kaiako_sample_data_user_password
         - dthm4kaiako_recaptcha_public_key
@@ -54,7 +60,7 @@ services:
             placement:
                 constraints:
                     - node.role==worker
-                    - node.labels.role==apps-file-storage
+                    - node.labels.role==apps
             restart_policy:
                 condition: on-failure
             labels:
@@ -62,19 +68,30 @@ services:
                 - "traefik.docker.network=uccser-public"
                 - "traefik.http.services.dthm4kaiako-django.loadbalancer.server.port=8000"
                 - "traefik.http.routers.dthm4kaiako-django.service=dthm4kaiako-django"
-                - "traefik.http.routers.dthm4kaiako-django.rule=${dthm4kaiako_ROUTER_RULE}"
+                - "traefik.http.routers.dthm4kaiako-django.rule=${DTHM4KAIAKO_ROUTER_RULE}"
                 - "traefik.http.routers.dthm4kaiako-django.entryPoints=web"
                 # Redirect non-www to www, only triggers in production swarm.
-                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.regex=^https://dthm4kaiako(.*)"
-                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.replacement=https://www.dthm4kaiako$${1}"
+                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.regex=^https://dthm4kaiako.ac.nz(.*)"
+                - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.replacement=https://www.dthm4kaiako.ac.nz$${1}"
                 - "traefik.http.middlewares.dthm4kaiako-redirect-non-www.redirectregex.permanent=true"
         networks:
             - uccser-public
             - backend
-        volumes:
-            - type: bind
-              source: /srv/dthm4kaiako/media/
-              target: /app/dthm4kaiako/media/:z
+
+    task-update-data:
+        <<: *default-opts
+        <<: *django-config
+        command: python ./manage.py update_data
+        deploy:
+            replicas: 0
+            placement:
+                constraints:
+                    - node.role==worker
+                    - node.labels.role==apps
+            restart_policy:
+                condition: none
+        networks:
+            - backend
 
     postgres:
         <<: *default-opts
@@ -127,6 +144,10 @@ secrets:
     dthm4kaiako_google_drive_api_key:
         external: true
     dthm4kaiako_google_maps_api_key:
+        external: true
+    dthm4kaiako_google_service_account:
+        external: true
+    dthm4kaiako_google_cloud_storage_bucket_media_name:
         external: true
     dthm4kaiako_sample_data_admin_password:
         external: true

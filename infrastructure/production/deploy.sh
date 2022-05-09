@@ -14,6 +14,7 @@ checkEnvVariableExists() {
 }
 checkEnvVariableExists DTHM4KAIAKO_IMAGE_TAG
 checkEnvVariableExists DTHM4KAIAKO_ROUTER_RULE
+checkEnvVariableExists DTHM4KAIAKO_DOMAIN
 
 # Update Django service
 docker stack deploy dthm4kaiako -c docker-compose.prod.yml

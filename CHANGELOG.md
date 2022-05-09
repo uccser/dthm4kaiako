@@ -1,5 +1,103 @@
 # Changelog
 
+## 0.19.0
+
+- Move website from Google Cloud Platform to Docker Swarm hosted at the University of Canterbury.
+    - Modifies website infrastructure to use Docker Swarm, running all website components as services.
+    - Use GitHub actions for automated workflows. This includes both testing and deployment.
+    - Simplify static file pipeline.
+- Prevent user registrations to the website as there is no requirement or need for accounts at this time. The account system was confusing for some users as they believed this was for making a DTTA account.
+- Use Postgres native FTS (Full Text Search) for searching resources. Removes the need for the Elasticsearch service and the django-haystack dependencies.
+- Add initial structure for Ara Ako application.
+- Add initial structure for Getting Started application.
+- Allow all DTTA pages to be edited and categorised.
+- Add code of conduct for contributors.
+- Enable CORS headers for providing version information across domains.
+- Update logging configuration.
+- Add `update_data` command for loading all content, including sample data on the test server.
+- Upgrade reCaptcha to version 3 for increased spam protection.
+- Add templatetag for reading file to template.
+- Dependency changes:
+    - Add ansi-colors 4.1.1.
+    - Add cssnano 5.0.12.
+    - Add dayjs 1.10.7.
+    - Add django-autoslug 1.9.8.
+    - Add django-cors-headers 3.11.0.
+    - Add django-environ 0.8.1.
+    - Add django-test-without-migrations 0.6.
+    - Add fancy-log 1.3.3.
+    - Add gulp-concat 2.6.1.
+    - Add gulp-imagemin 7.1.0.
+    - Add gunicorn 21.1.0.
+    - Add pixrem 5.0.0.
+    - Add postcss 8.4.13.
+    - Add psycopg2 2.9.3.
+    - Add sass 1.45.0.
+    - Add whitenoise 6.0.0.
+    - Update autoprefixer from 9.5.1 to 10.4.6.
+    - Update bootstrap from 4.3.1 to 4.6.0.
+    - Update browserify from 16.2.3 to 17.0.0.
+    - Update coverage from 5.5 to 6.2.
+    - Update details-element-polyfill from 2.3.1 to 2.4.0.
+    - Update django from 2.2.18 to 3.2.13.
+    - Update django-allauth from 0.44.0 to 0.50.0.
+    - Update django-anymail from 8.2 to 8.5.
+    - Update django-ckeditor from 6.0.0 to 6.2.0.
+    - Update django-crispy-forms from 1.11.2 to 1.14.0.
+    - Update django-debug-toolbar from 3.2 to 3.3.0.
+    - Update django-filter from 2.4.0 to 21.1.
+    - Update django-ipware from 3.0.2 to 4.0.2.
+    - Update django-map-widgets from 0.2.2 to 0.3.3.
+    - Update django-model-utils from 4.1.1 to 4.2.0.
+    - Update django-recapatcha from 2.0.6 to 3.0.0.
+    - Update django-storages[google] from 1.11.1 to 1.12.3.
+    - Update djangorestframework from 3.12.4 to 3.13.1.
+    - Update filetype from 1.0.7 to 1.0.10.
+    - Update flake8 from 3.9.0 to 3.9.2.
+    - Update fuse.js from 3.4.4 to 6.5.3.
+    - Update google-api-python-client from 2.1.0 to 2.46.0.
+    - Update gulp-filter from 5.1.0 to 7.0.0.
+    - Update gulp-if from 2.0.2 to 3.0.0.
+    - Update gulp-postcss from 8.0.0 to 9.0.1.
+    - Update gulp-sass from 4.0.2 to 5.0.0.
+    - Update gulp-sourcemaps from 2.6.5 to 3.0.0.
+    - Update gulp-tap from 1.0.1 to 2.0.0.
+    - Update gulp-terser from 1.1.7 to 2.1.0.
+    - Update jquery from 3.4.1 to 3.6.0.
+    - Update popper.js from 1.15.0 to 1.16.1.
+    - Update postcss-flexbugs-fixes from 4.1.0 to 5.0.2.
+    - Update pydocstyle from 6.0.0 to 6.1.1.
+    - Update pytz from 2021.1 to 2022.1.
+    - Update WeasyPrint from 52.2 to 52.4.
+    - Update yargs from 13.2.4 to 17.3.0.
+    - Remove @babel/core 7.4.4.
+    - Remove @babel/preset-env 7.4.4.
+    - Remove coreapi 2.3.3.
+    - Remove del 4.1.1.
+    - Remove django-autoslug-iplweb 1.9.5.
+    - Remove django-haystack @802b0f6.
+    - Remove elasticsearch 5.5.3.
+    - Remove google-cloud-logging 2.3.1.
+    - Remove google-cloud-storage 1.37.1.
+    - Remove google-resumable-media[requests] 1.2.0.
+    - Remove gulp-babel 8.0.0.
+    - Remove gulp-jshint 2.1.0.
+    - Remove gulp-notify 3.2.0.
+    - Remove gulp-rename 1.4.0.
+    - Remove gulp-util 3.0.8.
+    - Remove gulplog 1.0.0.
+    - Remove jshint 2.10.2.
+    - Remove jshint-stylish 2.2.1.
+    - Remove mypy 0.812.
+    - Remove node-gyp 4.0.0.
+    - Remove psycopg2-binary 2.8.6.
+    - Remove pytest 6.2.3.
+    - Remove pytest-django 4.2.0.
+    - Remove pytest-sugar 0.9.4.
+    - Remove request 2.88.0.
+    - Remove run-sequence 2.2.1.
+    - Remove Sphinx 3.5.4.
+
 ## 0.18.5
 
 - Hide session location in schedule if empty. (fixes #745)
@@ -15,7 +113,7 @@
 - Update event schedule to be easier to read with sticky elements.
 - Move event location information to separate page.
 - Update timezone setting to use canonical name.
- Dependencies changes:
+- Dependencies changes:
     - Update Pillow from 8.1.0 to 8.2.0.
     - Update django-crispy-forms from 1.11.0 to 1.11.2.
     - Update djangorestframework from 3.12.2 to 3.12.4.

@@ -14,6 +14,7 @@ from autoslug import AutoSlugField
 import filetype
 from utils.get_upload_filepath import get_resource_upload_path
 from utils.google_drive_api import get_google_drive_mimetype
+from utils.search_utils import concat_field_values
 from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import Entity
 
@@ -229,8 +230,16 @@ class Resource(models.Model):
         return {
             'A': self.name,
             'B': self.description,
-            # Add in text of relationships for searching text
-            # 'C': ' '.join(self.tags.values_list('tag', flat=True)),
+            'C': concat_field_values(
+                self.author_entities.values_list('name'),
+                self.author_users.values_list('first_name', 'last_name'),
+                self.languages.values_list('name'),
+                self.technological_areas.values_list('name', 'abbreviation'),
+                self.progress_outcomes.values_list('name', 'abbreviation'),
+                self.nzqa_standards.values_list('name', 'abbreviation'),
+                self.year_levels.values_list('level'),
+                self.curriculum_learning_areas.values_list('name'),
+            ),
         }
 
     class Meta:
@@ -408,7 +417,7 @@ class ResourceComponent(models.Model):
             self.component_type = self.TYPE_RESOURCE
         else:
             self.component_type = self.get_file_type()
-        logging.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
+        logger.info('Component {} detected as type {}'.format(self.name, self.get_component_type_display()))
         super().save(*args, **kwargs)
 
     def get_url_type(self):

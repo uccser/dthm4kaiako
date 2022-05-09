@@ -127,6 +127,23 @@ class NewsArticleSource(models.Model):
         """
         return self.name
 
+    def save(self, *args, **kwargs):
+        """Override save method to ensure logo is saved to correct directory.
+
+        The method saves the file once the instance has a primary key,
+        as the upload_to function of the file uses this key.
+
+        This method is adapted from the answer at:
+        https://stackoverflow.com/a/58853713/10345299
+        """
+        if self.pk is None:
+            saved_image = self.logo
+            self.logo = None
+            super().save(*args, **kwargs)
+            self.logo = saved_image
+            kwargs.pop('force_insert', None)
+        super().save(*args, **kwargs)
+
 
 class NewsArticle(models.Model):
     """Model for a news article published by DTTA."""

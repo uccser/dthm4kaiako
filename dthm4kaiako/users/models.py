@@ -58,18 +58,21 @@ class Entity(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        """Override default save method.
+        """Override save method to ensure logo is saved to correct directory.
 
-        Establishes object to use pk in saving logo image.
+        The method saves the file once the instance has a primary key,
+        as the upload_to function of the file uses this key.
+
+        This method is adapted from the answer at:
+        https://stackoverflow.com/a/58853713/10345299
         """
         if self.pk is None:
-            saved_logo = self.logo
+            saved_image = self.logo
             self.logo = None
-            super(Entity, self).save(*args, **kwargs)
-            self.logo = saved_logo
-            if 'force_insert' in kwargs:
-                kwargs.pop('force_insert')
-        super(Entity, self).save(*args, **kwargs)
+            super().save(*args, **kwargs)
+            self.logo = saved_image
+            kwargs.pop('force_insert', None)
+        super().save(*args, **kwargs)
 
     class Meta:
         """Meta options for class."""

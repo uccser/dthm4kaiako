@@ -1,4 +1,4 @@
-"""Module for the custom Django sampledata command."""
+"""Module for the custom Django sample_data command."""
 
 import csv
 import random
@@ -47,15 +47,15 @@ from tests.poet.factories import (
 
 
 class Command(management.base.BaseCommand):
-    """Required command class for the custom Django sampledata command."""
+    """Required command class for the custom Django sample_data command."""
 
     help = "Add sample data to database."
 
     def handle(self, *args, **options):
-        """Automatically called when the sampledata command is given."""
-        if settings.PRODUCTION_ENVIRONMENT and not settings.DEBUG:
+        """Automatically called when the sample_data command is given."""
+        if settings.PRODUCTION_ENVIRONMENT:
             raise management.base.CommandError(
-                'This command can only be executed in DEBUG mode on non-production website.'
+                'This command can only be executed on non-production website or local development.'
             )
 
         # Clear all data
@@ -72,7 +72,6 @@ class Command(management.base.BaseCommand):
         DietaryRequirement.objects.create(name="FODMAP")
         DietaryRequirement.objects.create(name="Nut allergies")
         DietaryRequirement.objects.create(name="Fish and shellfish allergies")
-        DietaryRequirement.objects.create(name="Paleo")
         DietaryRequirement.objects.create(name="Keto")
         DietaryRequirement.objects.create(name="Halal")
         print('Dietary requirements created.')
@@ -225,7 +224,7 @@ class Command(management.base.BaseCommand):
                     )
         print('Event locations created.')
 
-        EventFactory.create_batch(size=10) #TODO: set back to 50 after finished sanity testing the event register button
+        EventFactory.create_batch(size=50) #TODO: set back to 50 after finished sanity testing the event register button
         print('Events created.')
 
         # DTTA

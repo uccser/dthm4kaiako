@@ -10,8 +10,6 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os.path
 import environ
-import logging.config
-from utils.get_upload_filepath import get_upload_path_for_date
 
 
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
@@ -315,7 +313,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 ADMIN_URL = 'admin/'
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [
-    ("""UCCSER""", 'csse-education-research@canterbury.ac.nz'),
+    ('UCCSER', 'csse-education-research@canterbury.ac.nz'),
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -339,7 +337,7 @@ SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 # ckeditor
 # ------------------------------------------------------------------------------
-CKEDITOR_UPLOAD_PATH = get_upload_path_for_date('text-editor')
+CKEDITOR_UPLOAD_PATH = 'text-editor'
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default': {
@@ -384,12 +382,12 @@ REST_FRAMEWORK = {
 # ------------------------------------------------------------------------------
 # Based off https://lincolnloop.com/blog/django-logging-right-way/
 
-logging.config.dictConfig({
+LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "console": {
-            "format": "%(asctime)s %(name)-20s %(levelname)-10s %(message)s",
+            "format": "%(asctime)s %(levelname)-6s %(lineno)-4s%(name)-15s %(message)s",
         },
     },
     "handlers": {
@@ -405,29 +403,22 @@ logging.config.dictConfig({
             "handlers": ["console", ],
         },
         "django": {
-            "handlers": ["console"],
-            "level": env("LOG_LEVEL", default="INFO"),
-            "propagate": False,
-        },
-        # Project specific logger
-        "dthm4kaiako": {
             "level": env("LOG_LEVEL", default="INFO"),
             "handlers": ["console", ],
-            # Required to avoid double logging with root logger
             "propagate": False,
         },
         'gunicorn.error': {
             "level": env("LOG_LEVEL", default="INFO"),
-            'handlers': ['console'],
+            'handlers': ['console', ],
             'propagate': False,
         },
         'gunicorn.access': {
             "level": env("LOG_LEVEL", default="INFO"),
-            'handlers': ['console'],
+            'handlers': ['console', ],
             'propagate': False,
         },
     },
-})
+}
 
 # MAPS (django-map-widgets)
 # ------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create Docker network
         run: docker network create uccser-development-proxy
       - name: Start systems
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create Docker network
         run: docker network create uccser-development-proxy
       - name: Start systems
@@ -47,12 +47,33 @@ jobs:
       - name: Collect static files
         run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
+  test-sample-data:
+    name: Tests - Sample data
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Docker network
+        run: docker network create uccser-development-proxy
+      - name: Start systems
+        run: docker-compose -f docker-compose.local.yml up -d
+      - name: Create static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+      - name: Migrate database
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+      - name: Load content with sample data
+        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
+      - name: Collect static files
+        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+
   test-general:
     name: Tests - General
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run general tests
         run: ./dev ci test_general
 
@@ -61,7 +82,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run management tests
         run: ./dev ci test_management
 
@@ -70,7 +91,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run style tests
         run: ./dev ci style
 
@@ -84,13 +105,14 @@ jobs:
     needs: [
       test-django-system-check,
       test-content,
+      test-sample-data,
       test-general,
       test-management,
       test-style,
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create Docker network
         run: docker network create uccser-development-proxy
@@ -108,7 +130,7 @@ jobs:
         run: tar czf static-files.tar.gz --directory dthm4kaiako/staticfiles/ .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: static-files
           path: static-files.tar.gz
@@ -124,13 +146,14 @@ jobs:
     needs: [
       test-django-system-check,
       test-content,
+      test-sample-data,
       test-general,
       test-management,
       test-style,
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create Docker network
         run: docker network create uccser-development-proxy
       - name: Start system
@@ -148,7 +171,7 @@ jobs:
       - name: Archive learning area cards
         run: tar czf learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards/ .
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: learning-area-cards
           path: learning-area-cards.tar.gz
@@ -167,10 +190,10 @@ jobs:
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: artifacts/
 
