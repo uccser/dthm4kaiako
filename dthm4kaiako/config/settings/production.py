@@ -25,19 +25,6 @@ with open(env("DJANGO_SECRET_KEY_FILE")) as file:  # noqa: F405
     SECRET_KEY = file.read().strip()
 
 
-# URL Configuration
-# ------------------------------------------------------------------------------
-
-if PRODUCTION_ENVIRONMENT:  # noqa: F405
-    PREPEND_WWW = True
-else:
-    PREPEND_WWW = False
-
-# Exempt Google App Engine cron job URLs from HTTPS to function correctly.
-SECURE_REDIRECT_EXEMPT = [
-    r'^/?cron/.*',
-]
-
 # DATABASE CONFIGURATION
 # ----------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases

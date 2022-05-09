@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.19.1
+
+- Remove Django prepend www URL setting as this is handled by the swarm proxy.
+- Modify swarm proxy prepend www URL setting to skip production testing URL.
+- Fix case of environment variable name.
+- Remove unused GAE cron job setting.
+
 ## 0.19.0
 
 - Move website from Google Cloud Platform to Docker Swarm hosted at the University of Canterbury.
