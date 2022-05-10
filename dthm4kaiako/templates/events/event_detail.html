@@ -110,7 +110,7 @@
                 <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
                 </a>                
-            {% elif event.is_register_or_apply and not event.has_ended %}
+            {% elif not event.has_ended %}
                 <hr>
                     <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
                         {{ event.get_registration_type_display }}
