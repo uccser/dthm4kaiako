@@ -128,6 +128,7 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     context_object_name = 'location'
 
 
+# TODO: add something like a LoginRequiredMixin so that user must be logged in to register
 class EventApplicationView(generic.FormView):
     """View for a specific event's registration form."""
 
