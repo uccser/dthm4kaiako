@@ -22,7 +22,7 @@ class User(AbstractUser):
 
     def __str__(self):
         """Name of the user."""
-        return self.first_name
+        return f'{self.first_name} {self.last_name}'
 
 
 class Entity(models.Model):
