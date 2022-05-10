@@ -264,7 +264,7 @@ class Event(models.Model):
             Returns:
                 Boolean if the event is an event which users can register or apply to attend.
         """
-        return self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER
+        return (self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER)
 
     @property
     def has_ended(self):
