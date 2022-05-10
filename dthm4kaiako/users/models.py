@@ -9,7 +9,7 @@ from utils.get_upload_filepath import get_entity_upload_path
 class User(AbstractUser):
     """User of website."""
 
-    username = models.CharField(max_length=12, default='user')
+    username = models.CharField(max_length=50, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
 
