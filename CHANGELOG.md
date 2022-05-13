@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.2
+
+- Add management command for rebuilding search indexes.
+- Add last name to User model string representation.
+- Increase length of backend username field.
+
 ## 0.19.1
 
 - Remove Django prepend www URL setting as this is handled by the swarm proxy.
