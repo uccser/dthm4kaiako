@@ -1,18 +1,18 @@
 """Forms for events application."""
 
 from django import forms
-from users.models import User
+from events.models import ApplicantType
 
-class AddForm(forms.ModelForm):
+class EventApplicationForm(forms.Form):
+    """ Simple form to allow a user to submit an application to attend an event. """
 
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name')
+    applicant_type = forms.ModelChoiceField(ApplicantType.objects.none())
 
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            # 'dietary_requirement': forms.TextInput(attrs={'class': 'form-control'}),
-            
-            # bootstrap class form-control used
-        }
+class TermsAndConditionsForm(forms.Form):
+    """ Simple form to allow the user to agree to the terms and conditions.
+    This is a different form from the EventRegistrationForm so that the terms 
+    and conditions can appear nicely after that form.
+    """
+
+    has_agreed = forms.BooleanField(required=True)
+

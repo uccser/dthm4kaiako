@@ -27,6 +27,7 @@ from users.models import (
 from events.models import (
     Location,
     Series,
+    ApplicantType
 )
 from tests.events.factories import (
     EventFactory,
@@ -75,6 +76,11 @@ class Command(management.base.BaseCommand):
         DietaryRequirement.objects.create(name="Keto")
         DietaryRequirement.objects.create(name="Halal")
         print('Dietary requirements created.')
+
+        # Create common applicant types
+        ApplicantType.objects.create(name="Event staff")
+        ApplicantType.objects.create(name="Teacher")
+        ApplicantType.objects.create(name="Student")
 
 
         User = get_user_model()

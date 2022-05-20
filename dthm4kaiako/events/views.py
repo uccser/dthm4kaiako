@@ -11,7 +11,9 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import AddForm
+from .forms import EventApplicationForm, TermsAndConditionsForm
+from django.shortcuts import render
+from users.forms import UserUpdateDetailsForm
 
 
 class HomeView(generic.TemplateView):
@@ -129,14 +131,13 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
 
 # TODO: add something like a LoginRequiredMixin so that user must be logged in to register
-class EventApplicationView(generic.FormView):
-    """View for a specific event's registration form."""
+class EventApplicationsView(generic.FormView):
+    """View for listing all a user's event applications."""
 
-    template_name = 'events/apply.html'
+    template_name = 'events/event_applications.html'
     model = EventApplication
-    form_class = AddForm
-    success_url = '/events/' # TODO: update as this is temporary
-    context_object_name = 'registration_form'
+    form_class = EventApplicationForm
+    context_object_name = 'event_applications'
 
     def form_valid(self, form):
             form.save()
@@ -147,3 +148,36 @@ class EventRegistrationSuccessView(generic.TemplateView):
 
     template_name = 'events/registration_success.html'
 
+
+def apply_for_event(request, pk):
+    """ View for event application/registration form and saving it as an EventApplication. 
+
+        request: HTTP request 
+        pk: event's primary key
+
+        We create a new application if it doesn't already exist, otherwise we allow the user to update their existing application.
+    """
+
+    success_url = '/events/' # TODO: update as this is temporary
+
+    event = Event.objects.get(pk=pk)
+    user = request.user
+
+    if request.method == 'POST':
+        # If creating a new registration form (POST)
+
+        event_application_form = EventApplicationForm(request.POST)
+        user_update_details_form = UserUpdateDetailsForm(request.POST)
+        terms_and_conditions_form = TermsAndConditionsForm(request.POST)
+
+        if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid():
+            user.first_name = user_update_details_form.cleaned_data['first_name']
+            user.last_name = user_update_details_form.cleaned_data['last_name']
+            all_dietary_reqs = user_update_details_form['dietary_requirements']
+            user.dietary_requirements.set(all_dietary_reqs)
+            user.save()
+            new_applicant_type = event_application_form.cleaned_data['applicant_type']
+            event_application = EventApplication.objects.create(event=event,user=user,applicant_type=applicant_type)
+            messages.success(request, 'New event application created successfully')
+
+    return render(request, 'events/apply.html')

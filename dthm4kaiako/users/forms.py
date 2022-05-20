@@ -47,3 +47,11 @@ class UserCreationForm(forms.UserCreationForm):
 
         model = User
         fields = ('email', 'first_name', 'last_name')
+
+class UserUpdateDetailsForm(ModelForm):
+    """Form class for updating the user's details."""
+
+    class Meta:
+
+        model = User
+        fields = ['email', 'first_name', 'last_name']

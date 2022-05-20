@@ -257,6 +257,7 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
 
+    #TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):
         """ Returns True if the event is an event which users can register or apply to attend.
@@ -264,7 +265,7 @@ class Event(models.Model):
             Returns:
                 Boolean if the event is an event which users can register or apply to attend.
         """
-        return (self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER)
+        return self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER
 
     @property
     def has_ended(self):

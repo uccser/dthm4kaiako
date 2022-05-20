@@ -112,12 +112,12 @@
                 </a>                
             {% elif not event.has_ended and event.registration_type == event.REGISTRATION_TYPE_APPLY %}
                 <hr>
-                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
                         {{ event.get_registration_type_display }}
                     </a>
             {% elif not event.has_ended and event.registration_type == event.REGISTRATION_TYPE_REGISTER %}
             <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
                     {{ event.get_registration_type_display }}
                 </a>
             {% endif %}
