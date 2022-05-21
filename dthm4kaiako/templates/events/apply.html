@@ -5,33 +5,30 @@
 {% load crispy_forms_tags %}
 
 {% block page_heading %}
-    <h1>{{event.name}}</h1>
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1>{{event.name}}</h1>
+    </div>
 {% endblock page_heading %}
 
 {% block content %}
 <div class="container" style="max-width:600px">
-    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    </div>
-    <div class="py-5">
-        <div class="row">
-            <div class="col-12">
-                <form method="post">
+    <form method="post">
 
-                    {% csrf_token %}
+        {% csrf_token %}
 
-                    {{ user_form|crispy }}
-                    {{ event_application_form|crispy }}
-                    
-                    <h3>Terms and Conditions</h3>
-                    {{ terms_and_conditions_form|crispy }}
+        {{ user_form|crispy }}
+        {{ event_application_form|crispy }}
 
-                    <button type="submit" class="btn btn-primary">
-                        {{ event.get_registration_type_display }}
-                    </button>
-
-                </form>
-            </div>
+        <div class="form-group">
+            <h5>Terms and Conditions</h5>
+            <p>{{ event.registration_form.terms_and_conditions }}</p>
         </div>
-    </div>
+        {{ terms_and_conditions_form|crispy }}
+
+        <button type="submit" class="btn btn-primary">
+            {{ event.get_registration_type_display }}
+        </button>
+
+    </form>
 </div>
-{% endblock %}
+{% endblock content %}
