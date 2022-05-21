@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <h5>Terms and Conditions</h5>
-            <p>{{ event.registration_form.terms_and_conditions }}</p>
+            {{ event.registration_form.terms_and_conditions }}
         </div>
         {{ terms_and_conditions_form|crispy }}
 

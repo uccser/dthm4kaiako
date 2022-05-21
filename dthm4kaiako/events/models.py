@@ -398,7 +398,7 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='applications',
     )
-    staff_comments = RichTextUploadingField(blank=True)
+    staff_comments = models.TextField(blank=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -423,7 +423,7 @@ class RegistrationForm(models.Model):
     """Model for a registration form."""
     open_datetime = models.DateTimeField(null=True) # TODO: sanity test these
     close_datetime = models.DateTimeField(null=True) # TODO: sanity test these
-    terms_and_conditions = RichTextUploadingField(blank=True)
+    terms_and_conditions = models.TextField(blank=True)
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
