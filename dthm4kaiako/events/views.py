@@ -14,6 +14,7 @@ from events.utils import create_filter_helper, organise_schedule_data
 from .forms import EventApplicationForm, TermsAndConditionsForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
+from django.contrib import messages
 
 
 class HomeView(generic.TemplateView):

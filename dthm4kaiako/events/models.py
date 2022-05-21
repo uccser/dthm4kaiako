@@ -393,10 +393,12 @@ class EventApplication(models.Model):
         choices=APPLICATION_STATUSES,
         default=PENDING,
     )
-    application_type = models.ForeignKey(
+    applicant_type = models.ForeignKey(
         ApplicantType,
         on_delete=models.CASCADE,
         related_name='applications',
+        null=True,
+        blank=True
     )
     staff_comments = models.TextField(blank=True)
     user = models.ForeignKey(
@@ -409,7 +411,7 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='applications',
     )
-    paid = models.BooleanField()
+    paid = models.BooleanField(default=False) #TODO: use a computed function for this
     userEditable = models.BooleanField(default=False) #TODO: change to True once implement
 
     class Meta:
