@@ -6,12 +6,28 @@ from django.urls import reverse
 from utils.get_upload_filepath import get_entity_upload_path
 
 
+class DietaryRequirement(models.Model):
+    """Model for a dietary requirement e.g. vegetarian."""
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        """Text representation of a dietary requirement."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+        verbose_name_plural = 'dietary requirements'
+
+
 class User(AbstractUser):
     """User of website."""
 
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
+    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True)
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
@@ -23,22 +39,6 @@ class User(AbstractUser):
     def __str__(self):
         """Name of the user."""
         return self.first_name
-
-
-class DietaryRequirement(models.Model):
-    """Model for a dietary requirement e.g. vegetarian."""
-    name = models.CharField(max_length=200, unique=True)
-    users = models.ManyToManyField(User, related_name='dietary_requirement', blank=True)
-
-    def __str__(self):
-        """Text representation of a dietary requirement."""
-        return self.name
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['name', ]
-        verbose_name_plural = 'dietary requirements'
 
 
 class Entity(models.Model):

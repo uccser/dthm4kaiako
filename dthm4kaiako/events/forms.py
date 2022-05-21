@@ -6,7 +6,7 @@ from events.models import ApplicantType
 class EventApplicationForm(forms.Form):
     """ Simple form to allow a user to submit an application to attend an event. """
 
-    applicant_type = forms.ModelChoiceField(ApplicantType.objects.none())
+    applicant_type = forms.ModelChoiceField(ApplicantType.objects)
 
 class TermsAndConditionsForm(forms.Form):
     """ Simple form to allow the user to agree to the terms and conditions.
@@ -14,5 +14,4 @@ class TermsAndConditionsForm(forms.Form):
     and conditions can appear nicely after that form.
     """
 
-    has_agreed = forms.BooleanField(required=True)
-
+    I_agree_to_the_terms_and_conditions = forms.BooleanField(required=True)
