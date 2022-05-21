@@ -163,8 +163,20 @@ def apply_for_event(request, pk):
     event = Event.objects.get(pk=pk)
     user = request.user
 
-    if request.method == 'POST':
-        # If creating a new registration form (POST)
+    event_application_form = None
+    user_update_details_form = None
+    terms_and_conditions_form = None
+
+    if request.method == 'GET':
+        # Prior to creating/updating registration form
+        
+        event_application_form = EventApplicationForm()
+        user_update_details_form = UserUpdateDetailsForm()
+        terms_and_conditions_form = TermsAndConditionsForm()
+
+
+    elif request.method == 'POST':
+        # If creating a new application or updating existing application (as Django forms don't support PUT)
 
         event_application_form = EventApplicationForm(request.POST)
         user_update_details_form = UserUpdateDetailsForm(request.POST)
@@ -180,4 +192,5 @@ def apply_for_event(request, pk):
             event_application = EventApplication.objects.create(event=event,user=user,applicant_type=applicant_type)
             messages.success(request, 'New event application created successfully')
 
-    return render(request, 'events/apply.html')
+
+    return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
