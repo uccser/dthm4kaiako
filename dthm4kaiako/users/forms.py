@@ -4,9 +4,11 @@ from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
+from users.models import DietaryRequirement
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
+
 
 User = get_user_model()
-
 
 class SignupForm(ModelForm):
     """Sign up for user registration."""
@@ -55,3 +57,7 @@ class UserUpdateDetailsForm(ModelForm):
 
         model = User
         fields = ['email', 'first_name', 'last_name', 'dietary_requirements']
+
+    # dietary_requirements = ModelChoiceField(DietaryRequirement.objects)
+
+    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.all(), required=False, widget=CheckboxSelectMultiple)
