@@ -140,8 +140,9 @@ class EventApplicationsView(generic.FormView):
     context_object_name = 'event_applications'
 
     def form_valid(self, form):
-            form.save()
-            return super().form_valid(form)
+        form.save()
+        return super().form_valid(form)
+
 
 class EventRegistrationSuccessView(generic.TemplateView):
     """View for a specific event's registration form."""
@@ -185,11 +186,11 @@ def apply_for_event(request, pk):
         if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid():
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
-            all_dietary_reqs = user_update_details_form['dietary_requirements']
+            all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
             user.dietary_requirements.set(all_dietary_reqs)
             user.save()
             new_applicant_type = event_application_form.cleaned_data['applicant_type']
-            event_application = EventApplication.objects.create(event=event,user=user,applicant_type=applicant_type)
+            event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type)
             messages.success(request, 'New event application created successfully')
 
 

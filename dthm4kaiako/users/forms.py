@@ -53,11 +53,10 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
+    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.all(), required=False, widget=CheckboxSelectMultiple)
+
     class Meta:
 
         model = User
         fields = ['email', 'first_name', 'last_name', 'dietary_requirements']
 
-    # dietary_requirements = ModelChoiceField(DietaryRequirement.objects)
-
-    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.all(), required=False, widget=CheckboxSelectMultiple)
