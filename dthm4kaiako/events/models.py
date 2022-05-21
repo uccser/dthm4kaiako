@@ -265,7 +265,7 @@ class Event(models.Model):
             Returns:
                 Boolean if the event is an event which users can register or apply to attend.
         """
-        return self.registration_type == event.REGISTRATION_TYPE_APPLY or self.registration_type == event.REGISTRATION_TYPE_REGISTER
+        return self.registration_type == self.REGISTRATION_TYPE_APPLY or self.registration_type == self.REGISTRATION_TYPE_REGISTER
 
     @property
     def has_ended(self):
@@ -275,6 +275,19 @@ class Event(models.Model):
             Boolean if event has ended.
         """
         return now() > self.end
+
+    @property
+    def get_event_type_short(self):
+        """ Returns 'Apply' if the registration type is apply or 'Register' if it is register.
+
+        Returns:
+            String
+        """
+
+        if self.registration_type == self.REGISTRATION_TYPE_APPLY:
+            return "Apply"
+        elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
+            return "Register"
 
     def __str__(self):
         """Text representation of an event."""
