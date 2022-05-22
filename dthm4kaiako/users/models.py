@@ -27,7 +27,12 @@ class User(AbstractUser):
     username = models.CharField(max_length=12, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
-    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True)
+    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
+    workplace = models.CharField(max_length=200, verbose_name='workplace', default='')
+    city = models.CharField(max_length=150, verbose_name='city', default='')
+    cell_phone_number = models.CharField(max_length=30, verbose_name='cell phone number', default='')
+    medical_notes = models.TextField(default='')
+    billing_address = models.CharField(max_length=1000, verbose_name='billing address', default='') #TODO: consider making into its own model
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
