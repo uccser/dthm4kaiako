@@ -203,8 +203,10 @@ def apply_for_event(request, pk):
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
             else:
+                # Create new event application
                 new_applicant_type = event_application_form.cleaned_data['applicant_type']
                 event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type)
                 messages.success(request, 'New event application created successfully')
+                return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
     return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
