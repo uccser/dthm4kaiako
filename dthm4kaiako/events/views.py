@@ -15,6 +15,8 @@ from .forms import EventApplicationForm, TermsAndConditionsForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 class HomeView(generic.TemplateView):
@@ -190,9 +192,19 @@ def apply_for_event(request, pk):
             all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
             user.dietary_requirements.set(all_dietary_reqs)
             user.save()
-            new_applicant_type = event_application_form.cleaned_data['applicant_type']
-            event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type)
-            messages.success(request, 'New event application created successfully')
 
+            if user.event_applications.filter(event=event).exists():
+                # Update existing event application
+                event_application = user.event_applications.get(event=event)
+                new_applicant_type = event_application_form.cleaned_data['applicant_type']
+                event_application.applicant_type = new_applicant_type
+                event_application.save()
+                messages.success(request, "Updated event application successfully")
+                return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
+
+            else:
+                new_applicant_type = event_application_form.cleaned_data['applicant_type']
+                event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type)
+                messages.success(request, 'New event application created successfully')
 
     return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
