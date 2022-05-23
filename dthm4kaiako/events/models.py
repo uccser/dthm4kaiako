@@ -13,6 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from users.models import Entity, User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+import datetime
 
 
 class Location(models.Model):
@@ -306,14 +307,7 @@ class Event(models.Model):
                     _('Registration link must be empty when event is set to invite only.')
                 }
             )
-        # TODO: check if this is redundant
-        # if not self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and not self.registration_link:
-        #     raise ValidationError(
-        #         {
-        #             'registration_link':
-        #             _('Registration link must be given when event is not set to invite only.')
-        #         }
-        #     )
+        
 
     class Meta:
         """Meta options for class."""
@@ -442,6 +436,31 @@ class RegistrationForm(models.Model):
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
+
+    
+    # TODO: investigate why this is not working
+    # def clean(self):
+    #     """Validate event registration form model attributes.
+
+    #     Raises:
+    #         ValidationError if invalid attributes.
+    #     """
+    #     if now() > self.open_datetime:
+    #         raise ValidationError(
+    #             {
+    #                 'open_datetime':
+    #                 _('Open datetime must be in the future')
+    #             }
+    #         )
+
+    #     if self.close_datetime < self.open_datetime:
+    #         raise ValidationError(
+    #             {
+    #                 'close_datetime':
+    #                 _('Close datetime must be after the open datatime')
+    #             }
+    #         )
+
 
 @receiver(post_save, sender=Event)
 def create_registration_form(sender, instance, created, **kwargs):
