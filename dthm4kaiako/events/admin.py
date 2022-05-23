@@ -15,6 +15,7 @@ from events.models import (
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
+from users.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +55,7 @@ class SessionInline(admin.StackedInline):
     ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
 
+
 class RegistrationFormInline(admin.StackedInline):
     """Inline view for event registration form."""
 
@@ -61,8 +63,6 @@ class RegistrationFormInline(admin.StackedInline):
     fk_name = 'event'
     extra = 0
     min_num = 1
-    # ordering = ('start', 'end', 'name')
-    # autocomplete_fields = ('locations', )
 
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
@@ -173,11 +173,20 @@ class EventAdmin(ClonableModelAdmin):
             'all': ('css/admin-overrides.css', )
         }
 
+#TODO: figure out how to add in user info relating to application
+# ('first_name', 'last_name', 'dietary_requirements', 'workplace', 'city', 'cell_phone_number', 'medical_notes', 'billing_address')
+class EventApplicationAdmin(admin.ModelAdmin):
+    """Admin view for an event application."""
+
+    model = EventApplication
+    # list_display = ['status', 'applicant_type', 'staff_comments', 'event']
+    readonly_fields = ['applicant_type', 'event', 'user', 'submitted', 'updated']
+
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Series),
 admin.site.register(Session),
-admin.site.register(EventApplication),
+admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(RegistrationForm),
 admin.site.register(ApplicantType),

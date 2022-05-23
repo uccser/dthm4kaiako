@@ -404,7 +404,7 @@ class EventApplication(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='event_applications',
+        related_name='event_applications'
     )
     event = models.ForeignKey(
         Event,
@@ -412,7 +412,6 @@ class EventApplication(models.Model):
         related_name='applications',
     )
     paid = models.BooleanField(default=False) #TODO: use a computed function for this
-    userEditable = models.BooleanField(default=False) #TODO: change to True once implement
 
     class Meta:
         """Meta options for class."""
