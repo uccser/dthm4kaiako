@@ -9,6 +9,12 @@
                         {{ event_application.event.name }}
                     </a>
                 </h4>
+                <h5>
+                    Status: {{ event_application.status_string_for_user }}
+                </h5>
+                <h5>
+                    Date: {{ event_application.event.start }}
+                </h5>
             </div>
         </div>
     </div>

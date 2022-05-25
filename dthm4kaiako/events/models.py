@@ -413,6 +413,22 @@ class EventApplication(models.Model):
         ordering = ['event', 'status']
         verbose_name_plural = 'event applications'
 
+    @property
+    def status_string_for_user(self):
+        """Return event application's status as a string.
+
+        Returns:
+            String to readability.
+        """
+        string_form = ""
+        if self.status == 1:
+            string_form = "Pending"
+        elif self.status == 2:
+            string_form = "Approved"
+        elif self.status == 3:
+            string_form = "Rejected"
+        return string_form
+
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
