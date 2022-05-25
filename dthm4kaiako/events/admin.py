@@ -173,42 +173,42 @@ class EventAdmin(ClonableModelAdmin):
             'all': ('css/admin-overrides.css', )
         }
 
-class EventApplicationDetailsInline(admin.StackedInline):
-    """Inline view for event registration form."""
-    model = EventApplication 
-    fk_name = 'user'
 
 
-# TODO: figure out how to add in user info relating to application
-class UserEventApplicationAdmin(admin.ModelAdmin):
-    """Admin view for an event application."""
-    model = User
-    inlines = [EventApplicationDetailsInline]
-    readonly_fields = ['applicant_type', 'event', 'user', 'submitted', 'updated']
-    fieldsets = (
-        (
-            'Event Application',
-            {
-                'fields': (
-                    'applicant_type',
-                    'event',
-                    'submitted',
-                    'updated',
-                    'first_name',
-                    'last_name',
+# class EventApplicationDetailsInline(admin.StackedInline):
+#     """Inline view for event registration form."""
+#     model = EventApplication 
+#     fk_name = 'user'
 
-                )
-            }
-        ),
-    )
+# # TODO: figure out how to add in user info relating to application
+# class UserEventApplicationAdmin(admin.ModelAdmin):
+#     """Admin view for an event application."""
+#     model = User
+#     inlines = [EventApplicationDetailsInline]
+#     readonly_fields = ['applicant_type', 'event', 'user', 'submitted', 'updated']
+#     fieldsets = (
+#         (
+#             'Event Application',
+#             {
+#                 'fields': (
+#                     'applicant_type',
+#                     'event',
+#                     'submitted',
+#                     'updated',
+#                     'first_name',
+#                     'last_name',
 
-
+#                 )
+#             }
+#         ),
+#     )
 
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin),
 admin.site.register(Series),
 admin.site.register(Session),
-admin.site.register(EventApplication, UserEventApplicationAdmin),
+# admin.site.register(EventApplication, UserEventApplicationAdmin),
+admin.site.register(EventApplication)
 admin.site.register(RegistrationForm),
 admin.site.register(ApplicantType),

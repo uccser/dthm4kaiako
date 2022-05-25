@@ -17,6 +17,7 @@ from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 class HomeView(generic.TemplateView):
@@ -152,7 +153,7 @@ class EventRegistrationSuccessView(generic.TemplateView):
 
     template_name = 'events/registration_success.html'
 
-
+@login_required
 def apply_for_event(request, pk):
     """ View for event application/registration form and saving it as an EventApplication. 
 
