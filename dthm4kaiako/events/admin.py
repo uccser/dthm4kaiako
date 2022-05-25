@@ -173,20 +173,42 @@ class EventAdmin(ClonableModelAdmin):
             'all': ('css/admin-overrides.css', )
         }
 
-#TODO: figure out how to add in user info relating to application
-# ('first_name', 'last_name', 'dietary_requirements', 'workplace', 'city', 'cell_phone_number', 'medical_notes', 'billing_address')
-class EventApplicationAdmin(admin.ModelAdmin):
-    """Admin view for an event application."""
+class EventApplicationDetailsInline(admin.StackedInline):
+    """Inline view for event registration form."""
+    model = EventApplication 
+    fk_name = 'user'
 
-    model = EventApplication
-    # list_display = ['status', 'applicant_type', 'staff_comments', 'event']
+
+# TODO: figure out how to add in user info relating to application
+class UserEventApplicationAdmin(admin.ModelAdmin):
+    """Admin view for an event application."""
+    model = User
+    inlines = [EventApplicationDetailsInline]
     readonly_fields = ['applicant_type', 'event', 'user', 'submitted', 'updated']
+    fieldsets = (
+        (
+            'Event Application',
+            {
+                'fields': (
+                    'applicant_type',
+                    'event',
+                    'submitted',
+                    'updated',
+                    'first_name',
+                    'last_name',
+
+                )
+            }
+        ),
+    )
+
+
 
 
 admin.site.register(Event, EventAdmin)
-admin.site.register(Location, LocationAdmin)
+admin.site.register(Location, LocationAdmin),
 admin.site.register(Series),
 admin.site.register(Session),
-admin.site.register(EventApplication, EventApplicationAdmin),
+admin.site.register(EventApplication, UserEventApplicationAdmin),
 admin.site.register(RegistrationForm),
 admin.site.register(ApplicantType),
