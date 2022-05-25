@@ -135,23 +135,13 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
 
 # TODO: add something like a LoginRequiredMixin so that user must be logged in to register
-class EventApplicationsView(generic.FormView):
+class EventApplicationsView(generic.ListView):
     """View for listing all a user's event applications."""
 
     template_name = 'events/event_applications.html'
     model = EventApplication
-    form_class = EventApplicationForm
     context_object_name = 'event_applications'
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-
-class EventRegistrationSuccessView(generic.TemplateView):
-    """View for a specific event's registration form."""
-
-    template_name = 'events/registration_success.html'
 
 @login_required
 def apply_for_event(request, pk):
