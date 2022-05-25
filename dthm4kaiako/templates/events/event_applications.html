@@ -1,7 +1,20 @@
 {% extends "events/base.html" %}
 
-{% load static %}
+{% load crispy_forms_tags %}
 
-{% block body_element %}
-    <body class="position-relative" data-spy="scroll" data-target="#event-navigation" data-offset="100">
-{% endblock body_element %}
+{% block page_heading %}
+    <h1>Event applications</h1>
+{% endblock page_heading %}
+
+{% block content %}
+
+    {% if event_applications %}
+        {% for event_application in event_applications %}
+            {% include 'events/application_card.html' %}
+        {% endfor %}
+    {% else %}
+        <p class="text-center">
+            No event applications exist.
+        </p>
+    {% endif %}
+{% endblock content %}

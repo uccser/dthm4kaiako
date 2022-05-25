@@ -1,0 +1,15 @@
+{% load static humanize %}
+
+<div class="event card mb-3 w-100">
+    <div class="card-header title-header align-middle">
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <h4 class="mb-0">
+                    <a href="{{ event_application.event.get_absolute_url }}">
+                        {{ event_application.event.name }}
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
