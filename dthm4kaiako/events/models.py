@@ -375,10 +375,12 @@ class EventApplication(models.Model):
     PENDING = 1
     APPROVED = 2
     REJECTED = 3
+    WITHDRAWN = 4
     APPLICATION_STATUSES = (
         (PENDING, _('Pending')),
         (APPROVED, _('Approved')),
         (REJECTED, _('Rejected')),
+        (WITHDRAWN, _('Withdrawn')),
     )
 
     submitted = models.DateTimeField(auto_now_add=True) # user does not edit
@@ -428,6 +430,10 @@ class EventApplication(models.Model):
         elif self.status == 3:
             string_form = "Rejected"
         return string_form
+
+    def withdraw(self):
+        """Set the status to withdrawn."""
+        self.status = 4
 
 
 class RegistrationForm(models.Model):

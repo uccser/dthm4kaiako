@@ -15,6 +15,14 @@
                 <h5>
                     Date: {{ event_application.event.start }}
                 </h5>
+
+                <hr>
+
+                <form action="{% url 'events:delete_event_application' event_application.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Withdraw from event">
+                </form>
+
             </div>
         </div>
     </div>

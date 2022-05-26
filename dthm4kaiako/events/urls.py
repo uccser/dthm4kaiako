@@ -3,6 +3,7 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
 from events import views
+from django.conf.urls import url
 
 app_name = 'events'
 urlpatterns = [
@@ -14,6 +15,8 @@ urlpatterns = [
     path('location/<int:pk>/', views.LocationDetailView.as_view(), name='location'),
     path('applications/', views.EventApplicationsView.as_view(), name='event_applications'),
     path('register/<int:pk>/', views.apply_for_event, name='apply'),
+
+    url(r'^delete/(?P<pk>[0-9]+)/$', views.delete_event_application, name='delete_event_application'),
     
 
     # Redirects

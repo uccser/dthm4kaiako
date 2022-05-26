@@ -18,6 +18,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
 
 
 class HomeView(generic.TemplateView):
@@ -143,6 +145,16 @@ class EventApplicationsView(generic.ListView):
     context_object_name = 'event_applications'
 
 
+def delete_event_application(request, pk):
+    event_application = get_object_or_404(EventApplication, pk=pk)
+
+    if request.method == 'POST':
+        event_application.delete()
+        return HttpResponseRedirect(reverse("events:event_applications"))
+
+    return render(request, 'event_applications.html')
+
+
 @login_required
 def apply_for_event(request, pk):
     """ View for event application/registration form and saving it as an EventApplication. 
@@ -152,8 +164,6 @@ def apply_for_event(request, pk):
 
         We create a new application if it doesn't already exist, otherwise we allow the user to update their existing application.
     """
-
-    success_url = '/events/' # TODO: update as this is temporary
 
     event = Event.objects.get(pk=pk)
     user = request.user
