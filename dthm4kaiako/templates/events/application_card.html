@@ -17,7 +17,7 @@
                 </h6>
             </div>
             <div class="col"></div>
-                <form action="{% url 'events:delete_event_application' event_application.id %}" method="post">
+                <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
                     {% csrf_token %}
                     <input class="btn btn-warning btn-block btn-lg" type="submit" value="Withdraw from event">
                 </form>

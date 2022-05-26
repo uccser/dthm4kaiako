@@ -145,7 +145,10 @@ class EventApplicationsView(generic.ListView):
     context_object_name = 'event_applications'
 
 
-def delete_event_application(request, pk):
+@login_required
+def delete_application_via_application_page(request, pk):
+    """ Allowing a user to delete an existing event application from their event applications page."""
+
     event_application = get_object_or_404(EventApplication, pk=pk)
 
     if request.method == 'POST':
@@ -153,6 +156,19 @@ def delete_event_application(request, pk):
         return HttpResponseRedirect(reverse("events:event_applications"))
 
     return render(request, 'event_applications.html')
+
+
+@login_required
+def delete_application_via_event_page(request, pk):
+    """ Allowing a user to delete an existing event application from the event details page."""
+
+    event_application = get_object_or_404(EventApplication, pk=pk)
+
+    if request.method == 'POST':
+        event_application.delete()
+        return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
+
+    return render(request, 'event_details.html')
 
 
 @login_required

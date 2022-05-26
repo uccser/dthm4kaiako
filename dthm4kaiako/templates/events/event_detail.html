@@ -124,6 +124,13 @@
                 </button>
             {% endif %}
 
+            
+            <hr>
+            <form action="{% url 'events:delete_application_via_event_page' event.id %}" method="post">
+                {% csrf_token %}
+                <input class="btn btn-warning btn-block btn-lg" type="submit" value="Withdraw from event">
+            </form>
+
             {% if event.series %}
                 <hr>
                 <div class="text-center">
