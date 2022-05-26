@@ -111,10 +111,24 @@
                     {{ event.get_registration_type_display }}
                 </a>                
             {% elif not event.has_ended and event.is_register_or_apply %}
-                <hr>
+
+                {% if has_user_applied %}
+                    <hr>
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
+                        Update application
+                    </a>
+                    <hr>
+                    <form action="{% url 'events:delete_application_via_event_page' event.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-warning btn-block btn-lg" type="submit" value="Withdraw from event">
+                    </form>
+                {% else %}
+                    <hr>
                     <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
                         {{ event.get_registration_type_display }}
                     </a>
+                {% endif %}
+
             {% endif %}
 
             {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
@@ -123,13 +137,6 @@
                     {{ event.get_registration_type_display }}
                 </button>
             {% endif %}
-
-            
-            <hr>
-            <form action="{% url 'events:delete_application_via_event_page' event.id %}" method="post">
-                {% csrf_token %}
-                <input class="btn btn-warning btn-block btn-lg" type="submit" value="Withdraw from event">
-            </form>
 
             {% if event.series %}
                 <hr>

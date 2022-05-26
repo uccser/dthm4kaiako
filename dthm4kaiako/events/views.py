@@ -19,7 +19,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(generic.TemplateView):
@@ -113,6 +113,18 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         """
         return Event.objects.filter(published=True).prefetch_related('locations')
 
+
+    def does_application_exist(self, user):
+        """Determines if the user has submitted an application to attend the event.
+        The user must also be logged in to see if they have.
+        
+        Returns:
+            True if the user has an application and is logged in, otherwise False.
+        """ 
+
+        return EventApplication.objects.filter(event=self.object.pk, user=user).exists() and user.is_authenticated
+
+
     def get_context_data(self, **kwargs):
         """Provide the context data for the event view.
 
@@ -126,6 +138,10 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
             self.object.sessions.all().prefetch_related('locations')
         )
         context['locations'] = self.object.locations.all()
+
+        user = self.request.user
+        context['has_user_applied'] = self.does_application_exist(user)
+
         return context
 
 
@@ -136,8 +152,7 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     context_object_name = 'location'
 
 
-# TODO: add something like a LoginRequiredMixin so that user must be logged in to register
-class EventApplicationsView(generic.ListView):
+class EventApplicationsView(generic.ListView, LoginRequiredMixin):
     """View for listing all a user's event applications."""
 
     template_name = 'events/event_applications.html'
