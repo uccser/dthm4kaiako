@@ -3,7 +3,7 @@
 <div class="event card mb-3 w-100">
     <div class="card-header title-header align-middle">
         <div class="row">
-            <div class="col-12 col-lg-9">
+            <div class="col-sm-8">
                 <h4 class="mb-2">
                     <a href="{{ event_application.event.get_absolute_url }}" style="text-decoration: none;">
                         {{ event_application.event.name }}
@@ -16,10 +16,14 @@
                     <b>Date:</b> {{ event_application.event.start }}
                 </h6>
             </div>
-            <div class="col"></div>
+            <div class="col-sm-4">
+
+                <a class="btn btn-success m-2" href="{% url 'events:apply' event_application.event.pk %}" role="button">
+                    Update application
+                </a>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#event-applications-withdraw-modal">
+                <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal">
                     Withdraw
                 </button>
                 
@@ -28,7 +32,7 @@
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Withdraw</h5>
+                        <h5 class="modal-title">Withdraw application</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -45,11 +49,7 @@
                         </div>
                     </div>
                     </div>
-                </div>
-
-                <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event_application.event.pk %}" role="button">
-                    Update application
-                </a>
+                </div>                
             </div>
         </div>
     </div>
