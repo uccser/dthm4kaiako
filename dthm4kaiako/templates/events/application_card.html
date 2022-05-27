@@ -19,32 +19,30 @@
             <div class="col"></div>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Launch demo modal
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#event-applications-withdraw-modal">
+                    Withdraw
                 </button>
                 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="event-applications-withdraw-modal" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Withdraw</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
                         <div class="modal-body">
-                        ...
+                        Are you sure you want to withdraw your application for <b>{{event_application.event.name}}</b>?
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning">Yes</button>
                         </div>
                     </div>
                     </div>
                 </div>
-
-
 
                 <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
                     {% csrf_token %}
