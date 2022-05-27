@@ -124,6 +124,15 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
         return EventApplication.objects.filter(event=self.object.pk, user=user).exists() and user.is_authenticated
 
+    def get_application_pk(self, user):
+        """Returns the primary key of the user's event application of the event."""
+
+        event_application_pk = 0
+        if EventApplication.objects.filter(event=self.object.pk, user=user).exists():
+            event_application = EventApplication.objects.get(event=self.object.pk, user=user)
+            event_application_pk = event_application.pk
+        return event_application_pk
+
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the event view.
@@ -141,6 +150,7 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
 
         user = self.request.user
         context['has_user_applied'] = self.does_application_exist(user)
+        context['application_pk'] = self.get_application_pk(user)
 
         return context
 

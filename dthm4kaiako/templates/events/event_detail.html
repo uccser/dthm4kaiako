@@ -118,10 +118,37 @@
                         Update application
                     </a>
                     <hr>
-                    <form action="{% url 'events:delete_application_via_event_page' event.id %}" method="post">
-                        {% csrf_token %}
-                        <input class="btn btn-warning btn-block btn-lg" type="submit" value="Withdraw from event">
-                    </form>
+                    
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#event-details-withdraw-modal">
+                            Withdraw
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="event-details-withdraw-modal" tabindex="-1" role="dialog" aria-labelledby="event-details-withdraw-confirmation" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Withdraw</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                Are you sure you want to withdraw your application for <b>{{event.name}}</b>?
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="{% url 'events:delete_application_via_event_page' application_pk %}" method="post">
+                                    {% csrf_token %}
+                                    <input class="btn btn-warning" type="submit" value="Yes">
+                                </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+
                 {% else %}
                     <hr>
                     <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
