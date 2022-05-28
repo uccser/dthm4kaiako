@@ -291,6 +291,15 @@ class Event(models.Model):
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Register"
 
+    @property
+    def has_attendance_fee(self):
+        """ Determine if the event costs to attend.
+
+        Returns:
+            Boolean, True if the attendance has a cost.
+        """
+        return self.price != 0
+
     def __str__(self):
         """Text representation of an event."""
         return self.name
@@ -503,6 +512,13 @@ class EventApplication(models.Model):
         blank=True,
         null=True,
         verbose_name='billing address',
+    )
+    billing_email_address = models.CharField(
+        max_length=100,
+        help_text='Email address of the person paying for your ticket',
+        blank=False,
+        null=False,
+        default='',
     )
 
     class Meta:

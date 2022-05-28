@@ -11,7 +11,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import EventApplicationForm, TermsAndConditionsForm
+from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -211,6 +211,7 @@ def apply_for_event(request, pk):
 
     event_application_form = None
     user_update_details_form = None
+    billing_details_form = None
     terms_and_conditions_form = None
 
     if request.method == 'GET':
@@ -218,6 +219,7 @@ def apply_for_event(request, pk):
         
         event_application_form = EventApplicationForm()
         user_update_details_form = UserUpdateDetailsForm()
+        billing_details_form = BillingDetailsForm()
         terms_and_conditions_form = TermsAndConditionsForm()
 
 
@@ -226,9 +228,10 @@ def apply_for_event(request, pk):
 
         event_application_form = EventApplicationForm(request.POST)
         user_update_details_form = UserUpdateDetailsForm(request.POST)
+        billing_details_form = BillingDetailsForm()
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-        if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid():
+        if event_application_form.is_valid() and user_update_details_form.is_valid() and billing_details_form.is_valid() and terms_and_conditions_form.is_valid():
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
@@ -247,8 +250,8 @@ def apply_for_event(request, pk):
             else:
                 # Create new event application
                 new_applicant_type = event_application_form.cleaned_data['applicant_type']
-                event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type)
+                event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type) #TODO: add in billing details
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
-    return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
+    return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'billing_details_form': billing_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
