@@ -370,128 +370,6 @@ class ApplicantType(models.Model):
         verbose_name_plural = 'application type'
 
 
-class EventApplication(models.Model):
-    """Model for an event application."""
-
-    PENDING = 1
-    APPROVED = 2
-    REJECTED = 3
-    WITHDRAWN = 4
-    APPLICATION_STATUSES = (
-        (PENDING, _('Pending')),
-        (APPROVED, _('Approved')),
-        (REJECTED, _('Rejected')),
-        (WITHDRAWN, _('Withdrawn')),
-    )
-
-    submitted = models.DateTimeField(auto_now_add=True) # user does not edit
-    updated = models.DateTimeField(auto_now=True) # user does not edit
-    status = models.PositiveSmallIntegerField(
-        choices=APPLICATION_STATUSES,
-        default=PENDING,
-    )
-    applicant_type = models.ForeignKey(
-        ApplicantType,
-        on_delete=models.CASCADE,
-        related_name='applications',
-        null=True,
-        blank=True
-    )
-    staff_comments = models.TextField(blank=True)
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='event_applications'
-    )
-    event = models.ForeignKey(
-        Event,
-        on_delete=models.CASCADE,
-        related_name='applications',
-    )
-    paid = models.BooleanField(default=False) #TODO: use a computed function for this
-
-    class Meta:
-        """Meta options for class."""
-
-        ordering = ['event', 'status']
-        verbose_name_plural = 'event applications'
-
-    @property
-    def status_string_for_user(self):
-        """Return event application's status as a string.
-
-        Returns:
-            String to readability.
-        """
-        string_form = ""
-        if self.status == 1:
-            string_form = "Pending"
-        elif self.status == 2:
-            string_form = "Approved"
-        elif self.status == 3:
-            string_form = "Rejected"
-        return string_form
-
-    def withdraw(self):
-        """Set the status to withdrawn."""
-        self.status = 4
-
-
-class RegistrationForm(models.Model):
-    """Model for a registration form."""
-    open_datetime = models.DateTimeField(null=True) # TODO: sanity test these
-    close_datetime = models.DateTimeField(null=True) # TODO: sanity test these
-    terms_and_conditions = models.TextField(blank=True)
-    event = models.OneToOneField(
-        Event,
-        on_delete=models.CASCADE,
-        primary_key=True,
-        related_name="registration_form"
-    )
-
-    def get_absolute_url(self):
-        """Return URL of event registration form on website.
-
-        Returns:
-            URL as a string.
-        """
-        return reverse('events:event_registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
-
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
-
-    
-    # TODO: investigate why this is not working
-    # def clean(self):
-    #     """Validate event registration form model attributes.
-
-    #     Raises:
-    #         ValidationError if invalid attributes.
-    #     """
-    #     if now() > self.open_datetime:
-    #         raise ValidationError(
-    #             {
-    #                 'open_datetime':
-    #                 _('Open datetime must be in the future')
-    #             }
-    #         )
-
-    #     if self.close_datetime < self.open_datetime:
-    #         raise ValidationError(
-    #             {
-    #                 'close_datetime':
-    #                 _('Close datetime must be after the open datatime')
-    #             }
-    #         )
-
-
-@receiver(post_save, sender=Event)
-def create_registration_form(sender, instance, created, **kwargs):
-    """Create a registration form when an event is created."""
-    if created:
-        RegistrationForm.objects.create(event=instance)
-
-
 class Address(models.Model):
     """Model for an address.
 
@@ -577,3 +455,136 @@ class Address(models.Model):
         """Get full text representation of an address."""
         address = self.street_number + ' ' + self.street_name + ',\n' + self.suburb + ', ' + self.city + ',\n' + self.post_code + ',\n' + self.country
         return address
+
+
+class EventApplication(models.Model):
+    """Model for an event application."""
+
+    PENDING = 1
+    APPROVED = 2
+    REJECTED = 3
+    WITHDRAWN = 4
+    APPLICATION_STATUSES = (
+        (PENDING, _('Pending')),
+        (APPROVED, _('Approved')),
+        (REJECTED, _('Rejected')),
+        (WITHDRAWN, _('Withdrawn')),
+    )
+
+    submitted = models.DateTimeField(auto_now_add=True) # user does not edit
+    updated = models.DateTimeField(auto_now=True) # user does not edit
+    status = models.PositiveSmallIntegerField(
+        choices=APPLICATION_STATUSES,
+        default=PENDING,
+    )
+    applicant_type = models.ForeignKey(
+        ApplicantType,
+        on_delete=models.CASCADE,
+        related_name='event_applications',
+        null=True,
+        blank=True
+    )
+    staff_comments = models.TextField(blank=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='event_application'
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='event_application',
+    )
+    paid = models.BooleanField(default=False) #TODO: use a computed function for this
+    billing_address = models.ForeignKey(
+        Address,
+        on_delete=models.CASCADE,
+        related_name='event_application',
+        blank=True,
+        null=True,
+        verbose_name='billing address',
+    )
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['event', 'status']
+        verbose_name_plural = 'event applications'
+
+    @property
+    def status_string_for_user(self):
+        """Return event application's status as a string.
+
+        Returns:
+            String to readability.
+        """
+        string_form = ""
+        if self.status == 1:
+            string_form = "Pending"
+        elif self.status == 2:
+            string_form = "Approved"
+        elif self.status == 3:
+            string_form = "Rejected"
+        return string_form
+
+    def withdraw(self):
+        """Set the status to withdrawn."""
+        self.status = 4
+
+
+class RegistrationForm(models.Model):
+    """Model for a registration form."""
+    open_datetime = models.DateTimeField(null=True) # TODO: sanity test these
+    close_datetime = models.DateTimeField(null=True) # TODO: sanity test these
+    terms_and_conditions = models.TextField(blank=True)
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name="registration_form"
+    )
+
+    def get_absolute_url(self):
+        """Return URL of event registration form on website.
+
+        Returns:
+            URL as a string.
+        """
+        return reverse('events:event_registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
+
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
+
+    
+    # TODO: investigate why this is not working
+    # def clean(self):
+    #     """Validate event registration form model attributes.
+
+    #     Raises:
+    #         ValidationError if invalid attributes.
+    #     """
+    #     if now() > self.open_datetime:
+    #         raise ValidationError(
+    #             {
+    #                 'open_datetime':
+    #                 _('Open datetime must be in the future')
+    #             }
+    #         )
+
+    #     if self.close_datetime < self.open_datetime:
+    #         raise ValidationError(
+    #             {
+    #                 'close_datetime':
+    #                 _('Close datetime must be after the open datatime')
+    #             }
+    #         )
+
+
+@receiver(post_save, sender=Event)
+def create_registration_form(sender, instance, created, **kwargs):
+    """Create a registration form when an event is created."""
+    if created:
+        RegistrationForm.objects.create(event=instance)
+
+
+

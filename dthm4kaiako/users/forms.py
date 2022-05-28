@@ -6,6 +6,7 @@ from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from users.models import DietaryRequirement
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
+from django.db.models import Q
 
 
 User = get_user_model()
@@ -53,10 +54,12 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
-    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.all(), required=False, widget=CheckboxSelectMultiple)
+    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
 
     class Meta:
 
         model = User
-        fields = ['email', 'first_name', 'last_name', 'dietary_requirements', 'workplace', 'city', 'cell_phone_number', 'medical_notes', 'billing_address']
+        fields = ['email', 'first_name', 'last_name', 'dietary_requirements', 'school', 'city', 'cell_phone_number', 'medical_notes']
+        exclude = ('created_by',)
+
 
