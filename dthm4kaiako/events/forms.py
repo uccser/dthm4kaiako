@@ -23,6 +23,7 @@ class TermsAndConditionsForm(forms.Form):
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
 
+    billing_email_address = forms.CharField(required=True, help_text="Email address that the invoice will be sent to")
 
     class Meta:
         """Metadata for BillingDetailsForm class."""

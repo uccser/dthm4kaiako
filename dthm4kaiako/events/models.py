@@ -514,7 +514,6 @@ class EventApplication(models.Model):
     )
     billing_email_address = models.CharField(
         max_length=100,
-        help_text='Email address of the person paying for your ticket',
         blank=False,
         null=False,
         default='',
