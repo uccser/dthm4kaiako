@@ -29,9 +29,9 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, verbose_name='last name')
     dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
     school = models.CharField(max_length=200, verbose_name='workplace', default='')
-    city = models.CharField(max_length=150, verbose_name='city', default='')
-    cell_phone_number = models.CharField(max_length=30, verbose_name='cell phone number', default='')
-    medical_notes = models.TextField(default='')
+    city = models.CharField(max_length=150, verbose_name='city', default='', help_text="City your school is located in")
+    mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
+    medical_notes = models.TextField(default='', help_text="Is there anything we can help you with? e.g. accessibility")
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']

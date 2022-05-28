@@ -60,5 +60,5 @@ class UserUpdateDetailsForm(ModelForm):
     class Meta:
 
         model = User
-        fields = ['first_name', 'last_name', 'dietary_requirements', 'school', 'city', 'cell_phone_number', 'medical_notes']
+        fields = ['first_name', 'last_name', 'dietary_requirements', 'school', 'city', 'mobile_phone_number', 'medical_notes']
 
