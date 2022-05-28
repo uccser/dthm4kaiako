@@ -512,7 +512,7 @@ class EventApplication(models.Model):
         null=True,
         verbose_name='billing address',
     )
-    billing_email_address = models.CharField(
+    billing_email_address = models.EmailField(
         max_length=100,
         blank=False,
         null=False,
