@@ -22,6 +22,11 @@
         {{ user_form|crispy }}
         {{ event_application_form|crispy }}
 
+        <h5>
+            <b>Billing Information</b>
+        </h5>
+        {{billing_details_form|crispy}}
+
         {% if event.has_attendance_fee %}
             <h5>
                 <b>Billing Information</b>

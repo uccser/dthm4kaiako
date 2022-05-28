@@ -450,7 +450,6 @@ class Address(models.Model):
         default='8041',)
     country = models.CharField(
         max_length=300,
-        help_text='Country, for example: New Zealand',
         default='New Zealand'
         )
     
