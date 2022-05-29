@@ -75,7 +75,28 @@ class Command(management.base.BaseCommand):
         DietaryRequirement.objects.create(name="Fish and shellfish allergies")
         DietaryRequirement.objects.create(name="Keto")
         DietaryRequirement.objects.create(name="Halal")
+        DietaryRequirement.objects.create(name="As long as there's coffee, I'm happy!")
         print('Dietary requirements created.')
+
+
+        # -------------------------- Realistic events for informal demonstrations --------------------------
+
+        sample_location_1 = Location.object.create(name='University of Canterby', suburb='Ilam', city='Christchurch', region='14')
+
+        sample_event_1 = Event.object.create(name='DTHM for Kaiako Conference 2021',
+                                             description='Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
+                                             + 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject association event, for all teachers in Aotearoa. It\'s all about building your practice as a kaiako, for your learners.\n\n'
+                                             + 'Join us for 3 days of:\n\n'
+                                             + 'Connecting and reconnecting with colleagues across Aotearoa\n\n'
+                                             + 'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
+                                             + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
+                                             start=datetime(2021, 4, 23, 8, 00, 00),
+                                             end=datetime(2021, 4, 23, 8, 00, 00) )
+
+
+
+        # --------------------------------------------------------------------------------------------------
+
 
         # Create common applicant types
         ApplicantType.objects.create(name="Event staff")
@@ -230,7 +251,7 @@ class Command(management.base.BaseCommand):
                     )
         print('Event locations created.')
 
-        EventFactory.create_batch(size=50) #TODO: set back to 50 after finished sanity testing the event register button
+        EventFactory.create_batch(size=50)
         print('Events created.')
 
         # DTTA
