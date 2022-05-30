@@ -149,8 +149,10 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['locations'] = self.object.locations.all()
 
         user = self.request.user
-        context['has_user_applied'] = self.does_application_exist(user)
-        context['application_pk'] = self.get_application_pk(user)
+
+        if user.is_authenticated:
+            context['has_user_applied'] = self.does_application_exist(user)
+            context['application_pk'] = self.get_application_pk(user)
 
         return context
 

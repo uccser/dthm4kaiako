@@ -1,16 +1,11 @@
 """Unit tests for users"""
 
-import pytest
 from django.test import TestCase
-from events.models import (
+from users.models import (
     DietaryRequirement,
     User,
     Entity,
     )
-
-pytestmark = pytest.mark.django_db
-
-pytestmark = pytest.mark.django_db
 
 class DietaryRequirementTests(TestCase):
 

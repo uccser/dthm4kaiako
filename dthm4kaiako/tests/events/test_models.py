@@ -1,6 +1,5 @@
 """Unit tests for events"""
 
-import pytest
 from django.test import TestCase
 from events.models import (
     Event, 
@@ -8,6 +7,7 @@ from events.models import (
     Address,
     EventApplication,
     )
+
 
 from tests.dthm4kaiako_test_data_generator import (
     generate_users,
@@ -17,8 +17,6 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_event_registration_forms,
 )
 
-
-pytestmark = pytest.mark.django_db
 
 class EventModelTests(TestCase):
 

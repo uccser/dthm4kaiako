@@ -8,6 +8,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 from allauth.account.models import EmailAddress
 from tests.users.factories import EntityFactory
+from django.contrib.gis.geos import Point
+import datetime
 from resources.models import (
     Language,
     TechnologicalArea,
@@ -27,7 +29,8 @@ from users.models import (
 from events.models import (
     Location,
     Series,
-    ApplicantType
+    ApplicantType,
+    Event,
 )
 from tests.events.factories import (
     EventFactory,
@@ -80,18 +83,20 @@ class Command(management.base.BaseCommand):
 
 
         # -------------------------- Realistic events for informal demonstrations --------------------------
+        #TODO: finish creating realistic events
 
-        sample_location_1 = Location.object.create(name='University of Canterby', suburb='Ilam', city='Christchurch', region='14')
+        sample_location_1 = Location.objects.create(name='University of Canterbury', suburb='Ilam', city='Christchurch', region='14',coords=Point(-43,172))
 
-        sample_event_1 = Event.object.create(name='DTHM for Kaiako Conference 2021',
+        sample_event_1 = Event.objects.create(name='DTHM for Kaiako Conference 2021',
                                              description='Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
                                              + 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject association event, for all teachers in Aotearoa. It\'s all about building your practice as a kaiako, for your learners.\n\n'
                                              + 'Join us for 3 days of:\n\n'
                                              + 'Connecting and reconnecting with colleagues across Aotearoa\n\n'
                                              + 'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
                                              + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
-                                             start=datetime(2021, 4, 23, 8, 00, 00),
-                                             end=datetime(2021, 4, 23, 8, 00, 00) )
+                                             start=datetime.datetime(2021, 4, 23, 8, 0, 0),
+                                             end=datetime.datetime(2021, 4, 23, 8, 0, 0),
+                                             )
 
 
 
