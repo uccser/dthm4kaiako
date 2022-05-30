@@ -171,6 +171,17 @@ def generate_events():
         price=0
     )
 
+    event_ended_1 = Event.objects.create(
+        name="Teaching with AI",
+        description="description",
+        registration_type = 4,
+        start=datetime.date(2020, 4, 15),
+        end=datetime.date(2020, 4, 15),
+        accessible_online=False,
+        locations = location_3,
+        price=0
+    )
+
 
 def generate_sessions():
     """Generate serieses for use in dthm4kaiako tests."""
@@ -190,7 +201,16 @@ def generate_applicant_types():
 
 def generate_addresses():
     """Generate billing addresses for use in dthm4kaiako tests."""
-    pass 
+    
+    billing_address_1 = Address.objects.create(
+        name='Middleton Grange School',
+        street_address='12 High Street',
+        suburb='Riccarton',
+        city='Chrirstchurch',
+        region=14
+    )
+
+    billing_address_1.save()
 
 
 def generate_event_applications():
