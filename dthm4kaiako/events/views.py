@@ -169,7 +169,21 @@ class EventApplicationsView(generic.ListView, LoginRequiredMixin):
 
     template_name = 'events/event_applications.html'
     model = EventApplication
-    context_object_name = 'event_applications'
+    # context_object_name = 'event_applications'
+
+    
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the event applictions view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if user.is_authenticated:
+            context['event_applications'] = EventApplication.objects.filter(user=user)
+        return context
 
 
 @login_required
