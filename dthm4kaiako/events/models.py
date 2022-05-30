@@ -524,6 +524,7 @@ class EventApplication(models.Model):
 
         ordering = ['event', 'status']
         verbose_name_plural = 'event applications'
+        unique_together = ('event', 'user')
 
     @property
     def status_string_for_user(self):

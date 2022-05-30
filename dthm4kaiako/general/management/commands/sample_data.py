@@ -96,6 +96,8 @@ class Command(management.base.BaseCommand):
                                              + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
                                              start=datetime.datetime(2021, 4, 23, 8, 0, 0),
                                              end=datetime.datetime(2021, 4, 23, 8, 0, 0),
+                                             published=True,
+                                             featured=True
                                              )
 
 

@@ -23,12 +23,12 @@
                 </a>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal">
+                <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal-{{event_application.pk}}">
                     Withdraw
                 </button>
                 
                 <!-- Modal -->
-                <div class="modal fade" id="event-applications-withdraw-modal" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
+                <div class="modal fade" id="event-applications-withdraw-modal-{{event_application.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
