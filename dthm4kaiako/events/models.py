@@ -496,18 +496,18 @@ class EventApplication(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='event_application'
+        related_name='event_applications'
     )
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        related_name='event_application',
+        related_name='event_applications',
     )
     paid = models.BooleanField(default=False) #TODO: use a computed function for this
     billing_physical_address = models.ForeignKey(
         Address,
         on_delete=models.CASCADE,
-        related_name='event_application',
+        related_name='event_applications',
         blank=True,
         null=True,
         verbose_name='billing address',
