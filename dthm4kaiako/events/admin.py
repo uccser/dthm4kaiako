@@ -16,6 +16,7 @@ from events.models import (
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
 from users.models import User
+from django.utils.html import format_html_join
 
 logger = logging.getLogger(__name__)
 
@@ -175,40 +176,104 @@ class EventAdmin(ClonableModelAdmin):
 
 
 
-# class EventApplicationDetailsInline(admin.StackedInline):
-#     """Inline view for event registration form."""
-#     model = EventApplication 
-#     fk_name = 'user'
+class EventApplicationAdmin(admin.ModelAdmin):
+    """Admin view for an event application."""
 
-# # TODO: figure out how to add in user info relating to application
-# class UserEventApplicationAdmin(admin.ModelAdmin):
-#     """Admin view for an event application."""
-#     model = User
-#     inlines = [EventApplicationDetailsInline]
-#     readonly_fields = ['applicant_type', 'event', 'user', 'submitted', 'updated']
-#     fieldsets = (
-#         (
-#             'Event Application',
-#             {
-#                 'fields': (
-#                     'applicant_type',
-#                     'event',
-#                     'submitted',
-#                     'updated',
-#                     'first_name',
-#                     'last_name',
+    model = EventApplication
+    readonly_fields = [
+        'user',
+        'user_school',
+        'user_city',
+        'user_dietary_requirements',
+        'event',
+        'event_start_end',
+        'event_location',
+        'event_price',
+        'submitted',
+        'updated',
+    ]
+    fieldsets = (
+        (
+            'User',
+            {
+                'fields': (
+                    'user',
+                    'user_school',
+                    'user_city',
+                    'user_dietary_requirements',
+                )
+            },
+        ),
+        (
+            'Event',
+            {
+                'fields': (
+                    'event',
+                    'event_start_end',
+                    'event_location',
+                )
+            },
+        ),
+        (
+            'Application',
+            {
+                'fields': (
+                    'submitted',
+                    'updated',
+                    'status',
+                    'applicant_type',
+                    'staff_comments',
+                )
+            },
+        ),
+        (
+            'Billing',
+            {
+                'fields': (
+                    'event_price',
+                    'paid',
+                    'billing_address',
+                    'billing_email_address',
+                )
+            },
+        ),
+    )
 
-#                 )
-#             }
-#         ),
-#     )
+    @admin.display(description="User's school")
+    def user_school(self, application):
+        return application.user.school
+
+    @admin.display(description="User's city")
+    def user_city(self, application):
+        return application.user.city
+
+    @admin.display(description="User's dietary requirements")
+    def user_dietary_requirements(self, application):
+        return format_html_join(
+            '\n',
+            '<li>{}</li>',
+            application.user.dietary_requirements.values_list('name'),
+        )
+
+    @admin.display
+    def event_start_end(self, application):
+        return f'{application.event.start} to {application.event.end}'
+
+    @admin.display
+    def event_location(self, application):
+        return application.event.location_summary()
+
+    @admin.display
+    def event_price(self, application):
+        return f'${application.event.price:.2f}'
+
 
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin),
 admin.site.register(Series),
 admin.site.register(Session),
-# admin.site.register(EventApplication, UserEventApplicationAdmin),
+admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(EventApplication)
 admin.site.register(RegistrationForm),
 admin.site.register(ApplicantType),

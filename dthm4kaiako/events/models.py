@@ -526,6 +526,11 @@ class EventApplication(models.Model):
         verbose_name_plural = 'event applications'
         unique_together = ('event', 'user')
 
+
+    def __str__(self):
+        """String representation of an event application."""
+        return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
+
     @property
     def status_string_for_user(self):
         """Return event application's status as a string.

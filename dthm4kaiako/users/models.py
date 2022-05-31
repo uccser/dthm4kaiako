@@ -40,9 +40,10 @@ class User(AbstractUser):
         """Return URL for user's webpage."""
         return reverse('users:detail', kwargs={'pk': self.pk})
 
+
     def __str__(self):
         """Name of the user."""
-        return self.first_name
+        return f'{self.first_name} {self.last_name}'
 
 
 class Entity(models.Model):
