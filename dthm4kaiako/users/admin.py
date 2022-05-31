@@ -15,7 +15,9 @@ class UserAdmin(auth_admin.UserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ['email', 'first_name', 'last_name', 'is_superuser']
+    list_display = ['email', 'first_name', 'last_name', 'school', 'city', 'mobile_phone_number', 'medical_notes', 'is_superuser']
+
+    #TODO: display dietary_requirements
 
 admin.site.register(Entity),
 admin.site.register(DietaryRequirement),
