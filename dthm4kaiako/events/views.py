@@ -214,9 +214,9 @@ def delete_application_via_event_page(request, pk):
 
 @login_required
 def apply_for_event(request, pk):
-    """ View for event application/registration form and saving it as an EventApplication. 
+    """ View for event application/registration form and saving it as an EventApplication.
 
-        request: HTTP request 
+        request: HTTP request
         pk: event's primary key
 
         We create a new application if it doesn't already exist, otherwise we allow the user to update their existing application.
@@ -229,34 +229,42 @@ def apply_for_event(request, pk):
     user_update_details_form = None
     billing_details_form = None
     terms_and_conditions_form = None
+    billing_required = event.has_attendance_fee
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
-        
-        event_application_form = EventApplicationForm()
-        user_update_details_form = UserUpdateDetailsForm()
-        billing_details_form = BillingDetailsForm()
-        terms_and_conditions_form = TermsAndConditionsForm()
 
+        event_application_form = EventApplicationForm()
+        user_update_details_form = UserUpdateDetailsForm(instance=user) # autoload existing event application
+        if billing_required:
+            billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
+        terms_and_conditions_form = TermsAndConditionsForm(
+                initial={'I_agree_to_the_terms_and_conditions': False,
+                } # User must re-agree each time they update the form
+            )
 
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
 
         event_application_form = EventApplicationForm(request.POST)
         user_update_details_form = UserUpdateDetailsForm(request.POST)
-        billing_details_form = BillingDetailsForm()
+        if billing_required:
+            billing_details_form = BillingDetailsForm(request.POST)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-        if event_application_form.is_valid() and user_update_details_form.is_valid() and billing_details_form.is_valid() and terms_and_conditions_form.is_valid():
+        if event_application_form.is_valid() and user_update_details_form.is_valid()  and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()):
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
             user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            if user.event_applications.filter(event=event).exists():
+            if user.event_application.filter(event=event).exists():
                 # Update existing event application
-                event_application = user.event_applications.get(event=event)
+
+                # TODO: use update_or_create to refactor to reduce amount of code
+
+                event_application = user.event_application.get(event=event)
                 new_applicant_type = event_application_form.cleaned_data['applicant_type']
                 event_application.applicant_type = new_applicant_type
                 event_application.save()
@@ -270,4 +278,13 @@ def apply_for_event(request, pk):
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
-    return render(request, 'events/apply.html', {'event': event, 'event_application_form': event_application_form, 'user_form': user_update_details_form, 'billing_details_form': billing_details_form, 'terms_and_conditions_form': terms_and_conditions_form })
+    context = {
+        'event': event,
+        'event_application_form': event_application_form,
+        'user_form': user_update_details_form,
+        'billing_details_form': billing_details_form,
+        'billing_required': billing_required,
+        'terms_and_conditions_form': terms_and_conditions_form,
+    }
+
+    return render(request, 'events/apply.html', context)
