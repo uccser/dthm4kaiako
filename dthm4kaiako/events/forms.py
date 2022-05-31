@@ -3,6 +3,7 @@
 from django import forms
 from events.models import ApplicantType, Address
 from django.forms import ModelForm
+from crispy_forms.helper import FormHelper
 
 
 class EventApplicationForm(forms.Form):
@@ -10,20 +11,36 @@ class EventApplicationForm(forms.Form):
 
     applicant_type = forms.ModelChoiceField(ApplicantType.objects)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
 
 class TermsAndConditionsForm(forms.Form):
     """ Simple form to allow the user to agree to the terms and conditions.
-    This is a different form from the EventRegistrationForm so that the terms 
+    This is a different form from the EventRegistrationForm so that the terms
     and conditions can appear nicely after that form.
     """
 
     I_agree_to_the_terms_and_conditions = forms.BooleanField(required=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
 
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
 
-    billing_email_address = forms.CharField(required=True, help_text="Email address that the invoice will be sent to")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
 
     class Meta:
         """Metadata for BillingDetailsForm class."""

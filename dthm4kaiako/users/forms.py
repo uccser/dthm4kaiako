@@ -7,6 +7,7 @@ from captcha.widgets import ReCaptchaV3
 from users.models import DietaryRequirement
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, CharField
 from django.db.models import Q
+from crispy_forms.helper import FormHelper
 
 
 User = get_user_model()
@@ -58,8 +59,13 @@ class UserUpdateDetailsForm(ModelForm):
     other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
     from_email = EmailField(required=True, label='Email to contact you')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
     class Meta:
 
         model = User
         fields = ['first_name', 'last_name', 'school', 'city', 'mobile_phone_number', 'medical_notes', 'dietary_requirements',]
-

@@ -13,20 +13,19 @@
 {% block content %}
 <div class="container" style="max-width:600px">
     <form method="post">
-
-        {% csrf_token %}
+       {% csrf_token %}
 
         <h5>
             <b>Personal Information</b>
         </h5>
-        {{ user_form|crispy }}
-        {{ event_application_form|crispy }}
+        {% crispy user_form %}
+        {% crispy event_application_form %}
 
-        {% if event.has_attendance_fee %}
+        {% if billing_required %}
             <h5>
                 <b>Billing Information</b>
             </h5>
-            {{billing_details_form|crispy}}
+            {% crispy billing_details_form%}
         {% endif %}
 
         <div class="form-group">
@@ -35,7 +34,7 @@
             </h5>
             {{ event.registration_form.terms_and_conditions }}
         </div>
-        {{ terms_and_conditions_form|crispy }}
+        {% crispy terms_and_conditions_form %}
 
         <button type="submit" class="btn btn-primary">
             {{ event.get_event_type_short }}

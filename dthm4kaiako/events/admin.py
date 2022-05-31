@@ -274,6 +274,5 @@ admin.site.register(Location, LocationAdmin),
 admin.site.register(Series),
 admin.site.register(Session),
 admin.site.register(EventApplication, EventApplicationAdmin),
-admin.site.register(EventApplication)
 admin.site.register(RegistrationForm),
 admin.site.register(ApplicantType),
