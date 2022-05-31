@@ -31,7 +31,7 @@ class User(AbstractUser):
     school = models.CharField(max_length=200, verbose_name='school', default='')
     city = models.CharField(max_length=150, verbose_name='city', default='', help_text="City your school is located in")
     mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
-    medical_notes = models.TextField(default='', help_text="Is there anything we can help you with? e.g. accessibility")
+    medical_notes = models.TextField(default='', help_text="Is there anything we can help you with? e.g. accessibility",blank=True)
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
