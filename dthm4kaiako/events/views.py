@@ -8,6 +8,7 @@ from events.models import (
     Event,
     Location,
     EventApplication,
+    Address
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
@@ -231,6 +232,7 @@ def apply_for_event(request, pk):
     billing_details_form = None
     terms_and_conditions_form = None
     billing_required = event.has_attendance_fee
+    event_application = None
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
@@ -260,22 +262,56 @@ def apply_for_event(request, pk):
             user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            if user.event_application.filter(event=event).exists():
+            new_applicant_type = event_application_form.cleaned_data['applicant_type']
+
+
+            if billing_required:
+                new_street_number = billing_details_form.cleaned_data['street_number']
+                new_street_name = billing_details_form.cleaned_data['street_name']
+                new_suburb = billing_details_form.cleaned_data['suburb']
+                new_city = billing_details_form.cleaned_data['city']
+                new_region = billing_details_form.cleaned_data['region']
+                new_post_code = billing_details_form.cleaned_data['post_code']
+                new_country = billing_details_form.cleaned_data['country']
+                new_billing_email = billing_details_form.cleaned_data['billing_email_address']
+
+                new_billing_address = Address.objects.create(
+                    street_number=new_street_number,
+                    street_name=new_street_name,
+                    suburb=new_suburb,
+                    city=new_city,
+                    region=new_region,
+                    post_code=new_post_code,
+                    country=new_country,
+                )
+                new_billing_address.save()
+
+
+                event_application, created = EventApplication.objects.update_or_create(
+                    user=user, event=event,
+                    defaults={
+                        'applicant_type': new_applicant_type,
+                        'billing_physical_address': new_billing_address,
+                        'billing_email_address': new_billing_email,
+                    }
+                )
+            
+            else:
+                event_application, created = EventApplication.objects.update_or_create(
+                user=user, event=event,
+                defaults={
+                    'applicant_type': new_applicant_type,
+                }
+            )
+            
+
+            if user.event_applications.filter(event=event).exists():
                 # Update existing event application
-
-                # TODO: use update_or_create to refactor to reduce amount of code
-
-                event_application = user.event_application.get(event=event)
-                new_applicant_type = event_application_form.cleaned_data['applicant_type']
-                event_application.applicant_type = new_applicant_type
-                event_application.save()
                 messages.success(request, "Updated event application successfully")
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
             else:
                 # Create new event application
-                new_applicant_type = event_application_form.cleaned_data['applicant_type']
-                event_application = EventApplication.objects.create(event=event,user=user,applicant_type=new_applicant_type) #TODO: add in billing details
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 

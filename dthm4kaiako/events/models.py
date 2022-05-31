@@ -444,8 +444,8 @@ class Address(models.Model):
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
     )
+    # TODO: validate that it is only 4 digits
     post_code = models.IntegerField(
-        validators=[MaxLengthValidator(4),MinLengthValidator(4)],
         help_text='Post code, for example: 8041',
         default='8041',)
     country = models.CharField(
@@ -453,7 +453,6 @@ class Address(models.Model):
         default='New Zealand'
         )
     
-
     def __str__(self):
         """Text representation of an address."""
         return self.get_full_address()
@@ -461,7 +460,7 @@ class Address(models.Model):
 
     def get_full_address(self):
         """Get full text representation of an address."""
-        address = self.street_number + ' ' + self.street_name + ',\n' + self.suburb + ', ' + self.city + ',\n' + self.post_code + ',\n' + self.country
+        address = self.street_number + ' ' + self.street_name + ',\n' + self.suburb + ', ' + self.city + ',\n' + str(self.post_code) + ',\n' + self.country
         return address
 
 

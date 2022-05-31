@@ -4,6 +4,7 @@ from django import forms
 from events.models import ApplicantType, Address
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
+from django.forms import EmailField
 
 
 class EventApplicationForm(forms.Form):
@@ -35,6 +36,8 @@ class TermsAndConditionsForm(forms.Form):
 
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
+
+    billing_email_address = EmailField(required=True, label='Billing email address')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

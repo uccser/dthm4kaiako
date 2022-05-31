@@ -232,7 +232,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
                 'fields': (
                     'event_price',
                     'paid',
-                    'billing_address',
+                    'billing_physical_address',
                     'billing_email_address',
                 )
             },
