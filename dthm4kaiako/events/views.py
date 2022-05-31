@@ -204,6 +204,7 @@ def delete_application_via_event_page(request, pk):
     """ Allowing a user to delete an existing event application from the event details page."""
 
     event_application = get_object_or_404(EventApplication, pk=pk)
+    event = Event.objects.get(pk=event_application.event.pk)
 
     if request.method == 'POST':
         event_application.delete()
