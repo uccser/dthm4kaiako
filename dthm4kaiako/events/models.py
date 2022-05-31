@@ -504,7 +504,7 @@ class EventApplication(models.Model):
         related_name='event_application',
     )
     paid = models.BooleanField(default=False) #TODO: use a computed function for this
-    billing_address = models.ForeignKey(
+    billing_physical_address = models.ForeignKey(
         Address,
         on_delete=models.CASCADE,
         related_name='event_application',
@@ -554,8 +554,8 @@ class EventApplication(models.Model):
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    open_datetime = models.DateTimeField(null=True) # TODO: sanity test these
-    close_datetime = models.DateTimeField(null=True) # TODO: sanity test these
+    open_datetime = models.DateTimeField(null=True,blank=True) # TODO: sanity test these
+    close_datetime = models.DateTimeField(null=True,blank=True) # TODO: sanity test these
     terms_and_conditions = models.TextField(blank=True)
     event = models.OneToOneField(
         Event,
@@ -574,6 +574,10 @@ class RegistrationForm(models.Model):
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        """Text representation of an event registration form."""
+        return f'{self.event.name}'
 
     
     # TODO: investigate why this is not working
