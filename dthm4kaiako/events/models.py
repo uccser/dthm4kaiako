@@ -190,7 +190,7 @@ class Event(models.Model):
         default=False,
         help_text='Select if this event be attended online'
     )
-    price = models.PositiveSmallIntegerField(default=0)
+    price = models.DecimalField(default=0, max_digits=4, decimal_places=2)
     locations = models.ManyToManyField(
         Location,
         related_name='events',
