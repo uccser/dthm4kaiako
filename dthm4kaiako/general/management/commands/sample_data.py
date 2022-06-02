@@ -85,21 +85,117 @@ class Command(management.base.BaseCommand):
         # -------------------------- Realistic events for informal demonstrations --------------------------
         #TODO: finish creating realistic events
 
-        sample_location_1 = Location.objects.create(name='University of Canterbury', suburb='Ilam', city='Christchurch', region='14',coords=Point(-43,172))
+        # sample_location_1 = Location.objects.create(name='University of Canterbury', suburb='Ilam', city='Christchurch', region='14',coords=Point(-43,172))
+        # sample_location_2 = Location.objects.create(
+        #     room='Room 456',
+        #     name='Middleton Grange School',
+        #     street_address='12 High Street',
+        #     suburb='Riccarton',
+        #     city='Chrirstchurch',
+        #     region=14,
+        #     coords=Point(-12,149)
+        # )
 
-        sample_event_1 = Event.objects.create(name='DTHM for Kaiako Conference 2021',
-                                             description='Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
-                                             + 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject association event, for all teachers in Aotearoa. It\'s all about building your practice as a kaiako, for your learners.\n\n'
-                                             + 'Join us for 3 days of:\n\n'
-                                             + 'Connecting and reconnecting with colleagues across Aotearoa\n\n'
-                                             + 'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
-                                             + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
-                                             start=datetime.datetime(2021, 4, 23, 8, 0, 0),
-                                             end=datetime.datetime(2021, 4, 23, 8, 0, 0),
-                                             published=True,
-                                             featured=True
-                                             )
+        # sample_location_3 = Location.objects.create(
+        #     room='Room 7',
+        #     name='Middleton Grange School',
+        #     street_address='12 High Street',
+        #     suburb='Riccarton',
+        #     city='Chrirstchurch',
+        #     region=14,
+        #     coords=Point(-27,188)
+        # )
 
+        # sample_location_1.save()
+        # sample_location_2.save()
+        # sample_location_3.save()
+
+        # sample_event_free_1 = Event.objects.create(name='DTHM for Kaiako Conference 2021',
+        #                                      description='Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
+        #                                      + 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject association event, for all teachers in Aotearoa. It\'s all about building your practice as a kaiako, for your learners.\n\n'
+        #                                      + 'Join us for 3 days of:\n\n'
+        #                                      + 'Connecting and reconnecting with colleagues across Aotearoa\n\n'
+        #                                      + 'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
+        #                                      + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
+        #                                      start=datetime.datetime(2023, 4, 23, 8, 0, 0),
+        #                                      end=datetime.datetime(2023, 4, 23, 8, 0, 0),
+        #                                      published=True,
+        #                                      featured=True,
+        #                                      price=0,
+        #                                      )
+        
+        # event_physical_register_1 = Event.objects.create(
+        #     name="Python Introduction",
+        #     description="Some description",
+        #     registration_type = 1,
+        #     start=datetime.date(2023, 6, 24),
+        #     end=datetime.date(2023, 6, 26),
+        #     accessible_online=False,
+        #     price=50,
+        #     published=True,
+        #     featured=True,
+        # )
+        # # event_physical_register_1.locations.set(sample_location_2)
+        # event_physical_register_1.save()
+
+        # event_physical_apply_1 = Event.objects.create(
+        #         name="Security in CS",
+        #         description="Some description",
+        #         registration_type = 2,
+        #         start=datetime.date(2023, 2, 13),
+        #         end=datetime.date(2023, 2, 14),
+        #         accessible_online=False,
+        #         price=75,
+        #         published=True,
+        #         featured=True,
+        #     )
+        # # event_physical_apply_1.locations.set(sample_location_2)
+        # event_physical_apply_1.save()
+
+        # event_physical_invite_1 = Event.objects.create(
+        #         name="Teaching with AI 2023",
+        #         description="Some description",
+        #         registration_type = 4,
+        #         start=datetime.date(2023, 4, 15),
+        #         end=datetime.date(2023, 4, 15),
+        #         accessible_online=False,
+        #         price=0,
+        #         published=True,
+        #         featured=True,
+        #     )
+        # # event_physical_invite_1.locations.set(sample_location_3)
+        # event_physical_invite_1.save()
+
+        # event_physical_url_1 = Event.objects.create(
+        #         name="Intro to Computer Graphics",
+        #         description="Some description",
+        #         registration_type = 3,
+        #         start=datetime.date(2023, 8, 15),
+        #         end=datetime.date(2023, 8, 15),
+        #         accessible_online=False,
+        #         price=0,
+        #         published=True,
+        #         featured=True,
+        #         registration_link='www.google.com'
+        #     )
+        # # event_physical_url_1.locations.set(sample_location_3)
+        # event_physical_url_1.save()
+
+        # event_ended_1 = Event.objects.create(
+        #         name="Teaching with AI 2021",
+        #         description="Some description",
+        #         registration_type = 4,
+        #         start=datetime.date(2020, 4, 15),
+        #         end=datetime.date(2020, 4, 15),
+        #         accessible_online=False,
+        #         price=0,
+        #         published=True,
+        #         featured=True,
+        #     )
+        # # event_physical_url_1.locations.set(sample_location_3)
+        # event_physical_url_1.save()
+
+        # #TODO: free and paid events
 
 
         # --------------------------------------------------------------------------------------------------
