@@ -359,7 +359,7 @@ class ApplicantType(models.Model):
     """Model for an application type.
        Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
     name = models.CharField(max_length=100)
-    cost = models.PositiveSmallIntegerField(default=0)
+    cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
     event = models.ForeignKey(
         Event,
         related_name="application_types",
