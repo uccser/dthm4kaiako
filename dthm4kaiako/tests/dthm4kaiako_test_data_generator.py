@@ -94,36 +94,39 @@ def generate_entities():
 
 def generate_locations():
     """Generate locations for use in dthm4kaiako tests."""
-    location_1 = Location.objects.create(
-        room='Room 123',
-        name='Middleton Grange School',
-        street_address='12 High Street',
-        suburb='Riccarton',
-        city='Chrirstchurch',
-        region=14
-    )
 
-    location_2 = Location.objects.create(
-        room='Room 456',
-        name='Middleton Grange School',
-        street_address='12 High Street',
-        suburb='Riccarton',
-        city='Chrirstchurch',
-        region=14
-    )
+    pass 
+    
+    # location_1 = Location.objects.create(
+    #     room='Room 123',
+    #     name='Middleton Grange School',
+    #     street_address='12 High Street',
+    #     suburb='Riccarton',
+    #     city='Chrirstchurch',
+    #     region=14
+    # )
 
-    location_3 = Location.objects.create(
-        room='Room 7',
-        name='Middleton Grange School',
-        street_address='12 High Street',
-        suburb='Riccarton',
-        city='Chrirstchurch',
-        region=14
-    )
+    # location_2 = Location.objects.create(
+    #     room='Room 456',
+    #     name='Middleton Grange School',
+    #     street_address='12 High Street',
+    #     suburb='Riccarton',
+    #     city='Chrirstchurch',
+    #     region=14
+    # )
 
-    location_1.save()
-    location_2.save()
-    location_3.save()
+    # location_3 = Location.objects.create(
+    #     room='Room 7',
+    #     name='Middleton Grange School',
+    #     street_address='12 High Street',
+    #     suburb='Riccarton',
+    #     city='Chrirstchurch',
+    #     region=14
+    # )
+
+    # location_1.save()
+    # location_2.save()
+    # location_3.save()
 
 
 def generate_serieses():
@@ -134,9 +137,9 @@ def generate_serieses():
 def generate_events():
     """Generate events for use in dthm4kaiako tests."""
 
-    location_1 = Locations.objects.get(id=1)
-    location_2 = Locations.objects.get(id=2)
-    location_3 = Locations.objects.get(id=3)
+    # location_1 = Locations.objects.get(id=1)
+    # location_2 = Locations.objects.get(id=2)
+    # location_3 = Locations.objects.get(id=3)
 
     event_physical_register_1 = Event.objects.create(
         name="DTHM for Kaiako Conference 2023",
@@ -145,7 +148,7 @@ def generate_events():
         start=datetime.date(2023, 6, 24),
         end=datetime.date(2023, 6, 26),
         accessible_online=False,
-        locations = location_1,
+        # locations = location_1,
         price=50
     )
 
@@ -156,7 +159,7 @@ def generate_events():
         start=datetime.date(2023, 2, 13),
         end=datetime.date(2023, 2, 14),
         accessible_online=False,
-        locations = location_2,
+        # locations = location_2,
         price=75
     )
 
@@ -167,7 +170,7 @@ def generate_events():
         start=datetime.date(2023, 4, 15),
         end=datetime.date(2023, 4, 15),
         accessible_online=False,
-        locations = location_3,
+        # locations = location_3,
         price=0
     )
 
@@ -178,7 +181,7 @@ def generate_events():
         start=datetime.date(2020, 4, 15),
         end=datetime.date(2020, 4, 15),
         accessible_online=False,
-        locations = location_3,
+        # locations = location_3,
         price=0
     )
 
