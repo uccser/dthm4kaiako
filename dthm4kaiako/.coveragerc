@@ -1,6 +1,5 @@
 [run]
 branch = True
-include = */dthm4kaiako/*
 omit =
     # Omit migration files
     */migrations/*
