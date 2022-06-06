@@ -21,7 +21,7 @@ TEST_RUNNER = "django.test.runner.DiscoverRunner"
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "NAME": env("POSTGRES_DB"),  # noqa: F405
         "USER": env("POSTGRES_USER"),  # noqa: F405
         "PASSWORD": env("POSTGRES_PASSWORD"),  # noqa: F405
