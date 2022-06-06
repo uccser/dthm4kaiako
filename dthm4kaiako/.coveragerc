@@ -1,9 +1,14 @@
 [run]
-include = */dthm4kaiako/*
-omit = *migrations*, *tests*
-plugins =
-    django_coverage_plugin
 branch = True
+include = */dthm4kaiako/*
+omit =
+    # Omit migration files
+    */migrations/*
+    # Omit settings files for local and production environments
+    # TODO: Add integration tests for local and production environments
+    */config/settings/*
+    # Omit pregenerated files
+    */config/wsgi.py
 
 [report]
-fail_under = 20
+fail_under=20

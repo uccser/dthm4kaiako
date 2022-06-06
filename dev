@@ -239,7 +239,7 @@ cmd_ci() {
 }
 
 cmd_test_general() {
-  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django coverage run --rcfile=./.coveragerc ./manage.py test --settings=config.settings.testing --pattern "test_*.py" -v 3 --exclude-tag=resource --exclude-tag=management --nomigrations
+  docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django coverage run --rcfile=./.coveragerc ./manage.py test --settings=config.settings.testing --pattern "test_*.py" -v 3 --exclude-tag=management --nomigrations
 }
 
 cmd_test_management() {
