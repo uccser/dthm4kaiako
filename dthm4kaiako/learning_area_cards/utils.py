@@ -1,6 +1,5 @@
 """Utility functions for learning area cards application."""
 
-from urllib.parse import quote as urlquote
 from django.conf import settings
 
 ACHIEVEMENT_OBJECTIVE_TITLE_TEMPLATE = 'Achievement Objectives - Level {}'

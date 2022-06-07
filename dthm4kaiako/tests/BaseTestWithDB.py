@@ -2,7 +2,6 @@
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.test.client import Client
 from django.utils.translation import activate
 
 User = get_user_model()
