@@ -34,8 +34,7 @@ class BaseTestWithDB(TestCase):
         super(BaseTestWithDB, cls).tearDownClass()
 
     def setUp(self):
-        """Automatically called before each test.
-        """
+        """Automatically called before each test."""
         if self.language is not None:
             activate(self.language)
 
