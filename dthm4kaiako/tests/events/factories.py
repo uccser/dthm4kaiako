@@ -3,7 +3,7 @@
 import random
 import pytz
 from datetime import timedelta
-from tests.utils import random_boolean
+from tests.test_utils import random_boolean
 from factory import Faker, post_generation, LazyFunction, LazyAttribute
 from factory.django import DjangoModelFactory
 from factory.faker import faker
