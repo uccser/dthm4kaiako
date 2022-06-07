@@ -9,6 +9,11 @@ x-default-opts:
             max-size: '1m'
             max-file: '3'
 
+x-disable-healthcheck:
+  &disable-healthcheck
+  healthcheck:
+    disable: true
+
 # --- Base Django config ------------------------------------------------------
 
 x-django-config:
@@ -81,6 +86,7 @@ services:
     task-update-data:
         <<: *default-opts
         <<: *django-config
+        <<: *disable-healthcheck
         command: python ./manage.py update_data
         deploy:
             replicas: 0
