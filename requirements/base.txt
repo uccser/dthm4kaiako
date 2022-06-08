@@ -5,7 +5,7 @@ django-allauth==0.51.0  # https://github.com/pennersr/django-allauth
 django-anymail[mailgun]==8.5  # https://github.com/anymail/django-anymail
 django-autoslug==1.9.8  # https://github.com/justinmayer/django-autoslug
 django-ckeditor==6.2.0  # https://pypi.org/project/django-ckeditor/
-django-cors-headers==3.11.0
+django-cors-headers==3.13.0
 django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-crispy-forms
 django-environ==0.8.1
 django-filter==21.1  # https://github.com/carltongibson/django-filter/
