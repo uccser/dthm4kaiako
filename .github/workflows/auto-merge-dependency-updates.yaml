@@ -3,6 +3,7 @@ name: Auto-merge minor dependency updates
 on: pull_request
 
 permissions:
+  pull-requests: write
   contents: write
 
 jobs:
