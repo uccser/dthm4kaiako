@@ -7,6 +7,7 @@ from events.models import (
     ApplicantType,
     Address,
     EventApplication,
+    Series
     )
 from tests.dthm4kaiako_test_data_generator import (
     generate_users,
@@ -15,6 +16,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_event_registration_forms,
     generate_addresses,
     generate_event_applications,
+    generate_serieses,
 )
 
 
@@ -22,10 +24,12 @@ class EventModelTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        generate_serieses()
         generate_events()
 
     @classmethod
     def tearDownTestData(cls):
+        Series.objects.all().delete()
         Event.objecs.all().delete()
 
     # ----------------------- tests for update_datetimes -----------------------
@@ -37,6 +41,15 @@ class EventModelTests(TestCase):
     #TODO: write unit tests
 
     # ----------------------- tests for get_short_name -----------------------
+
+    def test_get_short_name__in_series(self):
+        event = Event.objects.get(id=3)
+        self.assertEqual(str(event.get_short_name()), '{}: {}'.format(event.series.abbreviation, event.name))
+
+    def test_get_short_name__not_in_series(self):
+        event = Event.objects.get(id=1)
+        self.assertEqual(str(event.get_short_name()), event.name)
+
 
     #TODO: write unit tests
 
@@ -117,6 +130,7 @@ class AddressTests(TestCase):
     def setUpTestData(cls):
         generate_addresses()
         generate_users()
+        generate_serieses()
         generate_events()
         generate_applicant_types()
         generate_event_applications()
@@ -126,6 +140,7 @@ class AddressTests(TestCase):
     def tearDownTestData(cls):
         EventApplication.objects.all().delete()
         ApplicantType.objects.all().delete()
+        Series.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
         Address.objects.all().delete()

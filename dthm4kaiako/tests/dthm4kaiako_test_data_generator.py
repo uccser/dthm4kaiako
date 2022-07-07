@@ -178,7 +178,13 @@ def generate_locations():
 
 def generate_serieses():
     """Generate serieses for use in dthm4kaiako tests."""
-    pass 
+    series_1 = Series.objects.create(
+        id=1,
+        name = 'Artificial Intelligence series',
+        abbreviation = 'AI series',
+        description = 'Some description',
+    )
+    series_1.save()
 
 
 def generate_events():
@@ -223,7 +229,8 @@ def generate_events():
         end=datetime.date(2023, 4, 15),
         accessible_online=False,
         # locations = location_3,
-        price=0
+        price=0,
+        series=Series.objects.get(name='Artificial Intelligence series'),
     )
     event_physical_invite_1.save()
 
@@ -236,7 +243,8 @@ def generate_events():
         end=datetime.date(2020, 4, 15),
         accessible_online=False,
         # locations = location_3,
-        price=0
+        price=0,
+        series=Series.objects.get(name='Artificial Intelligence series'),
     )
     event_ended_1.save()
 
