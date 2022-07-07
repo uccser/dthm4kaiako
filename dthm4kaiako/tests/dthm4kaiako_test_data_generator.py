@@ -1,7 +1,6 @@
 """Class to generate test data required for testing dthm4kaiako system."""
 
 from django.contrib.auth import get_user_model
-from allauth.account.admin import EmailAddress
 from django.core import management
 import datetime
 from users.models import (
@@ -87,6 +86,20 @@ def generate_dietary_requirements():
     dietary_requirement_keto.save()
     dietary_requirement_halal.save()
     dietary_requirement_coffee.save()
+
+
+def generate_addresses():
+    """Generate billing addresses for use in dthm4kaiako tests."""
+    
+    billing_address_1 = Address.objects.create(
+        id=1,
+        street_number='12',
+        street_name='High Street',
+        suburb='Riccarton',
+        city='Chrirstchurch',
+        region=14
+    )
+    billing_address_1.save()
 
 
 def generate_users():
@@ -254,46 +267,28 @@ def generate_applicant_types():
     application_type_student.save()
 
 
-def generate_addresses():
-    """Generate billing addresses for use in dthm4kaiako tests."""
-    
-    billing_address_1 = Address.objects.create(
-        id=1,
-        street_number='12',
-        street_name='High Street',
-        suburb='Riccarton',
-        city='Chrirstchurch',
-        region=14
-    )
-    billing_address_1.save()
-
-
 def generate_event_applications():
     """Generate event applications for use in dthm4kaiako tests."""
-    pass
+    event_application_1 = EventApplication.objects.create(
+        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        user = User.objects.get(id=1),
+        event = Event.objects.get(id=1),
+        billing_physical_address = Address.objects.get(id=1),
+        billing_email_address = "test@test.co.nz"
+    )
 
 
 def generate_event_registration_forms():
     """Generate event registration forms for use in dthm4kaiako tests."""
     
-    event_physical_register_1 = Event.objects.get(id=1)
-    event_physical_register_2 = Event.objects.get(id=2)
-
-   
-    event_1_reg_form = RegistrationForm.objects.create(
-        # id=1,
+    RegistrationForm.objects.filter(event_id=1).update(
         open_datetime = datetime.date(2022, 1, 1),
         close_datetime = datetime.date(2023, 6, 1),
         terms_and_conditions = "Some terms and conditions.",
-        event = event_physical_register_1
     )
-    event_1_reg_form.save()
 
-    event_2_reg_form = RegistrationForm.objects.create(
-        # id=2,
-        open_datetime = datetime.date(2022, 1, 1),
+    RegistrationForm.objects.filter(event_id=2).update(
+        open_datetime = datetime.date(2022, 1, 2),
         close_datetime = datetime.date(2023, 2, 1),
         terms_and_conditions = "Some terms and conditions.",
-        event = event_physical_register_2
     )
-    event_2_reg_form.save()

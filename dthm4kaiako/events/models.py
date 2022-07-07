@@ -460,7 +460,7 @@ class Address(models.Model):
 
     def get_full_address(self):
         """Get full text representation of an address."""
-        address = self.street_number + ' ' + self.street_name + ',\n' + self.suburb + ', ' + self.city + ',\n' + str(self.post_code) + ',\n' + self.country
+        address = '{} {},\n{},\n{},\n{}'.format(self.street_number, self.street_name, self.suburb, self.city, self.post_code)
         return address
 
 

@@ -1,22 +1,20 @@
 """Unit tests for events"""
 
 from django.test import TestCase
+from django.contrib.auth.models import User
 from events.models import (
-    User,
     Event, 
     ApplicantType,
     Address,
     EventApplication,
     )
-
-
 from tests.dthm4kaiako_test_data_generator import (
     generate_users,
-    # generate_locations,
     generate_events,
     generate_applicant_types,
     generate_event_registration_forms,
-    generate_addresses
+    generate_addresses,
+    generate_event_applications,
 )
 
 
@@ -24,18 +22,11 @@ class EventModelTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        generate_users()
-        # generate_locations()
         generate_events()
-        generate_addresses()
-        generate_applicant_types()
-        generate_event_registration_forms()
 
     @classmethod
     def tearDownTestData(cls):
-        models = [User, Event, ApplicantType, Address, EventApplication]
-        for model in MODELS:
-            model.objecs.all().delete()
+        Event.objecs.all().delete()
 
     # ----------------------- tests for update_datetimes -----------------------
 
@@ -104,33 +95,69 @@ class EventModelTests(TestCase):
 
 class ApplicantTypeTests(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        generate_applicant_types()
+
+    @classmethod
+    def tearDownTestData(cls):
+        ApplicantType.objecs.all().delete()
+
     # ----------------------------- tests for __str__ ------------------------------
 
     def test_str_representation__register(self):
-        application_type = ApplicantType.objects.get(id=1)
-        self.assertEqual(str(application_type), applicant_type.name)
+        test_name = "Event staff"
+        application_type = ApplicantType.objects.get(name=test_name)
+        self.assertEqual(str(application_type), application_type.name)
 
 
 class AddressTests(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        generate_addresses()
+        generate_users()
+        generate_events()
+        generate_applicant_types()
+        generate_event_applications()
+
+
+    @classmethod
+    def tearDownTestData(cls):
+        EventApplication.objects.all().delete()
+        ApplicantType.objects.all().delete()
+        Event.objects.all().delete()
+        User.objects.all().delete()
+        Address.objects.all().delete()
+
+
     # ------------------------------- tests for __str__ ----------------------------
 
     def test_str_representation(self):
-        print(Address.objects)
-        billing_address = Address.objects.get(id=1)
-        self.assertEqual(billing_address.get_full_address, 
-        '{} {},\n{} {},{},\n{},\n'.format(billing_address.street_number, billing_address.street_name, billing_address.suburb, billing_address.city, billing_address.post_code)) 
+        application = EventApplication.objects.get(id=1)
+        billing_address = application.billing_physical_address
+        self.assertEqual(str(billing_address),
+        '{} {},\n{},\n{},\n{}'.format(billing_address.street_number, billing_address.street_name, billing_address.suburb, billing_address.city, billing_address.post_code)) 
  
 
     # ---------------------------- tests for get_full_address ----------------------
 
     def test_get_full_address(self):
-        billing_address = Address.objects.get(id=1)
-        self.assertEqual(billing_address.get_full_address, 
-        '{} {},\n{} {},{},\n{},\n'.format(billing_address.street_number, billing_address.street_name, billing_address.suburb, billing_address.city, billing_address.post_code)) 
-
+        application = EventApplication.objects.get(id=1)
+        billing_address = application.billing_physical_address
+        self.assertEqual(str(billing_address.get_full_address()),
+        '{} {},\n{},\n{},\n{}'.format(billing_address.street_number, billing_address.street_name, billing_address.suburb, billing_address.city, billing_address.post_code)) 
+ 
 
 class EventApplicationTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        generate_event_registration_forms()
+
+    @classmethod
+    def tearDownTestData(cls):
+        EventApplication.objecs.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
 
