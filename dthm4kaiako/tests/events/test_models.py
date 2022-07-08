@@ -34,11 +34,34 @@ class EventModelTests(TestCase):
 
     # ----------------------- tests for update_datetimes -----------------------
 
-    #TODO: write unit tests
+    def test_location_summary__different_start_and_end_datetimes_two_events(self):
+        pass 
+
+    def test_location_summary__same_start_and_end_datetimes_two_events(self):
+        pass 
+
+    def test_location_summary__different_times_same_day_two_events(self):
+        pass
+
+    def test_location_summary__different_days_same_time_two_events(self):
+        pass
+
+    def test_location_summary__different_start_and_end_datetimes_many_events(self):
+        pass 
+
+    def test_location_summary__same_start_and_end_datetimes_many_events(self):
+        pass 
+
+    def test_location_summary__different_times_same_day_many_events(self):
+        pass
+
+    def test_location_summary__different_days_same_time_many_events(self):
+        pass
 
     # ----------------------- tests for get_absolute_url -----------------------
 
-    #TODO: write unit tests
+    def test_get_absolute_url__returns_url_of_event_on_website(self):
+        pass
 
     # ----------------------- tests for get_short_name -----------------------
 
@@ -50,12 +73,17 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=1)
         self.assertEqual(str(event.get_short_name()), event.name)
 
-
-    #TODO: write unit tests
-
     # ----------------------- tests for location_summary -----------------------
 
-    #TODO: write unit tests
+    def test_location_summary__multiple_locations(self):
+        pass 
+
+    def test_location_summary__one_location(self):
+        pass 
+
+    def test_location_summary__no_location(self):
+        pass
+
 
     # ----------------------- tests for is_register_or_apply -----------------------
 
