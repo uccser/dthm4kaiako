@@ -9,24 +9,18 @@ from django.db.models.signals import (
     post_save,
     m2m_changed,
 )
-from django.db.models import Value
-from django.contrib.postgres.search import SearchVector
+
 from django.db import transaction
 from resources.models import (
     Resource,
 )
+from utils.search_utils import get_search_index_updater
 
 
-SEARCH_INDEX_UPDATE_MODELS = (
-    Resource,
-)
-
-
-@receiver(post_save)
+@receiver(post_save, sender=Resource)
 def on_save(sender, **kwargs):
     """Trigger functions after any model save."""
-    if issubclass(sender, SEARCH_INDEX_UPDATE_MODELS):
-        transaction.on_commit(make_updater(kwargs['instance']))
+    transaction.on_commit(get_search_index_updater(kwargs['instance']))
 
 
 def on_m2m_changed(sender, **kwargs):
@@ -43,33 +37,11 @@ def on_m2m_changed(sender, **kwargs):
     """
     instance = kwargs['instance']
     model = kwargs['model']
-    if isinstance(instance, SEARCH_INDEX_UPDATE_MODELS):
-        transaction.on_commit(make_updater(instance))
-    elif issubclass(model, SEARCH_INDEX_UPDATE_MODELS):
+    if isinstance(instance, Resource):
+        transaction.on_commit(get_search_index_updater(instance))
+    elif issubclass(model, Resource):
         for obj in model.objects.filter(pk__in=kwargs['pk_set']):
-            transaction.on_commit(make_updater(obj))
-
-
-def make_updater(instance):
-    """Return function for updating search index of resource."""
-    components = instance.index_contents()
-    pk = instance.pk
-
-    def on_commit():
-        search_vector_list = []
-        for weight, text in components.items():
-            search_vector_list.append(
-                SearchVector(Value(text), weight=weight)
-            )
-        search_vectors = search_vector_list[0]
-        for search_vector in search_vector_list[1:]:
-            search_vectors += search_vector
-
-        instance.__class__.objects.filter(pk=pk).update(
-            search_vector=search_vectors
-        )
-
-    return on_commit
+            transaction.on_commit(get_search_index_updater(obj))
 
 
 # Register specific fields as a lot of m2m relationships exist in this website.

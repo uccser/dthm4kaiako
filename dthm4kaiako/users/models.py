@@ -24,7 +24,7 @@ class DietaryRequirement(models.Model):
 class User(AbstractUser):
     """User of website."""
 
-    username = models.CharField(max_length=12, default='user')
+    username = models.CharField(max_length=50, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
     dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')

@@ -1,9 +1,12 @@
 [run]
-include = */dthm4kaiako/*
-omit = *migrations*, *tests*
-plugins =
-    django_coverage_plugin
 branch = True
+source = .
+omit =
+    # Omit migration files
+    */migrations/*
+    # Omit pregenerated files
+    config/wsgi.py
+    manage.py
 
 [report]
-fail_under = 20
+fail_under=20

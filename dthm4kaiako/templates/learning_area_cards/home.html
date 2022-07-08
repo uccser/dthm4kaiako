@@ -21,11 +21,11 @@
                 <small class="text-muted ml-2">{{ card_set.count }} cards</small>
             </h5>
             <div class="d-block">
-                <a href="{{ STATIC_URL }}learning_area_cards/{{ card_set.single_filename }}"
+                <a href="{% static card_set.single_filepath %}"
                     download class="btn btn-outline-primary btn-sm mr-3">
                     Single sided
                 </a>
-                <a href="{{ STATIC_URL }}learning_area_cards/{{ card_set.double_filename }}"
+                <a href="{% static card_set.double_filepath %}"
                     download class="btn btn-outline-primary btn-sm mr-3">
                     Double sided
                 </a>

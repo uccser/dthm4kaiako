@@ -41,7 +41,6 @@ class Command(management.base.BaseCommand):
                     card_type=card_type,
                     print_type=print_type,
                     level=level_num,
-                    quote=False,
                 )
                 objectives = AchievementObjective.objects.filter(level=level_num).order_by('code')
 
@@ -68,7 +67,6 @@ class Command(management.base.BaseCommand):
                     card_type=card_type,
                     print_type=print_type,
                     learning_area=learning_area,
-                    quote=False,
                 )
                 outcomes = ProgressOutcome.objects.filter(learning_area=learning_area).order_by('code')
 

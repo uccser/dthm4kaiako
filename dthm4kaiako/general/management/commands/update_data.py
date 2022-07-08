@@ -21,3 +21,7 @@ class Command(management.base.BaseCommand):
 
         management.call_command('load_poet_data')
         print('POET data loaded.\n')
+
+        # Rebuild search indexes as deployment could result in changed indexes.
+        management.call_command('rebuild_search_indexes')
+        print('Search indexes rebuilt.')
