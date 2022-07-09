@@ -46,6 +46,7 @@ from tests.poet.factories import (
     POETFormSubmissionFactory,
     POETFormProgressOutcomeGroupFactory,
 )
+from allauth.account.models import EmailAddress
 
 
 class Command(management.base.BaseCommand):

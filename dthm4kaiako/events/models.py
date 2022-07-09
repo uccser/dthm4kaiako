@@ -13,8 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from users.models import Entity, User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-import datetime
-from django.core.validators import MinLengthValidator, MaxLengthValidator
+# from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
 class Location(models.Model):
