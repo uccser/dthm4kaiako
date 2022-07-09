@@ -209,7 +209,7 @@ class ApplicantTypeTests(TestCase):
 
     @classmethod
     def tearDownTestData(cls):
-        ApplicantType.objecs.all().delete()
+        ApplicantType.objects.all().delete()
 
     # ----------------------------- tests for __str__ ------------------------------
 
@@ -265,25 +265,41 @@ class EventApplicationTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        generate_event_registration_forms()
+        generate_addresses()
+        generate_serieses()
+        generate_locations()
+        generate_events()
+        generate_users()
+        generate_applicant_types()
+        generate_event_applications()
 
     @classmethod
     def tearDownTestData(cls):
+        Address.objects.all().delete()
+        Series.objects.all().delete()
+        Location.objects.all().delete()
+        Event.objects.all().delete()
+        User.objects.all().delete()
+        ApplicantType.objects.all().delete()
         EventApplication.objects.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
 
     def test_status_string_for_user__pending(self):
-        pass 
+        event_application = EventApplication.objects.get(id=1)
+        self.assertEqual(event_application.status_string_for_user, "Pending") 
 
     def test_status_string_for_user__approved(self):
-        pass 
+        event_application = EventApplication.objects.get(id=2)
+        self.assertEqual(event_application.status_string_for_user, "Approved") 
 
     def test_status_string_for_user__rejected(self):
-        pass 
+        event_application = EventApplication.objects.get(id=3)
+        self.assertEqual(event_application.status_string_for_user, "Rejected") 
 
     def test_status_string_for_user__withdrawn(self):
-        pass 
+        event_application = EventApplication.objects.get(id=4)
+        self.assertEqual(event_application.status_string_for_user, "Withdrawn") 
 
     
     # ------------------------------- tests for withdraw ------------------------------

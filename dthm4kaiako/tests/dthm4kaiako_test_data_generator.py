@@ -511,14 +511,49 @@ def generate_applicant_types():
 
 def generate_event_applications():
     """Generate event applications for use in dthm4kaiako tests."""
-    event_application_1 = EventApplication.objects.create(
+    event_application_1_pending = EventApplication.objects.create(
+        id=1,
         applicant_type = ApplicantType.objects.get(name="Teacher"),
         user = User.objects.get(id=1),
         event = Event.objects.get(id=1),
         billing_physical_address = Address.objects.get(id=1),
         billing_email_address = "test@test.co.nz"
     )
+    event_application_1_pending.status = 1
+    event_application_1_pending.save()
 
+    event_application_2_approved = EventApplication.objects.create(
+        id=2,
+        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        user = User.objects.get(id=2),
+        event = Event.objects.get(id=1),
+        billing_physical_address = Address.objects.get(id=1),
+        billing_email_address = "test@test.co.nz"
+    )
+    event_application_2_approved.status = 2 
+    event_application_2_approved.save()
+
+    event_application_3_rejected = EventApplication.objects.create(
+        id=3,
+        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        user = User.objects.get(id=3),
+        event = Event.objects.get(id=1),
+        billing_physical_address = Address.objects.get(id=1),
+        billing_email_address = "test@test.co.nz"
+    )
+    event_application_3_rejected.status = 3
+    event_application_3_rejected.save()
+
+    event_application_4_withdrawn = EventApplication.objects.create(
+        id=4,
+        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        user = User.objects.get(id=1),
+        event = Event.objects.get(id=2),
+        billing_physical_address = Address.objects.get(id=1),
+        billing_email_address = "test@test.co.nz"
+    )
+    event_application_4_withdrawn.status = 4
+    event_application_4_withdrawn.save()
 
 def generate_event_registration_forms():
     """Generate event registration forms for use in dthm4kaiako tests."""

@@ -544,6 +544,8 @@ class EventApplication(models.Model):
             string_form = "Approved"
         elif self.status == 3:
             string_form = "Rejected"
+        elif self.status == 4:
+            string_form =  "Withdrawn"
         return string_form
 
     def withdraw(self):
