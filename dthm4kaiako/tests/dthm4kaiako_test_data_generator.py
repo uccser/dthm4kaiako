@@ -248,10 +248,226 @@ def generate_events():
     )
     event_ended_1.save()
 
+    event_physical_register_2 = Event.objects.create(
+        id=5,
+        name="Intro to logic gates",
+        description="description",
+        registration_type = 1,
+        start=datetime.date(2023, 1, 24),
+        end=datetime.date(2023, 1, 26),
+        accessible_online=False,
+        price=0
+    )
+    event_physical_register_2.save()
+
+    event_physical_register_3 = Event.objects.create(
+        id=6,
+        name="Cryptocurrency - what is it?",
+        description="description",
+        registration_type = 1,
+        start=datetime.date(2023, 4, 3),
+        end=datetime.date(2023, 4, 10),
+        accessible_online=False,
+        price=70
+    )
+    event_physical_register_3.save()
+
+    event_physical_register_4 = Event.objects.create(
+        id=7,
+        name="Resource jam!",
+        description="description",
+        registration_type = 1,
+        start=datetime.date(2023, 2, 28),
+        end=datetime.date(2023, 3, 3),
+        accessible_online=False,
+        price=35
+    )
+    event_physical_register_4.save()
+
 
 def generate_sessions():
-    """Generate serieses for use in dthm4kaiako tests."""
-    pass 
+    """Generate sessions for use in dthm4kaiako tests."""
+
+    session_2_event_1 = Session.objects.create(
+        id=1,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 6, 24, 13, 0, 0),
+        end=datetime.datetime(2023, 6, 24, 16, 0, 0),
+        event=Event.objects.get(id=1),
+    )
+
+    session_1_event_1 = Session.objects.create(
+        id=2,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 6, 24, 9, 0, 0),
+        end=datetime.datetime(2023, 6, 24, 12, 0, 0),
+        event=Event.objects.get(id=1),
+    )
+
+    session_1_event_2 = Session.objects.create(
+        id=3,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 2, 13, 10, 30, 0),
+        end=datetime.datetime(2023, 2, 13, 12, 30, 0),
+        event=Event.objects.get(id=2),
+    )
+
+
+    session_2_event_2 = Session.objects.create(
+        id=4,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 2, 13, 10, 30, 0),
+        end=datetime.datetime(2023, 2, 13, 12, 30, 0),
+        event=Event.objects.get(id=2),
+    )
+
+    
+    session_1_event_3 = Session.objects.create(
+        id=5,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 2, 13, 10, 30, 0),
+        end=datetime.datetime(2023, 2, 13, 12, 30, 0),
+        event=Event.objects.get(id=3),
+    )
+
+
+    session_2_event_3 = Session.objects.create(
+        id=6,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 2, 13, 10, 30, 0),
+        end=datetime.datetime(2023, 2, 14, 12, 30, 0),
+        event=Event.objects.get(id=3),
+    )
+
+    session_1_event_4 = Session.objects.create(
+        id=7,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2020, 4, 15, 10, 30, 0),
+        end=datetime.datetime(2020, 4, 15, 12, 30, 0),
+        event=Event.objects.get(id=4),
+    )
+
+    session_2_event_4 = Session.objects.create(
+        id=8,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2020, 4, 16, 10, 30, 0),
+        end=datetime.datetime(2020, 4, 16, 12, 30, 0),
+        event=Event.objects.get(id=4),
+    )
+
+    session_3_event_4 = Session.objects.create(
+        id=9,
+        name="session 3",
+        description="some description",
+        start=datetime.datetime(2020, 4, 16, 10, 30, 0),
+        end=datetime.datetime(2020, 4, 16, 12, 30, 0),
+        event=Event.objects.get(id=4),
+    )
+
+    session_3_event_5 = Session.objects.create(
+        id=12,
+        name="session 3",
+        description="some description",
+        start=datetime.datetime(2023, 1, 26, 11, 30, 0),
+        end=datetime.datetime(2023, 1, 26, 15, 30, 0),
+        event=Event.objects.get(id=5),
+    )
+
+    session_4_event_5 = Session.objects.create(
+        id=13,
+        name="session 4",
+        description="some description",
+        start=datetime.datetime(2023, 1, 27, 14, 30, 0),
+        end=datetime.datetime(2023, 1, 27, 16, 30, 0),
+        event=Event.objects.get(id=5),
+    )
+
+    session_1_event_5 = Session.objects.create(
+        id=10,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 1, 24, 13, 30, 0),
+        end=datetime.datetime(2023, 1, 24, 17, 30, 0),
+        event=Event.objects.get(id=5),
+    )
+
+    session_2_event_5 = Session.objects.create(
+        id=11,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 1, 25, 9, 30, 0),
+        end=datetime.datetime(2023, 1, 25, 13, 30, 0),
+        event=Event.objects.get(id=5),
+    )
+
+    session_3_event_6 = Session.objects.create(
+        id=14,
+        name="session 3",
+        description="some description",
+        start=datetime.datetime(2023, 4, 3, 11, 30, 0),
+        end=datetime.datetime(2023, 1, 26, 12, 30, 0),
+        event=Event.objects.get(id=6),
+    )
+
+    session_4_event_6 = Session.objects.create(
+        id=15,
+        name="session 4",
+        start=datetime.datetime(2023, 4, 3, 12, 30, 0),
+        end=datetime.datetime(2023, 1, 26, 13, 30, 0),
+        event=Event.objects.get(id=6),
+    )
+
+    session_1_event_6 = Session.objects.create(
+        id=16,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 4, 3, 9, 30, 0),
+        end=datetime.datetime(2023, 1, 26, 10, 30, 0),
+        event=Event.objects.get(id=6),
+    )
+
+    session_2_event_6 = Session.objects.create(
+        id=17,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 4, 3, 10, 30, 0),
+        end=datetime.datetime(2023, 1, 26, 11, 30, 0),
+        event=Event.objects.get(id=6),
+    )
+
+    session_3_event_7 = Session.objects.create(
+        id=18,
+        name="session 3",
+        start=datetime.datetime(2023, 3, 2, 14, 0, 0),
+        end=datetime.datetime(2023, 3, 2, 16, 0, 0),
+        event=Event.objects.get(id=7),
+    )
+
+    session_1_event_7 = Session.objects.create(
+        id=19,
+        name="session 1",
+        description="some description",
+        start=datetime.datetime(2023, 2, 28, 14, 0, 0),
+        end=datetime.datetime(2023, 2, 28, 16, 0, 0),
+        event=Event.objects.get(id=7),
+    )
+
+    session_2_event_7 = Session.objects.create(
+        id=20,
+        name="session 2",
+        description="some description",
+        start=datetime.datetime(2023, 3, 1, 14, 0, 0),
+        end=datetime.datetime(2023, 3, 1, 16, 0, 0),
+        event=Event.objects.get(id=7),
+    )
 
 
 def generate_applicant_types():

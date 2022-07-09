@@ -7,7 +7,8 @@ from events.models import (
     ApplicantType,
     Address,
     EventApplication,
-    Series
+    Series,
+    Session,
     )
 from tests.dthm4kaiako_test_data_generator import (
     generate_users,
@@ -17,6 +18,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_addresses,
     generate_event_applications,
     generate_serieses,
+    generate_sessions
 )
 
 
@@ -26,37 +28,79 @@ class EventModelTests(TestCase):
     def setUpTestData(cls):
         generate_serieses()
         generate_events()
+        generate_sessions()
 
     @classmethod
     def tearDownTestData(cls):
         Series.objects.all().delete()
-        Event.objecs.all().delete()
+        Event.objects.all().delete()
+        Session.objects.all().delete()
+
 
     # ----------------------- tests for update_datetimes -----------------------
 
-    def test_location_summary__different_start_and_end_datetimes_two_events(self):
-        pass 
+    def test_update_datetimes__same_start_and_end_datetimes_two_sessions(self):
+        event = Event.objects.get(id=2)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=2), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=2), name="session 2").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
 
-    def test_location_summary__same_start_and_end_datetimes_two_events(self):
-        pass 
 
-    def test_location_summary__different_times_same_day_two_events(self):
-        pass
+    def test_update_datetimes__different_times_same_day_two_sessions(self):
+        event = Event.objects.get(id=1)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=1), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=1), name="session 2").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
 
-    def test_location_summary__different_days_same_time_two_events(self):
-        pass
 
-    def test_location_summary__different_start_and_end_datetimes_many_events(self):
-        pass 
+    def test_update_datetimes__different_days_same_time_two_sessions(self):
+        event = Event.objects.get(id=3)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=3), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=3), name="session 2").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
 
-    def test_location_summary__same_start_and_end_datetimes_many_events(self):
-        pass 
 
-    def test_location_summary__different_times_same_day_many_events(self):
-        pass
+    def test_update_datetimes__different_start_and_end_datetimes_many_sessions(self):
+        event = Event.objects.get(id=4)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=4), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=4), name="session 3").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
 
-    def test_location_summary__different_days_same_time_many_events(self):
-        pass
+
+    def test_update_datetimes__same_start_and_end_datetimes_many_sessions(self):
+        event = Event.objects.get(id=5)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=5), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=5), name="session 4").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
+
+
+    def test_update_datetimes__different_times_same_day_many_sessions(self):
+        event = Event.objects.get(id=6)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=6), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=6), name="session 4").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
+
+
+    def test_update_datetimes__different_days_same_time_many_sessions(self):
+        event = Event.objects.get(id=7)
+        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=7), name="session 1").start
+        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=7), name="session 3").end
+        event.update_datetimes()
+        self.assertEqual(event.start, expected_start_datetime)
+        self.assertEqual(event.end, expected_end_datetime)
+
 
     # ----------------------- tests for get_absolute_url -----------------------
 
