@@ -9,8 +9,10 @@ from events.models import (
     EventApplication,
     Series,
     Session,
+    Location
     )
 from tests.dthm4kaiako_test_data_generator import (
+    generate_locations,
     generate_users,
     generate_events,
     generate_applicant_types,
@@ -27,6 +29,7 @@ class EventModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         generate_serieses()
+        generate_locations()
         generate_events()
         generate_sessions()
 
@@ -34,6 +37,7 @@ class EventModelTests(TestCase):
     def tearDownTestData(cls):
         Series.objects.all().delete()
         Event.objects.all().delete()
+        Location.objects.all().delete()
         Session.objects.all().delete()
 
 
@@ -122,16 +126,24 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=1)
         self.assertEqual(str(event.get_short_name()), event.name)
 
+
     # ----------------------- tests for location_summary -----------------------
 
     def test_location_summary__multiple_locations(self):
-        pass 
+        event = Event.objects.get(id=2)
+        self.assertEqual(event.location_summary(), 'Multiple locations')
 
     def test_location_summary__one_location(self):
-        pass 
+        event = Event.objects.get(id=1)
+        location = event.locations.get()
+        city = location.city
+        region = location.get_region_display()
+        expected_summary_text = '{}, {}'.format(city, region)
+        self.assertEqual(event.location_summary(), expected_summary_text)
 
     def test_location_summary__no_location(self):
-        pass
+        event = Event.objects.get(id=8)
+        self.assertEqual(event.location_summary(), None)
 
 
     # ----------------------- tests for is_register_or_apply -----------------------
@@ -148,6 +160,7 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=3)
         self.assertEqual(event.is_register_or_apply, False) 
 
+
     # ---------------------------- tests for has_ended ----------------------------
 
     def test_has_ended__event_ended(self):
@@ -158,7 +171,9 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=1)
         self.assertEqual(event.has_ended, False)  
 
-        # ------------------------ tests for get_event_type_short -----------------------
+
+    # ------------------------ tests for get_event_type_short -----------------------
+
     def test_get_event_type_short__apply(self):
         event = Event.objects.get(id=2)
         self.assertEqual(event.get_event_type_short, "Apply")
@@ -167,7 +182,9 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=1)
         self.assertEqual(event.get_event_type_short, "Register") 
 
+
     # ------------------------ tests for has_attendance_fee -----------------------
+
     def test_has_attendance_fee__event_has_fee(self):
         event = Event.objects.get(id=1)
         self.assertEqual(event.has_attendance_fee, True) 
@@ -175,6 +192,7 @@ class EventModelTests(TestCase):
     def test_has_attendance_fee__event_is_free(self):
         event = Event.objects.get(id=3)
         self.assertEqual(event.has_attendance_fee, False)  
+
 
     # ----------------------------- tests for __str__ ------------------------------
 
@@ -208,6 +226,7 @@ class AddressTests(TestCase):
         generate_addresses()
         generate_users()
         generate_serieses()
+        generate_locations()
         generate_events()
         generate_applicant_types()
         generate_event_applications()
@@ -219,6 +238,7 @@ class AddressTests(TestCase):
         ApplicantType.objects.all().delete()
         Series.objects.all().delete()
         Event.objects.all().delete()
+        Location.objects.all().delete()
         User.objects.all().delete()
         Address.objects.all().delete()
 
@@ -249,7 +269,7 @@ class EventApplicationTests(TestCase):
 
     @classmethod
     def tearDownTestData(cls):
-        EventApplication.objecs.all().delete()
+        EventApplication.objects.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
 

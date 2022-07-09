@@ -18,6 +18,8 @@ from events.models import (
     EventApplication,
     RegistrationForm,
 )
+from django.contrib.gis.geos import Point
+
 
 User = get_user_model()
 
@@ -142,38 +144,42 @@ def generate_entities():
 
 def generate_locations():
     """Generate locations for use in dthm4kaiako tests."""
-
-    pass 
     
-    # location_1 = Location.objects.create(
-    #     room='Room 123',
-    #     name='Middleton Grange School',
-    #     street_address='12 High Street',
-    #     suburb='Riccarton',
-    #     city='Chrirstchurch',
-    #     region=14
-    # )
-    # location_1.save()
+    location_1 = Location.objects.create(
+        id=1,
+        room='Room 123',
+        name='Middleton Grange School',
+        street_address='12 High Street',
+        suburb='Riccarton',
+        city='Chrirstchurch',
+        region=14,
+        coords=Point(-43,172)
+    )
+    location_1.save()
 
-    # location_2 = Location.objects.create(
-    #     room='Room 456',
-    #     name='Middleton Grange School',
-    #     street_address='12 High Street',
-    #     suburb='Riccarton',
-    #     city='Chrirstchurch',
-    #     region=14
-    # )
-    # location_2.save()
+    location_2 = Location.objects.create(
+        id=2,
+        room='Room 456',
+        name='Middleton Grange School',
+        street_address='12 High Street',
+        suburb='Riccarton',
+        city='Chrirstchurch',
+        region=14,
+        coords=Point(-12,149)
+    )
+    location_2.save()
 
-    # location_3 = Location.objects.create(
-    #     room='Room 7',
-    #     name='Middleton Grange School',
-    #     street_address='12 High Street',
-    #     suburb='Riccarton',
-    #     city='Chrirstchurch',
-    #     region=14
-    # )
-    # location_3.save()
+    location_3 = Location.objects.create(
+        id=3,
+        room='Room 7',
+        name='Middleton Grange School',
+        street_address='12 High Street',
+        suburb='Riccarton',
+        city='Chrirstchurch',
+        region=14,
+        coords=Point(-27,188)
+    )
+    location_3.save()
     
 
 def generate_serieses():
@@ -190,9 +196,9 @@ def generate_serieses():
 def generate_events():
     """Generate events for use in dthm4kaiako tests."""
 
-    # location_1 = Locations.objects.get(id=1)
-    # location_2 = Locations.objects.get(id=2)
-    # location_3 = Locations.objects.get(id=3)
+    location_1 = Location.objects.get(id=1)
+    location_2 = Location.objects.get(id=2)
+    location_3 = Location.objects.get(id=3)
 
     event_physical_register_1 = Event.objects.create(
         id=1,
@@ -202,9 +208,9 @@ def generate_events():
         start=datetime.date(2023, 6, 24),
         end=datetime.date(2023, 6, 26),
         accessible_online=False,
-        # locations = location_1,
         price=50
     )
+    event_physical_register_1.locations.set([location_1])
     event_physical_register_1.save()
 
     event_physical_apply_1 = Event.objects.create(
@@ -215,9 +221,9 @@ def generate_events():
         start=datetime.date(2023, 2, 13),
         end=datetime.date(2023, 2, 14),
         accessible_online=False,
-        # locations = location_2,
-        price=75
+        price=75,
     )
+    event_physical_apply_1.locations.set([location_2, location_3])
     event_physical_apply_1.save()
 
     event_physical_invite_1 = Event.objects.create(
@@ -283,6 +289,18 @@ def generate_events():
         price=35
     )
     event_physical_register_4.save()
+
+    event_online_register_1 = Event.objects.create(
+        id=8,
+        name="Zoom for Beginners",
+        description="description",
+        registration_type = 1,
+        start=datetime.date(2023, 2, 14),
+        end=datetime.date(2023, 3, 14),
+        accessible_online=True,
+        price=0
+    )
+    event_online_register_1.save()
 
 
 def generate_sessions():
