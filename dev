@@ -203,6 +203,8 @@ cmd_test_coverage() {
   echo "Displaying test suite coverage..."
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django coverage xml -i
   docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django coverage report -m --skip-covered
+  # docker-compose -f docker-compose.local.yml run --rm --label traefik.enable=false django coverage report -m
+
 }
 defhelp test_coverage 'Display code coverage report.'
 

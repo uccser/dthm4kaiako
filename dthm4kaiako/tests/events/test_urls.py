@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-import events
+
 
 class EventURLTest(TestCase):
 
@@ -27,7 +27,9 @@ class EventURLTest(TestCase):
     def test_event_detail__reverse_provides_correct_url_with_slug(self):
         pk = 1,
         slug = "CS-conference"
-        self.assertEqual(reverse('events:event', args=[pk, slug]), "/events/event/1/CS-conference/")
+        kwargs = kwargs={'pk' : pk, 'slug' : slug}
+        url = reverse('events:event', kwargs=kwargs)
+        self.assertEqual(url, '/events/event/1/CS-conference/')
 
 
     # TODO: fix - Failing
@@ -35,7 +37,7 @@ class EventURLTest(TestCase):
         pk = 1,
         kwargs = {'pk' : pk}
         url = reverse("events:location", kwargs=kwargs)
-        self.assertEqual(url, "events/location/1/")
+        self.assertEqual(url, "/events/location/1/")
 
 
     def test_applications__reverse_provides_correct_url(self):
