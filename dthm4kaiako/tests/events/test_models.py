@@ -105,7 +105,12 @@ class EventModelTests(TestCase):
     # ----------------------- tests for get_absolute_url -----------------------
 
     def test_get_absolute_url__returns_url_of_event_on_website(self):
-        pass
+        event = Event.objects.get(id=1)
+        expected_event_name_lowered = event.name.lower()
+        expected_event_name = expected_event_name_lowered.replace(" ","-")
+        expected_url = '/events/event/{}/{}/'.format(event.id, expected_event_name)
+        self.assertEqual(str(event.get_absolute_url()), expected_url)
+
 
     # ----------------------- tests for get_short_name -----------------------
 
