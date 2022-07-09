@@ -6,9 +6,7 @@ from django.core import management
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
-from allauth.account.models import EmailAddress
 from tests.users.factories import EntityFactory
-from django.contrib.gis.geos import Point
 import datetime
 from resources.models import (
     Language,

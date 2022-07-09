@@ -9,7 +9,8 @@ from events.models import (
     EventApplication,
     Series,
     Session,
-    Location
+    Location,
+    RegistrationForm
     )
 from tests.dthm4kaiako_test_data_generator import (
     generate_locations,
@@ -305,13 +306,44 @@ class EventApplicationTests(TestCase):
     # ------------------------------- tests for withdraw ------------------------------
 
     def test_withdraw__not_already_withdrawn(self):
-        pass 
+        event_application = EventApplication.objects.get(id=1)
+        event_application.withdraw()
+        self.assertEqual(event_application.status, 4) 
 
     def test_withdraw__already_withdrawn(self):
-        pass 
+        event_application = EventApplication.objects.get(id=4)
+        self.assertEqual(event_application.status, 4) 
 
-    
+
+class RegistrationFormTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        generate_addresses()
+        generate_serieses()
+        generate_locations()
+        generate_events()
+        generate_users()
+        generate_applicant_types()
+        generate_event_applications()
+
+    @classmethod
+    def tearDownTestData(cls):
+        Address.objects.all().delete()
+        Series.objects.all().delete()
+        Location.objects.all().delete()
+        Event.objects.all().delete()
+        User.objects.all().delete()
+        ApplicantType.objects.all().delete()
+        EventApplication.objects.all().delete()
+
     # ------------------------------- tests for get_absolute_url ------------------------------
 
-    def test_get_absolute_url(self):
-        pass 
+    def test_get_absolute_url__returns_url_of_registration_form_on_website(self):
+        reg_form = RegistrationForm.objects.get(event_id=1)
+        event = reg_form.event 
+        event_pk = event.pk
+        event_slug = event.slug
+        expected_url = '/events/register/{}/'.format(event_pk)
+        self.assertEqual(str(reg_form.get_absolute_url()), expected_url)
+

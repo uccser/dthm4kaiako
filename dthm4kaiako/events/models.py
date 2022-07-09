@@ -550,7 +550,8 @@ class EventApplication(models.Model):
 
     def withdraw(self):
         """Set the status to withdrawn."""
-        self.status = 4
+        if (self.status != 4):
+            self.status = 4
 
 
 class RegistrationForm(models.Model):
@@ -571,7 +572,7 @@ class RegistrationForm(models.Model):
         Returns:
             URL as a string.
         """
-        return reverse('events:event_registration', kwargs={'pk': self.event.pk, 'slug': self.event.slug})
+        return reverse('events:apply', kwargs={'pk': self.event.pk,})
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
@@ -610,6 +611,3 @@ def create_registration_form(sender, instance, created, **kwargs):
     """Create a registration form when an event is created."""
     if created:
         RegistrationForm.objects.create(event=instance)
-
-
-
