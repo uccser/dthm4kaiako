@@ -15,6 +15,7 @@ User = get_user_model()
 class EventApplicationForm(forms.Form):
     """ Simple form to allow a user to submit an application to attend an event. """
 
+    participant_email_address = EmailField(required=True, label='Email to contact you')
     applicant_type = forms.ModelChoiceField(ApplicantType.objects)
 
     def __init__(self, *args, **kwargs):

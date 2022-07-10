@@ -251,10 +251,10 @@ def apply_for_event(request, pk):
     billing_details_form = None
     terms_and_conditions_form = None
     billing_required = event.has_attendance_fee
-    event_application = None
     dietary_requirements_form = None
     display_catering_info = event.is_catered
     initial_data={'show_dietary_requirements': event.is_catered}
+    new_billing_email = None
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
@@ -292,12 +292,19 @@ def apply_for_event(request, pk):
                                     ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
+            user.school = user_update_details_form.cleaned_data['school']
+            user.city = user_update_details_form.cleaned_data['city']
+            user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
+            user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
+            participant_email_address = event_application_form.cleaned_data['participant_email_address']
+
             if display_catering_info:
                 all_dietary_reqs = dietary_requirements_form.cleaned_data['dietary_requirements']
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
             new_applicant_type = event_application_form.cleaned_data['applicant_type']
+
 
             if billing_required:
                 new_street_number = billing_details_form.cleaned_data['street_number']
@@ -327,6 +334,7 @@ def apply_for_event(request, pk):
                         'applicant_type': new_applicant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
+                        'participant_email_address': participant_email_address
                     }
                 )
             

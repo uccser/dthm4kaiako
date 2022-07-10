@@ -508,21 +508,27 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='event_applications',
     )
+    participant_email_address = models.EmailField(
+        max_length=150,
+        blank=False,
+        null=False,
+        default='',
+    )
     paid = models.BooleanField(default=False) #TODO: use a computed function for this
     billing_physical_address = models.ForeignKey(
         Address,
         on_delete=models.CASCADE,
         related_name='event_applications',
         blank=True,
-        null=True,
+        null=True, # since not needed for events that are free
         verbose_name='billing address',
     )
     billing_email_address = models.EmailField(
         max_length=100,
         blank=False,
         null=False,
-        default='',
     )
+
 
     class Meta:
         """Meta options for class."""

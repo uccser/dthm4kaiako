@@ -56,8 +56,6 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
-    from_email = EmailField(required=True, label='Email to contact you')
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()

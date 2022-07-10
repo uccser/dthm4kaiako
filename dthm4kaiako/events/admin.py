@@ -185,6 +185,8 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'user',
         'user_school',
         'user_city',
+        'mobile_phone_number',
+        'medical_notes',
         'user_dietary_requirements',
         'event',
         'event_start_end',
@@ -192,6 +194,9 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'event_price',
         'submitted',
         'updated',
+        'billing_physical_address',
+        'billing_email_address',
+        'participant_email_address'
     ]
     fieldsets = (
         (
@@ -201,6 +206,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'user',
                     'user_school',
                     'user_city',
+                    'mobile_phone_number',
                     'user_dietary_requirements',
                 )
             },
@@ -223,6 +229,8 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'updated',
                     'status',
                     'applicant_type',
+                    'participant_email_address',
+                    'medical_notes',
                     'staff_comments',
                 )
             },
@@ -268,6 +276,17 @@ class EventApplicationAdmin(admin.ModelAdmin):
     def event_price(self, application):
         return f'${application.event.price:.2f}'
 
+    @admin.display
+    def mobile_phone_number(self, application):
+        return application.user.mobile_phone_number
+
+    @admin.display
+    def medical_notes(self, application):
+        return application.user.medical_notes
+
+    @admin.display
+    def participant_email_address(self, application):
+        return application.event_application.participant_email_address
 
 
 admin.site.register(Event, EventAdmin)
