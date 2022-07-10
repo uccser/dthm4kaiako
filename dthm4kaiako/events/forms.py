@@ -1,5 +1,6 @@
 """Forms for events application."""
 
+# from attr import fields
 from django import forms
 from events.models import ApplicantType, Address
 from users.models import DietaryRequirement
@@ -7,7 +8,9 @@ from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, CharField
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class EventApplicationForm(forms.Form):
     """ Simple form to allow a user to submit an application to attend an event. """
@@ -53,6 +56,7 @@ class BillingDetailsForm(ModelForm):
         model = Address
         fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country']
 
+
 class DietaryRequirementsForm(forms.Form):
     """Form class for event registration billing details."""
 
@@ -66,7 +70,4 @@ class DietaryRequirementsForm(forms.Form):
         self.helper.disable_csrf = True
 
     class Meta:
-        """Metadata for DietaryRequirementsForm class."""
-
         model = DietaryRequirement
-        

@@ -8,7 +8,7 @@ from utils.get_upload_filepath import get_entity_upload_path
 
 class DietaryRequirement(models.Model):
     """Model for a dietary requirement e.g. vegetarian."""
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         """Text representation of a dietary requirement."""

@@ -226,20 +226,11 @@ def validate_event_application_form(event_application_form,
     Validates that the event application is valid.
     Also accommodates for the billing section and dietary requirements sections to be only validated if they are needed i.e. are rended.
     """
-    
-    true_count = 0
-    expected_true = 5
-    if event_application_form.is_valid():
-        true_count += 1
-    if user_update_details_form.is_valid():
-        true_count += 1
-    if terms_and_conditions_form.is_valid():
-        true_count += 1
-    if (not billing_required or billing_details_form.is_valid()):
-        true_count += 1
-    if (not is_catered or dietary_requirements_form.is_valid()):
-        true_count += 1
-    return true_count == expected_true
+
+    if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()) and (not is_catered or dietary_requirements_form.is_valid()):
+        return True
+    else:
+        return False
 
 
 @login_required
@@ -271,7 +262,8 @@ def apply_for_event(request, pk):
         event_application_form = EventApplicationForm()
         if display_catering_info:
             dietary_requirements_form = DietaryRequirementsForm()
-        user_update_details_form = UserUpdateDetailsForm(initial=initial_data, instance=user) # autoload existing event application
+        user_update_details_form = UserUpdateDetailsForm(instance=user) # autoload existing event application
+
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
@@ -284,7 +276,7 @@ def apply_for_event(request, pk):
 
         event_application_form = EventApplicationForm(request.POST)
         if display_catering_info:
-            dietary_requirements_form = DietaryRequirementsForm()
+            dietary_requirements_form = DietaryRequirementsForm(request.POST)
         user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_data)
         if billing_required:
             billing_details_form = BillingDetailsForm(request.POST)
@@ -293,18 +285,19 @@ def apply_for_event(request, pk):
         if validate_event_application_form(event_application_form, 
                                     user_update_details_form, 
                                     terms_and_conditions_form, 
-                                    billing_required,
+                                    billing_required, 
                                     billing_details_form,
                                     display_catering_info,
-                                    dietary_requirements_form):
+                                    dietary_requirements_form,
+                                    ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
-            all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
-            user.dietary_requirements.set(all_dietary_reqs)
+            if display_catering_info:
+                all_dietary_reqs = dietary_requirements_form.cleaned_data['dietary_requirements']
+                user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
             new_applicant_type = event_application_form.cleaned_data['applicant_type']
-
 
             if billing_required:
                 new_street_number = billing_details_form.cleaned_data['street_number']
@@ -355,6 +348,7 @@ def apply_for_event(request, pk):
                 # Create new event application
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
+
 
     context = {
         'event': event,

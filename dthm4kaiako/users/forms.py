@@ -64,7 +64,7 @@ class UserUpdateDetailsForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        # TODO: figure our how to get the dietary requirements to show when either the event is catered or the user is updating their details.
+        # TODO: figure out how to get the dietary requirements to show when either the event is catered or the user is updating their details.
         # Safe to remove this if it is not needed in the update user details form as the event application form contains dietary requirements separately.
 
         # self.show_dietary_requirements = True
