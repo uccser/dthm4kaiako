@@ -19,6 +19,11 @@
             <b>Personal Information</b>
         </h5>
         {% crispy user_form %}
+
+        {% if display_catering_info %}
+            {% crispy dietary_requirements_form %}
+        {% endif %}
+
         {% crispy event_application_form %}
 
         {% if billing_required %}

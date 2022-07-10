@@ -12,7 +12,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
+from .forms import DietaryRequirementsForm, EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -214,6 +214,34 @@ def delete_application_via_event_page(request, pk):
     return render(request, 'event_details.html')
 
 
+def validate_event_application_form(event_application_form, 
+                                    user_update_details_form, 
+                                    terms_and_conditions_form, 
+                                    billing_required, 
+                                    billing_details_form,
+                                    is_catered,
+                                    dietary_requirements_form,
+                                    ):
+    """
+    Validates that the event application is valid.
+    Also accommodates for the billing section and dietary requirements sections to be only validated if they are needed i.e. are rended.
+    """
+    
+    true_count = 0
+    expected_true = 5
+    if event_application_form.is_valid():
+        true_count += 1
+    if user_update_details_form.is_valid():
+        true_count += 1
+    if terms_and_conditions_form.is_valid():
+        true_count += 1
+    if (not billing_required or billing_details_form.is_valid()):
+        true_count += 1
+    if (not is_catered or dietary_requirements_form.is_valid()):
+        true_count += 1
+    return true_count == expected_true
+
+
 @login_required
 def apply_for_event(request, pk):
     """ View for event application/registration form and saving it as an EventApplication.
@@ -233,12 +261,16 @@ def apply_for_event(request, pk):
     terms_and_conditions_form = None
     billing_required = event.has_attendance_fee
     event_application = None
+    dietary_requirements_form = None
+    display_catering_info = event.is_catered
     initial_data={'show_dietary_requirements': event.is_catered}
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
         event_application_form = EventApplicationForm()
+        if display_catering_info:
+            dietary_requirements_form = DietaryRequirementsForm()
         user_update_details_form = UserUpdateDetailsForm(initial=initial_data, instance=user) # autoload existing event application
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
@@ -251,14 +283,20 @@ def apply_for_event(request, pk):
         # If creating a new application or updating existing application (as Django forms don't support PUT)
 
         event_application_form = EventApplicationForm(request.POST)
+        if display_catering_info:
+            dietary_requirements_form = DietaryRequirementsForm()
         user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_data)
         if billing_required:
             billing_details_form = BillingDetailsForm(request.POST)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-
-
-        if event_application_form.is_valid() and user_update_details_form.is_valid()  and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()):
+        if validate_event_application_form(event_application_form, 
+                                    user_update_details_form, 
+                                    terms_and_conditions_form, 
+                                    billing_required,
+                                    billing_details_form,
+                                    display_catering_info,
+                                    dietary_requirements_form):
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
@@ -325,6 +363,8 @@ def apply_for_event(request, pk):
         'billing_details_form': billing_details_form,
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
+        'dietary_requirements_form': dietary_requirements_form,
+        'display_catering_info' : display_catering_info,
     }
 
     return render(request, 'events/apply.html', context)

@@ -130,6 +130,7 @@ class EventAdmin(ClonableModelAdmin):
                     'organisers',
                     'sponsors',
                     'price',
+                    'is_catered',
                 )
             }
         ),

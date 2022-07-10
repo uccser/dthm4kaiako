@@ -2,9 +2,11 @@
 
 from django import forms
 from events.models import ApplicantType, Address
+from users.models import DietaryRequirement
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
-from django.forms import EmailField
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, CharField
+from django.db.models import Q
 
 
 class EventApplicationForm(forms.Form):
@@ -50,3 +52,21 @@ class BillingDetailsForm(ModelForm):
 
         model = Address
         fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country']
+
+class DietaryRequirementsForm(forms.Form):
+    """Form class for event registration billing details."""
+
+    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+    other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+    class Meta:
+        """Metadata for DietaryRequirementsForm class."""
+
+        model = DietaryRequirement
+        
