@@ -55,15 +55,21 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
-    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-    other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
-    from_email = EmailField(required=True, label='Email to contact you')
-
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        # super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+        initial_data_dict = kwargs.get('initial')
+        self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
+        super().__init__(*args,**kwargs)
+
+
+        if (self.show_dietary_requirements):
+            dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+            other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
+
+    from_email = EmailField(required=True, label='Email to contact you')
 
     class Meta:
 

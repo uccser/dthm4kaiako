@@ -16,4 +16,3 @@ class EventApplicationsViewTest(BaseTestWithDB):
     def test_event_applications_view_success_response(self):
         response = self.client.get(reverse("events:event_applications"))
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertContains(response, "Events")

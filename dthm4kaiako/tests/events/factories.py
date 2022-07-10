@@ -39,6 +39,7 @@ class EventFactory(DjangoModelFactory):
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
     end = LazyAttribute(lambda obj: obj.start)
     accessible_online = LazyFunction(random_boolean)
+    is_catered = LazyFunction(random_boolean)
 
     class Meta:
         """Metadata for class."""

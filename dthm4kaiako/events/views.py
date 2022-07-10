@@ -233,12 +233,13 @@ def apply_for_event(request, pk):
     terms_and_conditions_form = None
     billing_required = event.has_attendance_fee
     event_application = None
+    initial_data={'show_dietary_requirements': event.is_catered}
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
         event_application_form = EventApplicationForm()
-        user_update_details_form = UserUpdateDetailsForm(instance=user) # autoload existing event application
+        user_update_details_form = UserUpdateDetailsForm(initial=initial_data, instance=user) # autoload existing event application
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
@@ -250,10 +251,12 @@ def apply_for_event(request, pk):
         # If creating a new application or updating existing application (as Django forms don't support PUT)
 
         event_application_form = EventApplicationForm(request.POST)
-        user_update_details_form = UserUpdateDetailsForm(request.POST)
+        user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_data)
         if billing_required:
             billing_details_form = BillingDetailsForm(request.POST)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
+
+
 
         if event_application_form.is_valid() and user_update_details_form.is_valid()  and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()):
             user.first_name = user_update_details_form.cleaned_data['first_name']
