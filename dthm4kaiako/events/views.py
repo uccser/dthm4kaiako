@@ -183,7 +183,9 @@ class EventApplicationsView(generic.ListView, LoginRequiredMixin):
         user = self.request.user
 
         if user.is_authenticated:
-            context['event_applications'] = EventApplication.objects.filter(user=user)
+            unordered_event_applications = EventApplication.objects.filter(user=user).order_by(
+                'event__start')
+            context['event_applications'] = unordered_event_applications
         return context
 
 
