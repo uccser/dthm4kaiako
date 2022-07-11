@@ -7,13 +7,14 @@ from events.models import (
     Location,
 )
 from users.models import Entity
+from utils.new_zealand_regions import REGION_CHOICES
 
 
 class UpcomingEventFilter(django_filters.FilterSet):
     """Filter for showing upcoming events."""
 
     locations__region = django_filters.ChoiceFilter(
-        choices=Location.REGION_CHOICES,
+        choices=REGION_CHOICES,
         label='Region',
         empty_label='Show all',
     )
@@ -61,7 +62,7 @@ class PastEventFilter(django_filters.FilterSet):
     """Filter for showing past events."""
 
     locations__region = django_filters.ChoiceFilter(
-        choices=Location.REGION_CHOICES,
+        choices=REGION_CHOICES,
         label='Region',
         empty_label='Show all',
     )

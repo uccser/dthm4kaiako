@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from utils.get_upload_filepath import get_entity_upload_path
+from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 
 
 class DietaryRequirement(models.Model):
@@ -19,31 +20,6 @@ class DietaryRequirement(models.Model):
 
         ordering = ['name', ]
         verbose_name_plural = 'dietary requirements'
-
-# TODO: remove school and city and add in school into Address model?
-class User(AbstractUser):
-    """User of website."""
-
-    username = models.CharField(max_length=50, default='user')
-    first_name = models.CharField(max_length=50, verbose_name='first name')
-    last_name = models.CharField(max_length=150, verbose_name='last name')
-    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
-    school = models.CharField(max_length=200, verbose_name='school', default='')
-    city = models.CharField(max_length=150, verbose_name='city', default='', help_text="City your school is located in")
-    mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
-    medical_notes = models.TextField(default='', help_text="Is there anything we can help you with? e.g. accessibility",blank=True)
-
-    USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['first_name']
-
-    def get_absolute_url(self):
-        """Return URL for user's webpage."""
-        return reverse('users:detail', kwargs={'pk': self.pk})
-
-
-    def __str__(self):
-        """Name of the user."""
-        return f'{self.first_name} {self.last_name}'
 
 
 class Entity(models.Model):
@@ -84,3 +60,34 @@ class Entity(models.Model):
 
         ordering = ['name', ]
         verbose_name_plural = 'entities'
+
+
+class User(AbstractUser):
+    """User of website."""
+
+    username = models.CharField(max_length=50, default='user')
+    first_name = models.CharField(max_length=50, verbose_name='first name')
+    last_name = models.CharField(max_length=150, verbose_name='last name')
+    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
+    educational_entities = models.ManyToManyField(Entity, related_name='users', max_length=200, verbose_name='School(s) and/or educational organisation or association participiant is from')
+    region = models.PositiveSmallIntegerField(
+        choices=REGION_CHOICES,
+        default=REGION_CANTERBURY,
+        help_text="Region that your school, organisation or association is located in"
+    )
+    mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
+    medical_notes = models.TextField(default='', help_text="How can we better look after you? e.g. accessibility, allergies",blank=True)
+
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['first_name']
+
+    def get_absolute_url(self):
+        """Return URL for user's webpage."""
+        return reverse('users:detail', kwargs={'pk': self.pk})
+
+
+    def __str__(self):
+        """Name of the user."""
+        return f'{self.first_name} {self.last_name}'
+
+

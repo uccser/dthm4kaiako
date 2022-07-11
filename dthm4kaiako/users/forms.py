@@ -1,12 +1,11 @@
 """Forms for user application."""
 
-# from select import kevent
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
-from users.models import DietaryRequirement
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, CharField
+from users.models import Entity
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 
@@ -56,6 +55,8 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
+    educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -77,4 +78,5 @@ class UserUpdateDetailsForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'school', 'city', 'mobile_phone_number', 'medical_notes',]
+        fields = ['first_name', 'last_name', 'region', 'mobile_phone_number', 'educational_entities', 'medical_notes']
+

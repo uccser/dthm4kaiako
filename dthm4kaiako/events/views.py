@@ -294,11 +294,12 @@ def apply_for_event(request, pk):
                                     ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
-            user.school = user_update_details_form.cleaned_data['school']
-            user.city = user_update_details_form.cleaned_data['city']
+            all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
+            user.educational_entities.set(all_educational_entities)
+            user.region = user_update_details_form.cleaned_data['region']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
             user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
-            participant_email_address = event_application_form.cleaned_data['participant_email_address']
+            user.participant_email_address = event_application_form.cleaned_data['participant_email_address']
 
             if display_catering_info:
                 all_dietary_reqs = dietary_requirements_form.cleaned_data['dietary_requirements']

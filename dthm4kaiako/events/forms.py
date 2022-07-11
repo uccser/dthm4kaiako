@@ -64,7 +64,7 @@ class DietaryRequirementsForm(forms.Form):
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
     
     # TODO: add this back once implemented associated funcitonality for creating custom DRs that only that user sees
-    # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
+    other = CharField(max_length=200, help_text="We will do our best to cater for any additional dietary requirements. If your needs are more specific, please bring your own food.", required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

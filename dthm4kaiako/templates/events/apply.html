@@ -8,6 +8,7 @@
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1>{{event.name}}</h1>
     </div>
+
 {% endblock page_heading %}
 
 {% block content %}
@@ -18,6 +19,13 @@
         <h5>
             <b>Personal Information</b>
         </h5>
+
+        <div class="pt-md-2 pb-md-2" style="font-style:italic; font-size: medium; color: grey;" >
+            You information has been auto loaded for your convience.
+            <br>
+            Please ensure that it is correct.
+        </div>
+
         {% crispy user_form %}
 
         {% if display_catering_info %}

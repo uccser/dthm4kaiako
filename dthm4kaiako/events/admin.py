@@ -18,6 +18,12 @@ from modelclone import ClonableModelAdmin
 from users.models import User
 from django.utils.html import format_html_join
 
+import datetime
+
+datetime_str = '2016-05-18T15:37:36.993048Z'
+old_format = '%Y-%m-%dT%H:%M:%S.%fZ'
+new_format = '%d-%m-%Y %H:%M:%S'
+
 logger = logging.getLogger(__name__)
 
 
@@ -183,8 +189,8 @@ class EventApplicationAdmin(admin.ModelAdmin):
     model = EventApplication
     readonly_fields = [
         'user',
-        'user_school',
-        'user_city',
+        'user_education_entities',
+        'user_region',
         'mobile_phone_number',
         'medical_notes',
         'user_dietary_requirements',
@@ -204,8 +210,8 @@ class EventApplicationAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'user',
-                    'user_school',
-                    'user_city',
+                    'user_education_entities',
+                    'user_region',
                     'mobile_phone_number',
                     'user_dietary_requirements',
                 )
@@ -248,13 +254,17 @@ class EventApplicationAdmin(admin.ModelAdmin):
         ),
     )
 
-    @admin.display(description="User's school")
-    def user_school(self, application):
-        return application.user.school
+    @admin.display(description="Educational entities participant belongs to")
+    def user_education_entities(self, application):
+        return format_html_join(
+            '\n',
+            '<li>{}</li>',
+            application.user.educational_entities.values_list('name'),
+        )
 
-    @admin.display(description="User's city")
-    def user_city(self, application):
-        return application.user.city
+    @admin.display(description="User's region")
+    def user_region(self, application):
+        return application.user.region
 
     @admin.display(description="User's dietary requirements")
     def user_dietary_requirements(self, application):
@@ -266,6 +276,10 @@ class EventApplicationAdmin(admin.ModelAdmin):
 
     @admin.display
     def event_start_end(self, application):
+        # formatted_start = datetime.datetime.strptime(str(application.event.start), old_format).strftime(new_format)
+        # formatted_end = datetime.datetime.strptime(str(application.event.end), old_format).strftime(new_format)
+        # return f'{formatted_start} to {formatted_end}'
+
         return f'{application.event.start} to {application.event.end}'
 
     @admin.display
