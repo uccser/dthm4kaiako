@@ -53,33 +53,30 @@ class UserCreationForm(forms.UserCreationForm):
         fields = ('email', 'first_name', 'last_name')
 
 class UserUpdateDetailsForm(ModelForm):
-    """Form class for updating the user's details."""
+    """
+    Form class for updating the user's details.
+    """
 
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.disable_csrf = True
-
-        # TODO: figure out how to get the dietary requirements to show when either the event is catered or the user is updating their details.
-        # Safe to remove this if it is not needed in the update user details form as the event application form contains dietary requirements separately.
-
-        self.show_dietary_requirements = True
-
-        # if 'initial' in kwargs:
-        #     initial_data_dict = kwargs.get('initial')
-        #     if 'show_dietary_requirements' in initial_data_dict:
-        #         self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
-
-        # if (self.show_dietary_requirements):
-        #     self.dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-        #     self.other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
+    # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'region', 'mobile_phone_number', 'educational_entities', 'medical_notes', 'dietary_requirements']
 
+    def __init__(self, *args, **kwargs):
+        """
+        If the dietary requirments multi-check box lists is not desired to be visible, 'show_dietary_requirements' in the initial dictionary indicates False.
+        """
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+        if 'initial' in kwargs:
+            initial_data_dict = kwargs.get('initial')
+            if 'show_dietary_requirements' in initial_data_dict:
+                self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
+                if not self.show_dietary_requirements:
+                    del self.fields['dietary_requirements']
