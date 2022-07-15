@@ -1,7 +1,7 @@
 from django.test import TestCase
 from events.forms import EventApplicationForm, TermsAndConditionsForm
 
-class EventApplicationForm(TestCase):
+class EventApplicationFormTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         pass

@@ -12,7 +12,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import DietaryRequirementsForm, EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
+from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -303,7 +303,6 @@ def apply_for_event(request, pk):
 
             new_applicant_type = event_application_form.cleaned_data['applicant_type']
 
-
             if billing_required:
                 new_street_number = billing_details_form.cleaned_data['street_number']
                 new_street_name = billing_details_form.cleaned_data['street_name']
@@ -325,14 +324,12 @@ def apply_for_event(request, pk):
                 )
                 new_billing_address.save()
 
-
                 event_application, created = EventApplication.objects.update_or_create(
                     user=user, event=event,
                     defaults={
                         'applicant_type': new_applicant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
-                        'participant_email_address': participant_email_address
                     }
                 )
             
