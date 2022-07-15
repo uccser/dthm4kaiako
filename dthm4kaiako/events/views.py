@@ -263,8 +263,11 @@ def apply_for_event(request, pk):
 
         event_application_form = EventApplicationForm()
         if display_catering_info:
-            dietary_requirements_form = DietaryRequirementsForm()
-        user_update_details_form = UserUpdateDetailsForm(instance=user) # autoload existing event application
+            user_dietary_requirements = user.dietary_requirements 
+            initial_dietary_reqs_dict = {"dietary_requirements": user_dietary_requirements}
+
+            dietary_requirements_form = DietaryRequirementsForm(initial = initial_dietary_reqs_dict)
+        user_update_details_form = UserUpdateDetailsForm(instance=user) # autoload existing event application's user data
 
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info

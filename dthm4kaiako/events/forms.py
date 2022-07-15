@@ -61,16 +61,21 @@ class BillingDetailsForm(ModelForm):
 class DietaryRequirementsForm(forms.Form):
     """Form class for event registration billing details."""
 
-    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-    
     # TODO: add this back once implemented associated funcitonality for creating custom DRs that only that user sees
-    other = CharField(max_length=200, help_text="We will do our best to cater for any additional dietary requirements. If your needs are more specific, please bring your own food.", required=False)
+    # other = CharField(max_length=200, help_text="We will do our best to cater for any additional dietary requirements. If your needs are more specific, please bring your own food.", required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+
+        # if 'initial' in kwargs:
+        #     initial_data_dict = kwargs.get('initial')
+        #     if 'show_dietary_requirements' in initial_data_dict:
+        #         self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
+        #         self.dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+
 
     class Meta:
         model = DietaryRequirement

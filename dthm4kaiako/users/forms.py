@@ -4,8 +4,8 @@ from django.forms import ModelForm
 from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
-from users.models import Entity
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
+from users.models import Entity, DietaryRequirement
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 
@@ -56,6 +56,8 @@ class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
+    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,17 +68,18 @@ class UserUpdateDetailsForm(ModelForm):
         # TODO: figure out how to get the dietary requirements to show when either the event is catered or the user is updating their details.
         # Safe to remove this if it is not needed in the update user details form as the event application form contains dietary requirements separately.
 
-        # self.show_dietary_requirements = True
+        self.show_dietary_requirements = True
+
         # if 'initial' in kwargs:
         #     initial_data_dict = kwargs.get('initial')
         #     if 'show_dietary_requirements' in initial_data_dict:
         #         self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
 
         # if (self.show_dietary_requirements):
-        #     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-        #     other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
+        #     self.dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+        #     self.other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'region', 'mobile_phone_number', 'educational_entities', 'medical_notes']
+        fields = ['first_name', 'last_name', 'region', 'mobile_phone_number', 'educational_entities', 'medical_notes', 'dietary_requirements']
 
