@@ -258,7 +258,15 @@ def apply_for_event(request, pk):
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
-        event_application_form = EventApplicationForm()
+        if user.event_applications.filter(event=event).exists():
+            current_application = user.event_applications.get(event=event)
+            messages.warning(request, "here 11")
+            event_application_form = EventApplicationForm(instance=current_application)
+        else:
+            messages.warning(request, "meeeeeeee 11")
+            event_application_form = EventApplicationForm()
+
+        # event_application_form = EventApplicationForm()
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
@@ -269,26 +277,20 @@ def apply_for_event(request, pk):
 
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
-
-        current_applicant_type = None
-        current_billing_address = None
-        current_billing_email = None
-        current_participant_email_address = None
+        
+        user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, initial=initial_user_data)
 
         if user.event_applications.filter(event=event).exists():
             current_application = user.event_applications.get(event=event)
-            current_applicant_type = current_application.applicant_type
-            current_billing_address = current_application.billing_physical_address
-            current_billing_email = current_application.billing_email_address if billing_required else None
-            current_participant_email_address = current_application.participant_email_address
+            messages.warning(request, "here")
+            event_application_form = EventApplicationForm(request.POST, instance=current_application)
+        else:
+            messages.warning(request, "meeeeeeee")
+            event_application_form = EventApplicationForm(request.POST)
 
-        initial_event_application_data = {'applicant_type': current_applicant_type,
-                                          'participant_email_address': current_participant_email_address}
-        event_application_form = EventApplicationForm(request.POST, initial=initial_event_application_data)
-        user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_user_data)
         if billing_required:
-            initial_billing_data = {'current_billing_email_address': current_billing_email}
-            billing_details_form = BillingDetailsForm(request.POST, instance=current_billing_address, initial=initial_billing_data)
+            initial_billing_data = {'current_billing_email_address': "Test"}
+            billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
         if validate_event_application_form(event_application_form, 
@@ -343,14 +345,18 @@ def apply_for_event(request, pk):
                         'participant_email_address': participant_email_address
                     }
                 )
+                event_application.save()
             
             else:
                 event_application, created = EventApplication.objects.update_or_create(
                 user=user, event=event,
                 defaults={
                     'applicant_type': new_applicant_type,
+                    'participant_email_address': participant_email_address
+
                 }
             )
+            event_application.save()
             
 
             if user.event_applications.filter(event=event).exists():

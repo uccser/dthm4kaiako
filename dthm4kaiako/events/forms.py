@@ -2,7 +2,7 @@
 
 # from attr import fields
 from django import forms
-from events.models import ApplicantType, Address
+from events.models import ApplicantType, Address, EventApplication
 from users.models import DietaryRequirement
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
@@ -12,11 +12,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class EventApplicationForm(forms.Form):
+class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
 
-    participant_email_address = EmailField(required=True, label='Email to contact you')
-    applicant_type = forms.ModelChoiceField(ApplicantType.objects)
+    # participant_email_address = EmailField(required=True, label='Email to contact you')
+    # # applicant_type = forms.ModelChoiceField(ApplicantType.objects)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,13 +24,12 @@ class EventApplicationForm(forms.Form):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        # if 'initial' in kwargs:
-        #     initial_data_dict = kwargs.get('initial')
-        #     if 'current_event_applicant_type' in initial_data_dict:
-        #         self.current_event_applicant_type = initial_data_dict.get('current_event_applicant_type')
-                
+    class Meta:
+        """Metadata for EventApplicationForm class."""
 
-
+        model = EventApplication
+        fields = ['participant_email_address', 'applicant_type']
+   
 
 class TermsAndConditionsForm(forms.Form):
     """ Simple form to allow the user to agree to the terms and conditions.
