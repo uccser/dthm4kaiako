@@ -221,15 +221,13 @@ def validate_event_application_form(event_application_form,
                                     terms_and_conditions_form, 
                                     billing_required, 
                                     billing_details_form,
-                                    is_catered,
-                                    dietary_requirements_form,
                                     ):
     """
     Validates that the event application is valid.
     Also accommodates for the billing section and dietary requirements sections to be only validated if they are needed i.e. are rended.
     """
 
-    if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()) and (not is_catered or dietary_requirements_form.is_valid()):
+    if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()):
         return True
     else:
         return False
@@ -253,16 +251,15 @@ def apply_for_event(request, pk):
     billing_details_form = None
     terms_and_conditions_form = None
     billing_required = event.has_attendance_fee
-    dietary_requirements_form = None
     display_catering_info = event.is_catered
-    initial_data={'show_dietary_requirements': event.is_catered}
+    initial_user_data={'show_dietary_requirements': event.is_catered}
     new_billing_email = None
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
         event_application_form = EventApplicationForm()
-        user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_data) # autoload existing event application's user data
+        user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
             billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
@@ -273,10 +270,25 @@ def apply_for_event(request, pk):
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
 
-        event_application_form = EventApplicationForm(request.POST)
-        user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_data)
+        current_applicant_type = None
+        current_billing_address = None
+        current_billing_email = None
+        current_participant_email_address = None
+
+        if user.event_applications.filter(event=event).exists():
+            current_application = user.event_applications.get(event=event)
+            current_applicant_type = current_application.applicant_type
+            current_billing_address = current_application.billing_physical_address
+            current_billing_email = current_application.billing_email_address if billing_required else None
+            current_participant_email_address = current_application.participant_email_address
+
+        initial_event_application_data = {'applicant_type': current_applicant_type,
+                                          'participant_email_address': current_participant_email_address}
+        event_application_form = EventApplicationForm(request.POST, initial=initial_event_application_data)
+        user_update_details_form = UserUpdateDetailsForm(request.POST, initial=initial_user_data)
         if billing_required:
-            billing_details_form = BillingDetailsForm(request.POST)
+            initial_billing_data = {'current_billing_email_address': current_billing_email}
+            billing_details_form = BillingDetailsForm(request.POST, instance=current_billing_address, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
         if validate_event_application_form(event_application_form, 
@@ -284,8 +296,6 @@ def apply_for_event(request, pk):
                                     terms_and_conditions_form, 
                                     billing_required, 
                                     billing_details_form,
-                                    display_catering_info,
-                                    dietary_requirements_form,
                                     ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
@@ -294,10 +304,10 @@ def apply_for_event(request, pk):
             user.region = user_update_details_form.cleaned_data['region']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
             user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
-            user.participant_email_address = event_application_form.cleaned_data['participant_email_address']
+            participant_email_address = event_application_form.cleaned_data['participant_email_address']
 
             if display_catering_info:
-                all_dietary_reqs = dietary_requirements_form.cleaned_data['dietary_requirements']
+                all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
@@ -330,6 +340,7 @@ def apply_for_event(request, pk):
                         'applicant_type': new_applicant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
+                        'participant_email_address': participant_email_address
                     }
                 )
             
@@ -360,7 +371,6 @@ def apply_for_event(request, pk):
         'billing_details_form': billing_details_form,
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
-        'dietary_requirements_form': dietary_requirements_form,
         'display_catering_info' : display_catering_info,
     }
 

@@ -24,6 +24,13 @@ class EventApplicationForm(forms.Form):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
+        # if 'initial' in kwargs:
+        #     initial_data_dict = kwargs.get('initial')
+        #     if 'current_event_applicant_type' in initial_data_dict:
+        #         self.current_event_applicant_type = initial_data_dict.get('current_event_applicant_type')
+                
+
+
 
 class TermsAndConditionsForm(forms.Form):
     """ Simple form to allow the user to agree to the terms and conditions.
