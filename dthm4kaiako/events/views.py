@@ -233,6 +233,13 @@ def validate_event_application_form(event_application_form,
         return False
 
 
+def does_application_exist(user, event):
+    """
+    Returns True if event application already exists for the given user and event.
+    """
+    return user.event_applications.filter(event=event).exists()
+
+
 @login_required
 def apply_for_event(request, pk):
     """ View for event application/registration form and saving it as an EventApplication.
@@ -254,22 +261,28 @@ def apply_for_event(request, pk):
     display_catering_info = event.is_catered
     initial_user_data={'show_dietary_requirements': event.is_catered}
     new_billing_email = None
+    current_application = None
+    billing_physical_address = None
+    billing_email_address = ""
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
-        if user.event_applications.filter(event=event).exists():
+        if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
-            messages.warning(request, "here 11")
             event_application_form = EventApplicationForm(instance=current_application)
+            billing_physical_address = current_application.billing_physical_address
+            billing_email_address = current_application.billing_email_address
+
         else:
-            messages.warning(request, "meeeeeeee 11")
             event_application_form = EventApplicationForm()
 
         # event_application_form = EventApplicationForm()
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
-            billing_details_form = BillingDetailsForm() # TODO: figure out how to autoload billing info
+            
+            initial_billing_data = {'billing_email_address': billing_email_address}
+            billing_details_form = BillingDetailsForm(instance=billing_physical_address, initial=initial_billing_data) # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
                 initial={'I_agree_to_the_terms_and_conditions': False,
                 } # User must re-agree each time they update the form
@@ -280,12 +293,10 @@ def apply_for_event(request, pk):
         
         user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, initial=initial_user_data)
 
-        if user.event_applications.filter(event=event).exists():
+        if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
-            messages.warning(request, "here")
             event_application_form = EventApplicationForm(request.POST, instance=current_application)
         else:
-            messages.warning(request, "meeeeeeee")
             event_application_form = EventApplicationForm(request.POST)
 
         if billing_required:
@@ -359,7 +370,7 @@ def apply_for_event(request, pk):
             event_application.save()
             
 
-            if user.event_applications.filter(event=event).exists():
+            if does_application_exist(user, event):
                 # Update existing event application
                 messages.success(request, "Updated event application successfully")
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page

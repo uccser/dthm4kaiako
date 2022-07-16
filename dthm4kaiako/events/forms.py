@@ -15,8 +15,7 @@ User = get_user_model()
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
 
-    # participant_email_address = EmailField(required=True, label='Email to contact you')
-    # # applicant_type = forms.ModelChoiceField(ApplicantType.objects)
+    participant_email_address = EmailField(required=True, label='Email to contact you')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,13 +48,12 @@ class TermsAndConditionsForm(forms.Form):
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
 
-    billing_email_address = EmailField(required=True, label='Billing email address')
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+        self.billing_email_address = EmailField(required=True, label='Billing email address', initial="blah") # TODO update
 
     class Meta:
         """Metadata for BillingDetailsForm class."""
