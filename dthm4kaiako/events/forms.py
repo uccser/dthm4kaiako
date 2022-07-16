@@ -48,12 +48,13 @@ class TermsAndConditionsForm(forms.Form):
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
 
+    billing_email_address = EmailField(required=True, label='Billing email address')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-        self.billing_email_address = EmailField(required=True, label='Billing email address', initial="blah") # TODO update
 
     class Meta:
         """Metadata for BillingDetailsForm class."""
