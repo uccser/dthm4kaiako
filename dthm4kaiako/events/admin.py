@@ -135,7 +135,7 @@ class EventAdmin(ClonableModelAdmin):
                     'series',
                     'organisers',
                     'sponsors',
-                    'price',
+                    'is_free',
                     'is_catered',
                 )
             }
@@ -197,12 +197,15 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'event',
         'event_start_end',
         'event_location',
-        'event_price',
         'submitted',
         'updated',
         'billing_physical_address',
         'billing_email_address',
-        'participant_email_address'
+        'participant_email_address',
+        'emergency_contact_first_name',
+        'emergency_contact_last_name',
+        'emergency_contact_relationship',
+        'emergency_contact_phone_number',
     ]
     fieldsets = (
         (
@@ -238,6 +241,10 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'participant_email_address',
                     'medical_notes',
                     'staff_comments',
+                    'emergency_contact_first_name',
+                    'emergency_contact_last_name',
+                    'emergency_contact_relationship',
+                    'emergency_contact_phone_number',
                 )
             },
         ),
@@ -245,7 +252,6 @@ class EventApplicationAdmin(admin.ModelAdmin):
             'Billing',
             {
                 'fields': (
-                    'event_price',
                     'paid',
                     'billing_physical_address',
                     'billing_email_address',
@@ -286,9 +292,10 @@ class EventApplicationAdmin(admin.ModelAdmin):
     def event_location(self, application):
         return application.event.location_summary()
 
-    @admin.display
-    def event_price(self, application):
-        return f'${application.event.price:.2f}'
+    # TODO: remove this and replace with applicant type attendance fee
+    # @admin.display
+    # def event_price(self, application):
+    #     return f'${application.event.price:.2f}'
 
     @admin.display
     def mobile_phone_number(self, application):
@@ -301,6 +308,22 @@ class EventApplicationAdmin(admin.ModelAdmin):
     @admin.display
     def participant_email_address(self, application):
         return application.event_application.participant_email_address
+
+    @admin.display
+    def emergency_contact_first_name(self, application):
+        return application.event_application.emergency_contact_first_name
+
+    @admin.display
+    def emergency_contact_last_name(self, application):
+        return application.event_application.emergency_contact_last_name
+
+    @admin.display
+    def emergency_contact_relationship(self, application):
+        return application.event_application.emergency_contact_relationship
+
+    @admin.display
+    def emergency_contact_phone_number(self, application):
+        return application.event_application.emergency_contact_phone_number
 
 
 admin.site.register(Event, EventAdmin)

@@ -27,7 +27,9 @@ class EventApplicationForm(ModelForm):
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['participant_email_address', 'applicant_type']
+        fields = ['participant_email_address', 'applicant_type', 'emergency_contact_first_name',
+                  'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
+                 ]
    
 
 class TermsAndConditionsForm(forms.Form):

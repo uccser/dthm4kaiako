@@ -257,7 +257,7 @@ def apply_for_event(request, pk):
     user_update_details_form = None
     billing_details_form = None
     terms_and_conditions_form = None
-    billing_required = event.has_attendance_fee
+    billing_required = not event.is_free
     display_catering_info = event.is_catered
     initial_user_data={'show_dietary_requirements': event.is_catered}
     new_billing_email = None
@@ -325,6 +325,10 @@ def apply_for_event(request, pk):
             user.save()
 
             new_applicant_type = event_application_form.cleaned_data['applicant_type']
+            new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
+            new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
+            new_emergency_contact_relationship = event_application_form.cleaned_data['emergency_contact_relationship']
+            new_emergency_contact_phone_number = event_application_form.cleaned_data['emergency_contact_phone_number']
 
             if billing_required:
                 new_street_number = billing_details_form.cleaned_data['street_number']
@@ -353,7 +357,11 @@ def apply_for_event(request, pk):
                         'applicant_type': new_applicant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
-                        'participant_email_address': participant_email_address
+                        'participant_email_address': participant_email_address,
+                        'emergency_contact_first_name': new_emergency_contact_first_name,
+                        'emergency_contact_last_name': new_emergency_contact_last_name,
+                        'emergency_contact_relationship': new_emergency_contact_relationship,
+                        'emergency_contact_phone_number': new_emergency_contact_phone_number,
                     }
                 )
                 event_application.save()
@@ -363,8 +371,12 @@ def apply_for_event(request, pk):
                 user=user, event=event,
                 defaults={
                     'applicant_type': new_applicant_type,
-                    'participant_email_address': participant_email_address
-
+                    'participant_email_address': participant_email_address,
+                    'participant_email_address': participant_email_address,
+                    'emergency_contact_first_name': new_emergency_contact_first_name,
+                    'emergency_contact_last_name': new_emergency_contact_last_name,
+                    'emergency_contact_relationship': new_emergency_contact_relationship,
+                    'emergency_contact_phone_number': new_emergency_contact_phone_number,
                 }
             )
             event_application.save()

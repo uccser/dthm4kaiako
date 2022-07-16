@@ -265,14 +265,16 @@ class Event(models.Model):
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Register"
 
-    @property
-    def has_attendance_fee(self):
-        """ Determine if the event costs to attend.
 
-        Returns:
-            Boolean, True if the attendance has a cost.
-        """
-        return self.price != 0
+    # TODO: remove this and replace with applicant type attendance fee
+    # @property
+    # def has_attendance_fee(self):
+    #     """ Determine if the event costs to attend.
+
+    #     Returns:
+    #         Boolean, True if the attendance has a cost.
+    #     """
+    #     return self.price != 0
 
     def __str__(self):
         """Text representation of an event."""
@@ -453,7 +455,37 @@ class EventApplication(models.Model):
         null=False,
         default='',
     )
-    paid = models.BooleanField(default=False) #TODO: use a computed function for this
+    emergency_contact_first_name = models.CharField(
+        max_length=50, 
+        verbose_name='emergency contact\'s first name',
+        blank=False,
+        null=False,
+        default='',
+        )
+    emergency_contact_last_name = models.CharField(
+        max_length=50, 
+        verbose_name='emergency contact\'s last name',
+        blank=False,
+        null=False,
+        default='',
+        )
+    emergency_contact_relationship = models.CharField(
+        max_length=150, 
+        verbose_name='relationship with emergency contact',
+        blank=False,
+        null=False,
+        default='',
+        )
+    emergency_contact_phone_number =  models.CharField(
+        max_length=30, 
+        verbose_name='emergency contact\'s phone number',
+        blank=False,
+        null=False,
+        default='',
+        )
+    paid = models.BooleanField(
+        default=False
+    ) #TODO: use a computed function for this, based on applicant types which have associated attendance fees
     billing_physical_address = models.ForeignKey(
         Address,
         on_delete=models.CASCADE,
