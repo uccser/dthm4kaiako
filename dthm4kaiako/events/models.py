@@ -152,9 +152,12 @@ class Event(models.Model):
     end = models.DateTimeField(blank=True, null=True)
     accessible_online = models.BooleanField(
         default=False,
-        help_text='Select if this event be attended online'
+        help_text='Select if this event will be attended online'
     )
-    price = models.DecimalField(default=0, max_digits=4, decimal_places=2)
+    is_free = models.BooleanField(
+        default=False,
+        help_text='Select if this event is free for all types of participants'
+    )
     locations = models.ManyToManyField(
         Location,
         related_name='events',
