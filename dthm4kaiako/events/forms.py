@@ -2,6 +2,7 @@
 
 # from attr import fields
 from django import forms
+from pkg_resources import require
 from events.models import ApplicantType, Address, EventApplication
 from users.models import DietaryRequirement
 from django.forms import ModelForm
@@ -50,7 +51,8 @@ class TermsAndConditionsForm(forms.Form):
 class BillingDetailsForm(ModelForm):
     """Form class for event registration billing details."""
 
-    billing_email_address = EmailField(required=True, label='Billing email address')
+    bill_to = forms.CharField(max_length=200, required=True, help_text="Who will be paying for you?")
+    billing_email_address = EmailField(required=True, label='Billing email address', help_text="Email address of who will be paying for you")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -62,4 +64,4 @@ class BillingDetailsForm(ModelForm):
         """Metadata for BillingDetailsForm class."""
 
         model = Address
-        fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country']
+        fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country', ]

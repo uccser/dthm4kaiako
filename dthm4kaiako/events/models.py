@@ -486,6 +486,13 @@ class EventApplication(models.Model):
     paid = models.BooleanField(
         default=False
     ) #TODO: use a computed function for this, based on applicant types which have associated attendance fees
+    bill_to = models.CharField(
+        max_length=200, 
+        blank=False,
+        null=False,
+        default='',
+        help_text="Who will be paying for this participant to attend?"
+    )
     billing_physical_address = models.ForeignKey(
         Address,
         on_delete=models.CASCADE,

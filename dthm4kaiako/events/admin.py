@@ -206,6 +206,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'emergency_contact_last_name',
         'emergency_contact_relationship',
         'emergency_contact_phone_number',
+        'bill_to',
     ]
     fieldsets = (
         (
@@ -253,6 +254,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'paid',
+                    'bill_to',
                     'billing_physical_address',
                     'billing_email_address',
                 )
@@ -324,6 +326,10 @@ class EventApplicationAdmin(admin.ModelAdmin):
     @admin.display
     def emergency_contact_phone_number(self, application):
         return application.event_application.emergency_contact_phone_number
+
+    @admin.display
+    def bill_to(self, application):
+        return application.event_application.bill_to
 
 
 admin.site.register(Event, EventAdmin)

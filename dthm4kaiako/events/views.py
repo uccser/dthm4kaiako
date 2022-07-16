@@ -264,6 +264,7 @@ def apply_for_event(request, pk):
     current_application = None
     billing_physical_address = None
     billing_email_address = ""
+    bill_to = ""
 
     if request.method == 'GET':
         # Prior to creating/updating registration form
@@ -273,6 +274,7 @@ def apply_for_event(request, pk):
             event_application_form = EventApplicationForm(instance=current_application)
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
+            bill_to = current_application.bill_to
 
         else:
             event_application_form = EventApplicationForm()
@@ -281,7 +283,7 @@ def apply_for_event(request, pk):
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
             
-            initial_billing_data = {'billing_email_address': billing_email_address}
+            initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(instance=billing_physical_address, initial=initial_billing_data) # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
                 initial={'I_agree_to_the_terms_and_conditions': False,
@@ -300,7 +302,7 @@ def apply_for_event(request, pk):
             event_application_form = EventApplicationForm(request.POST)
 
         if billing_required:
-            initial_billing_data = {'current_billing_email_address': "Test"}
+            initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
@@ -331,6 +333,7 @@ def apply_for_event(request, pk):
             new_emergency_contact_phone_number = event_application_form.cleaned_data['emergency_contact_phone_number']
 
             if billing_required:
+                new_bill_to = billing_details_form.cleaned_data['bill_to']
                 new_street_number = billing_details_form.cleaned_data['street_number']
                 new_street_name = billing_details_form.cleaned_data['street_name']
                 new_suburb = billing_details_form.cleaned_data['suburb']
@@ -362,6 +365,7 @@ def apply_for_event(request, pk):
                         'emergency_contact_last_name': new_emergency_contact_last_name,
                         'emergency_contact_relationship': new_emergency_contact_relationship,
                         'emergency_contact_phone_number': new_emergency_contact_phone_number,
+                        'bill_to': new_bill_to,
                     }
                 )
                 event_application.save()
@@ -377,6 +381,7 @@ def apply_for_event(request, pk):
                     'emergency_contact_last_name': new_emergency_contact_last_name,
                     'emergency_contact_relationship': new_emergency_contact_relationship,
                     'emergency_contact_phone_number': new_emergency_contact_phone_number,
+                    'bill_to': new_bill_to,
                 }
             )
             event_application.save()
