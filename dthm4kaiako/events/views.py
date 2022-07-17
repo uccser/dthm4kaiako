@@ -259,7 +259,7 @@ def apply_for_event(request, pk):
     terms_and_conditions_form = None
     billing_required = not event.is_free
     display_catering_info = event.is_catered
-    initial_user_data={'show_dietary_requirements': event.is_catered}
+    initial_user_data={'show_dietary_requirements': event.is_catered, 'show_medical_notes': event.accessible_online}
     new_billing_email = None
     current_application = None
     billing_physical_address = None
@@ -405,7 +405,6 @@ def apply_for_event(request, pk):
         'billing_details_form': billing_details_form,
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
-        'display_catering_info' : display_catering_info,
     }
 
     return render(request, 'events/apply.html', context)

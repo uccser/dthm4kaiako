@@ -59,6 +59,8 @@ class UserUpdateDetailsForm(ModelForm):
 
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
+    
+    # TODO: add in for requirmement U38
     # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
 
     class Meta:
@@ -80,3 +82,8 @@ class UserUpdateDetailsForm(ModelForm):
                 self.show_dietary_requirements = initial_data_dict.get('show_dietary_requirements')
                 if not self.show_dietary_requirements:
                     del self.fields['dietary_requirements']
+
+            if 'show_medical_notes' in initial_data_dict:
+                self.show_medical_notes = initial_data_dict.get('show_medical_notes')
+                if not self.show_medical_notes:
+                    del self.fields['medical_notes']
