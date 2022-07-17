@@ -186,6 +186,8 @@ class EventModelTests(TestCase):
 
     # ------------------------ tests for has_attendance_fee -----------------------
 
+    # TODO: update these tests since has_attendance_fee is no longer present
+
     def test_has_attendance_fee__event_has_fee(self):
         event = Event.objects.get(id=1)
         self.assertEqual(event.has_attendance_fee, True) 
@@ -200,6 +202,13 @@ class EventModelTests(TestCase):
     def test_str_representation(self):
         event = Event.objects.get(id=1)
         self.assertEqual(str(event), event.name)
+
+    # ----------------------------- tests for start_weekday_name -------------------
+
+    def test_start_weekday_name_expected_weekday(self):
+        event = Event.objects.get(id=1)
+        expected_weekday = "Friday"
+        self.assertEqual(expected_weekday, event.start_weekday_name)
 
 
 class ApplicantTypeTests(TestCase):
