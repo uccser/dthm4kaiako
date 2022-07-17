@@ -265,6 +265,14 @@ class Event(models.Model):
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Register"
 
+    @property
+    def start_weekday_name(self):
+        """
+        Returns the weekday name of the start date of the event. 
+        For example, "Wednesday".
+        """
+        return self.start.strftime('%A')
+
 
     # TODO: remove this and replace with applicant type attendance fee
     # @property
