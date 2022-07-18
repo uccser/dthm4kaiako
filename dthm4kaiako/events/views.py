@@ -319,7 +319,8 @@ def apply_for_event(request, pk):
             user.region = user_update_details_form.cleaned_data['region']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
             user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
-            participant_email_address = event_application_form.cleaned_data['participant_email_address']
+            user.email_address = user_update_details_form.cleaned_data['email_address']
+            user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
 
             if display_catering_info:
                 all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
@@ -360,7 +361,6 @@ def apply_for_event(request, pk):
                         'applicant_type': new_applicant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
-                        'participant_email_address': participant_email_address,
                         'emergency_contact_first_name': new_emergency_contact_first_name,
                         'emergency_contact_last_name': new_emergency_contact_last_name,
                         'emergency_contact_relationship': new_emergency_contact_relationship,
@@ -375,8 +375,6 @@ def apply_for_event(request, pk):
                 user=user, event=event,
                 defaults={
                     'applicant_type': new_applicant_type,
-                    'participant_email_address': participant_email_address,
-                    'participant_email_address': participant_email_address,
                     'emergency_contact_first_name': new_emergency_contact_first_name,
                     'emergency_contact_last_name': new_emergency_contact_last_name,
                     'emergency_contact_relationship': new_emergency_contact_relationship,

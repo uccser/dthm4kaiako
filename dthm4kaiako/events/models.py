@@ -463,12 +463,6 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='event_applications',
     )
-    participant_email_address = models.EmailField(
-        max_length=150,
-        blank=False,
-        null=False,
-        default='',
-    )
     emergency_contact_first_name = models.CharField(
         max_length=50, 
         verbose_name='emergency contact\'s first name',

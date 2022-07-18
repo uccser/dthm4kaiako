@@ -76,6 +76,12 @@ class User(AbstractUser):
         help_text="Region that your school, organisation or association is located in"
     )
     mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
+    email_address = models.EmailField(
+        max_length=150,
+        blank=False,
+        null=False,
+        default='',
+    )
     medical_notes = models.TextField(default='', help_text="How can we better look after you? e.g. accessibility, allergies",blank=True)
 
     USERNAME_FIELD = 'id'

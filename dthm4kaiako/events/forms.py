@@ -16,8 +16,6 @@ User = get_user_model()
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
 
-    participant_email_address = EmailField(required=True, label='Email to contact you')
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -28,7 +26,7 @@ class EventApplicationForm(ModelForm):
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['participant_email_address', 'applicant_type', 'emergency_contact_first_name',
+        fields = ['applicant_type', 'emergency_contact_first_name',
                   'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
                  ]
    

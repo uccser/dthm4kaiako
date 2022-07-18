@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from users.models import Entity, DietaryRequirement
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 
@@ -57,6 +57,11 @@ class UserUpdateDetailsForm(ModelForm):
     Form class for updating the user's details.
     """
 
+    email_address = EmailField(max_length=150, required=True)
+    email_address_confirm = EmailField(max_length=150, label="Confirm email address", required=True)
+    mobile_phone_number = CharField(max_length=30, required=True)
+    mobile_phone_number_confirm = CharField(max_length=30, required=True, label="Confim mobile phone number")
+
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
     
@@ -65,7 +70,7 @@ class UserUpdateDetailsForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'region', 'mobile_phone_number', 'educational_entities', 'medical_notes', 'dietary_requirements']
+        fields = ['first_name', 'last_name', 'region', 'educational_entities', 'medical_notes', 'dietary_requirements']
 
     def __init__(self, *args, **kwargs):
         """
@@ -87,3 +92,20 @@ class UserUpdateDetailsForm(ModelForm):
                 self.show_medical_notes = initial_data_dict.get('show_medical_notes')
                 if not self.show_medical_notes:
                     del self.fields['medical_notes']
+
+    def clean(self):
+        cleaned_data = super(UserUpdateDetailsForm, self).clean()
+        email_address = cleaned_data.get('email_address')
+        email_address_confirm = cleaned_data.get('email_address_confirm')
+        mobile_phone_number = cleaned_data.get('mobile_phone_number')
+        mobile_phone_number_confirm = cleaned_data.get('mobile_phone_number_confirm')
+
+        if email_address and email_address_confirm and email_address != email_address_confirm:
+            self._errors['email_address_confirm'] = self.error_class(['Emails do not match.'])
+            del self.cleaned_data['email_address_confirm']
+
+        if mobile_phone_number and mobile_phone_number_confirm and mobile_phone_number != mobile_phone_number_confirm:
+            self._errors['mobile_phone_number_confirm'] = self.error_class(['Mobile phone numbers do not match.'])
+            del self.cleaned_data['mobile_phone_number_confirm']
+        
+        return cleaned_data
