@@ -154,7 +154,8 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         if user.is_authenticated:
             context['has_user_applied'] = self.does_application_exist(user)
             context['application_pk'] = self.get_application_pk(user)
-
+        else:
+            context['user_is_authenticated'] = False
         return context
 
 
@@ -165,7 +166,7 @@ class LocationDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     context_object_name = 'location'
 
 
-class EventApplicationsView(generic.ListView, LoginRequiredMixin):
+class EventApplicationsView(LoginRequiredMixin, generic.ListView):
     """View for listing all a user's event applications."""
 
     template_name = 'events/event_applications.html'

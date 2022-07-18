@@ -33,30 +33,35 @@
                 <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal-{{event_application.pk}}">
                     Withdraw
                 </button>
+
+                {% if user_is_authenticated %}
                 
-                <!-- Modal -->
-                <div class="modal fade" id="event-applications-withdraw-modal-{{event_application.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title">Withdraw application</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="event-applications-withdraw-modal-{{event_application.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title">Withdraw application</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            Are you sure you want to withdraw your application for <b>{{event_application.event.name}}</b>?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-warning" type="submit" value="Yes">
+                            </form>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                        Are you sure you want to withdraw your application for <b>{{event_application.event.name}}</b>?
                         </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
-                            {% csrf_token %}
-                            <input class="btn btn-warning" type="submit" value="Yes">
-                        </form>
-                        </div>
-                    </div>
-                    </div>
-                </div>                
+                    </div>             
+                    
+                {% endif %}
+
             </div>
         </div>
     </div>
