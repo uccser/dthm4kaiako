@@ -14,6 +14,8 @@ from users.models import Entity, User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
+import datetime
+
 # from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
@@ -278,6 +280,16 @@ class Event(models.Model):
         For example, "Wednesday".
         """
         return self.start.strftime('%A')
+
+    @property
+    def is_less_than_one_week_prior_event(self):
+        """
+        If there is less than a week until the event commences, returns True.
+        This is so that a catering order for the event can be finalised a week before the event starts.
+        """
+        today = datetime.datetime.today()
+        one_week_prior_event_start = self.start - datetime.timedelta(days=7)
+        return today >= one_week_prior_event_start
 
 
     # TODO: remove this and replace with participant type attendance fee

@@ -23,6 +23,8 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
     generate_sessions
 )
+from unittest import mock
+import datetime
 
 
 class EventModelTests(TestCase):
@@ -205,10 +207,109 @@ class EventModelTests(TestCase):
 
     # ----------------------------- tests for start_weekday_name -------------------
 
-    def test_start_weekday_name_expected_weekday(self):
+    def test_start_weekday_name__expected_weekday(self):
         event = Event.objects.get(id=1)
         expected_weekday = "Friday"
         self.assertEqual(expected_weekday, event.start_weekday_name)
+
+    # -------------------- tests for is_less_than_one_week_prior_event -------------
+
+    def test_is_less_than_one_week_prior_event__one_week_prior_start(self):
+
+        event_start_date = datetime.datetime(2023, 1, 8, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0)
+
+        event = Event.objects.get(pk=1)
+        Event.objects.filter(pk=1).update(start=event_start_date)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, False)
+
+
+    def test_is_less_than_one_week_prior_event__two_weeks_prior_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 2, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, False)
+
+
+    def test_is_less_than_one_week_prior_event__one_day_prior_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 15, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, True)
+
+
+    def test_is_less_than_one_week_prior_event__same_datetime_as_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, True) 
+
+
+    def test_is_less_than_one_week_prior_event__one_week_after_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 23, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, True)  
+
+
+    def test_is_less_than_one_week_prior_event__two_weeks_after_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 30, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, True)  
+
+
+    def test_is_less_than_one_week_prior_event__one_day_after_start(self):
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        current_date = datetime.datetime(2023, 1, 17, 10, 0, 0)
+        event = Event.objects.get(pk=1)
+        event.update_or_create(
+            start=event_start_date
+        )
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = current_date
+
+            self.assertEqual(event.is_less_than_one_week_prior_event, True)  
 
 
 class ParticipantTypeTests(TestCase):
