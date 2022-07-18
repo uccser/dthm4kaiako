@@ -6,7 +6,6 @@ from django.urls import reverse
 from utils.get_upload_filepath import get_entity_upload_path
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 
-
 class DietaryRequirement(models.Model):
     """Model for a dietary requirement e.g. vegetarian."""
     name = models.CharField(max_length=200, unique=True)
@@ -83,6 +82,7 @@ class User(AbstractUser):
         default='',
     )
     medical_notes = models.TextField(default='', help_text="How can we better look after you? e.g. accessibility, allergies",blank=True)
+
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
