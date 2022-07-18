@@ -202,7 +202,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
         'updated',
         'billing_physical_address',
         'billing_email_address',
-        'participant_email_address',
+        'email_address',
         'emergency_contact_first_name',
         'emergency_contact_last_name',
         'emergency_contact_relationship',
@@ -218,6 +218,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'user_education_entities',
                     'user_region',
                     'mobile_phone_number',
+                    'email_address',
                     'user_dietary_requirements',
                 )
             },
@@ -240,7 +241,6 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'updated',
                     'status',
                     'applicant_type',
-                    'participant_email_address',
                     'medical_notes',
                     'staff_comments',
                     'emergency_contact_first_name',
@@ -331,6 +331,10 @@ class EventApplicationAdmin(admin.ModelAdmin):
     @admin.display
     def bill_to(self, application):
         return application.event_application.bill_to
+
+    @admin.display
+    def email_address(self, application):
+        return application.user.email_address
 
 
 admin.site.register(Event, EventAdmin)

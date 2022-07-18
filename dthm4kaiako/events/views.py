@@ -259,7 +259,9 @@ def apply_for_event(request, pk):
     terms_and_conditions_form = None
     billing_required = not event.is_free
     display_catering_info = event.is_catered
-    initial_user_data={'show_dietary_requirements': event.is_catered, 'show_medical_notes': event.accessible_online}
+    initial_user_data={'show_dietary_requirements': event.is_catered, 
+                    'show_medical_notes': event.accessible_online
+                    }
     new_billing_email = None
     current_application = None
     billing_physical_address = None
@@ -275,6 +277,10 @@ def apply_for_event(request, pk):
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
             bill_to = current_application.bill_to
+            initial_user_data={'show_dietary_requirements': event.is_catered, 
+                            'show_medical_notes': event.accessible_online,
+                            'mobile_phone_number': user.mobile_phone_number,
+                            'email_address': user.email_address}
 
         else:
             event_application_form = EventApplicationForm()
@@ -317,7 +323,6 @@ def apply_for_event(request, pk):
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
             user.educational_entities.set(all_educational_entities)
             user.region = user_update_details_form.cleaned_data['region']
-            user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
             user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
             user.email_address = user_update_details_form.cleaned_data['email_address']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
