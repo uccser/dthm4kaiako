@@ -138,7 +138,6 @@ class EventAdmin(ClonableModelAdmin):
                     'is_free',
                     'is_catered',
                     'contact_email_address',
-                    'facilitators'
                 )
             }
         ),

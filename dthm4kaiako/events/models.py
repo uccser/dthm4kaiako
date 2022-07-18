@@ -192,8 +192,6 @@ class Event(models.Model):
         null=False,
         default='',
     )
-    facilitators = models.ManyToManyField(User, related_name='event', blank=True, verbose_name="Facilitators of this event")
-
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -336,6 +334,8 @@ class Session(models.Model):
         related_name='sessions',
         blank=True,
     )
+    facilitators = models.ManyToManyField(User, related_name='session', blank=True, verbose_name="Facilitators of this session")
+
 
     def __str__(self):
         """Text representation of an session."""
