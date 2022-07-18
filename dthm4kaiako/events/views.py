@@ -171,7 +171,6 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
 
     template_name = 'events/event_applications.html'
     model = EventApplication
-    # context_object_name = 'event_applications'
 
     
     def get_context_data(self, **kwargs):
@@ -187,7 +186,12 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
             unordered_event_applications = EventApplication.objects.filter(user=user).order_by(
                 'event__start')
             context['event_applications'] = unordered_event_applications
+            context['user'] = self.request.user
         return context
+
+    def get_object(self):
+        """Retrieve the user object for the associated template."""
+        return self.request.user
 
 
 @login_required
