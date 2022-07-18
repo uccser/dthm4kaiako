@@ -47,6 +47,7 @@ from tests.poet.factories import (
     POETFormProgressOutcomeGroupFactory,
 )
 from allauth.account.models import EmailAddress
+from utils.new_zealand_regions import REGION_CHOICES
 
 
 class Command(management.base.BaseCommand):
@@ -331,7 +332,7 @@ class Command(management.base.BaseCommand):
 
         region_codes = dict()
         region_suffix = ' region'
-        for (code, name) in Location.REGION_CHOICES:
+        for (code, name) in REGION_CHOICES:
             if name.endswith(region_suffix):
                 name = name[:-len(region_suffix)]
             region_codes[name] = code

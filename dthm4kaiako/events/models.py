@@ -186,6 +186,12 @@ class Event(models.Model):
         blank=False,
         help_text='Select if food will be provided at this event'
     )
+    contact_email_address = models.EmailField(
+        max_length=150,
+        blank=False,
+        null=False,
+        default='',
+    )
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed

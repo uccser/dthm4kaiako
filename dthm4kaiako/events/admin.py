@@ -137,6 +137,7 @@ class EventAdmin(ClonableModelAdmin):
                     'sponsors',
                     'is_free',
                     'is_catered',
+                    'contact_email_address'
                 )
             }
         ),

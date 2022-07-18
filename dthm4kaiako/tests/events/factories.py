@@ -40,6 +40,7 @@ class EventFactory(DjangoModelFactory):
     end = LazyAttribute(lambda obj: obj.start)
     accessible_online = LazyFunction(random_boolean)
     is_catered = LazyFunction(random_boolean)
+    contact_email_address = f'contactus@event.co.nz'
 
     class Meta:
         """Metadata for class."""
