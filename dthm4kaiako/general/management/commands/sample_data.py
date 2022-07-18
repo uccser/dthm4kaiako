@@ -27,7 +27,7 @@ from users.models import (
 from events.models import (
     Location,
     Series,
-    ApplicantType,
+    ParticipantType,
     Event,
 )
 from tests.events.factories import (
@@ -201,10 +201,11 @@ class Command(management.base.BaseCommand):
         # --------------------------------------------------------------------------------------------------
 
 
-        # Create common applicant types
-        ApplicantType.objects.create(name="Event staff")
-        ApplicantType.objects.create(name="Teacher")
-        ApplicantType.objects.create(name="Student")
+        # Create common participant types
+        ParticipantType.objects.create(name="Event staff")
+        ParticipantType.objects.create(name="Teacher")
+        ParticipantType.objects.create(name="Student")
+        ParticipantType.objects.create(name="Facilitator")
 
 
         User = get_user_model()

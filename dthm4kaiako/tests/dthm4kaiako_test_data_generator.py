@@ -13,7 +13,7 @@ from events.models import (
     Series,
     Event, 
     Session,
-    ApplicantType,
+    ParticipantType,
     Address,
     EventApplication,
     RegistrationForm,
@@ -480,23 +480,29 @@ def generate_sessions():
     )
 
 
-def generate_applicant_types():
-    """Generate applicant types for use in dthm4kaiako tests."""
-    application_type_event_staff = ApplicantType.objects.create(
+def generate_participant_types():
+    """Generate participant types for use in dthm4kaiako tests."""
+    application_type_event_staff = ParticipantType.objects.create(
         id=1,
         name="Event staff"
         )
     application_type_event_staff.save()
 
-    application_type_teacher = ApplicantType.objects.create(
+    application_type_teacher = ParticipantType.objects.create(
         id=2,
         name="Teacher"
         )
     application_type_teacher.save()
 
-    application_type_student = ApplicantType.objects.create(
+    application_type_student = ParticipantType.objects.create(
         id=3,
         name="Student"
+        )
+    application_type_student.save()
+
+    application_type_student = ParticipantType.objects.create(
+        id=4,
+        name="Facilitator"
         )
     application_type_student.save()
 
@@ -505,7 +511,7 @@ def generate_event_applications():
     """Generate event applications for use in dthm4kaiako tests."""
     event_application_1_pending = EventApplication.objects.create(
         id=1,
-        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        participant_type = ParticipantType.objects.get(name="Teacher"),
         user = User.objects.get(id=1),
         event = Event.objects.get(id=1),
         billing_physical_address = Address.objects.get(id=1),
@@ -516,7 +522,7 @@ def generate_event_applications():
 
     event_application_2_approved = EventApplication.objects.create(
         id=2,
-        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        participant_type = ParticipantType.objects.get(name="Teacher"),
         user = User.objects.get(id=2),
         event = Event.objects.get(id=1),
         billing_physical_address = Address.objects.get(id=1),
@@ -527,7 +533,7 @@ def generate_event_applications():
 
     event_application_3_rejected = EventApplication.objects.create(
         id=3,
-        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        participant_type = ParticipantType.objects.get(name="Teacher"),
         user = User.objects.get(id=3),
         event = Event.objects.get(id=1),
         billing_physical_address = Address.objects.get(id=1),
@@ -538,7 +544,7 @@ def generate_event_applications():
 
     event_application_4_withdrawn = EventApplication.objects.create(
         id=4,
-        applicant_type = ApplicantType.objects.get(name="Teacher"),
+        participant_type = ParticipantType.objects.get(name="Teacher"),
         user = User.objects.get(id=1),
         event = Event.objects.get(id=2),
         billing_physical_address = Address.objects.get(id=1),

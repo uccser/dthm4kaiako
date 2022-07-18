@@ -3,7 +3,7 @@
 # from attr import fields
 from django import forms
 from pkg_resources import require
-from events.models import ApplicantType, Address, EventApplication
+from events.models import ParticipantType, Address, EventApplication
 from users.models import DietaryRequirement
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
@@ -26,7 +26,7 @@ class EventApplicationForm(ModelForm):
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['applicant_type', 'emergency_contact_first_name',
+        fields = ['participant_type', 'emergency_contact_first_name',
                   'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
                  ]
    

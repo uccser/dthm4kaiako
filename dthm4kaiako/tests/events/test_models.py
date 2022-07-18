@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from events.models import (
     Event, 
-    ApplicantType,
+    ParticipantType,
     Address,
     EventApplication,
     Series,
@@ -16,7 +16,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_locations,
     generate_users,
     generate_events,
-    generate_applicant_types,
+    generate_participant_types,
     generate_event_registration_forms,
     generate_addresses,
     generate_event_applications,
@@ -211,21 +211,21 @@ class EventModelTests(TestCase):
         self.assertEqual(expected_weekday, event.start_weekday_name)
 
 
-class ApplicantTypeTests(TestCase):
+class ParticipantTypeTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        generate_applicant_types()
+        generate_participant_types()
 
     @classmethod
     def tearDownTestData(cls):
-        ApplicantType.objects.all().delete()
+        ParticipantType.objects.all().delete()
 
     # ----------------------------- tests for __str__ ------------------------------
 
     def test_str_representation__register(self):
         test_name = "Event staff"
-        application_type = ApplicantType.objects.get(name=test_name)
+        application_type = ParticipantType.objects.get(name=test_name)
         self.assertEqual(str(application_type), application_type.name)
 
 
@@ -238,14 +238,14 @@ class AddressTests(TestCase):
         generate_serieses()
         generate_locations()
         generate_events()
-        generate_applicant_types()
+        generate_participant_types()
         generate_event_applications()
 
 
     @classmethod
     def tearDownTestData(cls):
         EventApplication.objects.all().delete()
-        ApplicantType.objects.all().delete()
+        ParticipantType.objects.all().delete()
         Series.objects.all().delete()
         Event.objects.all().delete()
         Location.objects.all().delete()
@@ -280,7 +280,7 @@ class EventApplicationTests(TestCase):
         generate_locations()
         generate_events()
         generate_users()
-        generate_applicant_types()
+        generate_participant_types()
         generate_event_applications()
 
     @classmethod
@@ -290,7 +290,7 @@ class EventApplicationTests(TestCase):
         Location.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
-        ApplicantType.objects.all().delete()
+        ParticipantType.objects.all().delete()
         EventApplication.objects.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
@@ -333,7 +333,7 @@ class RegistrationFormTests(TestCase):
         generate_locations()
         generate_events()
         generate_users()
-        generate_applicant_types()
+        generate_participant_types()
         generate_event_applications()
 
     @classmethod
@@ -343,7 +343,7 @@ class RegistrationFormTests(TestCase):
         Location.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
-        ApplicantType.objects.all().delete()
+        ParticipantType.objects.all().delete()
         EventApplication.objects.all().delete()
 
     # ------------------------------- tests for get_absolute_url ------------------------------

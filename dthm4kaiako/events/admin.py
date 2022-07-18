@@ -11,7 +11,7 @@ from events.models import (
     Series,
     EventApplication,
     RegistrationForm,
-    ApplicantType,
+    ParticipantType,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
@@ -240,7 +240,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'submitted',
                     'updated',
                     'status',
-                    'applicant_type',
+                    'participant_type',
                     'medical_notes',
                     'staff_comments',
                     'emergency_contact_first_name',
@@ -295,7 +295,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
     def event_location(self, application):
         return application.event.location_summary()
 
-    # TODO: remove this and replace with applicant type attendance fee
+    # TODO: remove this and replace with participant type attendance fee
     # @admin.display
     # def event_price(self, application):
     #     return f'${application.event.price:.2f}'
@@ -343,4 +343,4 @@ admin.site.register(Series),
 admin.site.register(Session),
 admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(RegistrationForm),
-admin.site.register(ApplicantType),
+admin.site.register(ParticipantType),

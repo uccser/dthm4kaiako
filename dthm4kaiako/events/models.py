@@ -280,7 +280,7 @@ class Event(models.Model):
         return self.start.strftime('%A')
 
 
-    # TODO: remove this and replace with applicant type attendance fee
+    # TODO: remove this and replace with participant type attendance fee
     # @property
     # def has_attendance_fee(self):
     #     """ Determine if the event costs to attend.
@@ -345,8 +345,8 @@ class Session(models.Model):
         ordering = ['start', 'end', 'name']
 
 
-class ApplicantType(models.Model):
-    """Model for an application type.
+class ParticipantType(models.Model):
+    """Model for a participant type.
        Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
     name = models.CharField(max_length=100)
     cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
@@ -438,8 +438,8 @@ class EventApplication(models.Model):
         choices=APPLICATION_STATUSES,
         default=PENDING,
     )
-    applicant_type = models.ForeignKey(
-        ApplicantType,
+    participant_type = models.ForeignKey(
+        ParticipantType,
         on_delete=models.CASCADE,
         related_name='event_applications',
         null=True,
@@ -493,7 +493,7 @@ class EventApplication(models.Model):
         )
     paid = models.BooleanField(
         default=False
-    ) #TODO: use a computed function for this, based on applicant types which have associated attendance fees
+    ) #TODO: use a computed function for this, based on participant types which have associated attendance fees
     bill_to = models.CharField(
         max_length=200, 
         blank=False,

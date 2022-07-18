@@ -337,7 +337,7 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            new_applicant_type = event_application_form.cleaned_data['applicant_type']
+            new_participant_type = event_application_form.cleaned_data['participant_type']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
             new_emergency_contact_relationship = event_application_form.cleaned_data['emergency_contact_relationship']
@@ -368,7 +368,7 @@ def apply_for_event(request, pk):
                 event_application, created = EventApplication.objects.update_or_create(
                     user=user, event=event,
                     defaults={
-                        'applicant_type': new_applicant_type,
+                        'participant_type': new_participant_type,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
                         'emergency_contact_first_name': new_emergency_contact_first_name,
@@ -384,7 +384,7 @@ def apply_for_event(request, pk):
                 event_application, created = EventApplication.objects.update_or_create(
                 user=user, event=event,
                 defaults={
-                    'applicant_type': new_applicant_type,
+                    'participant_type': new_participant_type,
                     'emergency_contact_first_name': new_emergency_contact_first_name,
                     'emergency_contact_last_name': new_emergency_contact_last_name,
                     'emergency_contact_relationship': new_emergency_contact_relationship,
