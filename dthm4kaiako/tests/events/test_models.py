@@ -26,6 +26,7 @@ from tests.dthm4kaiako_test_data_generator import (
 from unittest import mock
 import datetime
 import pytz
+from datetime import date
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -215,6 +216,7 @@ class EventModelTests(TestCase):
         self.assertEqual(expected_weekday, event.start_weekday_name)
 
     # -------------------- tests for is_less_than_one_week_prior_event -------------
+    # TODO: figure out how to mock .now() properly!
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start(self):
 
@@ -224,8 +226,9 @@ class EventModelTests(TestCase):
         event = Event.objects.get(pk=1)
         Event.objects.filter(pk=1).update(start=event_start_date)
 
-        with mock.patch('django.utils.timezone.now') as mock_now:
-            mock_now.return_value = current_date
+        with mock.patch('events.models.datetime') as mock_date:
+            mock_date.today.return_value = current_date
+            mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
 
             self.assertEqual(event.is_less_than_one_week_prior_event, False)
 
