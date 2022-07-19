@@ -291,6 +291,7 @@ class Event(models.Model):
         today = today_tz.replace(tzinfo=None)
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
+        print(f'TODAY {today}')
         return today >= one_week_prior_event_start
 
 

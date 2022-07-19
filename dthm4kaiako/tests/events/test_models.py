@@ -27,6 +27,8 @@ from unittest import mock
 import datetime
 import pytz
 
+NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
+
 class EventModelTests(TestCase):
 
     @classmethod
@@ -216,8 +218,8 @@ class EventModelTests(TestCase):
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start(self):
 
-        event_start_date = datetime.datetime(2011, 6, 12, 12, 54, 23, 00, pytz.timezone('Pacific/Auckland'))
-        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0, 00, pytz.timezone('Pacific/Auckland'))
+        event_start_date = datetime.datetime(2023, 1, 8, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
 
         event = Event.objects.get(pk=1)
         Event.objects.filter(pk=1).update(start=event_start_date)
@@ -229,12 +231,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__two_weeks_prior_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 2, 10, 0, 0)
+
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 2, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
@@ -243,12 +245,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__one_day_prior_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 15, 10, 0, 0)
+
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 15, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
@@ -257,12 +259,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__same_datetime_as_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
+        
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
@@ -271,12 +273,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__one_week_after_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 23, 10, 0, 0)
+
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 23, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
@@ -285,12 +287,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__two_weeks_after_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 30, 10, 0, 0)
+
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 30, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
@@ -299,12 +301,12 @@ class EventModelTests(TestCase):
 
 
     def test_is_less_than_one_week_prior_event__one_day_after_start(self):
-        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 17, 10, 0, 0)
+
+        event_start_date = datetime.datetime(2023, 1, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 1, 17, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+
         event = Event.objects.get(pk=1)
-        event.update_or_create(
-            start=event_start_date
-        )
+        Event.objects.filter(pk=1).update(start=event_start_date)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = current_date
