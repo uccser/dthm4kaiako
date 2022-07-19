@@ -25,7 +25,7 @@ from tests.dthm4kaiako_test_data_generator import (
 )
 from unittest import mock
 import datetime
-
+import pytz
 
 class EventModelTests(TestCase):
 
@@ -216,8 +216,8 @@ class EventModelTests(TestCase):
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start(self):
 
-        event_start_date = datetime.datetime(2023, 1, 8, 10, 0, 0)
-        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0)
+        event_start_date = datetime.datetime(2011, 6, 12, 12, 54, 23, 00, pytz.timezone('Pacific/Auckland'))
+        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0, 00, pytz.timezone('Pacific/Auckland'))
 
         event = Event.objects.get(pk=1)
         Event.objects.filter(pk=1).update(start=event_start_date)
