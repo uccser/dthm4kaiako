@@ -317,6 +317,13 @@ class EventModelTests(TestCase):
             self.assertEqual(event.is_less_than_one_week_prior_event, True)  
 
 
+    # --------------------------- tests for application_status_counts ------------
+
+    # TODO: WRITE UNIT TESTS!
+
+    
+
+
 class ParticipantTypeTests(TestCase):
 
     @classmethod

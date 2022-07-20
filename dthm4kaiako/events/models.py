@@ -294,6 +294,40 @@ class Event(models.Model):
         print(f'TODAY {today}')
         return today >= one_week_prior_event_start
 
+    @property
+    def application_status_counts(self):
+        """
+        Counts the number of event applications with each of the possible statuses of "Pending" (1),
+        "Approved" (2), "Rejected" (3) and "Withdrawn" (4).
+        Returns a dictionary of the counts.
+        """
+        
+        status_counts = {}
+        event_applications = EventApplication.objects.get(event=self)
+
+        for application in event_applications:
+
+            status_string = "Unknown status"
+
+            if application.status == 1:
+                status_string = "Pending"
+            elif application.status == 2:
+                status_string = "Approved"
+            elif application.status == 3:
+                status_string = "Rejected"
+            elif application.status == 4:
+                status_string = "Withdrawn"
+
+
+            if not status_counts.has_key(status_string):
+                status_counts[status_string] = {
+                    'status': status_string,
+                    'count': 0
+                }
+            status_counts[status_string]['count'] += 1
+
+        return status_counts
+
 
     # TODO: remove this and replace with participant type attendance fee
     # @property
