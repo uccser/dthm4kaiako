@@ -286,20 +286,21 @@ def apply_for_event(request, pk):
                             'show_medical_notes': event.accessible_online,
                             'mobile_phone_number': user.mobile_phone_number,
                             'email_address': user.email_address}
-
         else:
             event_application_form = EventApplicationForm()
-
-        # event_application_form = EventApplicationForm()
+        
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
-            
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(instance=billing_physical_address, initial=initial_billing_data) # TODO: figure out how to autoload billing info
         terms_and_conditions_form = TermsAndConditionsForm(
                 initial={'I_agree_to_the_terms_and_conditions': False,
                 } # User must re-agree each time they update the form
             )
+        
+        if event.is_less_than_one_week_prior_event and event.is_catered:
+            messages.warning(request, f'Your dietary requirements may not be considered for catering due to it being too close to the event commencing. Please consider contacting us at {event.contact_email_address}')
+    
 
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
