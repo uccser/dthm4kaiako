@@ -15,6 +15,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 import datetime
+from django.contrib.postgres.fields import ArrayField
 
 # from django.core.validators import MinLengthValidator, MaxLengthValidator
 
@@ -194,6 +195,28 @@ class Event(models.Model):
         null=False,
         default='',
     )
+    total_pending_applications_prior_bulk_deletion = models.SmallIntegerField(
+        default=0,
+        null=False,
+        blank=False
+    )
+    total_approved_applications_prior_bulk_deletion = models.SmallIntegerField(
+        default=0,
+        null=False,
+        blank=False
+    )
+    total_rejected_applications_prior_bulk_deletion = models.SmallIntegerField(
+        default=0,
+        null=False,
+        blank=False
+    )
+    total_withdrawn_applications_prior_bulk_deletion = models.SmallIntegerField(
+        default=0,
+        null=False,
+        blank=False
+    )
+
+    # TODO: add reasons_for_withdrawing
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -300,8 +323,10 @@ class Event(models.Model):
         Counts the number of event applications with each of the possible statuses of "Pending" (1),
         "Approved" (2), "Rejected" (3) and "Withdrawn" (4).
         Returns a dictionary of the counts.
+
+        Only usable prior to the event applications being deleted for privacy reasons.
         """
-        
+
         status_counts = {}
         event_applications = EventApplication.objects.get(event=self)
 
@@ -319,7 +344,7 @@ class Event(models.Model):
                 status_string = "Withdrawn"
 
 
-            if not status_counts.has_key(status_string):
+            if status_string not in status_counts:
                 status_counts[status_string] = {
                     'status': status_string,
                     'count': 0
