@@ -3,12 +3,10 @@
 # from attr import fields
 from django import forms
 from pkg_resources import require
-from events.models import ParticipantType, Address, EventApplication
-from users.models import DietaryRequirement
+from events.models import Address, EventApplication
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, EmailField, CharField
-from django.db.models import Q
+from django.forms import EmailField
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -47,7 +45,7 @@ class TermsAndConditionsForm(forms.Form):
 
 
 class BillingDetailsForm(ModelForm):
-    """Form class for event registration billing details."""
+    """Simple form for event registration billing details."""
 
     bill_to = forms.CharField(max_length=200, required=True, help_text="Who will be paying for you?")
     billing_email_address = EmailField(required=True, label='Billing email address', help_text="Email address of who will be paying for you")
@@ -63,3 +61,19 @@ class BillingDetailsForm(ModelForm):
 
         model = Address
         fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country', ]
+
+
+class WithdrawEventApplicationForm(ModelForm):
+    """Simple form for obtaining the reason for a participant withdrawing from their event application."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+    class Meta:
+        """Metadata for WithdrawEventApplicationForm class."""
+
+        model = EventApplication
+        fields = ['reason_for_withdrawing']

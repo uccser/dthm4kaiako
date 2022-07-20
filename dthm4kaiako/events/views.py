@@ -12,7 +12,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm
+from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm, WithdrawEventApplicationForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -150,12 +150,16 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['locations'] = self.object.locations.all()
 
         user = self.request.user
+        withdraw_event_application_form = WithdrawEventApplicationForm()
 
         if user.is_authenticated:
             context['has_user_applied'] = self.does_application_exist(user)
             context['application_pk'] = self.get_application_pk(user)
         else:
             context['user_is_authenticated'] = False
+
+        context['withdraw_event_application_form'] = withdraw_event_application_form
+        
         return context
 
 
@@ -297,6 +301,7 @@ def apply_for_event(request, pk):
                 initial={'I_agree_to_the_terms_and_conditions': False,
                 } # User must re-agree each time they update the form
             )
+
         
         if event.is_less_than_one_week_prior_event and event.is_catered:
             messages.warning(request, f'Your dietary requirements may not be considered for catering due to it being too close to the event commencing. Please consider contacting us at {event.contact_email_address}')
@@ -318,6 +323,7 @@ def apply_for_event(request, pk):
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
+
         if validate_event_application_form(event_application_form, 
                                     user_update_details_form, 
                                     terms_and_conditions_form, 
@@ -329,9 +335,11 @@ def apply_for_event(request, pk):
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
             user.educational_entities.set(all_educational_entities)
             user.region = user_update_details_form.cleaned_data['region']
-            user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
             user.email_address = user_update_details_form.cleaned_data['email_address']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
+
+            if event.accessible_online:
+                user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
 
             if display_catering_info:
                 all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
