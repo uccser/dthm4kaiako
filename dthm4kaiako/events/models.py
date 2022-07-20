@@ -309,13 +309,13 @@ class Event(models.Model):
         """
         If there is less than a week until the event commences, returns True.
         This is so that a catering order for the event can be finalised a week before the event starts.
+        Flase is returned if the current date is exactly one week prior to the event start datetime.
         """
         today_tz = datetime.datetime.today()
         today = today_tz.replace(tzinfo=None)
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
-        print(f'TODAY {today}')
-        return today >= one_week_prior_event_start
+        return today.isoformat() > one_week_prior_event_start.isoformat()
 
     @property
     def application_status_counts(self):
