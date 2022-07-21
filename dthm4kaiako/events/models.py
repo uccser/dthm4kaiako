@@ -16,7 +16,6 @@ from django.db.models.signals import post_save
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 import datetime
 from django.contrib.postgres.fields import ArrayField
-
 # from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
@@ -408,7 +407,7 @@ class Session(models.Model):
         related_name='sessions',
         blank=True,
     )
-    facilitators = models.ManyToManyField(User, related_name='session', blank=True, verbose_name="Facilitators of this session")
+    facilitators = models.ManyToManyField(User, related_name='sessions', blank=True, verbose_name="Facilitators of this session")
 
 
     def __str__(self):
@@ -428,21 +427,21 @@ class ParticipantType(models.Model):
     cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
     event = models.ForeignKey(
         Event,
-        related_name="application_types",
+        related_name="participant_types",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
 
     def __str__(self):
-        """Text representation of an application type."""
+        """Text representation of an participant type."""
         return self.name
 
     class Meta:
         """Meta options for class."""
 
         ordering = ['name', ]
-        verbose_name_plural = 'application type'
+        verbose_name_plural = 'participant type'
 
 
 class Address(models.Model):
@@ -662,6 +661,11 @@ class DeletedEventApplication(models.Model):
         max_length = 300,
         null=True,
         blank=True,
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='deleted_event_applications',
         default=""
     )
 
