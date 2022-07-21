@@ -632,6 +632,39 @@ class EventApplication(models.Model):
         if (self.status != 4):
             self.status = 4
 
+class DeletedEventApplication(models.Model):
+    """
+    Model for a deleted event application. 
+    It contains the bare minimum information so that there is no identifiable information.
+    """
+
+    PREFER_NOT_TO_SAY = 1
+    ILLNESS = 2
+    NOT_INTERESTED = 3
+    CHANGE_OF_PLANS = 4
+    OTHER = 5
+    WITHDRAW_REASONS = (
+        (PREFER_NOT_TO_SAY, _('Register to attend event')),
+        (ILLNESS, _('Apply to attend event')),
+        (NOT_INTERESTED, _('Visit event website')),
+        (CHANGE_OF_PLANS, _('This event is invite only')),
+        (OTHER, _('Other')),
+    )
+    date_deleted = models.DateTimeField(
+        null=False,
+        auto_now_add=True,
+    )
+    deletion_reason = models.PositiveSmallIntegerField(
+        choices=WITHDRAW_REASONS,
+        default=PREFER_NOT_TO_SAY,
+    )
+    other_reason_for_deletion = models.DateTimeField(
+        max_length = 300,
+        null=True,
+        blank=True,
+        default=""
+    )
+
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
