@@ -25,6 +25,16 @@ ARG GIT_SHA
 ARG BUILD_ENVIRONMENT=production
 ARG APP_HOME=/app
 
+LABEL org.opencontainers.image.title='dthm4kaiako'
+LABEL org.opencontainers.image.description='Website about Digital Technologies & Hangarau Matihiko for Kaiako by UCCSER.'
+LABEL org.opencontainers.image.authors='University of Canterbury Computer Science Education Research Group (UCCSER) https://github.com/uccser'
+LABEL org.opencontainers.image.url='https://www.dthm4kaiako.ac.nz/'
+LABEL org.opencontainers.image.documentation='https://github.com/uccser/dthm4kaiako'
+LABEL org.opencontainers.image.source='https://github.com/uccser/dthm4kaiako'
+LABEL org.opencontainers.image.vendor='University of Canterbury Computer Science Education Research Group (UCCSER)'
+LABEL org.opencontainers.image.licenses='MIT'
+LABEL org.opencontainers.image.revision=${GIT_SHA}
+
 # Set environment variables
 ENV LANG C.UTF-8
 ENV DEPLOYED=True
