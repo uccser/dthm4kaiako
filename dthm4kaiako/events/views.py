@@ -243,7 +243,8 @@ def create_deleted_event_application(event, request):
     event = event
     )
 
-    if reason == '5':
+    if reason == '7':
+        # Other reason
         other_reason = request.POST['other_reason_for_deletion']
         deleted_event_application = DeletedEventApplication.objects.create(
             deletion_reason = reason,

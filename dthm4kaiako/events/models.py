@@ -641,12 +641,16 @@ class DeletedEventApplication(models.Model):
     ILLNESS = 2
     NOT_INTERESTED = 3
     CHANGE_OF_PLANS = 4
-    OTHER = 5
+    TOO_EXPENSIVE = 5
+    INCONVENIENT_LOCATION = 6
+    OTHER = 7
     WITHDRAW_REASONS = (
-        (PREFER_NOT_TO_SAY, _('Register to attend event')),
-        (ILLNESS, _('Apply to attend event')),
-        (NOT_INTERESTED, _('Visit event website')),
-        (CHANGE_OF_PLANS, _('This event is invite only')),
+        (PREFER_NOT_TO_SAY, _('Prefer not to say')),
+        (ILLNESS, _('Illness')),
+        (NOT_INTERESTED, _('Not interested')),
+        (CHANGE_OF_PLANS, _('Change of plans')),
+        (TOO_EXPENSIVE, _('Too expensive / No funding')),
+        (INCONVENIENT_LOCATION, _('Inconvient location')),
         (OTHER, _('Other')),
     )
     date_deleted = models.DateTimeField(
@@ -656,6 +660,7 @@ class DeletedEventApplication(models.Model):
     deletion_reason = models.PositiveSmallIntegerField(
         choices=WITHDRAW_REASONS,
         default=PREFER_NOT_TO_SAY,
+        help_text="Reason the participant has chosen to withdraw their application."
     )
     other_reason_for_deletion = models.CharField(
         max_length = 300,
