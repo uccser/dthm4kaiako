@@ -209,40 +209,24 @@ def delete_application_via_application_page(request, pk):
 
     if request.method == 'POST':
 
-        # if withdraw_event_application_form.is_valid():
-
             reason = request.POST['deletion_reason']
             deleted_event_application = DeletedEventApplication.objects.create(
             deletion_reason = reason,
             event = event
             )
 
-            # if reason == 5:
-            #     other_reason = withdraw_event_application_form.cleaned_data['other_reason_for_deletion']
-            #     deleted_event_application = DeletedEventApplication.objects.create(
-            #         deletion_reason = reason,
-            #         event = event,
-            #         other_reason_for_deletion = other_reason
-            # )
+            if reason == 5:
+                other_reason = request.POST['other_reason_for_deletion']
+                deleted_event_application = DeletedEventApplication.objects.create(
+                    deletion_reason = reason,
+                    event = event,
+                    other_reason_for_deletion = other_reason
+            )
             deleted_event_application.save()
-
             event_application.delete()
             messages.success(request, 'Event application successfully withdrawn')
-            messages.success(request, '{}'.format(reason))
-            # messages.success(request, '{}'.format(other_reason))
-
+            
             return HttpResponseRedirect(reverse("events:event_applications"))
-        
-        # else:
-
-        #     messages.success(request, 'not valid form')
-        #     messages.success(request, withdraw_event_application_form)
-
-
-
-    # context = {
-    #     'withdraw_event_application_form': WithdrawEventApplicationForm()
-    # }
 
     return render(request, 'events/event_applications.html')
 

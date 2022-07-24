@@ -657,7 +657,7 @@ class DeletedEventApplication(models.Model):
         choices=WITHDRAW_REASONS,
         default=PREFER_NOT_TO_SAY,
     )
-    other_reason_for_deletion = models.DateTimeField(
+    other_reason_for_deletion = models.CharField(
         max_length = 300,
         null=True,
         blank=True,
