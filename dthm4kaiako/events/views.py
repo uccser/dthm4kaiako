@@ -215,7 +215,7 @@ def delete_application_via_application_page(request, pk):
             event = event
             )
 
-            if reason == 5:
+            if reason == '5':
                 other_reason = request.POST['other_reason_for_deletion']
                 deleted_event_application = DeletedEventApplication.objects.create(
                     deletion_reason = reason,
@@ -224,8 +224,9 @@ def delete_application_via_application_page(request, pk):
             )
             deleted_event_application.save()
             event_application.delete()
+            messages.success(request, '{}'.format(reason))
             messages.success(request, 'Event application successfully withdrawn')
-            
+
             return HttpResponseRedirect(reverse("events:event_applications"))
 
     return render(request, 'events/event_applications.html')
