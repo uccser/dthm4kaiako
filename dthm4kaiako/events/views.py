@@ -5,6 +5,7 @@ from django.utils.timezone import now
 from django_filters.views import FilterView
 from utils.mixins import RedirectToCosmeticURLMixin
 from events.models import (
+    DeletedEventApplication,
     Event,
     Location,
     EventApplication,
@@ -150,7 +151,7 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['locations'] = self.object.locations.all()
 
         user = self.request.user
-        withdraw_event_application_form = WithdrawEventApplicationForm()
+        withdraw_event_application_form = WithdrawEventApplicationForm(self.request.POST)
 
         if user.is_authenticated:
             context['has_user_applied'] = self.does_application_exist(user)
@@ -191,6 +192,7 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
                 'event__start')
             context['event_applications'] = unordered_event_applications
             context['user'] = self.request.user
+            context['withdraw_event_application_form'] = WithdrawEventApplicationForm(self.request.POST)
         return context
 
     def get_object(self):
@@ -203,26 +205,109 @@ def delete_application_via_application_page(request, pk):
     """ Allowing a user to delete an existing event application from their event applications page."""
 
     event_application = get_object_or_404(EventApplication, pk=pk)
+    event = Event.objects.get(pk=event_application.event.pk)
 
     if request.method == 'POST':
-        event_application.delete()
-        return HttpResponseRedirect(reverse("events:event_applications"))
 
-    return render(request, 'event_applications.html')
+        # if withdraw_event_application_form.is_valid():
+
+            reason = request.POST['deletion_reason']
+            deleted_event_application = DeletedEventApplication.objects.create(
+            deletion_reason = reason,
+            event = event
+            )
+
+            # if reason == 5:
+            #     other_reason = withdraw_event_application_form.cleaned_data['other_reason_for_deletion']
+            #     deleted_event_application = DeletedEventApplication.objects.create(
+            #         deletion_reason = reason,
+            #         event = event,
+            #         other_reason_for_deletion = other_reason
+            # )
+            deleted_event_application.save()
+
+            event_application.delete()
+            messages.success(request, 'Event application successfully withdrawn')
+            messages.success(request, '{}'.format(reason))
+            # messages.success(request, '{}'.format(other_reason))
+
+            return HttpResponseRedirect(reverse("events:event_applications"))
+        
+        # else:
+
+        #     messages.success(request, 'not valid form')
+        #     messages.success(request, withdraw_event_application_form)
+
+
+
+    # context = {
+    #     'withdraw_event_application_form': WithdrawEventApplicationForm()
+    # }
+
+    return render(request, 'events/event_applications.html')
+
+
+# @login_required
+# def delete_application_via_application_page(request, pk):
+#     """ Allowing a user to delete an existing event application from their event applications page."""
+
+#     event_application = get_object_or_404(EventApplication, pk=pk)
+#     event = Event.objects.get(pk=event_application.event.pk)
+
+#     if request.method == 'POST':
+
+#         reason = request.POST['deletion_reason']
+#         deleted_event_application = DeletedEventApplication.objects.create(
+#         deletion_reason = reason,
+#         event = event
+#         )
+
+#         if reason == 5:
+#             other_reason = request.POST['other_reason_for_deletion']
+#             deleted_event_application = DeletedEventApplication.objects.create(
+#                 deletion_reason = reason,
+#                 event = event,
+#                 other_reason_for_deletion = other_reason
+#         )
+#         deleted_event_application.save()
+
+#         event_application.delete()
+#         return HttpResponseRedirect(reverse("events:event_applications"))
+
+#     return render(request, 'event_applications.html')
 
 
 @login_required
-def delete_application_via_event_page(request, pk):
+def delete_application_via_event_page(request, pk, withdraw_event_application_form):
     """ Allowing a user to delete an existing event application from the event details page."""
 
     event_application = get_object_or_404(EventApplication, pk=pk)
     event = Event.objects.get(pk=event_application.event.pk)
 
     if request.method == 'POST':
+        # create_deleted_event_application(event, withdraw_event_application_form)
         event_application.delete()
         return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
 
     return render(request, 'event_details.html')
+
+
+# def create_deleted_event_application(event, withdraw_event_application_form):
+
+#     reason = withdraw_event_application_form.cleaned_data['deletion_reason']
+#     deleted_event_application = DeletedEventApplication.objects.create(
+#         deletion_reason = reason,
+#         event = event
+#     )
+
+#     if reason == 5:
+#         other_reason = withdraw_event_application_form.cleaned_data['other_reason_for_deletion']
+#         deleted_event_application = DeletedEventApplication.objects.create(
+#             deletion_reason = reason,
+#             event = event,
+#             other_reason_for_deletion = other_reason
+#     )
+#     deleted_event_application.save()
 
 
 def validate_event_application_form(event_application_form, 
@@ -422,6 +507,7 @@ def apply_for_event(request, pk):
         'billing_details_form': billing_details_form,
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
+        'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST)
     }
 
     return render(request, 'events/apply.html', context)

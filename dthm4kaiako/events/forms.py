@@ -3,7 +3,7 @@
 # from attr import fields
 from django import forms
 from pkg_resources import require
-from events.models import Address, EventApplication
+from events.models import Address, DeletedEventApplication, EventApplication
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
@@ -75,5 +75,5 @@ class WithdrawEventApplicationForm(ModelForm):
     class Meta:
         """Metadata for WithdrawEventApplicationForm class."""
 
-        model = EventApplication
-        fields = ['reason_for_withdrawing']
+        model = DeletedEventApplication
+        fields = ['deletion_reason', 'other_reason_for_deletion']

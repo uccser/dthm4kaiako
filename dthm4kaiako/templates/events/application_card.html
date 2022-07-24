@@ -1,5 +1,7 @@
 {% load static humanize %}
 
+{% load crispy_forms_tags %}
+
 <div class="event card mb-3 w-100">
     <div class="card-header title-header align-middle">
         <div class="row">
@@ -53,6 +55,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
                                 {% csrf_token %}
+                                {% crispy withdraw_event_application_form %}
                                 <input class="btn btn-warning" type="submit" value="Yes">
                             </form>
                             </div>

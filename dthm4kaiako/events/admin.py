@@ -5,6 +5,7 @@ from django.utils.timezone import now
 from django.contrib.gis.db import models as geomodels
 from django.utils.translation import gettext_lazy as _
 from events.models import (
+    DeletedEventApplication,
     Event,
     Session,
     Location,
@@ -344,3 +345,4 @@ admin.site.register(Session),
 admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(RegistrationForm),
 admin.site.register(ParticipantType),
+admin.site.register(DeletedEventApplication)

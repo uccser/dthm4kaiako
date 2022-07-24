@@ -650,8 +650,8 @@ class DeletedEventApplication(models.Model):
         (OTHER, _('Other')),
     )
     date_deleted = models.DateTimeField(
-        null=False,
         auto_now_add=True,
+        help_text="Date the original event application was deleted"
     )
     deletion_reason = models.PositiveSmallIntegerField(
         choices=WITHDRAW_REASONS,

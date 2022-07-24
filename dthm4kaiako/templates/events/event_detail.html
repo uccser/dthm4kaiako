@@ -210,9 +210,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <form action="{% url 'events:delete_application_via_event_page' application_pk %}" method="post">
                     {% csrf_token %}
-                    
                     {% crispy withdraw_event_application_form %}
-
                     <input class="btn btn-warning" type="submit" value="Yes">
                 </form>
                 </div>
