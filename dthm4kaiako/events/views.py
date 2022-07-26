@@ -298,8 +298,9 @@ def apply_for_event(request, pk):
     billing_required = not event.is_free
     display_catering_info = event.is_catered
     initial_user_data={'show_dietary_requirements': event.is_catered, 
-                    'show_medical_notes': event.accessible_online
+                    'show_medical_notes': not event.accessible_online
                     }
+    initial_event_application_data={'show_emergency_contact_fields': not event.accessible_online}
     new_billing_email = None
     current_application = None
     billing_physical_address = None
@@ -311,16 +312,16 @@ def apply_for_event(request, pk):
 
         if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
-            event_application_form = EventApplicationForm(instance=current_application)
+            event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
             bill_to = current_application.bill_to
             initial_user_data={'show_dietary_requirements': event.is_catered, 
-                            'show_medical_notes': event.accessible_online,
+                            'show_medical_notes': not event.accessible_online,
                             'mobile_phone_number': user.mobile_phone_number,
                             'email_address': user.email_address}
         else:
-            event_application_form = EventApplicationForm()
+            event_application_form = EventApplicationForm(initial=initial_event_application_data)
         
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:

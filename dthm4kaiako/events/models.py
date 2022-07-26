@@ -15,7 +15,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 import datetime
-from django.contrib.postgres.fields import ArrayField
+import re
+
 # from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
@@ -476,7 +477,8 @@ class Address(models.Model):
     # TODO: validate that it is only 4 digits
     post_code = models.IntegerField(
         help_text='Post code, for example: 8041',
-        default='8041',)
+        default='8041',
+    )
     country = models.CharField(
         max_length=300,
         default='New Zealand'
@@ -491,6 +493,23 @@ class Address(models.Model):
         """Get full text representation of an address."""
         address = '{} {},\n{},\n{},\n{}'.format(self.street_number, self.street_name, self.suburb, self.city, self.post_code)
         return address
+
+    def clean(self):
+        """Validate address model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+
+        post_code_pattern = re.compile("^([0-9]){4}$")
+
+        if not post_code_pattern.match(str(self.post_code)):
+            raise ValidationError(
+                {
+                    'post_code':
+                    _('Post code must be four digits.')
+                }
+            )
 
 
 class EventApplication(models.Model):

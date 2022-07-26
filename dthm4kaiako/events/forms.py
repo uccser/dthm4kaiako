@@ -20,6 +20,17 @@ class EventApplicationForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
+        if 'initial' in kwargs:
+            initial_data_dict = kwargs.get('initial')
+            if 'show_emergency_contact_fields' in initial_data_dict:
+                self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
+                if not self.show_emergency_contact_fields:
+                    del self.fields['emergency_contact_first_name']
+                    del self.fields['emergency_contact_last_name']
+                    del self.fields['emergency_contact_relationship']
+                    del self.fields['emergency_contact_phone_number']
+
+
     class Meta:
         """Metadata for EventApplicationForm class."""
 
@@ -28,6 +39,7 @@ class EventApplicationForm(ModelForm):
                   'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
                  ]
    
+
 
 class TermsAndConditionsForm(forms.Form):
     """ Simple form to allow the user to agree to the terms and conditions.
