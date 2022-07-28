@@ -472,6 +472,7 @@ class EventApplicationTests(TestCase):
         self.assertEqual(event_application.status, 4) 
 
 
+
 class RegistrationFormTests(TestCase):
 
     @classmethod

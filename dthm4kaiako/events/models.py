@@ -627,6 +627,25 @@ class EventApplication(models.Model):
         """String representation of an event application."""
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
 
+
+    def clean(self):
+        """Validate event application model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+
+        phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
+
+        if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
+            raise ValidationError(
+                {
+                    'emergency_contact_phone_number':
+                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678')
+                }
+            )
+
+
     @property
     def status_string_for_user(self):
         """Return event application's status as a string.
