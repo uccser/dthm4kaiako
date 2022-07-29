@@ -474,7 +474,6 @@ class Address(models.Model):
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
     )
-    # TODO: validate that it is only 4 digits
     post_code = models.IntegerField(
         help_text='Post code, for example: 8041',
         default='8041',
@@ -508,6 +507,16 @@ class Address(models.Model):
                 {
                     'post_code':
                     _('Post code must be four digits.')
+                }
+            )
+
+        street_number_pattern = re.compile("^([A-Za-z0-9])+$")
+
+        if not street_number_pattern.match(str(self.street_number)):
+            raise ValidationError(
+                {
+                    'street_number':
+                    _('Street number can only include upper and lower case letters and numbers')
                 }
             )
 
@@ -641,7 +650,7 @@ class EventApplication(models.Model):
             raise ValidationError(
                 {
                     'emergency_contact_phone_number':
-                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678')
+                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
                 }
             )
 

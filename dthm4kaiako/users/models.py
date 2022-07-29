@@ -5,6 +5,10 @@ from django.db import models
 from django.urls import reverse
 from utils.get_upload_filepath import get_entity_upload_path
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
+import re
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 class DietaryRequirement(models.Model):
     """Model for a dietary requirement e.g. vegetarian."""
@@ -95,5 +99,24 @@ class User(AbstractUser):
     def __str__(self):
         """Name of the user."""
         return f'{self.first_name} {self.last_name}'
+
+
+# TODO: figure out why valid phone numbers are not being accepted in form!    
+    # def clean(self):
+    #     """Validate user model attributes.
+
+    #     Raises:
+    #         ValidationError if invalid attributes.
+    #     """
+
+    #     mobile_phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
+
+    #     if not mobile_phone_number_pattern.match(str(self.mobile_phone_number)):
+    #         raise ValidationError(
+    #             {
+    #                 'mobile_phone_number':
+    #                 _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
+    #             }
+    #         )
 
 

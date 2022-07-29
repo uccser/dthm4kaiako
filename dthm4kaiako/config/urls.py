@@ -12,6 +12,7 @@ from config.views import get_release_and_commit
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 admin.site.site_title = admin.site.site_header
+from django.conf.urls import url
 
 urlpatterns = [
     # Main applications
@@ -37,6 +38,14 @@ urlpatterns = [
     # path('api/', include('rest_framework.urls')),
     # Redirects
     path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),
+    
+    # TODO add in for django-fobi
+    # View URLs
+    # url(r'^fobi/', include('fobi.urls.view')),
+
+    # # Edit URLs
+    # url(r'^fobi/', include('fobi.urls.edit')),
+
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
