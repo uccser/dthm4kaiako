@@ -15,10 +15,6 @@ import environ
 # dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
 ROOT_DIR = environ.Path(__file__) - 3
 
-# TODO add in for django-fobi
-# Directory that manage.py is in: dthm4kaiako/dthm4kaiako/config/settings/base.py - 3 = dthm4kaiako/dthm4kaiako/
-# BASE_DIR = environ.Path(__file__) - 3
-
 env = environ.Env()
 
 # GENERAL
@@ -133,57 +129,6 @@ THIRD_PARTY_APPS = [
     'modelclone',
     'svg',
 
-    # TODO add in for django-fobi
-
-    # `django-fobi` core
-    # 'fobi',
-
-    # `django-fobi` themes
-    # 'fobi.contrib.themes.bootstrap3', # Bootstrap 3 theme
-    # 'fobi.contrib.themes.foundation5', # Foundation 5 theme
-    # 'fobi.contrib.themes.simple', # Simple theme
-
-    # `django-fobi` form elements - fields
-    # 'fobi.contrib.plugins.form_elements.fields.boolean',
-    # 'fobi.contrib.plugins.form_elements.fields.checkbox_select_multiple',
-    # 'fobi.contrib.plugins.form_elements.fields.date',
-    # 'fobi.contrib.plugins.form_elements.fields.date_drop_down',
-    # 'fobi.contrib.plugins.form_elements.fields.datetime',
-    # 'fobi.contrib.plugins.form_elements.fields.decimal',
-    # 'fobi.contrib.plugins.form_elements.fields.email',
-    # 'fobi.contrib.plugins.form_elements.fields.file',
-    # 'fobi.contrib.plugins.form_elements.fields.float',
-    # 'fobi.contrib.plugins.form_elements.fields.hidden',
-    # 'fobi.contrib.plugins.form_elements.fields.input',
-    # 'fobi.contrib.plugins.form_elements.fields.integer',
-    # 'fobi.contrib.plugins.form_elements.fields.ip_address',
-    # 'fobi.contrib.plugins.form_elements.fields.null_boolean',
-    # 'fobi.contrib.plugins.form_elements.fields.password',
-    # 'fobi.contrib.plugins.form_elements.fields.radio',
-    # 'fobi.contrib.plugins.form_elements.fields.regex',
-    # 'fobi.contrib.plugins.form_elements.fields.select',
-    # 'fobi.contrib.plugins.form_elements.fields.select_model_object',
-    # 'fobi.contrib.plugins.form_elements.fields.select_multiple',
-    # 'fobi.contrib.plugins.form_elements.fields.select_multiple_model_objects',
-    # 'fobi.contrib.plugins.form_elements.fields.slug',
-    # 'fobi.contrib.plugins.form_elements.fields.text',
-    # 'fobi.contrib.plugins.form_elements.fields.textarea',
-    # 'fobi.contrib.plugins.form_elements.fields.time',
-    # 'fobi.contrib.plugins.form_elements.fields.url',
-
-    # `django-fobi` form elements - content elements
-    # 'fobi.contrib.plugins.form_elements.test.dummy',
-    # 'easy_thumbnails', # Required by `content_image` plugin
-    # 'fobi.contrib.plugins.form_elements.content.content_image',
-    # 'fobi.contrib.plugins.form_elements.content.content_image_url',
-    # 'fobi.contrib.plugins.form_elements.content.content_text',
-    # 'fobi.contrib.plugins.form_elements.content.content_video',
-
-    # `django-fobi` form handlers
-    # 'fobi.contrib.plugins.form_handlers.db_store',
-    # 'fobi.contrib.plugins.form_handlers.http_repost',
-    # 'fobi.contrib.plugins.form_handlers.mail',
-    # 'fobi.contrib.plugins.form_handlers.mail_sender',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -298,7 +243,6 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # TODO remove for django-fobi
         'APP_DIRS': True,
 
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
@@ -322,11 +266,6 @@ TEMPLATES = [
                 'config.context_processors.deployed.deployed',
                 'config.context_processors.dtta_menu.dtta_menu',
                 'config.context_processors.version_number.version_number',
-
-                # TODO add in for django-fobi
-                # 'fobi.context_processors.theme'
-                # 'fobi.context_processors.dynamic_values',  # Optional
-                # 'django.core.context_processors.request'
             ],
             'libraries': {
                 'markdown': 'config.filters.markdown',
@@ -335,13 +274,6 @@ TEMPLATES = [
                 'poet_templatetags': 'poet.templatetags',
                 'read_static_file': 'config.templatetags.read_static_file',
             },
-            
-            # TODO add in for django-fobi
-            # 'loaders': [
-            #     'django.template.loaders.filesystem.Loader',
-            #     'django.template.loaders.app_directories.Loader',
-            #     'admin_tools.template_loaders.Loader',
-            # ],
         },
     },
 ]

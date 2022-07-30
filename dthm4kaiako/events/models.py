@@ -195,26 +195,12 @@ class Event(models.Model):
         null=False,
         default='',
     )
-    total_pending_applications_prior_bulk_deletion = models.SmallIntegerField(
-        default=0,
-        null=False,
-        blank=False
+    event_staff = models.ManyToManyField(
+        User,
+        related_name='events',
+        blank=True,
     )
-    total_approved_applications_prior_bulk_deletion = models.SmallIntegerField(
-        default=0,
-        null=False,
-        blank=False
-    )
-    total_rejected_applications_prior_bulk_deletion = models.SmallIntegerField(
-        default=0,
-        null=False,
-        blank=False
-    )
-    total_withdrawn_applications_prior_bulk_deletion = models.SmallIntegerField(
-        default=0,
-        null=False,
-        blank=False
-    )
+
 
     # TODO: add reasons_for_withdrawing
 
@@ -263,6 +249,7 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
+
 
     #TODO: use this function instead of including logic in template to improve tidiness
     @property
@@ -317,14 +304,31 @@ class Event(models.Model):
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
         return today.isoformat() > one_week_prior_event_start.isoformat()
 
+
+    @property
+    def total_approved_event_applications(self):
+        """
+        Counts the number of event applications that have been approved (4)
+        Returns an integer of the counts.
+        """
+        total = 0
+
+        event_applications = [EventApplication.objects.get(event=self.id)]
+
+        if len(event_applications) == 0:
+            return total
+        else:
+            for application in event_applications:
+                if application.status == 1:
+                    total += 1
+            return total
+
     @property
     def application_status_counts(self):
         """
         Counts the number of event applications with each of the possible statuses of "Pending" (1),
         "Approved" (2), "Rejected" (3) and "Withdrawn" (4).
         Returns a dictionary of the counts.
-
-        Only usable prior to the event applications being deleted for privacy reasons.
         """
 
         status_counts = {}

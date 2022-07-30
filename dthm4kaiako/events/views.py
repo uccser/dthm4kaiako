@@ -456,3 +456,49 @@ def apply_for_event(request, pk):
     }
 
     return render(request, 'events/apply.html', context)
+
+
+class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
+    """View for a events management."""
+
+    template_name = 'events/events_management_hub.html'
+
+    def get_context_data(self, **kwargs):
+        """Provide the context data for the events management view.
+
+        Returns:
+            Dictionary of context data.
+        """
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if user.is_authenticated:
+            context['events_user_is_staff_for'] = [Event.objects.get(event_staff=user.pk)]
+  
+        return context
+
+
+    def get_queryset(self):
+        """Show all events.
+
+        Returns:
+            Events.
+        """
+        return Event.objects.all()
+
+
+class EventManagementView(LoginRequiredMixin, generic.DetailView):
+    """View for a events management."""
+
+    model = Event
+    context_object_name = 'event'
+    template_name = 'events/event_management.html'
+    
+    def get_queryset(self):
+        """Show event.
+
+        Returns:
+            Event.
+        """
+        return Event.objects.filter(id=self.kwargs['pk'])
+

@@ -159,6 +159,9 @@ class EventAdmin(ClonableModelAdmin):
                 'show_schedule',
             ),
         }),
+        ('Permissions', {
+            'fields': ('event_staff',),
+        }),
     )
     filter_horizontal = (
         'organisers',

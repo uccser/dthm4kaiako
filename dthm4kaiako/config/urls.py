@@ -38,14 +38,6 @@ urlpatterns = [
     # path('api/', include('rest_framework.urls')),
     # Redirects
     path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),
-    
-    # TODO add in for django-fobi
-    # View URLs
-    # url(r'^fobi/', include('fobi.urls.view')),
-
-    # # Edit URLs
-    # url(r'^fobi/', include('fobi.urls.edit')),
-
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

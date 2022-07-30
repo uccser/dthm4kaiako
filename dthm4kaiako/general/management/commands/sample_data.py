@@ -1,5 +1,6 @@
 """Module for the custom Django sample_data command."""
 
+from array import array
 import csv
 import random
 from django.core import management
@@ -376,3 +377,10 @@ class Command(management.base.BaseCommand):
         print('POET progress outcome groups created.')
         POETFormSubmissionFactory.create_batch(size=800)
         print('POET submissions created.')
+
+        # Event staff
+        events = Event.objects.all()
+        staff_array = [admin]
+        for event in events:
+            event.staff.set(staff_array)
+            event.save()
