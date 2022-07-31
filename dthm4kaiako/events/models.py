@@ -303,7 +303,7 @@ class Event(models.Model):
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
         return today.isoformat() > one_week_prior_event_start.isoformat()
-        
+
 
     @property
     def application_status_counts(self):
@@ -319,7 +319,7 @@ class Event(models.Model):
             'rejected' : 0,
             'withdrawn' : 0
         }
-        event_applications = [EventApplication.objects.get(event=self)]
+        event_applications = EventApplication.objects.filter(event=self)
 
         for application in event_applications:
 
@@ -331,12 +331,62 @@ class Event(models.Model):
                 status_string = 'approved'
             elif application.status == 3:
                 status_string = 'rejected'
-            elif application.status == 4:
-                status_string = 'withdrawn'
 
             status_counts[status_string] += 1
 
+        status_counts['withdrawn'] = DeletedEventApplication.objects.filter(event=self).count()       
+
         return status_counts
+
+    @property
+    def reasons_for_withdrawing_counts(self):
+        """
+        Counts the number of each reason for an event application to be withdrawn.
+        Returns a dictionary of the counts.
+        """
+
+        reason_counts = {
+            'prefer_not_to_say' : 0,
+            'illness' : 0,
+            'not_interested' : 0,
+            'change_of_plans' : 0,
+            'too_expensive': 0,
+            'inconvenient_location': 0,
+            'other': 0
+        }
+        deleted_event_applications = DeletedEventApplication.objects.filter(event=self)
+
+        for deleted_application in deleted_event_applications:
+
+            if deleted_application.deletion_reason == 1:
+                reason_string = 'prefer_not_to_say'
+            elif deleted_application.deletion_reason == 2:
+                reason_string = 'illness'
+            elif deleted_application.deletion_reason == 3:
+                reason_string = 'not_interested'
+            elif deleted_application.deletion_reason == 4:
+                reason_string = 'change_of_plans'
+            elif deleted_application.deletion_reason == 5:
+                reason_string = 'too_expensive'
+            elif deleted_application.deletion_reason == 6:
+                reason_string = 'inconvenient_location'
+            elif deleted_application.deletion_reason == 7:
+                reason_string = 'other'
+
+            reason_counts[reason_string] += 1
+
+        return reason_counts
+
+    @property
+    def other_reasons_for_withdrawing(self):
+        """
+        Returns a list of the other reasons for why event applications were withdrawn for the given event.
+        """
+        deleted_event_applications = DeletedEventApplication.objects.get(event=self, reason_for_deletion=7)
+        other_reasons = []
+        for deleted_event_application in deleted_event_applications:
+            other_reasons.append(deleted_event_application.other_reason_for_deletion)
+        return other_reasons
 
 
     # TODO: remove this and replace with participant type attendance fee

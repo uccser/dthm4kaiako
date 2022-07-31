@@ -10,14 +10,16 @@
 
 {% block content %}
     <div>
+
+        <!-- Event Application Status Counts -->
         <div class="panel-group">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#collapse1">Event Application Status Counts</a>
+                  <a data-toggle="collapse" href="#event-application-status-counts">Event Application Status Counts</a>
                 </h4>
               </div>
-              <div id="collapse1" class="panel-collapse collapse">
+              <div id="event-application-status-counts" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div>
                         <b>Approved:</b> {{event.application_status_counts.approved}}
@@ -35,6 +37,43 @@
               </div>
             </div>
         </div>
+
+        <!-- Reasons for Withdrawing -->
+        <div class="panel-group">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#reason-for-withdrawing-counts">Reasons for Withdrawing</a>
+                </h4>
+              </div>
+              <div id="reason-for-withdrawing-counts" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div>
+                        <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
+                    </div>
+                    <div>
+                        <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
+                    </div>
+                    <div>
+                        <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
+                    </div>
+                    <div>
+                        <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
+                    </div>
+                    <div>
+                        <b>Too expensive:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
+                    </div>
+                    <div>
+                        <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
+                    </div>
+                    <div>
+                        <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
     </div>
 
 {% endblock content %}
