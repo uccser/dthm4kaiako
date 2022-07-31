@@ -453,24 +453,7 @@ class EventApplicationTests(TestCase):
 
     def test_status_string_for_user__rejected(self):
         event_application = EventApplication.objects.get(id=3)
-        self.assertEqual(event_application.status_string_for_user, "Rejected") 
-
-    def test_status_string_for_user__withdrawn(self):
-        event_application = EventApplication.objects.get(id=4)
-        self.assertEqual(event_application.status_string_for_user, "Withdrawn") 
-
-    
-    # ------------------------------- tests for withdraw ------------------------------
-
-    def test_withdraw__not_already_withdrawn(self):
-        event_application = EventApplication.objects.get(id=1)
-        event_application.withdraw()
-        self.assertEqual(event_application.status, 4) 
-
-    def test_withdraw__already_withdrawn(self):
-        event_application = EventApplication.objects.get(id=4)
-        self.assertEqual(event_application.status, 4) 
-
+        self.assertEqual(event_application.status_string_for_user, "Rejected")
 
 
 class RegistrationFormTests(TestCase):

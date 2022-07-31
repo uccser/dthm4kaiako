@@ -323,8 +323,6 @@ class Event(models.Model):
 
         for application in event_applications:
 
-            status_string = "Unknown status"
-
             if application.status == 1:
                 status_string = 'pending'
             elif application.status == 2:
@@ -562,12 +560,10 @@ class EventApplication(models.Model):
     PENDING = 1
     APPROVED = 2
     REJECTED = 3
-    WITHDRAWN = 4
     APPLICATION_STATUSES = (
         (PENDING, _('Pending')),
         (APPROVED, _('Approved')),
         (REJECTED, _('Rejected')),
-        (WITHDRAWN, _('Withdrawn')),
     )
 
     submitted = models.DateTimeField(auto_now_add=True) # user does not edit
@@ -704,14 +700,8 @@ class EventApplication(models.Model):
             string_form = "Approved"
         elif self.status == 3:
             string_form = "Rejected"
-        elif self.status == 4:
-            string_form =  "Withdrawn"
         return string_form
-
-    def withdraw(self):
-        """Set the status to withdrawn."""
-        if (self.status != 4):
-            self.status = 4
+        
 
 class DeletedEventApplication(models.Model):
     """
