@@ -756,6 +756,17 @@ class DeletedEventApplication(models.Model):
         default=""
     )
 
+    def save(self, *args, **kwargs):
+        """
+        Override save to check that if the deletion reasons is 'other' 
+        that there is a related reason for this (not an empty string), 
+        otherwise, we change the reason from 'other' to 'prefer not to say'.
+        """
+        
+        if self.deletion_reason == 7 and not self.other_reason_for_deletion:
+            self.deletion_reason = 1
+        super(DeletedEventApplication, self).save(*args, **kwargs)
+
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
