@@ -67,10 +67,31 @@
                         <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
                     </div>
                     <div>
-                        <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                        
+                        <!-- Other Reasons for Withdrawing -->
+                        <div class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <a data-toggle="collapse" href="#other-reason-for-withdrawing-counts">
+                                            <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                                        </a>
+                                    </vid>
+                                </div>
+                                <div id="other-reason-for-withdrawing-counts" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        {% for reason in event.other_reasons_for_withdrawing %}
+                                            <div>
+                                                <p>{{reason}}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-              </div>
             </div>
         </div>
 
