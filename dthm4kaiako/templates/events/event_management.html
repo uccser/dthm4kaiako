@@ -80,11 +80,13 @@
                                 </div>
                                 <div id="other-reason-for-withdrawing-counts" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        {% for reason in event.other_reasons_for_withdrawing %}
-                                            <div>
-                                                <p>{{reason}}</p>
-                                            </div>
-                                        {% endfor %}
+                                        <ul>
+                                            {% for reason in event.other_reasons_for_withdrawing %}
+                                                <div>
+                                                    <li>{{reason}}</li>
+                                                </div>
+                                            {% endfor %}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
