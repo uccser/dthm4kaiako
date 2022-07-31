@@ -20,12 +20,21 @@
               <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div>
-                        Approved: {{event.total_approved_event_applications}}
+                        <b>Approved:</b> {{event.application_status_counts.approved}}
+                    </div>
+                    <div>
+                        <b>Pending:</b> {{event.application_status_counts.pending}}
+                    </div>
+                    <div>
+                        <b>Rejected:</b> {{event.application_status_counts.rejected}}
+                    </div>
+                    <div>
+                        <b>Withdrawn:</b> {{event.application_status_counts.withdrawn}}
                     </div>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
     </div>
 
 {% endblock content %}

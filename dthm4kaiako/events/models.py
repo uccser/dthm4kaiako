@@ -303,25 +303,7 @@ class Event(models.Model):
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
         return today.isoformat() > one_week_prior_event_start.isoformat()
-
-
-    @property
-    def total_approved_event_applications(self):
-        """
-        Counts the number of event applications that have been approved (4)
-        Returns an integer of the counts.
-        """
-        total = 0
-
-        event_applications = [EventApplication.objects.get(event=self.id)]
-
-        if len(event_applications) == 0:
-            return total
-        else:
-            for application in event_applications:
-                if application.status == 1:
-                    total += 1
-            return total
+        
 
     @property
     def application_status_counts(self):
@@ -331,29 +313,28 @@ class Event(models.Model):
         Returns a dictionary of the counts.
         """
 
-        status_counts = {}
-        event_applications = EventApplication.objects.get(event=self)
+        status_counts = {
+            'pending' : 0,
+            'approved' : 0,
+            'rejected' : 0,
+            'withdrawn' : 0
+        }
+        event_applications = [EventApplication.objects.get(event=self)]
 
         for application in event_applications:
 
             status_string = "Unknown status"
 
             if application.status == 1:
-                status_string = "Pending"
+                status_string = 'pending'
             elif application.status == 2:
-                status_string = "Approved"
+                status_string = 'approved'
             elif application.status == 3:
-                status_string = "Rejected"
+                status_string = 'rejected'
             elif application.status == 4:
-                status_string = "Withdrawn"
+                status_string = 'withdrawn'
 
-
-            if status_string not in status_counts:
-                status_counts[status_string] = {
-                    'status': status_string,
-                    'count': 0
-                }
-            status_counts[status_string]['count'] += 1
+            status_counts[status_string] += 1
 
         return status_counts
 
