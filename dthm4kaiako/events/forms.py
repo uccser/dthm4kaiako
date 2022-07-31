@@ -89,3 +89,37 @@ class WithdrawEventApplicationForm(ModelForm):
 
         model = DeletedEventApplication
         fields = ['deletion_reason', 'other_reason_for_deletion']
+
+# ---------------------------- forms for event management ----------------------------------
+
+# TODO: add submitted and updated fields (read only by default) 
+# TODO: check that the disabled fields fall back correctly the default provided in "initial"
+class ManageEventApplicationForm(ModelForm):
+    """ Simple form for managing (e.g. deleting, updating) the information in an event application as an event staff member."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+        # self.fields['representing'].disabled = True
+        # self.fields['event'].disabled = True
+        # self.fields['emergency_contact_first_name'].disabled = True
+        # self.fields['emergency_contact_last_name'].disabled = True
+        # self.fields['emergency_contact_relationship'].disabled = True
+        # self.fields['emergency_contact_phone_number'].disabled = True
+        # self.fields['paid'].disabled = True
+        # self.fields['bill_to'].disabled = True
+        # self.fields['billing_physical_address'].disabled = True
+        # self.fields['billing_email_address'].disabled = True
+
+    class Meta:
+        """Metadata for ManageEventApplicationForm class."""
+
+        model = EventApplication
+        fields = ['status', 'participant_type', 'staff_comments', 'representing',
+                    'event', 'emergency_contact_first_name', 'emergency_contact_last_name', 'emergency_contact_relationship',
+                    'emergency_contact_phone_number', 'paid', 'bill_to', 'billing_physical_address', 'billing_email_address'
+                    ]
+        

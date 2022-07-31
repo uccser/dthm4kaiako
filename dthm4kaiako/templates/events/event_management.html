@@ -97,6 +97,29 @@
             </div>
         </div>
 
+        <!-- Event Applications -->
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#event-applications">Event Applications</a>
+                </h4>
+                </div>
+                <div id="event-applications" class="panel-collapse collapse">
+                <div class="panel-body">
+                    {% if event_applications_formset %}
+                        <form method="post">
+                            {{ event_applications_formset.as_p }}
+                            {% csrf_token %}
+                            <button type="submit" >Save</button>
+                        </form>
+                    {% else %}
+                        <p>No event applications</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
     </div>
 
 {% endblock content %}

@@ -13,7 +13,7 @@ from events.models import (
 )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm, WithdrawEventApplicationForm
+from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm, WithdrawEventApplicationForm, ManageEventApplicationForm
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -22,6 +22,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import formset_factory
 
 
 class HomeView(generic.TemplateView):
@@ -487,18 +488,97 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         return Event.objects.all()
 
 
-class EventManagementView(LoginRequiredMixin, generic.DetailView):
-    """View for a events management."""
+@login_required
+def manage_event(request,pk):
+    """
+    View for event management. 
+    Contains form sets for each event related object (similar to that in Admin app).
+    These can be viewed, updated (based on non-read only fields) and deleted.
+    """
+    """
+    View for event management. 
+    Contains form sets for each event related object (similar to that in Admin app).
+    These can be viewed, updated (based on non-read only fields) and deleted.
+    """
 
-    model = Event
-    context_object_name = 'event'
-    template_name = 'events/event_management.html'
-    
-    def get_queryset(self):
-        """Show event.
+    event_to_manage = Event.objects.get(pk=pk)
+    event_applications = EventApplication.objects.filter(event=event_to_manage)
 
-        Returns:
-            Event.
-        """
-        return Event.objects.filter(id=self.kwargs['pk'])
+    context = {
+        'event': event_to_manage,
+    }
 
+    if len(event_applications) == 0:
+        return render(request, 'events/event_management.html', context)
+    else:
+
+        # TODO: figure out how to uniquely initialise each form for each event application object
+        # initial_for_event_applications_formset = [
+        #                                             {'submitted': event_application.submitted,
+        #                                                 'updated': event_application.updated,
+        #                                                 'status': event_application.status,
+        #                                                 'participant_type': event_application.participant_type,
+        #                                                 'staff_comments': event_application.staff_comments,
+        #                                                 'representing': event_application.representing,
+        #                                                 'event': event_application.event,
+        #                                                 'emergency_contact_first_name': event_application.emergency_contact_first_name,
+        #                                                 'emergency_contact_last_name': event_application.emergency_contact_last_name,
+        #                                                 'emergency_contact_relationship': event_application.emergency_contact_relationship,
+        #                                                 'emergency_contact_phone_number': event_application.emergency_contact_phone_number,
+        #                                                 'paid': event_application.paid,
+        #                                                 'bill_to': event_application.bill_to,
+        #                                                 'billing_physical_address': event_application.billing_physical_address,
+        #                                                 'billing_email_address': event_application.billing_email_address,
+        #                                                 'form-TOTAL_FORMS': len(event_applications),
+        #                                                 'form-INITIAL_FORMS': len(event_applications)                                                        
+        #                                             } for event_application in event_applications
+                                                    
+        #                                         ]
+
+        # data_for_event_applications_formset = {
+        #     'form-TOTAL_FORMS': len(event_applications),
+        #     'form-INITIAL_FORMS': len(event_applications),
+        # }
+
+
+        initial_for_event_applications_formset = {'submitted': event_applications[0].submitted,
+                                                    'updated': event_applications[0].updated,
+                                                    'status': event_applications[0].status,
+                                                    'participant_type': event_applications[0].participant_type,
+                                                    'staff_comments': event_applications[0].staff_comments,
+                                                    'representing': event_applications[0].representing,
+                                                    'event': event_applications[0].event,
+                                                    'emergency_contact_first_name': event_applications[0].emergency_contact_first_name,
+                                                    'emergency_contact_last_name': event_applications[0].emergency_contact_last_name,
+                                                    'emergency_contact_relationship': event_applications[0].emergency_contact_relationship,
+                                                    'emergency_contact_phone_number': event_applications[0].emergency_contact_phone_number,
+                                                    'paid': event_applications[0].paid,
+                                                    'bill_to': event_applications[0].bill_to,
+                                                    'billing_physical_address': event_applications[0].billing_physical_address,
+                                                    'billing_email_address': event_applications[0].billing_email_address,
+                                                    'form-TOTAL_FORMS': len(event_applications),
+                                                    'form-INITIAL_FORMS': len(event_applications)                                                        
+                                                }
+                                                
+                                            
+
+        EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=len(event_applications))
+        event_applications_formset = EventApplicationFormSet(initial=initial_for_event_applications_formset)
+
+        if request.method == 'POST':
+            event_applications_formset = EventApplicationFormSet(request.POST, initial=initial_for_event_applications_formset)
+            if event_applications_formset.is_valid():
+                for form in event_applications_formset:
+                    if form.cleaned_data:
+                        pass 
+                        # TODO: grab cleaned data values, update object and save. Pull existing data first using save(commit=False) then update the new fields and save normally at end
+                # TODO: redirect somewhere
+
+        # TODO: fix KeyError created due to this
+        context = {
+            'event': event_to_manage,
+            'event_applications_formset': event_applications_formset,
+            'request':request
+        }
+        
+        return render(request, 'events/event_management.html', context)

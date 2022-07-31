@@ -542,17 +542,6 @@ def generate_event_applications():
     event_application_3_rejected.status = 3
     event_application_3_rejected.save()
 
-    event_application_4_withdrawn = EventApplication.objects.create(
-        id=4,
-        participant_type = ParticipantType.objects.get(name="Teacher"),
-        user = User.objects.get(id=1),
-        event = Event.objects.get(id=2),
-        billing_physical_address = Address.objects.get(id=1),
-        billing_email_address = "test@test.co.nz"
-    )
-    event_application_4_withdrawn.status = 4
-    event_application_4_withdrawn.save()
-
 def generate_event_registration_forms():
     """Generate event registration forms for use in dthm4kaiako tests."""
     

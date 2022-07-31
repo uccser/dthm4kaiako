@@ -648,12 +648,6 @@ class EventApplication(models.Model):
         blank=False,
         null=False,
     )
-    reason_for_withdrawing = models.CharField(
-        max_length=300, 
-        blank=False,
-        null=False,
-        default='',
-    )
 
     class Meta:
         """Meta options for class."""
@@ -701,7 +695,7 @@ class EventApplication(models.Model):
         elif self.status == 3:
             string_form = "Rejected"
         return string_form
-        
+
 
 class DeletedEventApplication(models.Model):
     """
