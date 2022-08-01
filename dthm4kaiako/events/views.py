@@ -11,6 +11,7 @@ from events.models import (
     EventApplication,
     Address
 )
+from users.models import ( User )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
 from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm, WithdrawEventApplicationForm, ManageEventApplicationForm
@@ -528,7 +529,15 @@ def manage_event(request,pk):
                                             'paid': event_application.paid,
                                             'bill_to': event_application.bill_to,
                                             'billing_physical_address': event_application.billing_physical_address,
-                                            'billing_email_address': event_application.billing_email_address,                                                      
+                                            'billing_email_address': event_application.billing_email_address, 
+                                            'participant_first_name': event_application.user.first_name,
+                                            'participant_last_name': event_application.user.last_name,
+                                            'participant_region_name': event_application.user.region,
+                                            # 'educational_entities': event_application.user.educational_entities,
+                                            # 'dietary_requirements': event_application.user.dietary_requirements,
+                                            'medical_notes': event_application.user.medical_notes,
+                                            'email_address': event_application.user.email_address,
+                                            'mobile_phone_number': event_application.user.mobile_phone_number,
                                             } for event_application in event_applications
                                         ]   
 
