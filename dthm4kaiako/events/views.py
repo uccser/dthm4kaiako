@@ -474,7 +474,10 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         user = self.request.user
 
         if user.is_authenticated:
-            context['events_user_is_staff_for'] = [Event.objects.get(event_staff=user.pk)]
+            if Event.objects.filter(event_staff=user.pk).exists():
+                context['events_user_is_staff_for'] = [Event.objects.get(event_staff=user.pk)]
+            else:
+                context['events_user_is_staff_for'] = []
   
         return context
 
@@ -579,7 +582,24 @@ def manage_event(request,pk):
                                             # 'form-TOTAL_FORMS': 1,
                                             # 'form-INITIAL_FORMS': 1,
                                             # 'form-MAX_NUM_FORMS': ''                                                        
-                                        },]   
+                                        },
+                                        {
+                                            'submitted': event_applications[1].submitted,
+                                            'updated': event_applications[1].updated,
+                                            'status': event_applications[1].status,
+                                            'participant_type': event_applications[1].participant_type,
+                                            'staff_comments': event_applications[1].staff_comments,
+                                            'representing': event_applications[1].representing,
+                                            'event': event_applications[1].event,
+                                            'emergency_contact_first_name': event_applications[1].emergency_contact_first_name,
+                                            'emergency_contact_last_name': event_applications[1].emergency_contact_last_name,
+                                            'emergency_contact_relationship': event_applications[1].emergency_contact_relationship,
+                                            'emergency_contact_phone_number': event_applications[1].emergency_contact_phone_number,
+                                            'paid': event_applications[1].paid,
+                                            'bill_to': event_applications[1].bill_to,
+                                            'billing_physical_address': event_applications[1].billing_physical_address,
+                                            'billing_email_address': event_applications[1].billing_email_address,
+                                        }]   
 
         EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
         event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)    
