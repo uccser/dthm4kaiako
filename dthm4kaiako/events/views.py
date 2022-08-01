@@ -560,28 +560,29 @@ def manage_event(request,pk):
         #                                             'form-INITIAL_FORMS': 1                                                        
         #                                         }
 
-        initial_for_event_applications_formset = {
-                                            # 'submitted': event_applications[0].submitted,
-                                            # 'updated': event_applications[0].updated,
+        initial_for_event_applications_formset = [{
+                                            'submitted': event_applications[0].submitted,
+                                            'updated': event_applications[0].updated,
                                             'status': event_applications[0].status,
-                                            # 'participant_type': event_applications[0].participant_type,
-                                            # 'staff_comments': event_applications[0].staff_comments,
-                                            # 'representing': event_applications[0].representing,
-                                            # 'event': event_applications[0].event,
-                                            # 'emergency_contact_first_name': event_applications[0].emergency_contact_first_name,
-                                            # 'emergency_contact_last_name': event_applications[0].emergency_contact_last_name,
-                                            # 'emergency_contact_relationship': event_applications[0].emergency_contact_relationship,
-                                            # 'emergency_contact_phone_number': event_applications[0].emergency_contact_phone_number,
-                                            # 'paid': event_applications[0].paid,
-                                            # 'bill_to': event_applications[0].bill_to,
-                                            # 'billing_physical_address': event_applications[0].billing_physical_address,
-                                            # 'billing_email_address': event_applications[0].billing_email_address,
+                                            'participant_type': event_applications[0].participant_type,
+                                            'staff_comments': event_applications[0].staff_comments,
+                                            'representing': event_applications[0].representing,
+                                            'event': event_applications[0].event,
+                                            'emergency_contact_first_name': event_applications[0].emergency_contact_first_name,
+                                            'emergency_contact_last_name': event_applications[0].emergency_contact_last_name,
+                                            'emergency_contact_relationship': event_applications[0].emergency_contact_relationship,
+                                            'emergency_contact_phone_number': event_applications[0].emergency_contact_phone_number,
+                                            'paid': event_applications[0].paid,
+                                            'bill_to': event_applications[0].bill_to,
+                                            'billing_physical_address': event_applications[0].billing_physical_address,
+                                            'billing_email_address': event_applications[0].billing_email_address,
                                             # 'form-TOTAL_FORMS': 1,
-                                            # 'form-INITIAL_FORMS': 1                                                        
-                                        }   
+                                            # 'form-INITIAL_FORMS': 1,
+                                            # 'form-MAX_NUM_FORMS': ''                                                        
+                                        },]   
 
-        EventApplicationFormSet = formset_factory(ManageEventApplicationForm)
-        event_applications_formset = EventApplicationFormSet(prefix='applications')    
+        EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
+        event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)    
 
         # EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=len(event_applications))
         # event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)
@@ -592,10 +593,10 @@ def manage_event(request,pk):
         context['formset'] = event_applications_formset
 
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(prefix='applications')
+            event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)
 
         elif request.method == 'POST':
-            event_applications_formset = EventApplicationFormSet(request.POST, prefix='applications')
+            event_applications_formset = EventApplicationFormSet(request.POST, prefix='applications', initial=initial_for_event_applications_formset)
             if event_applications_formset.is_valid():
                 for form in event_applications_formset:
                     if form.cleaned_data:
@@ -603,5 +604,4 @@ def manage_event(request,pk):
                         # TODO: grab cleaned data values, update object and save. Pull existing data first using save(commit=False) then update the new fields and save normally at end
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk,}))
             
-
         return render(request, 'events/event_management.html', {'event': event, 'formset' : event_applications_formset})
