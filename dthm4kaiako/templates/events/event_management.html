@@ -107,9 +107,9 @@
                 </div>
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
-                    {% if event_applications_formset %}
+                    {% if formset %}
                         <form method="post">
-                            {{ event_applications_formset.as_p }}
+                            {{ formset.as_p }}
                             {% csrf_token %}
                             <button type="submit" >Save</button>
                         </form>

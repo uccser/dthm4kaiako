@@ -501,11 +501,11 @@ def manage_event(request,pk):
     These can be viewed, updated (based on non-read only fields) and deleted.
     """
 
-    event_to_manage = Event.objects.get(pk=pk)
-    event_applications = EventApplication.objects.filter(event=event_to_manage)
+    event = Event.objects.get(pk=pk)
+    event_applications = EventApplication.objects.filter(event=event)
 
     context = {
-        'event': event_to_manage,
+        'event': event,
     }
 
     if len(event_applications) == 0:
@@ -562,8 +562,15 @@ def manage_event(request,pk):
                                                 
                                             
 
-        EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=len(event_applications))
-        event_applications_formset = EventApplicationFormSet(initial=initial_for_event_applications_formset)
+        # EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=len(event_applications))
+        # event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)
+
+        EventApplicationFormSet = formset_factory(ManageEventApplicationForm)
+        event_applications_formset = EventApplicationFormSet(prefix='applications')
+
+
+        context['formset'] = event_applications_formset
+        messages.success(request, f"#2 {context}")
 
         if request.method == 'POST':
             event_applications_formset = EventApplicationFormSet(request.POST, initial=initial_for_event_applications_formset)
@@ -573,12 +580,12 @@ def manage_event(request,pk):
                         pass 
                         # TODO: grab cleaned data values, update object and save. Pull existing data first using save(commit=False) then update the new fields and save normally at end
                 # TODO: redirect somewhere
+                return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk,}))
 
         # TODO: fix KeyError created due to this
-        context = {
-            'event': event_to_manage,
-            'event_applications_formset': event_applications_formset,
-            'request':request
-        }
-        
-        return render(request, 'events/event_management.html', context)
+
+        messages.success(request, f"#1 {context}")
+
+
+
+        return render(request, 'events/event_management.html', {'event': event, 'formset' : event_applications_formset})
