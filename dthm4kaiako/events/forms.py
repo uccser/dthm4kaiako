@@ -8,6 +8,8 @@ from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
 from django.contrib.auth import get_user_model
+from users.models import Entity, DietaryRequirement
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -97,22 +99,32 @@ class WithdrawEventApplicationForm(ModelForm):
 class ManageEventApplicationForm(ModelForm):
     """ Simple form for managing (e.g. deleting, updating) the information in an event application as an event staff member."""
 
+    participant_first_name = forms.CharField(disabled=True, max_length=50, label='participant first name')
+    participant_last_name = forms.CharField(disabled=True, max_length=50, label='participant last name')
+    participant_region_name = forms.CharField(disabled=True)
+    educational_entities = forms.ModelMultipleChoiceField(disabled=True, queryset=Entity.objects.all(), required=True, widget=forms.CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
+    dietary_requirements = forms.ModelMultipleChoiceField(disabled=True, queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=forms.CheckboxSelectMultiple)
+    medical_notes = forms.CharField(disabled=True)
+    email_address = forms.EmailField(disabled=True, max_length=150)
+    mobile_phone_number = forms.CharField(disabled=True, max_length=30)
+    submitted = forms.DateTimeField(disabled=True)
+    updated = forms.DateTimeField(disabled=True)
+    
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(ManageEventApplicationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        # self.fields['representing'].disabled = True
-        # self.fields['event'].disabled = True
-        # self.fields['emergency_contact_first_name'].disabled = True
-        # self.fields['emergency_contact_last_name'].disabled = True
-        # self.fields['emergency_contact_relationship'].disabled = True
-        # self.fields['emergency_contact_phone_number'].disabled = True
-        # self.fields['paid'].disabled = True
-        # self.fields['bill_to'].disabled = True
-        # self.fields['billing_physical_address'].disabled = True
-        # self.fields['billing_email_address'].disabled = True
+        self.fields['representing'].disabled = True
+        self.fields['event'].disabled = True
+        self.fields['emergency_contact_first_name'].disabled = True
+        self.fields['emergency_contact_last_name'].disabled = True
+        self.fields['emergency_contact_relationship'].disabled = True
+        self.fields['emergency_contact_phone_number'].disabled = True
+        self.fields['bill_to'].disabled = True
+        self.fields['billing_physical_address'].disabled = True
+        self.fields['billing_email_address'].disabled = True
 
     class Meta:
         """Metadata for ManageEventApplicationForm class."""
