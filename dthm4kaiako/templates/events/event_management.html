@@ -107,9 +107,9 @@
                 </div>
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
-                    {% if formset %}
-                        {{ formset.managment_form }}
-                        {% for form in formset %}
+                    {% if formset_applications %}
+                        {{ formset_applications.managment_form }}
+                        {% for form in formset_applications %}
                             <div class="panel-group">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
