@@ -108,7 +108,36 @@
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
                     {% if formset_applications %}
-                        {{ formset_applications.managment_form }}
+                        {{ formset.management_data }}
+
+                        <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+                            <div id="form_errors">
+                                {{formset.form_errors}}
+                                {% if formset.non_field_errors %}
+                                    {{ formset.non_field_errors }}
+                                {% endif %}
+                                {% if formset.non_form_errors %}
+                                    {{ formset.non_form_errors }}
+                                {% endif %}
+                                {% for form in formset.forms %}
+                                    {% if form.errors %}
+                                        Form number {{ forloop.counter }}:
+                                        <ul class="errorlist">
+                                        {% for key, error in form.errors.items %}
+                                            <li>{{form.fields}}
+                                                <ul class="errorlist">
+                                                    <li>{{error}}</li>
+                                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endfor %}
+                    
+                            </div>
+                        </div>
+
+                        {% csrf_token %}
                         {% for form in formset_applications %}
                             <div class="panel-group">
                                 <div class="panel panel-default">
@@ -122,10 +151,25 @@
                                     <div id="event-application-form-{{form.id.auto_id}}" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <form method="post">
+                                                {{ formset_applications.managment_form }}
                                                 {% csrf_token %}
+
+                                                {{ form.non_field_errors }}
+                                                {% for field in form.fields %}
+                                                    <div>{{ field }}</div>
+                                                    {% if field.errors %}
+                                                            <div class="alert alert-danger">
+                                                                {{ field.errors }}
+                                                            </div>
+                                                    {% endif %}
+                                                {% endfor %}
+
+
                                                 {% crispy form %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
                                             <button type="submit" class="btn btn-primary">
-                                                Save
                                             </button>
                                             <br>
                                         </div>

@@ -24,7 +24,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
-
+from django.core.exceptions import ValidationError
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -379,6 +379,7 @@ def apply_for_event(request, pk):
             user.save()
 
             new_participant_type = event_application_form.cleaned_data['participant_type']
+            new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
             new_emergency_contact_relationship = event_application_form.cleaned_data['emergency_contact_relationship']
@@ -410,6 +411,7 @@ def apply_for_event(request, pk):
                     user=user, event=event,
                     defaults={
                         'participant_type': new_participant_type,
+                        'representing': new_representing,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
                         'emergency_contact_first_name': new_emergency_contact_first_name,
@@ -426,6 +428,7 @@ def apply_for_event(request, pk):
                 user=user, event=event,
                 defaults={
                     'participant_type': new_participant_type,
+                    'representing': new_representing,
                     'emergency_contact_first_name': new_emergency_contact_first_name,
                     'emergency_contact_last_name': new_emergency_contact_last_name,
                     'emergency_contact_relationship': new_emergency_contact_relationship,
@@ -493,7 +496,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 
 
 @login_required
-def manage_event(request,pk):
+def manage_event(request, pk):
     """
     View for event management. 
     Contains form sets for each event related object (similar to that in Admin app).
@@ -506,56 +509,115 @@ def manage_event(request,pk):
     """
 
     event = Event.objects.get(pk=pk)
+    user = request.user
     event_applications = EventApplication.objects.filter(event=event)
     context = {
         'event': event,
     }
+    event_applications_formset = None
+    EventApplicationFormSet = None
 
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
     else:
-        initial_for_event_applications_formset = [{
-                                            'submitted': event_application.submitted,
-                                            'updated': event_application.updated,
-                                            'status': event_application.status,
-                                            'participant_type': event_application.participant_type,
-                                            'staff_comments': event_application.staff_comments,
-                                            'representing': event_application.representing,
-                                            'event': event_application.event,
-                                            'emergency_contact_first_name': event_application.emergency_contact_first_name,
-                                            'emergency_contact_last_name': event_application.emergency_contact_last_name,
-                                            'emergency_contact_relationship': event_application.emergency_contact_relationship,
-                                            'emergency_contact_phone_number': event_application.emergency_contact_phone_number,
-                                            'paid': event_application.paid,
-                                            'bill_to': event_application.bill_to,
-                                            'billing_physical_address': event_application.billing_physical_address,
-                                            'billing_email_address': event_application.billing_email_address, 
-                                            'participant_first_name': event_application.user.first_name,
-                                            'participant_last_name': event_application.user.last_name,
-                                            'participant_region_name': event_application.user.region,
-                                            # 'educational_entities': event_application.user.educational_entities,
-                                            # 'dietary_requirements': event_application.user.dietary_requirements,
-                                            'medical_notes': event_application.user.medical_notes,
-                                            'email_address': event_application.user.email_address,
-                                            'mobile_phone_number': event_application.user.mobile_phone_number,
-                                            } for event_application in event_applications
-                                        ]   
+        initial_for_event_applications_formset = [
+                                                    {
+                                                        'submitted': event_application.submitted,
+                                                        'updated': event_application.updated,
+                                                        'status': event_application.status,
+                                                        'participant_type': event_application.participant_type,
+                                                        'staff_comments': event_application.staff_comments,
+                                                        'representing': event_application.representing,
+                                                        'event': event_application.event,
+                                                        'emergency_contact_first_name': event_application.emergency_contact_first_name,
+                                                        'emergency_contact_last_name': event_application.emergency_contact_last_name,
+                                                        'emergency_contact_relationship': event_application.emergency_contact_relationship,
+                                                        'emergency_contact_phone_number': event_application.emergency_contact_phone_number,
+                                                        'paid': event_application.paid,
+                                                        'bill_to': event_application.bill_to,
+                                                        'billing_physical_address': event_application.billing_physical_address,
+                                                        'billing_email_address': event_application.billing_email_address, 
+                                                        'participant_first_name': event_application.user.first_name,
+                                                        'participant_last_name': event_application.user.last_name,
+                                                        'participant_region_name': event_application.user.region,
+                                                        # 'educational_entities': event_application.user.educational_entities,
+                                                        # 'dietary_requirements': event_application.user.dietary_requirements,
+                                                        'medical_notes': event_application.user.medical_notes,
+                                                        'email_address': event_application.user.email_address,
+                                                        'mobile_phone_number': event_application.user.mobile_phone_number,
+                                                    } for event_application in event_applications
+                                                ] 
+        data = {
+            'form-TOTAL_FORMS': len(event_applications),
+            'form-INITIAL_FORMS': len(event_applications),
+        }  
 
         EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
-        event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)
 
-        context['formset_applications'] = event_applications_formset
+
+        messages.success(request, request)
 
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(prefix='applications', initial=initial_for_event_applications_formset)
 
-        elif request.method == 'POST':
-            event_applications_formset = EventApplicationFormSet(request.POST, prefix='applications', initial=initial_for_event_applications_formset)
-            if event_applications_formset.is_valid():
+
+            event_applications_formset = EventApplicationFormSet(data, instance=event_applications)
+
+            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
+            messages.success(request, f"GET: {event_applications_formset.data}")
+
+        if request.method == 'POST':
+            # try:
+            event_applications_formset = EventApplicationFormSet(data, request.POST, instance=event_applications)
+
+            # event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
+            # except ValidationError:
+            #     messages.success(request, "CABAGE")
+            #     event_applications_formset = None
+
+            messages.success(request, request)
+            messages.success(request, f"POST: {event_applications_formset.data}")
+
+            
+            # TODO: remove after debugging
+            messages.success(request, "MEE")
+
+            if event_applications_formset and event_applications_formset.is_valid():
+
+                messages.success(request, 'HERE')
+
                 for form in event_applications_formset:
                     if form.cleaned_data:
-                        pass
-                        # TODO: grab cleaned data values, update object and save. Pull existing data first using save(commit=False) then update the new fields and save normally at end
+
+                        messages.success(request, f"cleaned data: {form.cleaned_data}")
+                        
+                        
+                        # event_application = form.save(commit=False)
+
+                        # updated_status = form.cleaned_data['status']
+
+                        messages.success(request, f"participant_type: {form.cleaned_data['participant_type']}")
+                        messages.success(request, f"staff_comments: {form.cleaned_data['staff_comments']}")
+                        messages.success(request, f"paid: {form.cleaned_data['paid']}")
+
+                        updated_participant_type = form.cleaned_data['participant_type']
+                        updated_staff_comments = form.cleaned_data['staff_comments']
+                        updated_paid_status = form.cleaned_data['paid']
+                        event_application, created = EventApplication.objects.update_or_create(
+                            user=user, event=event,
+                            defaults={
+                                # 'status': updated_status,
+                                'participant_type': updated_participant_type,
+                                'staff_comments': updated_staff_comments,
+                                'paid': updated_paid_status,
+                            }
+                        )
+                        event_application.save()                    
+                        messages.success(request, 'Event application updated successfully')
+
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk,}))
-            
+
+            else:
+                messages.success(request, 'Formset not present or invalid!')
+
+        context['formset_applications'] = event_applications_formset
         return render(request, 'events/event_management.html', context)

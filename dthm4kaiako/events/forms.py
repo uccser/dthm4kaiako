@@ -37,7 +37,7 @@ class EventApplicationForm(ModelForm):
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['participant_type', 'emergency_contact_first_name',
+        fields = ['participant_type', 'representing', 'emergency_contact_first_name',
                   'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
                  ]
    
@@ -102,13 +102,25 @@ class ManageEventApplicationForm(ModelForm):
     participant_first_name = forms.CharField(disabled=True, max_length=50, label='participant first name')
     participant_last_name = forms.CharField(disabled=True, max_length=50, label='participant last name')
     participant_region_name = forms.CharField(disabled=True)
-    educational_entities = forms.ModelMultipleChoiceField(disabled=True, queryset=Entity.objects.all(), required=True, widget=forms.CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
+    # educational_entities = forms.ModelMultipleChoiceField(disabled=True, queryset=Entity.objects.all(), required=True, widget=forms.CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = forms.ModelMultipleChoiceField(disabled=True, queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=forms.CheckboxSelectMultiple)
     medical_notes = forms.CharField(disabled=True)
     email_address = forms.EmailField(disabled=True, max_length=150)
     mobile_phone_number = forms.CharField(disabled=True, max_length=30)
     submitted = forms.DateTimeField(disabled=True)
     updated = forms.DateTimeField(disabled=True)
+    staff_comments = forms.CharField(required=False)
+
+    class Meta:
+        """Metadata for ManageEventApplicationForm class."""
+
+        #TODO: add in status
+        model = EventApplication
+        fields = ['participant_type', 'representing',
+                    'event', 'emergency_contact_first_name', 'emergency_contact_last_name', 'emergency_contact_relationship',
+                    'emergency_contact_phone_number', 'paid', 'bill_to', 'billing_physical_address', 'billing_email_address'
+                    ]
+        
     
     def __init__(self, *args, **kwargs):
         super(ManageEventApplicationForm, self).__init__(*args, **kwargs)
@@ -126,12 +138,3 @@ class ManageEventApplicationForm(ModelForm):
         self.fields['billing_physical_address'].disabled = True
         self.fields['billing_email_address'].disabled = True
 
-    class Meta:
-        """Metadata for ManageEventApplicationForm class."""
-
-        model = EventApplication
-        fields = ['status', 'participant_type', 'staff_comments', 'representing',
-                    'event', 'emergency_contact_first_name', 'emergency_contact_last_name', 'emergency_contact_relationship',
-                    'emergency_contact_phone_number', 'paid', 'bill_to', 'billing_physical_address', 'billing_email_address'
-                    ]
-        

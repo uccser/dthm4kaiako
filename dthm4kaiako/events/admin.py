@@ -245,6 +245,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
                     'updated',
                     'status',
                     'participant_type',
+                    'representing',
                     'medical_notes',
                     'staff_comments',
                     'emergency_contact_first_name',
