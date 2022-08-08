@@ -1,6 +1,6 @@
 # Test dependencies
 
-coverage==6.4.2
+coverage==6.4.3
 django-coverage-plugin==1.8.0  # https://github.com/nedbat/django_coverage_plugin
 django-test-without-migrations==0.6
 
