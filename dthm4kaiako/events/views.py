@@ -521,6 +521,7 @@ def manage_event(request, pk):
     }
     event_applications_formset = None
     EventApplicationFormSet = None
+    manage_event_details_form = None
 
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
@@ -559,30 +560,17 @@ def manage_event(request, pk):
 
         EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
 
-
-        messages.success(request, request)
-
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset, prefix="event_applications")
+            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
             manage_event_details_form = ManageEventDetailsForm(instance=event, prefix="event_details")
 
-            messages.success(request, f"GET: {event_applications_formset.data}")
+            messages.success(request, f"{len(event_applications)}")
+            messages.success(request, f"formset {event_applications_formset}")
+
 
         if request.method == 'POST':
-
-            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset, prefix="event_applications")
-
-            messages.success(request, request)
-            messages.success(request, f"POST: {event_applications_formset.data}")
-
-            
-            # TODO: remove after debugging
-            messages.success(request, "MEE")
-
+            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
             if event_applications_formset and event_applications_formset.is_valid():
-
-                messages.success(request, 'HERE')
-
                 for form in event_applications_formset:
                     if form.cleaned_data:
 
@@ -639,23 +627,35 @@ def manage_event_details(request, pk):
             updated_name = manage_event_details_form.cleaned_data['name']
             updated_description = manage_event_details_form.cleaned_data['description']
             updated_published = manage_event_details_form.cleaned_data['published']
-
             updated_show_schedule = manage_event_details_form.cleaned_data['show_schedule']
             updated_featured = manage_event_details_form.cleaned_data['featured']
             updated_registration_type = manage_event_details_form.cleaned_data['registration_type']
             updated_registration_link = manage_event_details_form.cleaned_data['registration_link']
             updated_start = manage_event_details_form.cleaned_data['start']
             updated_end = manage_event_details_form.cleaned_data['end']
-
             updated_accessible_online = manage_event_details_form.cleaned_data['accessible_online']
-            updated_is_free = manage_event_details_form.cleaned_data['is_free']
-            update_locations = manage_event_details_form.cleaned_data['locations']
-            update_sponsors = manage_event_details_form.cleaned_data['sponsors']
-            update_organisers = manage_event_details_form.cleaned_data['organisers']
-            update_series = manage_event_details_form.cleaned_data['series']
+            updated_is_free = manage_event_details_form.cleaned_data['is_free'] #TODO: needs updating as this is calculated based on participant type costs.
             update_is_catered = manage_event_details_form.cleaned_data['is_catered']
             update_contact_email_address = manage_event_details_form.cleaned_data['contact_email_address']
-            update_event_staff = manage_event_details_form.cleaned_data['event_staff']
+            update_series = manage_event_details_form.cleaned_data['series']
+
+            all_locations = manage_event_details_form.cleaned_data['locations']
+            all_location_ids = [location.id for location in all_locations]
+            event.locations.set(all_location_ids)
+
+            all_sponsors = manage_event_details_form.cleaned_data['sponsors']
+            all_sponsors_ids = [sponsor.id for sponsor in all_sponsors]
+            event.sponsors.set(all_sponsors_ids)
+
+            all_organisers = manage_event_details_form.cleaned_data['organisers']
+            all_organisers_ids = [organiser.id for organiser in all_organisers]
+            event.organisers.set(all_organisers_ids)
+
+            all_event_staff = manage_event_details_form.cleaned_data['event_staff']
+            all_event_staff_ids = [event_staff.id for event_staff in all_event_staff]
+            event.event_staff.set(all_event_staff_ids)
+
+            #TODO: update otherside of M2M relationships for locations, sponsors, organisers, serieses and event staff!
 
             Event.objects.filter(id=event.pk).update(
                 name=updated_name,
@@ -669,13 +669,9 @@ def manage_event_details(request, pk):
                 end=updated_end,
                 accessible_online=updated_accessible_online,
                 is_free=updated_is_free,
-                # locations=update_locations,
-                # sponsors=update_sponsors,
-                # organisers=update_organisers,
-                series=update_series,
                 is_catered=update_is_catered,
                 contact_email_address=update_contact_email_address,
-                # event_staff=update_event_staff
+                series=update_series,
             )
             event.save() 
             messages.success(request, 'Event details updated successfully')

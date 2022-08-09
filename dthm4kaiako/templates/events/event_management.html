@@ -111,8 +111,9 @@
                         <form method="post" action="{% url 'events:manage_event_details' event_pk %}">
                             {% csrf_token %}
                             {% crispy manage_event_details_form %}
-                        <button type="submit" class="btn btn-primary" value="Update Event Details">
-                        </button>
+                            <input class="btn btn-primary" type="submit" value="Update event details">
+                        </form>
+                        <br>
                     {% endif %}
                 </div>
             </div>
@@ -130,37 +131,12 @@
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
                     {% if formset_applications %}
+                        
                         {{ formset.management_data }}
-
-                        <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
-                            <div id="form_errors">
-                                {{formset.form_errors}}
-                                {% if formset.non_field_errors %}
-                                    {{ formset.non_field_errors }}
-                                {% endif %}
-                                {% if formset.non_form_errors %}
-                                    {{ formset.non_form_errors }}
-                                {% endif %}
-                                {% for form in formset.forms %}
-                                    {% if form.errors %}
-                                        Form number {{ forloop.counter }}:
-                                        <ul class="errorlist">
-                                        {% for key, error in form.errors.items %}
-                                            <li>{{form.fields}}
-                                                <ul class="errorlist">
-                                                    <li>{{error}}</li>
-                                                </ul>
-                                            </li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                {% endfor %}
-                    
-                            </div>
-                        </div>
 
                         {% csrf_token %}
                         {% for form in formset_applications %}
+
                             <div class="panel-group">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -186,13 +162,12 @@
                                                     {% endif %}
                                                 {% endfor %}
 
-
                                                 {% crispy form %}
                                                 {% for hidden in form.hidden_fields %}
                                                     {{ hidden }}
                                                 {% endfor %}
-                                            <button type="submit" class="btn btn-primary">
-                                            </button>
+                                                <input type="submit" class="btn btn-primary" value="Update event application">
+                                            </form>
                                             <br>
                                         </div>
                                     </div>
