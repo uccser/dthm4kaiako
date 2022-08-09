@@ -9,7 +9,8 @@ from events.models import (
     Event,
     Location,
     EventApplication,
-    Address
+    Address,
+    RegistrationForm
 )
 from users.models import ( User )
 from events.filters import UpcomingEventFilter, PastEventFilter
@@ -19,7 +20,8 @@ from .forms import (EventApplicationForm,
                     BillingDetailsForm, 
                     WithdrawEventApplicationForm, 
                     ManageEventApplicationForm, 
-                    ManageEventDetailsForm)
+                    ManageEventDetailsForm,
+                    ManageEventRegistrationFormDetailsForm,)
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -516,12 +518,14 @@ def manage_event(request, pk):
     event = Event.objects.get(pk=pk)
     user = request.user
     event_applications = EventApplication.objects.filter(event=event)
+    registration_form = event.registration_form
     context = {
         'event': event,
     }
     event_applications_formset = None
     EventApplicationFormSet = None
     manage_event_details_form = None
+    manage_registration_form_details_form = None
 
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
@@ -562,7 +566,8 @@ def manage_event(request, pk):
 
         if request.method == 'GET':
             event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
-            manage_event_details_form = ManageEventDetailsForm(instance=event, prefix="event_details")
+            manage_event_details_form = ManageEventDetailsForm(instance=event)
+            manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
 
         elif request.method == 'POST':
             event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
@@ -602,7 +607,9 @@ def manage_event(request, pk):
 
         context['formset_applications'] = event_applications_formset
         context['manage_event_details_form'] = manage_event_details_form
+        context['manage_registration_form_details_form'] = manage_registration_form_details_form
         context['event_pk'] = event.pk
+        context['registration_form_pk'] = registration_form.pk
         return render(request, 'events/event_management.html', context)
 
 
@@ -672,6 +679,8 @@ def manage_event_details(request, pk):
             event.save() 
             messages.success(request, 'Event details updated successfully')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+        else:
+            messages.warning(request, 'Event details could not be updated. Please resolve invalid fields.')
 
     elif request.method == 'DELETE':
         event.delete()
@@ -680,5 +689,48 @@ def manage_event_details(request, pk):
 
     context['manage_event_details_form'] = manage_event_details_form
     context['event'] = event
+    context['event_pk'] = event.pk
 
-    return render(request, 'event_details.html', context)
+    return render(request, 'events/event_management.html', context)
+
+
+# TODO: add event staff access only
+@login_required
+def manage_event_registration_form_details(request, pk):
+    """ Allowing event staff to update event registration form details.
+    
+    Note that registration_form is the RegistrationForm object (as per the model) and 
+    registration_form_details_form is a Form object (for UI).
+    
+    """
+
+    registration_form = RegistrationForm.objects.get(pk=pk)
+    event = registration_form.event
+    context = {
+        'registration_form': registration_form,
+    }
+
+    if request.method == 'POST':
+        manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(request.POST, instance=registration_form)
+        if manage_registration_form_details_form.is_valid():
+
+            updated_open_datetime = manage_registration_form_details_form.cleaned_data['open_datetime']
+            updated_close_datetime = manage_registration_form_details_form.cleaned_data['close_datetime']
+            updated_terms_and_conditions = manage_registration_form_details_form.cleaned_data['terms_and_conditions']
+
+            RegistrationForm.objects.filter(event_id=registration_form.pk).update(
+                open_datetime=updated_open_datetime,
+                close_datetime=updated_close_datetime,
+                terms_and_conditions=updated_terms_and_conditions,
+            )
+            registration_form.save() 
+            messages.success(request, 'Event registration form details updated successfully')
+            return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+        else:
+            messages.warning(request, 'Registration form details could not be updated. Please resolve invalid fields.')
+
+    context['manage_registration_form_details_form'] = manage_registration_form_details_form
+    context['event'] = event
+    context['registration_form_pk'] = registration_form.pk
+
+    return render(request, 'events/event_management.html', context)
