@@ -131,41 +131,24 @@
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
                     {% if formset_applications %}
-                        
                         {{ formset.management_data }}
-
-                        {% csrf_token %}
                         {% for form in formset_applications %}
 
                             <div class="panel-group">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <div class="panel-title">
-                                            <a data-toggle="collapse" href="#event-application-form-{{form.id.auto_id}}">
-                                                <b>Name here</b>
+                                            <a data-toggle="collapse" href="#event-application-form-{{ forloop.counter }}">
+                                                <b>Participant name & status coming soon...</b>
                                             </a>
                                         </vid>
                                     </div>
-                                    <div id="event-application-form-{{form.id.auto_id}}" class="panel-collapse collapse">
+                                    <div id="event-application-form-{{ forloop.counter }}" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <form method="post">
                                                 {{ formset_applications.managment_form }}
                                                 {% csrf_token %}
-
-                                                {{ form.non_field_errors }}
-                                                {% for field in form.fields %}
-                                                    <div>{{ field }}</div>
-                                                    {% if field.errors %}
-                                                            <div class="alert alert-danger">
-                                                                {{ field.errors }}
-                                                            </div>
-                                                    {% endif %}
-                                                {% endfor %}
-
                                                 {% crispy form %}
-                                                {% for hidden in form.hidden_fields %}
-                                                    {{ hidden }}
-                                                {% endfor %}
                                                 <input type="submit" class="btn btn-primary" value="Update event application">
                                             </form>
                                             <br>

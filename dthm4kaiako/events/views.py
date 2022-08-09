@@ -564,11 +564,7 @@ def manage_event(request, pk):
             event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
             manage_event_details_form = ManageEventDetailsForm(instance=event, prefix="event_details")
 
-            messages.success(request, f"{len(event_applications)}")
-            messages.success(request, f"formset {event_applications_formset}")
-
-
-        if request.method == 'POST':
+        elif request.method == 'POST':
             event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
             if event_applications_formset and event_applications_formset.is_valid():
                 for form in event_applications_formset:
