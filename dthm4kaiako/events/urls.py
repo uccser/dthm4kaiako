@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^delete-via-applications/(?P<pk>[0-9]+)/$', views.delete_application_via_application_page, name='delete_application_via_application_page'),
     url(r'^delete-via-event/(?P<pk>[0-9]+)/$', views.delete_application_via_event_page, name='delete_application_via_event_page'),
 
+    url(r'^manage-event-details/(?P<pk>[0-9]+)/$', views.manage_event_details, name='manage_event_details'),
+
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),
     path('location/', RedirectView.as_view(pattern_name='events:home')),

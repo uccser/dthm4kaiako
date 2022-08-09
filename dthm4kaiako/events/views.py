@@ -14,7 +14,12 @@ from events.models import (
 from users.models import ( User )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
-from .forms import EventApplicationForm, TermsAndConditionsForm, BillingDetailsForm, WithdrawEventApplicationForm, ManageEventApplicationForm
+from .forms import (EventApplicationForm,
+                    TermsAndConditionsForm, 
+                    BillingDetailsForm, 
+                    WithdrawEventApplicationForm, 
+                    ManageEventApplicationForm, 
+                    ManageEventDetailsForm)
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
@@ -558,15 +563,14 @@ def manage_event(request, pk):
         messages.success(request, request)
 
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
+            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset, prefix="event_applications")
+            manage_event_details_form = ManageEventDetailsForm(instance=event, prefix="event_details")
+
             messages.success(request, f"GET: {event_applications_formset.data}")
 
         if request.method == 'POST':
-            # try:
-            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
-            # except ValidationError:
-            #     messages.success(request, "CABAGE")
-            #     event_applications_formset = None
+
+            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset, prefix="event_applications")
 
             messages.success(request, request)
             messages.success(request, f"POST: {event_applications_formset.data}")
@@ -583,7 +587,6 @@ def manage_event(request, pk):
                     if form.cleaned_data:
 
                         messages.success(request, f"cleaned data: {form.cleaned_data}")
-                        
                         
                         # event_application = form.save(commit=False)
 
@@ -614,4 +617,76 @@ def manage_event(request, pk):
                 messages.success(request, 'Formset not present or invalid!')
 
         context['formset_applications'] = event_applications_formset
+        context['manage_event_details_form'] = manage_event_details_form
+        context['event_pk'] = event.pk
         return render(request, 'events/event_management.html', context)
+
+
+# TODO: add event staff access only
+@login_required
+def manage_event_details(request, pk):
+    """ Allowing event staff to update event details as well as deleting the event if desired."""
+
+    event = Event.objects.get(pk=pk)
+    context = {
+        'event': event,
+    }
+
+    if request.method == 'POST':
+        manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event, prefix="event_details")
+        if manage_event_details_form.is_valid():
+
+            updated_name = manage_event_details_form.cleaned_data['name']
+            updated_description = manage_event_details_form.cleaned_data['description']
+            updated_published = manage_event_details_form.cleaned_data['published']
+
+            updated_show_schedule = manage_event_details_form.cleaned_data['show_schedule']
+            updated_featured = manage_event_details_form.cleaned_data['featured']
+            updated_registration_type = manage_event_details_form.cleaned_data['registration_type']
+            updated_registration_link = manage_event_details_form.cleaned_data['registration_link']
+            updated_start = manage_event_details_form.cleaned_data['start']
+            updated_end = manage_event_details_form.cleaned_data['end']
+
+            updated_accessible_online = manage_event_details_form.cleaned_data['accessible_online']
+            updated_is_free = manage_event_details_form.cleaned_data['is_free']
+            update_locations = manage_event_details_form.cleaned_data['locations']
+            update_sponsors = manage_event_details_form.cleaned_data['sponsors']
+            update_organisers = manage_event_details_form.cleaned_data['organisers']
+            update_series = manage_event_details_form.cleaned_data['series']
+            update_is_catered = manage_event_details_form.cleaned_data['is_catered']
+            update_contact_email_address = manage_event_details_form.cleaned_data['contact_email_address']
+            update_event_staff = manage_event_details_form.cleaned_data['event_staff']
+
+            Event.objects.filter(id=event.pk).update(
+                name=updated_name,
+                description=updated_description,
+                published=updated_published,
+                show_schedule=updated_show_schedule,
+                featured=updated_featured,
+                registration_type=updated_registration_type,
+                registration_link=updated_registration_link,
+                start=updated_start,
+                end=updated_end,
+                accessible_online=updated_accessible_online,
+                is_free=updated_is_free,
+                # locations=update_locations,
+                # sponsors=update_sponsors,
+                # organisers=update_organisers,
+                series=update_series,
+                is_catered=update_is_catered,
+                contact_email_address=update_contact_email_address,
+                # event_staff=update_event_staff
+            )
+            event.save() 
+            messages.success(request, 'Event details updated successfully')
+            return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+
+    elif request.method == 'DELETE':
+        event.delete()
+        messages.success(request, 'Event deleted successfully')
+        return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+
+    context['manage_event_details_form'] = manage_event_details_form
+    context['event'] = event
+
+    return render(request, 'event_details.html', context)

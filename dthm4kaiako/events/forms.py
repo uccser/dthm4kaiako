@@ -3,7 +3,7 @@
 # from attr import fields
 from django import forms
 from pkg_resources import require
-from events.models import Address, DeletedEventApplication, EventApplication
+from events.models import Address, DeletedEventApplication, EventApplication, Event
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
@@ -138,3 +138,19 @@ class ManageEventApplicationForm(ModelForm):
         self.fields['billing_physical_address'].disabled = True
         self.fields['billing_email_address'].disabled = True
 
+
+class ManageEventDetailsForm(ModelForm):
+    """ Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+
+    class Meta:
+        """Metadata for ManageEventDetailsForm class."""
+
+        model = Event
+        fields = '__all__'
+        
+    
+    def __init__(self, *args, **kwargs):
+        super(ManageEventDetailsForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
