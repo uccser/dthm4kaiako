@@ -558,18 +558,12 @@ def manage_event(request, pk):
         messages.success(request, request)
 
         if request.method == 'GET':
-
-
-            event_applications_formset = EventApplicationFormSet(data, instance=event_applications)
-
             event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
             messages.success(request, f"GET: {event_applications_formset.data}")
 
         if request.method == 'POST':
             # try:
-            event_applications_formset = EventApplicationFormSet(data, request.POST, instance=event_applications)
-
-            # event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
+            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
             # except ValidationError:
             #     messages.success(request, "CABAGE")
             #     event_applications_formset = None
