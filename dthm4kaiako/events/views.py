@@ -21,17 +21,20 @@ from .forms import (EventApplicationForm,
                     WithdrawEventApplicationForm, 
                     ManageEventApplicationForm, 
                     ManageEventDetailsForm,
-                    ManageEventRegistrationFormDetailsForm,)
+                    ManageEventRegistrationFormDetailsForm,
+                    ManageEventLocationForm,
+                    )
 from django.shortcuts import render
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
 from django.core.exceptions import ValidationError
+import csv
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -526,6 +529,7 @@ def manage_event(request, pk):
     EventApplicationFormSet = None
     manage_event_details_form = None
     manage_registration_form_details_form = None
+    manage_location_form = None
 
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
@@ -568,6 +572,9 @@ def manage_event(request, pk):
             event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
             manage_event_details_form = ManageEventDetailsForm(instance=event)
             manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+            
+            #TODO: add in formset for location: manage_location_form = ManageEventLocationForm(instance=location)
+
 
         elif request.method == 'POST':
             event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
@@ -734,3 +741,148 @@ def manage_event_registration_form_details(request, pk):
     context['registration_form_pk'] = registration_form.pk
 
     return render(request, 'events/event_management.html', context)
+
+# TODO: convert to location
+# TODO: add event staff access only
+@login_required
+def manage_event_location_details(request, pk):
+    """ Allowing event staff to update event location details.    
+    """
+
+    location = Location.objects.get(pk=pk)
+    event = location.event #TODO: check this is correct
+    context = {
+        'location': location,
+    }
+
+    if request.method == 'POST':
+        manage_location_form = ManageEventLocationForm(request.POST, instance=location)
+        if manage_location_form.is_valid():
+
+            updated_room = manage_location_form.cleaned_data['room']
+            updated_name = manage_location_form.cleaned_data['name']
+            updated_street_address = manage_location_form.cleaned_data['street_address']
+            updated_suburb = manage_location_form.cleaned_data['suburb']
+            updated_city = manage_location_form.cleaned_data['city']
+            updated_region = manage_location_form.cleaned_data['region']
+            updated_description = manage_location_form.cleaned_data['description']
+            updated_coords = manage_location_form.cleaned_data['coords']
+
+            Location.objects.filter(event_id=manage_location_form.pk).update(
+                room=updated_room,
+                name=updated_name,
+                street_address=updated_street_address,
+                suburb=updated_suburb,
+                city=updated_city,
+                region=updated_region,
+                description=updated_description,
+                coords=updated_coords,
+            )
+            location.save() 
+            messages.success(request, 'Event location details updated successfully')
+            return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+        else:
+            messages.warning(request, 'Location details could not be updated. Please resolve invalid fields.')
+
+    context['manage_location_form'] = manage_location_form
+    context['event'] = event
+    context['location_pk'] = location.pk
+
+    return render(request, 'events/event_management.html', context)
+
+@login_required
+def event_applications_csv(request, pk):
+    '''Generates a CSV of all the event applications' data.'''
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] ='attachment; filename=event_applications.csv'
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    # Designate the model
+    event_applications = EventApplication.objects.all()
+
+    # Add column headings to the csv file
+    writer.writerow(['Datetime Submitted', 
+                        'Datetime updated', 
+                        'Status', 
+                        'Participant Type', 
+                        'Staff Comments', 
+                        'Participant Firstname', 
+                        'Participant Lastname', 
+                        'Representing', 
+                        'Emergency Contact Firstname', 
+                        'Emergency Contact Lastname', 
+                        'Emergency Contact Relationship', 
+                        'Emergency Contact Phone Number', 
+                        'Paid Status', 
+                        'Bill To', 
+                        'Billing Physical Address', 
+                        'Billing Email Address'
+                    ])
+    
+    for event_application in event_applications:
+        user = event_application.user
+        # user = User.objects.filter(pk=user_pk)
+
+        writer.writerow([event_application.submitted,
+                            event_application.updated,
+                            event_application.status,
+                            event_application.participant_type,
+                            event_application.staff_comments,
+                            user.first_name,
+                            user.last_name,
+                            event_application.representing,
+                            event_application.emergency_contact_first_name,
+                            event_application.emergency_contact_last_name,
+                            event_application.emergency_contact_relationship,
+                            event_application.emergency_contact_phone_number,
+                            event_application.paid,
+                            event_application.bill_to,
+                            event_application.billing_physical_address,
+                            event_application.billing_email_address
+        ])
+    
+    return response
+
+
+@login_required
+def participant_billing_details_csv(request, pk):
+    '''Generates a CSV of all the event applications' data.'''
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] ='attachment; filename=participant_billing_details.csv'
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    # Designate the model
+    event_applications = EventApplication.objects.all()
+
+    # Add column headings to the csv file
+    writer.writerow(['Participant Firstname', 
+                        'Participant Lastname', 
+                        'Representing',
+                        'Paid Status', 
+                        'Bill To',
+                        'Billing Physical Address', 
+                        'Billing Email Address'
+                    ])
+    
+    for event_application in event_applications:
+        user = event_application.user
+        # user = User.objects.filter(pk=user_pk)
+
+        writer.writerow([
+                            user.first_name,
+                            user.last_name,
+                            event_application.representing,
+                            event_application.paid,
+                            event_application.bill_to,
+                            event_application.billing_physical_address,
+                            event_application.billing_email_address
+        ])
+    
+    return response
+

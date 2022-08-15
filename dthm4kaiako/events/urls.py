@@ -23,6 +23,10 @@ urlpatterns = [
 
     url(r'^manage-event-details/(?P<pk>[0-9]+)/$', views.manage_event_details, name='manage_event_details'),
     url(r'^manage-event-registration-form-details/(?P<pk>[0-9]+)/$', views.manage_event_registration_form_details, name='manage_event_registration_form_details'),
+    url(r'^manage-event-location-details/(?P<pk>[0-9]+)/$', views.manage_event_location_details, name='manage_event_location_details'),
+
+    path('event_applications_csv/<int:pk>/', views.event_applications_csv, name='event_applications_csv'),
+    path('participant_billing_details_csv/<int:pk>/', views.participant_billing_details_csv, name='participant_billing_details_csv'),
 
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),

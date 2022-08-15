@@ -11,6 +11,20 @@
 {% block content %}
     <div>
 
+        <!-- Event Applications CSV -->
+        <div>
+            <a class="nav-link" href="{% url 'events:event_applications_csv' event_pk %}">
+                Event Applications CSV
+            </a>
+        </div>
+
+        <!-- Participant Billing Details CSV -->
+        <div>
+            <a class="nav-link" href="{% url 'events:participant_billing_details_csv' event_pk %}">
+                Participant Billing Details CSV
+            </a>
+        </div>
+
         <!-- Event Application Status Counts -->
         <div class="panel-group">
             <div class="panel panel-default">

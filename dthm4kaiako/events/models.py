@@ -648,6 +648,7 @@ class EventApplication(models.Model):
         blank=False,
         null=False,
     )
+    admin_billing_comments = models.TextField(blank=True)
 
     class Meta:
         """Meta options for class."""

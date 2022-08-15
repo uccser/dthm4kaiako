@@ -1,19 +1,22 @@
 """Forms for events application."""
 
 # from attr import fields
+from dataclasses import field
 from django import forms
 from pkg_resources import require
 from events.models import (Address, 
                            DeletedEventApplication, 
                            EventApplication, 
                            Event, 
-                           RegistrationForm)
+                           RegistrationForm,
+                           Location)
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
 from django.contrib.auth import get_user_model
 from users.models import Entity, DietaryRequirement
 from django.db.models import Q
+from .widgets import DateTimePickerInput
 
 User = get_user_model()
 
@@ -160,6 +163,10 @@ class ManageEventDetailsForm(ModelForm):
         self.helper.disable_csrf = True
 
 
+class DateTimePickerInput(forms.DateTimeInput):
+        input_type = 'datetime'
+
+
 class ManageEventRegistrationFormDetailsForm(ModelForm):
     """ Simple form for updating the event registration form information as an event staff member."""
 
@@ -167,12 +174,30 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
         """Metadata for ManageEventRegistrationFormDetailsForm class."""
 
         model = RegistrationForm
-        fields = '__all__'
-        exclude = ['event']
-        
+        field = ['open_datetime', 'close_datetime', 'terms_and_conditions']
+        exclude = ['event']        
     
     def __init__(self, *args, **kwargs):
         super(ManageEventRegistrationFormDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+
+
+class ManageEventLocationForm(ModelForm):
+    """ Simple form for updating the event location information as an event staff member."""
+
+    class Meta:
+        """Metadata for ManageEventLocationForm class."""
+
+        model = Location
+        fields = '__all__'
+        exclude = ['event']
+        
+    
+    def __init__(self, *args, **kwargs):
+        super(ManageEventLocationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        
