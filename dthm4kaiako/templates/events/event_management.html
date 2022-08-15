@@ -169,7 +169,7 @@
                 <div class="panel-body">
 
 
-                    {% if !is_free %}
+                    {% if not is_free %}
                         <!-- Bulk mark all participants as paid -->
                         <a class="btn btn-success btn-block btn-lg" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
                             Mark all participants as paid
