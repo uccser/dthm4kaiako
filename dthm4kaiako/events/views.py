@@ -618,6 +618,7 @@ def manage_event(request, pk):
         context['manage_registration_form_details_form'] = manage_registration_form_details_form
         context['event_pk'] = event.pk
         context['registration_form_pk'] = registration_form.pk
+        context['is_free'] = event.is_free
         return render(request, 'events/event_management.html', context)
 
 
