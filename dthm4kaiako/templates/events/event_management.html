@@ -167,6 +167,12 @@
                 </div>
                 <div id="event-applications" class="panel-collapse collapse">
                 <div class="panel-body">
+
+                    <!-- Bulk mark all participants as paid -->
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                        Mark all participants as paid
+                    </a>
+
                     {% if formset_applications %}
                         {{ formset.management_data }}
                         {% for form in formset_applications %}

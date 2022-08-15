@@ -27,6 +27,7 @@ urlpatterns = [
 
     path('event_applications_csv/<int:pk>/', views.event_applications_csv, name='event_applications_csv'),
     path('participant_billing_details_csv/<int:pk>/', views.participant_billing_details_csv, name='participant_billing_details_csv'),
+    path('mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
 
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),

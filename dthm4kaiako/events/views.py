@@ -1,5 +1,6 @@
 """Views for events application."""
 
+import re
 from django.views import generic
 from django.utils.timezone import now
 from django_filters.views import FilterView
@@ -24,7 +25,7 @@ from .forms import (EventApplicationForm,
                     ManageEventRegistrationFormDetailsForm,
                     ManageEventLocationForm,
                     )
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
@@ -800,8 +801,10 @@ def event_applications_csv(request, pk):
     # Create a csv writer
     writer = csv.writer(response)
 
+    event = Event.objects.get(id=pk)
+
     # Designate the model
-    event_applications = EventApplication.objects.all()
+    event_applications = EventApplication.objects.filter(event=event)
 
     # Add column headings to the csv file
     writer.writerow(['Datetime Submitted', 
@@ -857,8 +860,10 @@ def participant_billing_details_csv(request, pk):
     # Create a csv writer
     writer = csv.writer(response)
 
+    event = Event.objects.get(id=pk)
+
     # Designate the model
-    event_applications = EventApplication.objects.all()
+    event_applications = EventApplication.objects.filter(event=event)
 
     # Add column headings to the csv file
     writer.writerow(['Participant Firstname', 
@@ -872,8 +877,6 @@ def participant_billing_details_csv(request, pk):
     
     for event_application in event_applications:
         user = event_application.user
-        # user = User.objects.filter(pk=user_pk)
-
         writer.writerow([
                             user.first_name,
                             user.last_name,
@@ -886,3 +889,22 @@ def participant_billing_details_csv(request, pk):
     
     return response
 
+
+@login_required
+def mark_all_participants_as_paid(request, pk):
+    '''Bulk mark all event applications as being paid for for a given event.'''
+    event_id = pk
+    event = Event.objects.get(id=event_id)
+    event_applications = EventApplication.objects.filter(event=event)
+
+    for event_application in event_applications:
+
+        application_to_update = EventApplication.objects.filter(id=event_application.id)
+        application_to_update.update(paid=True)
+        application_to_update = EventApplication.objects.get(id=event_application.id)
+        application_to_update.save()
+    
+    messages.success(request, 'All event participants successfully marked as paid')
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+
+    
