@@ -633,7 +633,7 @@ def manage_event_details(request, pk):
     }
 
     if request.method == 'POST':
-        manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event, prefix="event_details")
+        manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
         if manage_event_details_form.is_valid():
 
             updated_name = manage_event_details_form.cleaned_data['name']
@@ -744,6 +744,7 @@ def manage_event_registration_form_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
+
 # TODO: convert to location
 # TODO: add event staff access only
 @login_required
@@ -791,6 +792,7 @@ def manage_event_location_details(request, pk):
     context['location_pk'] = location.pk
 
     return render(request, 'events/event_management.html', context)
+
 
 @login_required
 def event_applications_csv(request, pk):
