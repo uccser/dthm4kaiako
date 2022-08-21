@@ -101,12 +101,41 @@ class WithdrawEventApplicationForm(ModelForm):
 
 # ---------------------------- forms for event management ----------------------------------
 
-# Playing around with trying to get non-disabled fields to show initial data
-class ManageEventApplicationForm(forms.Form):
-    """ Simple form for managing (e.g. deleting, updating) the information in an event application as an event staff member."""
+class ManageEventApplicationForm(ModelForm):
+    """ Simple form to allow a user to submit an application to attend an event. """
 
-    staff_comments = forms.CharField(required=False, disabled=True)
-    participant_first_name = forms.CharField(disabled=True, max_length=50, label='participant first name')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+        if 'initial' in kwargs:
+            initial_data_dict = kwargs.get('initial')
+            if 'show_emergency_contact_fields' in initial_data_dict:
+                self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
+                if not self.show_emergency_contact_fields:
+                    del self.fields['emergency_contact_first_name']
+                    del self.fields['emergency_contact_last_name']
+                    del self.fields['emergency_contact_relationship']
+                    del self.fields['emergency_contact_phone_number']
+
+
+    class Meta:
+        """Metadata for EventApplicationForm class."""
+
+        model = EventApplication
+        fields = ['participant_type', 'representing', 'emergency_contact_first_name',
+                  'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
+                 ]
+
+
+# Playing around with trying to get non-disabled fields to show initial data
+# class ManageEventApplicationForm(forms.Form):
+#     """ Simple form for managing (e.g. deleting, updating) the information in an event application as an event staff member."""
+
+#     staff_comments = forms.CharField(required=False)
+#     participant_first_name = forms.CharField(disabled=True, max_length=50, label='participant first name')
 
     # def __init__(self, *args, **kwargs):
     #     super(ManageEventApplicationForm, self).__init__(*args, **kwargs)

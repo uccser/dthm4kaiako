@@ -176,32 +176,11 @@
                         </a>
                     {% endif %}
 
-                    {% if formset_applications %}
-                        {{ formset.management_data }}
-                        {% for form in formset_applications %}
-
-                            <div class="panel-group">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div class="panel-title">
-                                            <a data-toggle="collapse" href="#event-application-form-{{ forloop.counter }}">
-                                                <b>Participant name & status coming soon...</b>
-                                            </a>
-                                        </vid>
-                                    </div>
-                                    <div id="event-application-form-{{ forloop.counter }}" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <form method="post" action="{% url 'events:event_management' event_pk %}">
-                                                {{ formset_applications.managment_form }}
-                                                {% csrf_token %}
-                                                {% crispy form %}
-                                                <input type="submit" class="btn btn-primary" value="Update event application">
-                                            </form>
-                                            <br>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    {% if event_applications %}
+                        {% for application in event_applications %}
+                        <div>
+                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                        </div>
                         {% endfor %}
                     {% else %}
                         <p>No event applications</p>

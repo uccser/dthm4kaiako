@@ -530,91 +530,54 @@ def manage_event(request, pk):
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
     else:
-        initial_for_event_applications_formset = [
-                                                    {
-                                                        'submitted': event_application.submitted,
-                                                        'updated': event_application.updated,
-                                                        'status': event_application.status,
-                                                        'participant_type': event_application.participant_type,
-                                                        'staff_comments': event_application.staff_comments,
-                                                        'representing': event_application.representing,
-                                                        'event': event_application.event,
-                                                        'emergency_contact_first_name': event_application.emergency_contact_first_name,
-                                                        'emergency_contact_last_name': event_application.emergency_contact_last_name,
-                                                        'emergency_contact_relationship': event_application.emergency_contact_relationship,
-                                                        'emergency_contact_phone_number': event_application.emergency_contact_phone_number,
-                                                        'paid': event_application.paid,
-                                                        'bill_to': event_application.bill_to,
-                                                        'billing_physical_address': event_application.billing_physical_address,
-                                                        'billing_email_address': event_application.billing_email_address, 
-                                                        'participant_first_name': event_application.user.first_name,
-                                                        'participant_last_name': event_application.user.last_name,
-                                                        'participant_region_name': event_application.user.region,
-                                                        # 'educational_entities': event_application.user.educational_entities,
-                                                        # 'dietary_requirements': event_application.user.dietary_requirements,
-                                                        'medical_notes': event_application.user.medical_notes,
-                                                        'email_address': event_application.user.email_address,
-                                                        'mobile_phone_number': event_application.user.mobile_phone_number,
-                                                    } for event_application in event_applications
-                                                ] 
-        data = {
-            'form-TOTAL_FORMS': len(event_applications),
-            'form-INITIAL_FORMS': len(event_applications),
-        }  
-
-        EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
-
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(data, request.GET, initial=initial_for_event_applications_formset)
             manage_event_details_form = ManageEventDetailsForm(instance=event)
             manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
-            
-            #TODO: add in formset for location: manage_location_form = ManageEventLocationForm(instance=location)
 
-
-        elif request.method == 'POST':
-            event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
-            if event_applications_formset.is_valid():
-                for form in event_applications_formset:
-                    if form.cleaned_data:
-
-                        messages.success(request, f"cleaned data: {form.cleaned_data}")
-                        
-                        # event_application = form.save(commit=False)
-
-                        # updated_status = form.cleaned_data['status']
-
-                        # messages.success(request, f"participant_type: {form.cleaned_data['participant_type']}")
-                        messages.success(request, f"staff_comments: {form.cleaned_data['staff_comments']}")
-                        # messages.success(request, f"paid: {form.cleaned_data['paid']}")
-
-                        # updated_participant_type = form.cleaned_data['participant_type']
-                        updated_staff_comments = form.cleaned_data['staff_comments']
-                        # updated_paid_status = form.cleaned_data['paid']
-                        event_application, created = EventApplication.objects.update_or_create(
-                            user=user, event=event,
-                            defaults={
-                                # 'status': updated_status,
-                                # 'participant_type': updated_participant_type,
-                                'staff_comments': updated_staff_comments,
-                                # 'paid': updated_paid_status,
-                            }
-                        )
-                        event_application.save()                    
-                        messages.success(request, 'Event application updated successfully')
-
-                return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk,}))
-
-            else:
-                messages.success(request, 'Formset not present or invalid!')
-
-        context['formset_applications'] = event_applications_formset
+        context['event_applications'] = event_applications
         context['manage_event_details_form'] = manage_event_details_form
         context['manage_registration_form_details_form'] = manage_registration_form_details_form
         context['event_pk'] = event.pk
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
         return render(request, 'events/event_management.html', context)
+
+
+@login_required
+def manage_event_application(request, pk_event, pk_application):
+    """ 
+    
+    """
+
+    event_application = EventApplication.objects.get(pk=pk_application)
+    event = event_application.event
+    context = {
+        'event': event,
+    }
+
+    if request.method == 'GET':
+        manage_application_form = ManageEventApplicationForm(instance=event_application)
+
+    elif request.method == 'POST':
+        manage_application_form = ManageEventApplicationForm(request.POST, instance=event_application)
+        if manage_application_form.is_valid():
+
+            updated_staff_comments = manage_application_form.cleaned_data['staff_comments']
+
+            EventApplication.objects.filter(event_id=manage_application_form.pk).update(
+                staff_comments=updated_staff_comments,
+            )
+            event_application.save()
+            event_application.save()
+            messages.success(request, 'Event application updated successfully')
+            return HttpResponseRedirect(reverse("events:manage_event_application", kwargs={'pk': event.pk}))
+        else:
+            messages.warning(request, 'Event application could not be updated. Please resolve invalid fields.')
+
+    context['manage_application_form'] = manage_application_form
+    context['event'] = event
+
+    return render(request, 'events/manage_event_application.html', context)
 
 
 # TODO: add event staff access only
