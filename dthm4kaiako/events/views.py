@@ -553,6 +553,9 @@ def manage_event_application(request, pk_event, pk_application):
     event = event_application.event
     context = {
         'event': event,
+        'pk_event': pk_event,
+        'pk_application': pk_application,
+        'event_application': event_application
     }
 
     if request.method == 'GET':
@@ -563,19 +566,23 @@ def manage_event_application(request, pk_event, pk_application):
         if manage_application_form.is_valid():
 
             updated_staff_comments = manage_application_form.cleaned_data['staff_comments']
+            updated_admin_billing_comments = manage_application_form.cleaned_data['admin_billing_comments']
+            update_paid = manage_application_form.cleaned_data['paid']
+            updated_participant_type = manage_application_form.cleaned_data['participant_type']
 
-            EventApplication.objects.filter(event_id=manage_application_form.pk).update(
+            EventApplication.objects.filter(event_id=event_application.pk).update(
                 staff_comments=updated_staff_comments,
+                admin_billing_comments=updated_admin_billing_comments,
+                paid=update_paid,
+                participant_type=updated_participant_type,
             )
             event_application.save()
-            event_application.save()
             messages.success(request, 'Event application updated successfully')
-            return HttpResponseRedirect(reverse("events:manage_event_application", kwargs={'pk': event.pk}))
+            return HttpResponseRedirect(reverse("events:manage_event_application", kwargs={'pk_event': pk_event, 'pk_application': pk_application}))
         else:
             messages.warning(request, 'Event application could not be updated. Please resolve invalid fields.')
 
     context['manage_application_form'] = manage_application_form
-    context['event'] = event
 
     return render(request, 'events/manage_event_application.html', context)
 

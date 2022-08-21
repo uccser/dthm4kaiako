@@ -110,24 +110,11 @@ class ManageEventApplicationForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        if 'initial' in kwargs:
-            initial_data_dict = kwargs.get('initial')
-            if 'show_emergency_contact_fields' in initial_data_dict:
-                self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
-                if not self.show_emergency_contact_fields:
-                    del self.fields['emergency_contact_first_name']
-                    del self.fields['emergency_contact_last_name']
-                    del self.fields['emergency_contact_relationship']
-                    del self.fields['emergency_contact_phone_number']
-
-
     class Meta:
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['participant_type', 'representing', 'emergency_contact_first_name',
-                  'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
-                 ]
+        fields = ['paid', 'participant_type', 'staff_comments', 'admin_billing_comments']
 
 
 # Playing around with trying to get non-disabled fields to show initial data

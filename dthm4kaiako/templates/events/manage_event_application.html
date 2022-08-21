@@ -9,10 +9,83 @@
 {% endblock page_heading %}
 
 {% block content %}
+
+    <div id="application-info">
+        <h3>Application Info</h3>
+        <div>
+            <b>Status:</b> {{event_application.status}}
+        </div>
+        <div>
+            <b>Participant:</b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+        </div>
+        <div>
+            <b>Submitted:</b> {{event_application.submitted}}
+        </div>    
+        <div>
+            <b>Last updated:</b> {{event_application.updated}}
+        </div>
+    </div>
+
+    <br>
+
+    <div id="participant-info">
+        <h3>Participant Info</h3>
+        <div>
+            <b>Participant:</b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+        </div>
+        <div>
+            <b>Representing:</b> {{event_application.representing}}
+        </div>  
+        <div>
+            <b>Participant type:</b> {{event_application.participant_type}}
+        </div>
+    </div>
+
+    <br>
+
+    <div id="emergency-contact-info">
+        <h3>Emergency Contact</h3>
+
+        <div>
+            <b>Name:</b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
+        </div>    
+        <div>
+            <b>Relationship:</b> {{event_application.emergency_contact_relationship}} 
+        </div>    
+        <div>
+            <b>Phone_number:</b> {{event_application.emergency_contact_phone_number}}
+        </div>
+    </div>
+
+    <br>
+
+    <div id="billing-info">
+        <h3>Billing Details</h3>
+        <div>
+            <b>Bill to:</b> {{event_application.bill_to}}
+        </div>
+        <div>
+            <b>Physical_address:</b> {{event_application.billing_physical_address}}
+        </div>
+        <div>
+            <b>billing_email_address:</b> {{event_application.billing_email_address}}
+        </div>
+        <div>
+            <b>Comments:</b> {{event_application.admin_billing_comments}}
+        </div>
+    </div>
+
+    <br>
+
     <div>
-
-        
-
+        {% if manage_application_form %}
+            <form method="post" action="{% url 'events:manage_event_application' pk_event pk_application %}">
+                {% csrf_token %}
+                {% crispy manage_application_form %}
+                <input class="btn btn-primary" type="submit" value="Update event application">
+            </form>
+            <br>
+        {% endif %}
     </div>
 
 {% endblock content %}
