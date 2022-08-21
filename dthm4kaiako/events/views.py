@@ -13,7 +13,7 @@ from events.models import (
     Address,
     RegistrationForm
 )
-from users.models import ( User )
+from users.models import ( DietaryRequirement, Entity, User )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
 from .forms import (EventApplicationForm,
@@ -36,6 +36,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
 from django.core.exceptions import ValidationError
 import csv
+from django.utils.html import format_html_join
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -543,6 +544,13 @@ def manage_event(request, pk):
         return render(request, 'events/event_management.html', context)
 
 
+def user_dietary_requirements(application):
+    return format_html_join(
+        '\n',
+        '<li>{}</li>',
+        application.user.dietary_requirements.values_list('name'),
+    )
+
 @login_required
 def manage_event_application(request, pk_event, pk_application):
     """ 
@@ -557,6 +565,11 @@ def manage_event_application(request, pk_event, pk_application):
         'pk_application': pk_application,
         'event_application': event_application
     }
+    user = User.objects.get(id=event_application.user.pk)
+
+
+    dietary_requirements = DietaryRequirement.objects.filter(users=user)
+    educational_entities = Entity.objects.filter(users=user)
 
     if request.method == 'GET':
         manage_application_form = ManageEventApplicationForm(instance=event_application)
@@ -583,6 +596,9 @@ def manage_event_application(request, pk_event, pk_application):
             messages.warning(request, 'Event application could not be updated. Please resolve invalid fields.')
 
     context['manage_application_form'] = manage_application_form
+    context['dietary_requirements'] = dietary_requirements
+    context['educational_entities'] = educational_entities
+
 
     return render(request, 'events/manage_event_application.html', context)
 
