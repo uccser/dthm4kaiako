@@ -191,7 +191,7 @@
                                     </div>
                                     <div id="event-application-form-{{ forloop.counter }}" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            <form method="post">
+                                            <form method="post" action="{% url 'events:event_management' event_pk %}">
                                                 {{ formset_applications.managment_form }}
                                                 {% csrf_token %}
                                                 {% crispy form %}

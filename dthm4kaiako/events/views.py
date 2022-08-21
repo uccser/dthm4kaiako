@@ -526,11 +526,6 @@ def manage_event(request, pk):
     context = {
         'event': event,
     }
-    event_applications_formset = None
-    EventApplicationFormSet = None
-    manage_event_details_form = None
-    manage_registration_form_details_form = None
-    manage_location_form = None
 
     if len(event_applications) == 0:
         return render(request, 'events/event_management.html', context)
@@ -570,7 +565,7 @@ def manage_event(request, pk):
         EventApplicationFormSet = formset_factory(ManageEventApplicationForm, extra=0)
 
         if request.method == 'GET':
-            event_applications_formset = EventApplicationFormSet(data, initial=initial_for_event_applications_formset)
+            event_applications_formset = EventApplicationFormSet(data, request.GET, initial=initial_for_event_applications_formset)
             manage_event_details_form = ManageEventDetailsForm(instance=event)
             manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
             
@@ -579,7 +574,7 @@ def manage_event(request, pk):
 
         elif request.method == 'POST':
             event_applications_formset = EventApplicationFormSet(data, request.POST, initial=initial_for_event_applications_formset)
-            if event_applications_formset and event_applications_formset.is_valid():
+            if event_applications_formset.is_valid():
                 for form in event_applications_formset:
                     if form.cleaned_data:
 
@@ -589,20 +584,20 @@ def manage_event(request, pk):
 
                         # updated_status = form.cleaned_data['status']
 
-                        messages.success(request, f"participant_type: {form.cleaned_data['participant_type']}")
+                        # messages.success(request, f"participant_type: {form.cleaned_data['participant_type']}")
                         messages.success(request, f"staff_comments: {form.cleaned_data['staff_comments']}")
-                        messages.success(request, f"paid: {form.cleaned_data['paid']}")
+                        # messages.success(request, f"paid: {form.cleaned_data['paid']}")
 
-                        updated_participant_type = form.cleaned_data['participant_type']
+                        # updated_participant_type = form.cleaned_data['participant_type']
                         updated_staff_comments = form.cleaned_data['staff_comments']
-                        updated_paid_status = form.cleaned_data['paid']
+                        # updated_paid_status = form.cleaned_data['paid']
                         event_application, created = EventApplication.objects.update_or_create(
                             user=user, event=event,
                             defaults={
                                 # 'status': updated_status,
-                                'participant_type': updated_participant_type,
+                                # 'participant_type': updated_participant_type,
                                 'staff_comments': updated_staff_comments,
-                                'paid': updated_paid_status,
+                                # 'paid': updated_paid_status,
                             }
                         )
                         event_application.save()                    
