@@ -13,16 +13,16 @@
     <div id="application-info">
         <h3>Application Info</h3>
         <div>
-            <b>Status:</b> {{event_application.status}}
+            <b>Status: </b> {{event_application.status}}
         </div>
         <div>
-            <b>Participant:</b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+            <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
         </div>
         <div>
-            <b>Submitted:</b> {{event_application.submitted}}
+            <b>Submitted: </b> {{event_application.submitted}}
         </div>    
         <div>
-            <b>Last updated:</b> {{event_application.updated}}
+            <b>Last updated: </b> {{event_application.updated}}
         </div>
     </div>
 
@@ -31,13 +31,31 @@
     <div id="participant-info">
         <h3>Participant Info</h3>
         <div>
-            <b>Participant:</b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+            <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
         </div>
         <div>
-            <b>Representing:</b> {{event_application.representing}}
+            <b>Representing: </b> {{event_application.representing}}
         </div>  
         <div>
-            <b>Participant type:</b> {{event_application.participant_type}}
+            <b>Participant type: </b> {{event_application.participant_type}}
+        </div>
+        <div>
+            <b>Region: </b> {{event_application.region}}
+        </div>
+        <div>
+            <b>Schools and/or educational organisations/associations they belong to: </b> {{event_application.user.educational_entities}}
+        </div>
+        <div>
+            <b>Medical notes: </b> {{event_application.user.medical_notes}}
+        </div>
+        <div>
+            <b>Email address: </b> {{event_application.user.email_address}}
+        </div>
+        <div>
+            <b>Mobile phone number: </b> {{event_application.user_mobile_phone_number}}
+        </div>
+        <div>
+            <b>Dietary requirements: </b> {{event_application.user.dietary_requirements}}
         </div>
     </div>
 
