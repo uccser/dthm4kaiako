@@ -18,11 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Docker network
-        run: docker network create uccser-development-proxy
+        run: docker network create uccser-development-stack
       - name: Start systems
-        run: docker-compose -f docker-compose.local.yml up -d
+        run: docker compose -f docker-compose.local.yml up -d
       - name: Run Django system check
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py check --fail-level WARNING
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py check --fail-level WARNING
 
   test-content:
     name: Tests - Content
@@ -31,21 +31,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Docker network
-        run: docker network create uccser-development-proxy
+        run: docker network create uccser-development-stack
       - name: Start systems
-        run: docker-compose -f docker-compose.local.yml up -d
+        run: docker compose -f docker-compose.local.yml up -d
       - name: Create static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
       - name: Collect static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
       - name: Migrate database
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
       - name: Load learning area cards application data
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
       - name: Load POET data
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_poet_data
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py load_poet_data
       - name: Collect static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
   test-sample-data:
     name: Tests - Sample data
@@ -54,19 +54,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Docker network
-        run: docker network create uccser-development-proxy
+        run: docker network create uccser-development-stack
       - name: Start systems
-        run: docker-compose -f docker-compose.local.yml up -d
+        run: docker compose -f docker-compose.local.yml up -d
       - name: Create static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" node npm run generate-assets
       - name: Collect static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
       - name: Migrate database
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
       - name: Load content with sample data
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py update_data
       - name: Collect static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py collectstatic --no-input
 
   test-general:
     name: Tests - General
@@ -77,7 +77,7 @@ jobs:
       - name: Run general tests
         run: ./dev ci test_general
       - name: Create coverage file
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
       - name: Upload coverage file
         uses: codecov/codecov-action@v3
         with:
@@ -93,7 +93,7 @@ jobs:
       - name: Run management tests
         run: ./dev ci test_management
       - name: Create coverage file
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
       - name: Upload coverage file
         uses: codecov/codecov-action@v3
         with:
@@ -129,16 +129,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create Docker network
-        run: docker network create uccser-development-proxy
+        run: docker network create uccser-development-stack
 
       - name: Start system
-        run: docker-compose -f docker-compose.local.yml up -d
+        run: docker compose -f docker-compose.local.yml up -d
 
       - name: Create production static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" node npm run build
 
       - name: Collect staticfiles
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
 
       - name: Archive static files
         run: tar czf static-files.tar.gz --directory dthm4kaiako/staticfiles/ .
@@ -169,19 +169,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Create Docker network
-        run: docker network create uccser-development-proxy
+        run: docker network create uccser-development-stack
       - name: Start system
-        run: docker-compose -f docker-compose.local.yml up -d
+        run: docker compose -f docker-compose.local.yml up -d
       - name: Create production static files
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" node npm run build
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" node npm run build
       - name: Collect staticfiles
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python manage.py collectstatic --no-input
       - name: Migrate database
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py migrate
       - name: Load learning area cards application data
-        run: docker-compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
+        run: docker compose -f docker-compose.local.yml run --rm django python ./manage.py load_card_data
       - name: Create learning area cards
-        run: docker-compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py create_cards
+        run: docker compose -f docker-compose.local.yml run --rm --user="root" django python ./manage.py create_cards
       - name: Archive learning area cards
         run: tar czf learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards/ .
       - name: Upload artifact
@@ -238,7 +238,7 @@ jobs:
             type=ref,event=branch,priority=2
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3.0.0
+        uses: docker/build-push-action@v3.1.1
         with:
           file: ./infrastructure/production/django/Dockerfile
           context: .
