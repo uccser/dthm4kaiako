@@ -382,5 +382,5 @@ class Command(management.base.BaseCommand):
         events = Event.objects.all()
         staff_array = [admin]
         for event in events:
-            event.staff.set(staff_array)
+            event.event_staff.set(staff_array)
             event.save()
