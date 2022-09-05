@@ -30,6 +30,9 @@ urlpatterns = [
     path('participant_billing_details_csv/<int:pk>/', views.participant_billing_details_csv, name='participant_billing_details_csv'),
     path('mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
 
+    path('publish_event/<int:pk>/', views.publish_event, name='publish_event'),
+    path('cancel_event/<int:pk>/', views.cancel_event, name='cancel_event'),
+
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),
     path('location/', RedirectView.as_view(pattern_name='events:home')),

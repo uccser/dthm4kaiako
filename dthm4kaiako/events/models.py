@@ -197,6 +197,11 @@ class Event(models.Model):
         related_name='events',
         blank=True,
     )
+    is_cancelled = models.BooleanField(
+        default=False,
+        null=False,    
+        help_text='This event has been cancelled'    
+    )
 
 
     # TODO: Add validation that if no locations, then accessible_online must be True

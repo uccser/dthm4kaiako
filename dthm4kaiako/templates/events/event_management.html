@@ -5,25 +5,63 @@
 {% load crispy_forms_tags %}
 
 {% block page_heading %}
-    <h1>{{ event.name }}</h1>
+
+    <div>
+        <h2 style="padding-top: 20px">{{ event.name }}</h2>
+    </div>
+
 {% endblock page_heading %}
 
 {% block content %}
     <div>
 
-        <!-- Event Applications CSV -->
-        <div>
-            <a class="nav-link" href="{% url 'events:event_applications_csv' event_pk %}">
-                Event Applications CSV
-            </a>
+        <div style="padding-bottom: 40px;">
+            <div class="float-left">
+                {% if event.is_cancelled == True %} 
+                    <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                        Cancelled
+                    </label>
+                {% elif event.published == False %} 
+                    <label style="background-color:rgb(255, 123, 0); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px; color: white;">
+                        Not Published
+                    </label>
+                {% elif event.published == True %} 
+                    <label style="background-color:green; font-size: medium; color:white; border-radius: 6px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                        Published
+                    </label>
+                {% endif %}
+            </div>
+
+            <div id="event-published-status-btn" class="float-right">
+                {% if event.published == False %} 
+                    <a class="btn btn-primary" href="{% url 'events:publish_event' event.pk %}" role="button">
+                        Publish event
+                    </a>
+                {% elif event.published == True and event.is_cancelled == False %}
+                    <a class="btn btn-primary" href="{% url 'events:cancel_event' event.pk %}" role="button">
+                        Cancel event
+                    </a>                
+                {% endif %}
+            </div>
+            <br>
         </div>
 
-        <!-- Participant Billing Details CSV -->
         <div>
-            <a class="nav-link" href="{% url 'events:participant_billing_details_csv' event_pk %}">
-                Participant Billing Details CSV
-            </a>
+            <!-- Event Applications CSV -->
+            <div>
+                <a class="nav-link" href="{% url 'events:event_applications_csv' event_pk %}">
+                    Event Applications CSV
+                </a>
+            </div>
+
+            <!-- Participant Billing Details CSV -->
+            <div>
+                <a class="nav-link" href="{% url 'events:participant_billing_details_csv' event_pk %}">
+                    Participant Billing Details CSV
+                </a>
+            </div>
         </div>
+
 
         <!-- TODO: add breakpoint for these two columns to stack when mobile phone used -->
         <!-- Key Data Counts -->
@@ -154,7 +192,7 @@
 
                     {% if not is_free %}
                         <!-- Bulk mark all participants as paid -->
-                        <a class="btn btn-success btn-block btn-lg" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                        <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
                             Mark all participants as paid
                         </a>
                     {% endif %}

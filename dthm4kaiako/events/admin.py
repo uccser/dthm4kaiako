@@ -157,6 +157,7 @@ class EventAdmin(ClonableModelAdmin):
                 'published',
                 'featured',
                 'show_schedule',
+                'is_cancelled'
             ),
         }),
         ('Permissions', {

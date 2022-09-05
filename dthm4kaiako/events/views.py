@@ -743,8 +743,7 @@ def manage_event_registration_form_details(request, pk):
 # TODO: add event staff access only
 @login_required
 def manage_event_location_details(request, pk):
-    """ Allowing event staff to update event location details.    
-    """
+    """ Allowing event staff to update event location details."""
 
     location = Location.objects.get(pk=pk)
     event = location.event #TODO: check this is correct
@@ -791,7 +790,7 @@ def manage_event_location_details(request, pk):
 
 @login_required
 def event_applications_csv(request, pk):
-    '''Generates a CSV of all the event applications' data.'''
+    """Generates a CSV of all the event applications' data""" 
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] ='attachment; filename=event_applications.csv'
@@ -850,7 +849,7 @@ def event_applications_csv(request, pk):
 
 @login_required
 def participant_billing_details_csv(request, pk):
-    '''Generates a CSV of all the event applications' data.'''
+    """Generates a CSV of all the event applications' data"""
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] ='attachment; filename=participant_billing_details.csv'
@@ -890,7 +889,7 @@ def participant_billing_details_csv(request, pk):
 
 @login_required
 def mark_all_participants_as_paid(request, pk):
-    '''Bulk mark all event applications as being paid for for a given event.'''
+    """Bulk mark all event applications as being paid for for a given event"""
     event_id = pk
     event = Event.objects.get(id=event_id)
     event_applications = EventApplication.objects.filter(event=event)
@@ -905,4 +904,29 @@ def mark_all_participants_as_paid(request, pk):
     messages.success(request, 'All event participants successfully marked as paid')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
-    
+
+# TODO: add staff permission for this
+@login_required
+def publish_event(request, pk):
+    """Publish event as event staff"""
+    event_id = pk
+    event = Event.objects.filter(id=event_id)
+    event.update(published=True)
+    updated_event = Event.objects.get(id=event_id)
+    updated_event.save()
+    messages.success(request, 'Event successfully published')
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+
+
+# TODO: add staff permission for this
+@login_required
+def cancel_event(request, pk):
+    """Cancel event as event staff"""
+    event_id = pk
+    event = Event.objects.filter(id=event_id)
+    event.update(is_cancelled=True)
+    updated_event = Event.objects.get(id=event_id)
+    updated_event.save()
+    messages.success(request, 'Event successfully cancelled')
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+

@@ -122,8 +122,7 @@ class ManageEventDetailsForm(ModelForm):
         """Metadata for ManageEventDetailsForm class."""
 
         model = Event
-        fields = '__all__'
-        
+        exclude = ('published',)
     
     def __init__(self, *args, **kwargs):
         super(ManageEventDetailsForm, self).__init__(*args, **kwargs)
