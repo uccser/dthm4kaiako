@@ -380,7 +380,8 @@ class Command(management.base.BaseCommand):
 
         # Event staff
         events = Event.objects.all()
-        staff_array = [admin]
         for event in events:
-            event.event_staff.set(staff_array)
+            event.event_staff.add(admin)
             event.save()
+        admin.save()
+        print('Admin account set as event staff for all events')

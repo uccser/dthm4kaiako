@@ -501,11 +501,11 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
+        self.request
+
         if user.is_authenticated:
-            if Event.objects.filter(event_staff=user.pk).exists():
-                context['events_user_is_staff_for'] = [Event.objects.filter(event_staff=user.pk)]
-            else:
-                context['events_user_is_staff_for'] = []
+            if Event.objects.filter(event_staff__pk=user.pk).exists():
+                context['events_user_is_staff_for'] = Event.objects.filter(event_staff__pk=user.pk)
   
         return context
 
