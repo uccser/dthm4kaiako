@@ -202,8 +202,6 @@ class Event(models.Model):
     )
 
 
-    # TODO: add reasons_for_withdrawing
-
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 

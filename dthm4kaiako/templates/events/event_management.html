@@ -25,16 +25,16 @@
             </a>
         </div>
 
-        <!-- Event Application Status Counts -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#event-application-status-counts">Event Application Status Counts</a>
-                </h4>
-              </div>
-              <div id="event-application-status-counts" class="panel-collapse collapse">
-                <div class="panel-body">
+        <!-- TODO: add breakpoint for these two columns to stack when mobile phone used -->
+        <!-- Key Data Counts -->
+        <div class="row" style="display: grid; grid-template-columns: 50% 50%; padding-left: 15px;">
+
+            <div class="column">
+                <!-- Event Application Status Counts -->
+                <div id="event-applications-status-counts">
+                    <h4>
+                        Event Application Status Counts                
+                    </h4>
                     <div>
                         <b>Approved:</b> {{event.application_status_counts.approved}}
                     </div>
@@ -48,20 +48,14 @@
                         <b>Withdrawn:</b> {{event.application_status_counts.withdrawn}}
                     </div>
                 </div>
-              </div>
             </div>
-        </div>
 
-        <!-- Reasons for Withdrawing -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#reason-for-withdrawing-counts">Reasons for Withdrawing</a>
-                </h4>
-              </div>
-              <div id="reason-for-withdrawing-counts" class="panel-collapse collapse">
-                <div class="panel-body">
+            <div class="column">
+                <!-- Reasons for Withdrawing -->
+                <div id="event-applications-status-counts">
+                    <h4>
+                        Reasons for Withdrawing            
+                    </h4>
                     <div>
                         <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
                     </div>
@@ -90,7 +84,7 @@
                                         <a data-toggle="collapse" href="#other-reason-for-withdrawing-counts">
                                             <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
                                         </a>
-                                    </vid>
+                                    </div>
                                 </div>
                                 <div id="other-reason-for-withdrawing-counts" class="panel-collapse collapse">
                                     <div class="panel-body">
@@ -106,11 +100,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-        
+
         <!-- Event Details -->
         <details>
             <summary>Event Details</summary>
