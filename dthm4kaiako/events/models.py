@@ -17,9 +17,6 @@ from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 import datetime
 import re
 
-# from django.core.validators import MinLengthValidator, MaxLengthValidator
-
-
 class Location(models.Model):
     """Model for a physical location."""
 
@@ -151,9 +148,9 @@ class Event(models.Model):
         default=REGISTRATION_TYPE_REGISTER,
     )
     registration_link = models.URLField(blank=True, null=True)
-    start = models.DateTimeField(blank=True, null=True)
-    end = models.DateTimeField(blank=True, null=True)
-    accessible_online = models.BooleanField(
+    start = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")     # TODO: Cannot be null if published or event applications exist
+    end = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")       # TODO: Cannot be null if published or event applications exist
+    accessible_online = models.BooleanField( 
         default=False,
         help_text='Select if this event will be attended online'
     )
