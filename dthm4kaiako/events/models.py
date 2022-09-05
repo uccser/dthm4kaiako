@@ -147,7 +147,7 @@ class Event(models.Model):
         choices=REGISTRATION_TYPE_CHOICES,
         default=REGISTRATION_TYPE_REGISTER,
     )
-    registration_link = models.URLField(blank=True, null=True)
+    registration_link = models.URLField(blank=True, null=True, help_text="Optional. This is a link to an external location that will gather event applications' information e.g. Google Form")
     start = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")     # TODO: Cannot be null if published or event applications exist
     end = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")       # TODO: Cannot be null if published or event applications exist
     accessible_online = models.BooleanField( 
@@ -409,7 +409,10 @@ class Event(models.Model):
                     _('Registration link must be empty when event is set to invite only.')
                 }
             )
-        
+
+        # TODO: if published ticked but no start and end date then raise error
+        # TODO: if published not ticked and no no start and end date but event applications already created, then raise error (i.e. unpublishing event )
+                
 
     class Meta:
         """Meta options for class."""
@@ -774,9 +777,7 @@ class RegistrationForm(models.Model):
     def __str__(self):
         """Text representation of an event registration form."""
         return f'{self.event.name}'
-
     
-    # TODO: investigate why this is not working
     def clean(self):
         """Validate event registration form model attributes.
 

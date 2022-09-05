@@ -223,7 +223,12 @@ def delete_application_via_application_page(request, pk):
 
     if request.method == 'POST':
         create_deleted_event_application(event, request)
+        user = event_application.user
+        # user.event_applications.filter(event_application=event_application).delete # delete event application from user
         event_application.delete()
+        user.save()
+        messages.success(request, user.event_applications)
+
         messages.success(request, 'Event application successfully withdrawn')
         return HttpResponseRedirect(reverse("events:event_applications"))
 
@@ -239,7 +244,12 @@ def delete_application_via_event_page(request, pk):
 
     if request.method == 'POST':
         create_deleted_event_application(event, request)
+        user = event_application.user
+        # user.event_applications.filter(event_application=event_application).delete # delete event application from user
         event_application.delete()
+        user.save()
+        messages.success(request, user.event_applications)
+
         messages.success(request, 'Event application successfully withdrawn')
         return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
 
@@ -321,10 +331,12 @@ def apply_for_event(request, pk):
     billing_email_address = ""
     bill_to = ""
 
+    application_exists = does_application_exist(user, event)
+
     if request.method == 'GET':
         # Prior to creating/updating registration form
 
-        if does_application_exist(user, event):
+        if application_exists:
             current_application = user.event_applications.get(event=event)
             event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
             billing_physical_address = current_application.billing_physical_address
@@ -448,16 +460,12 @@ def apply_for_event(request, pk):
                     'bill_to': new_bill_to,
                 }
             )
-            event_application.save()
+            event_application.save()            
 
-            
-            messages.success(request, "Updated event application successfully")
-
-            
-
-            if does_application_exist(user, event):
+            if application_exists:
                 # Update existing event application
                 messages.success(request, "Updated event application successfully")
+                messages.success(request, user.event_applications.filter(event=event))
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
             else:
