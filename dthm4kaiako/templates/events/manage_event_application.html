@@ -5,127 +5,141 @@
 {% load crispy_forms_tags %}
 
 {% block page_heading %}
-    <h1>{{ event.name }}</h1>
+    <h1>Application for {{ event.name }}</h1>
 {% endblock page_heading %}
 
 {% block content %}
 
-    <div id="application-info">
-        <h3>Application Info</h3>
-        <div>
-            {% if event_application.status == 1 %} 
-                <div>
-                    <label style="background-color:rgb(255, 123, 0); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px; color: white;">
-                        <b>Pending</b>
-                    </label>
-                </div>
-            {% elif event_application.status == 2 %} 
-                <div>
-                    <label style="background-color:rgb(0, 99, 33); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        <b>Approved</b>
-                    </label>
-                </div>
-            {% elif event_application.status == 3 %} 
-                <div>
-                    <label style="background-color:darkred; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        <b>Rejected</b>
-                    </label>
-                </div>
-            {% endif %}
-        </div>
-        <div>
-            <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
-        </div>
-        <div>
-            <b>Submitted: </b> {{event_application.submitted}}
-        </div>    
-        <div>
-            <b>Last updated: </b> {{event_application.updated}}
-        </div>
-        <div>
-            <b>Paid: </b> {{event_application.paid}}
-        </div>
+    <div id="application-status">
+        {% if event_application.status == 1 %} 
+            <div>
+                <label style="background-color:rgb(255, 123, 0); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px; color: white;">
+                    <b>Pending</b>
+                </label>
+            </div>
+        {% elif event_application.status == 2 %} 
+            <div>
+                <label style="background-color:rgb(0, 99, 33); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                    <b>Approved</b>
+                </label>
+            </div>
+        {% elif event_application.status == 3 %} 
+            <div>
+                <label style="background-color:darkred; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                    <b>Rejected</b>
+                </label>
+            </div>
+        {% endif %}
     </div>
 
-    <br>
+    <div class="row" style="display: grid; grid-template-columns: 50% 50%; padding-left: 15px;">
 
-    <div id="participant-info">
-        <h3>Participant Info</h3>
-        <div>
-            <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
-        </div>
-        <div>
-            <b>Representing: </b> {{event_application.representing}}
-        </div>  
-        <div>
-            <b>Participant type: </b> {{event_application.participant_type}}
-        </div>
-        <div>
-            <b>Region: </b> {{event_application.user.get_region_display}}
-        </div>
-        <div>
-            <b>Email address: </b> {{event_application.user.email_address}}
-        </div>
-        <div>
-            <b>Mobile phone number: </b> {{event_application.user.mobile_phone_number}}
-        </div>
-        <div>
-            <b>Medical notes: </b> {{event_application.user.medical_notes}}
-        </div>
-        <br>
-        <div>
-            <b>Schools and/or educational organisations/associations they belong to: </b>
-            <ul>
-                {% for entity in educational_entities %}
-                    <div>
-                        <li>{{entity}}</li>
-                    </div>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <b>Dietary requirements: </b>
-            <ul>
-                {% for dietary_requirement in dietary_requirements %}
-                    <div>
-                        <li>{{dietary_requirement}}</li>
-                    </div>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+        <div class="column" style="padding-right: 50px">
 
-    <br>
+            <br>
 
-    <div id="emergency-contact-info">
-        <h3>Emergency Contact</h3>
+            <div id="participant-info">
+                <h3>Participant Info</h3>
+                <div>
+                    <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+                </div>
+                <div>
+                    <b>Representing: </b> {{event_application.representing}}
+                </div>  
+                <div>
+                    <b>Participant type: </b> {{event_application.participant_type}}
+                </div>
+                <div>
+                    <b>Region: </b> {{event_application.user.get_region_display}}
+                </div>
+                <div>
+                    <b>Email address: </b> {{event_application.user.email_address}}
+                </div>
+                <div>
+                    <b>Mobile phone number: </b> {{event_application.user.mobile_phone_number}}
+                </div>
+                <div>
+                    <b>Medical notes: </b> {{event_application.user.medical_notes|default:"none"}}
+                </div>
+                <br>
+                <div>
+                    <b>Educational entities they belong to: </b>
+                    <ul>
+                        {% for entity in educational_entities %}
+                            <div>
+                                <li>{{entity}}</li>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <b>Dietary requirements: </b>
+                    {% if dietary_requirements.count == 0 %} 
+                        None
+                    {% else %}
+                        <ul>
+                            {% for dietary_requirement in dietary_requirements %}
+                                <div>
+                                    <li>{{dietary_requirement}}</li>
+                                </div>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-        <div>
-            <b>Name:</b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
-        </div>    
-        <div>
-            <b>Relationship:</b> {{event_application.emergency_contact_relationship}} 
-        </div>    
-        <div>
-            <b>Phone_number:</b> {{event_application.emergency_contact_phone_number}}
-        </div>
-    </div>
+        <div class="column">
 
-    <br>
+            <div id="application-info">
+                <h3>Application Info</h3>
+                <div>
+                    <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+                </div>
+                <div>
+                    <b>Submitted: </b> {{event_application.submitted}}
+                </div>    
+                <div>
+                    <b>Last updated: </b> {{event_application.updated}}
+                </div>
+                <div>
+                    <b>Paid: </b> {{event_application.paid}}
+                </div>
+            </div>
 
-    <div id="billing-info">
-        <h3>Billing Details</h3>
-        <div>
-            <b>Bill to:</b> {{event_application.bill_to}}
-        </div>
-        <div>
-            <b>Physical_address:</b> {{event_application.billing_physical_address}}
-        </div>
-        <div>
-            <b>billing_email_address:</b> {{event_application.billing_email_address}}
-        </div>
-        <div>
-            <b>Comments:</b> {{event_application.admin_billing_comments}}
+            <br>
+            
+            <div id="emergency-contact-info">
+                <h3>Emergency Contact</h3>
+
+                <div>
+                    <b>Name: </b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
+                </div>    
+                <div>
+                    <b>Relationship: </b> {{event_application.emergency_contact_relationship}} 
+                </div>    
+                <div>
+                    <b>Phone number: </b> {{event_application.emergency_contact_phone_number}}
+                </div>
+            </div>
+
+            <br>
+
+            <div id="billing-info">
+                <h3>Billing Details</h3>
+                <div>
+                    <b>Bill to: </b> {{event_application.bill_to}}
+                </div>
+                <div>
+                    <b>Physical address: </b> {{event_application.billing_physical_address}}
+                </div>
+                <div>
+                    <b>Billing email address: </b> {{event_application.billing_email_address}}
+                </div>
+                <div>
+                    <b>Comments: </b> {{event_application.admin_billing_comments}}
+                </div>
+            </div>
         </div>
     </div>
 
