@@ -726,6 +726,7 @@ def manage_event_registration_form_details(request, pk):
     context['manage_registration_form_details_form'] = manage_registration_form_details_form
     context['event'] = event
     context['registration_form_pk'] = registration_form.pk
+    context['event_pk'] = event.pk
 
     return render(request, 'events/event_management.html', context)
 
@@ -775,6 +776,7 @@ def manage_event_location_details(request, pk):
     context['manage_location_form'] = manage_location_form
     context['event'] = event
     context['location_pk'] = location.pk
+    context['event_pk'] = event.pk
 
     return render(request, 'events/event_management.html', context)
 

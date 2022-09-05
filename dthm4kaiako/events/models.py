@@ -777,27 +777,31 @@ class RegistrationForm(models.Model):
 
     
     # TODO: investigate why this is not working
-    # def clean(self):
-    #     """Validate event registration form model attributes.
+    def clean(self):
+        """Validate event registration form model attributes.
 
-    #     Raises:
-    #         ValidationError if invalid attributes.
-    #     """
-    #     if now() > self.open_datetime:
-    #         raise ValidationError(
-    #             {
-    #                 'open_datetime':
-    #                 _('Open datetime must be in the future')
-    #             }
-    #         )
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        if now() > self.open_datetime:
+            raise ValidationError(
+                {
+                    'open_datetime':
+                    _('Open datetime must be in the future')
+                }
+            )
 
-    #     if self.close_datetime < self.open_datetime:
-    #         raise ValidationError(
-    #             {
-    #                 'close_datetime':
-    #                 _('Close datetime must be after the open datatime')
-    #             }
-    #         )
+        if self.close_datetime <= self.open_datetime:
+            raise ValidationError(
+                {
+                    'close_datetime':
+                    _('Close datetime must be after the open datatime')
+                }
+            )
+        
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(RegistrationForm, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Event)

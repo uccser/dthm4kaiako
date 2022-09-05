@@ -28,6 +28,17 @@
 
         {% crispy user_form %}
 
+        {% for field in user_form.visible_fields %}  
+            {% for fieldName, label in fieldLabels %}
+                {% if fieldName == user_form  %}
+                    <div>
+                        <label>region</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
         {% crispy event_application_form %}
 
         {% if billing_required %}
