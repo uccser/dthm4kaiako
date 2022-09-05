@@ -394,7 +394,7 @@ def apply_for_event(request, pk):
             user.email_address = user_update_details_form.cleaned_data['email_address']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
 
-            if event.accessible_online:
+            if event.accessible_online == False:
                 user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
 
             if display_catering_info:
@@ -505,6 +505,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 
         if user.is_authenticated:
             if Event.objects.filter(event_staff__pk=user.pk).exists():
+                # TODO: order these 
                 context['events_user_is_staff_for'] = Event.objects.filter(event_staff__pk=user.pk)
   
         return context
