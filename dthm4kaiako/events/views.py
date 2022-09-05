@@ -503,7 +503,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 
         if user.is_authenticated:
             if Event.objects.filter(event_staff=user.pk).exists():
-                context['events_user_is_staff_for'] = [Event.objects.get(event_staff=user.pk)]
+                context['events_user_is_staff_for'] = [Event.objects.filter(event_staff=user.pk)]
             else:
                 context['events_user_is_staff_for'] = []
   
@@ -631,7 +631,6 @@ def manage_event_details(request, pk):
 
             updated_name = manage_event_details_form.cleaned_data['name']
             updated_description = manage_event_details_form.cleaned_data['description']
-            updated_published = manage_event_details_form.cleaned_data['published']
             updated_show_schedule = manage_event_details_form.cleaned_data['show_schedule']
             updated_featured = manage_event_details_form.cleaned_data['featured']
             updated_registration_type = manage_event_details_form.cleaned_data['registration_type']
@@ -665,7 +664,6 @@ def manage_event_details(request, pk):
             Event.objects.filter(id=event.pk).update(
                 name=updated_name,
                 description=updated_description,
-                published=updated_published,
                 show_schedule=updated_show_schedule,
                 featured=updated_featured,
                 registration_type=updated_registration_type,
@@ -910,11 +908,16 @@ def mark_all_participants_as_paid(request, pk):
 def publish_event(request, pk):
     """Publish event as event staff"""
     event_id = pk
-    event = Event.objects.filter(id=event_id)
-    event.update(published=True)
-    updated_event = Event.objects.get(id=event_id)
-    updated_event.save()
-    messages.success(request, 'Event successfully published')
+    event = Event.objects.get(id=event_id)
+
+    event_query_set = Event.objects.filter(id=event_id)
+
+    if (event.published == True and event.start == None) or (event.published == True and event.end == None):
+            messages.error(request, 'Event must have a start and end datetime to be published.')
+    else:
+        event_query_set.update(published=True)
+        event.save()
+        messages.success(request, 'Event successfully published')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 

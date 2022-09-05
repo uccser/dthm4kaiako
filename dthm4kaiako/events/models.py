@@ -386,17 +386,6 @@ class Event(models.Model):
             other_reasons.append(deleted_event_application.other_reason_for_deletion)
         return other_reasons
 
-
-    # TODO: remove this and replace with participant type attendance fee
-    # @property
-    # def has_attendance_fee(self):
-    #     """ Determine if the event costs to attend.
-
-    #     Returns:
-    #         Boolean, True if the attendance has a cost.
-    #     """
-    #     return self.price != 0
-
     def __str__(self):
         """Text representation of an event."""
         return self.name
@@ -415,9 +404,21 @@ class Event(models.Model):
                 }
             )
 
-        # TODO: if published ticked but no start and end date then raise error
-        # TODO: if published not ticked and no no start and end date but event applications already created, then raise error (i.e. unpublishing event )
-                
+        if self.published == True and self.start == None:
+            raise ValidationError(
+                {
+                    'start':
+                    _('Start datetime is required when the event is published.')
+                }
+            )
+        
+        if self.published == True and self.end == None:
+            raise ValidationError(
+                {
+                    'end':
+                    _('End datetime is required when the event is published.')
+                }
+            )
 
     class Meta:
         """Meta options for class."""
@@ -789,7 +790,7 @@ class RegistrationForm(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        if now() > self.open_datetime:
+        if self.open_datetime != None and now() > self.open_datetime:
             raise ValidationError(
                 {
                     'open_datetime':
@@ -797,7 +798,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.close_datetime <= self.open_datetime:
+        if self.close_datetime != None and self.close_datetime <= self.open_datetime:
             raise ValidationError(
                 {
                     'close_datetime':
