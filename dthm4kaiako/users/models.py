@@ -73,7 +73,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, verbose_name='last name')
     dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
     educational_entities = models.ManyToManyField(Entity, related_name='users', max_length=200, verbose_name='School(s) and/or educational organisation or association participiant is from')
-    region = models.CharField(
+    user_region = models.PositiveSmallIntegerField(
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
         help_text="Region that your school, organisation or association is located in",

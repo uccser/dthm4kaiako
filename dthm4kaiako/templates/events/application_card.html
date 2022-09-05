@@ -37,6 +37,8 @@
                 </button>
 
                 {% if user.is_authenticated %}
+
+                    <!-- TODO: show dynamically (e.g. Javascript) when "other" selected -->
                 
                     <!-- Modal -->
                     <div class="modal fade" id="event-applications-withdraw-modal-{{event_application.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">

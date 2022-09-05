@@ -378,7 +378,7 @@ def apply_for_event(request, pk):
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
             user.educational_entities.set(all_educational_entities)
-            user.region = user_update_details_form.cleaned_data['region']
+            user.user_region = user_update_details_form.cleaned_data['user_region']
             user.email_address = user_update_details_form.cleaned_data['email_address']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
 
@@ -449,6 +449,10 @@ def apply_for_event(request, pk):
                 }
             )
             event_application.save()
+
+            
+            messages.success(request, "Updated event application successfully")
+
             
 
             if does_application_exist(user, event):

@@ -61,16 +61,17 @@ class UserUpdateDetailsForm(ModelForm):
     email_address_confirm = EmailField(max_length=150, label="Confirm email address", required=True)
     mobile_phone_number = CharField(max_length=30, required=True)
     mobile_phone_number_confirm = CharField(max_length=30, required=True, label="Confim mobile phone number")
+    # user_region = CharField(max_length=30, required=True, label="Region")
 
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
     
-    # TODO: add in for requirmement U38
+    # TODO: add in for requirmement U38 (ability to add custom dietary requirements)
     # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'region', 'educational_entities', 'medical_notes', 'dietary_requirements']
+        fields = ['first_name', 'last_name', 'user_region', 'educational_entities', 'medical_notes', 'dietary_requirements']
 
     def __init__(self, *args, **kwargs):
         """
