@@ -827,6 +827,7 @@ class EventCSV(models.Model):
         primary_key=True,
         related_name="event_csv"
     )
+    file_name = models.CharField(null=False, blank=False, max_length=200)
     event_name = models.BooleanField(default=True)
     description = models.BooleanField(default=False)
     published_status = models.BooleanField(default=False)
@@ -861,6 +862,7 @@ class EventApplicationsCSV(models.Model):
         primary_key=True,
         related_name="event_application_csv"
     )
+    file_name = models.CharField(null=False, blank=False, max_length=200)
     event_name = models.BooleanField(default=True)
     submitted_datetime = models.BooleanField(default=False)
     updated_datetime = models.BooleanField(default=False)

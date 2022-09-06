@@ -613,7 +613,6 @@ def manage_event_application(request, pk_event, pk_application):
     context['dietary_requirements'] = dietary_requirements
     context['educational_entities'] = educational_entities
 
-
     return render(request, 'events/manage_event_application.html', context)
 
 
@@ -788,6 +787,7 @@ def manage_event_location_details(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
+# TODO: add staff and admin permissions
 @login_required
 def generate_event_csv(request):
     """Generates a custom CSV of events' data""" 
@@ -795,6 +795,8 @@ def generate_event_csv(request):
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
         if builderFormForEventsCSV.is_valid():
+
+            file_name = builderFormForEventsCSV.cleaned_data['file_name']
 
             first_wrote_titles = []
 
@@ -846,7 +848,7 @@ def generate_event_csv(request):
                 first_wrote_titles.append('withdrawn_applications_count')
 
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] ='attachment; filename=event_applications.csv'
+            response['Content-Disposition'] = 'attachment; filename= "{}.csv"'.format(file_name)
 
             # Create a csv writer
             writer = csv.writer(response)
@@ -911,7 +913,7 @@ def generate_event_csv(request):
     
             return response
 
-
+# TODO: add staff and admin permissions
 @login_required
 def generate_event_applications_csv(request, pk):
     """Generates a custom CSV of event applications' data""" 
@@ -921,6 +923,8 @@ def generate_event_applications_csv(request, pk):
     if request.method == 'POST':
         builderFormForEventApplicationsCSV = BuilderFormForEventApplicationsCSV(request.POST)
         if builderFormForEventApplicationsCSV.is_valid():
+
+            file_name = builderFormForEventApplicationsCSV.cleaned_data['file_name']
 
             first_wrote_titles = []
 
@@ -962,7 +966,7 @@ def generate_event_applications_csv(request, pk):
                 first_wrote_titles.append('admin_billing_comments')
 
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] ='attachment; filename=event_applications.csv'
+            response['Content-Disposition'] = 'attachment; filename= "{}.csv"'.format(file_name)
 
             # Create a csv writer
             writer = csv.writer(response)
@@ -1019,6 +1023,7 @@ def generate_event_applications_csv(request, pk):
             return response
 
 
+# TODO: add staff and admin permissions
 @login_required
 def mark_all_participants_as_paid(request, pk):
     """Bulk mark all event applications as being paid for for a given event"""

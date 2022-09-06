@@ -173,6 +173,7 @@ class ManageEventLocationForm(ModelForm):
         self.helper.disable_csrf = True
 
 
+# TODO: add multi select for choosing subset of events
 class BuilderFormForEventsCSV(ModelForm):
     """ Simple form for selecting which Event model fields will be included the generated CSV."""
 
@@ -190,6 +191,7 @@ class BuilderFormForEventsCSV(ModelForm):
         self.helper.disable_csrf = True
 
 
+# TODO: add multi select for choosing subset of event applications OR based on type e.g. approved
 class BuilderFormForEventApplicationsCSV(ModelForm):
     """ Simple form for selecting which Event Application model fields will be included the generated CSV."""
 
