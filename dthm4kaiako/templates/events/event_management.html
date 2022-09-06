@@ -166,14 +166,15 @@
             <summary>Event Applications</summary>
             <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
-                {% if not is_free %}
-                <!-- Bulk mark all participants as paid -->
-                    <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
-                        Mark all participants as paid
-                    </a>
-                {% endif %}
-
                 {% if event_applications %}
+
+                    {% if not is_free %}
+                    <!-- Bulk mark all participants as paid -->
+                        <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                            Mark all participants as paid
+                        </a>
+                    {% endif %}
+
                     {% for application in event_applications %}
                     <div>
                         <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>

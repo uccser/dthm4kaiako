@@ -166,15 +166,16 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         context['locations'] = self.object.locations.all()
 
         user = self.request.user
-        withdraw_event_application_form = WithdrawEventApplicationForm(self.request.POST)
 
         if user.is_authenticated:
-            context['has_user_applied'] = self.does_application_exist(user)
-            context['application_pk'] = self.get_application_pk(user)
+            if self.does_application_exist(user):
+                withdraw_event_application_form = WithdrawEventApplicationForm(self.request.POST)
+                context['withdraw_event_application_form'] = withdraw_event_application_form
+                context['has_user_applied'] = True
+                context['application_pk'] = self.get_application_pk(user)
         else:
             context['user_is_authenticated'] = False
 
-        context['withdraw_event_application_form'] = withdraw_event_application_form
         
         return context
 

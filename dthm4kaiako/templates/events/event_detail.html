@@ -210,35 +210,38 @@
         <!-- TODO: show dynamically (e.g. Javascript) when "other" selected -->
 
         <!-- Modal -->
-        <div class="modal fade" id="event-details-withdraw-modal-{{application_pk}}" tabindex="-1" role="dialog" aria-labelledby="event-details-withdraw-confirmation" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title">Application Withdrawal</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                Are you sure you want to withdraw your application to attend <b>{{event.name}}</b>?
-                </div>
-                <div class="modal-footer" style="justify-content:center">
-                    <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
-                        {% csrf_token %}
-                        {% crispy withdraw_event_application_form %}
-                        <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
-                            <div class="column">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            </div>
-                            <div class="column">
-                                <input class="btn btn-warning" type="submit" value="Yes">
-                            </div>
+        {% if withdraw_event_application_form %}
+
+            <div class="modal fade" id="event-details-withdraw-modal-{{application_pk}}" tabindex="-1" role="dialog" aria-labelledby="event-details-withdraw-confirmation" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title">Application Withdrawal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         </div>
-                    </form>
+                        <div class="modal-body">
+                        Are you sure you want to withdraw your application to attend <b>{{event.name}}</b>?
+                        </div>
+                        <div class="modal-footer" style="justify-content:center">
+                            <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
+                                {% csrf_token %}
+                                {% crispy withdraw_event_application_form %}
+                                <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
+                                    <div class="column">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="column">
+                                        <input class="btn btn-warning" type="submit" value="Yes">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
+        {% endif %}
     {% endif %}
 
 {% endblock modal %}
