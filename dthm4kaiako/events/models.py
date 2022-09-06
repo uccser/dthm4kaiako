@@ -827,7 +827,7 @@ class EventCSV(models.Model):
         primary_key=True,
         related_name="event_csv"
     )
-    name = models.BooleanField(default=True)
+    event_name = models.BooleanField(default=True)
     description = models.BooleanField(default=False)
     published_status = models.BooleanField(default=False)
     show_schedule = models.BooleanField(default=False)

@@ -173,7 +173,7 @@ class ManageEventLocationForm(ModelForm):
         self.helper.disable_csrf = True
 
 
-class BuilderFormForEventCSV(ModelForm):
+class BuilderFormForEventsCSV(ModelForm):
     """ Simple form for selecting which Event model fields will be included the generated CSV."""
 
     class Meta:
@@ -184,7 +184,7 @@ class BuilderFormForEventCSV(ModelForm):
         exclude = ['event']
         
     def __init__(self, *args, **kwargs):
-        super(BuilderFormForEventCSV, self).__init__(*args, **kwargs)
+        super(BuilderFormForEventsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True

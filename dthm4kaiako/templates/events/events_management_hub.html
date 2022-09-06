@@ -19,7 +19,7 @@
                     <p style="font-style: italic">
                         Select the fields you wish to include in the CSV
                     </p>
-                    <form method="post">
+                    <form method="post" action="{% url 'events:generate_event_csv' %}">
                         {% csrf_token %}
                         {% crispy event_csv_builder_form %}
                         <input class="btn btn-primary" type="submit" value="Generate csv">

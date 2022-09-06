@@ -24,7 +24,7 @@ from .forms import (EventApplicationForm,
                     ManageEventDetailsForm,
                     ManageEventRegistrationFormDetailsForm,
                     ManageEventLocationForm,
-                    BuilderFormForEventCSV,
+                    BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
                     )
 from django.shortcuts import render, redirect
@@ -507,7 +507,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
             if Event.objects.filter(event_staff__pk=user.pk).exists():
                 # TODO: order these 
                 context['events_user_is_staff_for'] = Event.objects.filter(event_staff__pk=user.pk)
-                event_csv_builder_form = BuilderFormForEventCSV()
+                event_csv_builder_form = BuilderFormForEventsCSV()
                 context['event_csv_builder_form'] = event_csv_builder_form
 
         return context
@@ -789,6 +789,130 @@ def manage_event_location_details(request, pk):
 
 
 @login_required
+def generate_event_csv(request):
+    """Generates a custom CSV of events' data""" 
+
+    if request.method == 'POST':
+        builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
+        if builderFormForEventsCSV.is_valid():
+
+            first_wrote_titles = []
+
+            if builderFormForEventsCSV.cleaned_data['event_name']:
+                first_wrote_titles.append('event_name')
+            if builderFormForEventsCSV.cleaned_data['description']:
+                first_wrote_titles.append('description')
+            if builderFormForEventsCSV.cleaned_data['published_status']:
+                first_wrote_titles.append('published_status')
+            if builderFormForEventsCSV.cleaned_data['show_schedule']:
+                first_wrote_titles.append('show_schedule')
+            if builderFormForEventsCSV.cleaned_data['featured_status']:
+                first_wrote_titles.append('featured_status')
+            if builderFormForEventsCSV.cleaned_data['registration_type']:
+                first_wrote_titles.append('registration_type')
+            if builderFormForEventsCSV.cleaned_data['registration_link']:
+                first_wrote_titles.append('registration_link')
+            if builderFormForEventsCSV.cleaned_data['start_datetime']:
+                first_wrote_titles.append('start_datetime')
+            if builderFormForEventsCSV.cleaned_data['end_datetime']:
+                first_wrote_titles.append('end_datetime')
+            if builderFormForEventsCSV.cleaned_data['accessible_online']:
+                first_wrote_titles.append('accessible_online')
+            if builderFormForEventsCSV.cleaned_data['is_free']:
+                first_wrote_titles.append('is_free')
+            if builderFormForEventsCSV.cleaned_data['locations']:
+                first_wrote_titles.append('locations')
+            if builderFormForEventsCSV.cleaned_data['sponsors']:
+                first_wrote_titles.append('sponsors')
+            if builderFormForEventsCSV.cleaned_data['organisers']:
+                first_wrote_titles.append('organisers')
+            if builderFormForEventsCSV.cleaned_data['series']:
+                first_wrote_titles.append('series')
+            if builderFormForEventsCSV.cleaned_data['is_catered']:
+                first_wrote_titles.append('is_catered')
+            if builderFormForEventsCSV.cleaned_data['contact_email_address']:
+                first_wrote_titles.append('contact_email_address')
+            if builderFormForEventsCSV.cleaned_data['event_staff']:
+                first_wrote_titles.append('event_staff')
+            if builderFormForEventsCSV.cleaned_data['is_cancelled']:
+                first_wrote_titles.append('is_cancelled')
+            if builderFormForEventsCSV.cleaned_data['approved_applications_count']:
+                first_wrote_titles.append('approved_applications_count')
+            if builderFormForEventsCSV.cleaned_data['pending_applications_count']:
+                first_wrote_titles.append('pending_applications_count')
+            if builderFormForEventsCSV.cleaned_data['rejected_applications_count']:
+                first_wrote_titles.append('rejected_applications_count')
+            if builderFormForEventsCSV.cleaned_data['withdrawn_applications_count']:
+                first_wrote_titles.append('withdrawn_applications_count')
+
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] ='attachment; filename=event_applications.csv'
+
+            # Create a csv writer
+            writer = csv.writer(response)
+
+            # Designate the model
+            events = Event.objects.all()
+
+            # Add column headings to the csv file
+            writer.writerow(first_wrote_titles)
+
+            for event in events:
+                row = []
+
+                if builderFormForEventsCSV.cleaned_data['event_name']:
+                    row.append(event.name)
+                if builderFormForEventsCSV.cleaned_data['description']:
+                    row.append(event.description)
+                if builderFormForEventsCSV.cleaned_data['published_status']:
+                    row.append(event.published)
+                if builderFormForEventsCSV.cleaned_data['show_schedule']:
+                    row.append(event.show_schedule)
+                if builderFormForEventsCSV.cleaned_data['featured_status']:
+                    row.append(event.featured)
+                if builderFormForEventsCSV.cleaned_data['registration_type']:
+                    row.append(event.registration_type)
+                if builderFormForEventsCSV.cleaned_data['registration_link']:
+                    row.append(event.registration_link)
+                if builderFormForEventsCSV.cleaned_data['start_datetime']:
+                    row.append(event.start)
+                if builderFormForEventsCSV.cleaned_data['end_datetime']:
+                    row.append(event.end)
+                if builderFormForEventsCSV.cleaned_data['accessible_online']:
+                    row.append(event.accessible_online)
+                if builderFormForEventsCSV.cleaned_data['is_free']:
+                    row.append(event.is_free)
+                if builderFormForEventsCSV.cleaned_data['locations']:
+                    row.append(event.locations)
+                if builderFormForEventsCSV.cleaned_data['sponsors']:
+                    row.append(event.sponsors)
+                if builderFormForEventsCSV.cleaned_data['organisers']:
+                    row.append(event.organisers)
+                if builderFormForEventsCSV.cleaned_data['series']:
+                    row.append(event.series)
+                if builderFormForEventsCSV.cleaned_data['is_catered']:
+                    row.append(event.is_catered)
+                if builderFormForEventsCSV.cleaned_data['contact_email_address']:
+                    row.append(event.contact_email_address)
+                if builderFormForEventsCSV.cleaned_data['event_staff']:
+                    row.append(event.event_staff)
+                if builderFormForEventsCSV.cleaned_data['is_cancelled']:
+                    row.append(event.is_cancelled)
+                if builderFormForEventsCSV.cleaned_data['approved_applications_count']:
+                    row.append(event.application_status_counts['approved'])
+                if builderFormForEventsCSV.cleaned_data['pending_applications_count']:
+                    row.append(event.application_status_counts['pending'])
+                if builderFormForEventsCSV.cleaned_data['rejected_applications_count']:
+                    row.append(event.application_status_counts['rejected'])
+                if builderFormForEventsCSV.cleaned_data['withdrawn_applications_count']:
+                    row.append(event.application_status_counts['withdrawn'])
+
+                writer.writerow(row)
+    
+            return response
+
+
+@login_required
 def generate_event_applications_csv(request, pk):
     """Generates a custom CSV of event applications' data""" 
 
@@ -893,105 +1017,6 @@ def generate_event_applications_csv(request, pk):
                 writer.writerow(row)
     
             return response
-
-
-@login_required
-def event_applications_csv(request, pk):
-    """Generates a CSV of all the event applications' data""" 
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] ='attachment; filename=event_applications.csv'
-
-    # Create a csv writer
-    writer = csv.writer(response)
-
-    event = Event.objects.get(id=pk)
-
-    # Designate the model
-    event_applications = EventApplication.objects.filter(event=event)
-
-    # Add column headings to the csv file
-    writer.writerow(['Datetime Submitted', 
-                        'Datetime updated', 
-                        'Status', 
-                        'Participant Type', 
-                        'Staff Comments', 
-                        'Participant Firstname', 
-                        'Participant Lastname', 
-                        'Representing', 
-                        'Emergency Contact Firstname', 
-                        'Emergency Contact Lastname', 
-                        'Emergency Contact Relationship', 
-                        'Emergency Contact Phone Number', 
-                        'Paid Status', 
-                        'Bill To', 
-                        'Billing Physical Address', 
-                        'Billing Email Address'
-                    ])
-    
-    for event_application in event_applications:
-        user = event_application.user
-        # user = User.objects.filter(pk=user_pk)
-
-        writer.writerow([event_application.submitted,
-                            event_application.updated,
-                            event_application.status,
-                            event_application.participant_type,
-                            event_application.staff_comments,
-                            user.first_name,
-                            user.last_name,
-                            event_application.representing,
-                            event_application.emergency_contact_first_name,
-                            event_application.emergency_contact_last_name,
-                            event_application.emergency_contact_relationship,
-                            event_application.emergency_contact_phone_number,
-                            event_application.paid,
-                            event_application.bill_to,
-                            event_application.billing_physical_address,
-                            event_application.billing_email_address
-        ])
-    
-    return response
-
-
-@login_required
-def participant_billing_details_csv(request, pk):
-    """Generates a CSV of all the event applications' data"""
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] ='attachment; filename=participant_billing_details.csv'
-
-    # Create a csv writer
-    writer = csv.writer(response)
-
-    event = Event.objects.get(id=pk)
-
-    # Designate the model
-    event_applications = EventApplication.objects.filter(event=event)
-
-    # Add column headings to the csv file
-    writer.writerow(['Participant Firstname', 
-                        'Participant Lastname', 
-                        'Representing',
-                        'Paid Status', 
-                        'Bill To',
-                        'Billing Physical Address', 
-                        'Billing Email Address'
-                    ])
-    
-    for event_application in event_applications:
-        user = event_application.user
-        writer.writerow([
-                            user.first_name,
-                            user.last_name,
-                            event_application.representing,
-                            event_application.paid,
-                            event_application.bill_to,
-                            event_application.billing_physical_address,
-                            event_application.billing_email_address
-        ])
-    
-    return response
 
 
 @login_required

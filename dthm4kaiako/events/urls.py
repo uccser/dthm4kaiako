@@ -26,6 +26,7 @@ urlpatterns = [
     path('mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
     path('publish_event/<int:pk>/', views.publish_event, name='publish_event'),
     path('cancel_event/<int:pk>/', views.cancel_event, name='cancel_event'),
+    path('generate_event_csv/', views.generate_event_csv, name='generate_event_csv'), 
     path('generate_event_applications_csv/<int:pk>/', views.generate_event_applications_csv, name='generate_event_applications_csv'), 
 
     # Redirects
