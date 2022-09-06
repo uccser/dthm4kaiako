@@ -11,7 +11,8 @@ from events.models import (
     Location,
     EventApplication,
     Address,
-    RegistrationForm
+    RegistrationForm,
+    Series
 )
 from users.models import ( DietaryRequirement, Entity, User )
 from events.filters import UpcomingEventFilter, PastEventFilter
@@ -786,6 +787,15 @@ def manage_event_location_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
+def convertStringListToOneString(listToConvert):
+    if len(listToConvert) == 1:
+        return listToConvert[0]
+    else:
+        newBigString = ""
+        for string in listToConvert:
+            newBigString += string + ",\n" 
+        return newBigString
+
 # TODO: fix UI bug where the validation error message only disappears if go back out and back to events management hub page
 # TODO: add staff and admin permissions
 @login_required
@@ -885,19 +895,29 @@ def generate_event_csv(request):
                 if builderFormForEventsCSV.cleaned_data['is_free']:
                     row.append(event.is_free)
                 if builderFormForEventsCSV.cleaned_data['locations']:
-                    row.append(event.locations)
+                    locations = [location.name for location in Location.objects.filter(events=event)]
+                    locations_string = convertStringListToOneString(locations)
+                    row.append(locations_string)
                 if builderFormForEventsCSV.cleaned_data['sponsors']:
-                    row.append(event.sponsors)
+                    sponsors = [sponsor.name for sponsor in Entity.objects.filter(sponsored_events=event)]
+                    sponsors_string = convertStringListToOneString(sponsors)
+                    row.append(sponsors_string)
                 if builderFormForEventsCSV.cleaned_data['organisers']:
-                    row.append(event.organisers)
+                    organisers = [organiser.name for organiser in Location.objects.filter(events=event)]
+                    organisers_string = convertStringListToOneString(organisers)
+                    row.append(organisers_string)
                 if builderFormForEventsCSV.cleaned_data['series']:
-                    row.append(event.series)
+                    series = [series.name for series in Series.objects.filter(events=event)]
+                    series_string = convertStringListToOneString(series)
+                    row.append(series_string)
                 if builderFormForEventsCSV.cleaned_data['is_catered']:
                     row.append(event.is_catered)
                 if builderFormForEventsCSV.cleaned_data['contact_email_address']:
                     row.append(event.contact_email_address)
                 if builderFormForEventsCSV.cleaned_data['event_staff']:
-                    row.append(event.event_staff)
+                    staff = [str(user.first_name + user.last_name) for user in User.objects.filter(events=event)]
+                    staff_string = convertStringListToOneString(staff)
+                    row.append(staff_string)
                 if builderFormForEventsCSV.cleaned_data['is_cancelled']:
                     row.append(event.is_cancelled)
                 if builderFormForEventsCSV.cleaned_data['approved_applications_count']:
