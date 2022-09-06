@@ -606,30 +606,30 @@ class EventApplication(models.Model):
         related_name='event_applications',
     )
     emergency_contact_first_name = models.CharField(
-        max_length=50, 
+        max_length=100, 
         verbose_name='emergency contact\'s first name',
-        blank=False,
+        # blank=False,
         null=False,
         default='',
         )
     emergency_contact_last_name = models.CharField(
-        max_length=50, 
+        max_length=100, 
         verbose_name='emergency contact\'s last name',
-        blank=False,
+        # blank=False,
         null=False,
         default='',
         )
     emergency_contact_relationship = models.CharField(
-        max_length=150, 
+        max_length=200, 
         verbose_name='relationship with emergency contact',
-        blank=False,
+        # blank=False,
         null=False,
         default='',
         )
     emergency_contact_phone_number =  models.CharField(
-        max_length=30, 
+        max_length=50, 
         verbose_name='emergency contact\'s phone number',
-        blank=False,
+        # blank=False,
         null=False,
         default='',
         )
@@ -638,7 +638,7 @@ class EventApplication(models.Model):
     ) #TODO: use a computed function for this, based on participant types which have associated attendance fees
     bill_to = models.CharField(
         max_length=200, 
-        blank=False,
+        # blank=False,
         null=False,
         default='',
         help_text="Who will be paying for this participant to attend?"
@@ -831,7 +831,7 @@ class EventCSV(models.Model):
         primary_key=True,
         related_name="event_csv"
     )
-    file_name = models.CharField(null=False, blank=False, max_length=200)
+    file_name = models.CharField(null=False, blank=False, max_length=200, default="events_data")
     event_name = models.BooleanField(default=True)
     description = models.BooleanField(default=False)
     published_status = models.BooleanField(default=False)
@@ -883,7 +883,7 @@ class EventApplicationsCSV(models.Model):
         primary_key=True,
         related_name="event_application_csv"
     )
-    file_name = models.CharField(null=False, blank=False, max_length=200)
+    file_name = models.CharField(null=False, blank=False, max_length=200, default="events_data")
     event_name = models.BooleanField(default=True)
     submitted_datetime = models.BooleanField(default=False)
     updated_datetime = models.BooleanField(default=False)

@@ -23,11 +23,11 @@ urlpatterns = [
     url(r'^manage-event-registration-form-details/(?P<pk>[0-9]+)/$', views.manage_event_registration_form_details, name='manage_event_registration_form_details'),
     url(r'^manage-event-location-details/(?P<pk>[0-9]+)/$', views.manage_event_location_details, name='manage_event_location_details'),
     url(r'^event/(?P<pk_event>[0-9]+)/manage-event-application/(?P<pk_application>[0-9]+)/$', views.manage_event_application, name='manage_event_application'),
-    path('mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
-    path('publish_event/<int:pk>/', views.publish_event, name='publish_event'),
-    path('cancel_event/<int:pk>/', views.cancel_event, name='cancel_event'),
-    path('generate_event_csv/', views.generate_event_csv, name='generate_event_csv'), 
-    path('generate_event_applications_csv/<int:pk>/', views.generate_event_applications_csv, name='generate_event_applications_csv'), 
+    path('manage/mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
+    path('manage/publish_event/<int:pk>/', views.publish_event, name='publish_event'),
+    path('manage/cancel_event/<int:pk>/', views.cancel_event, name='cancel_event'),
+    path('manage/generate_event_csv/', views.generate_event_csv, name='generate_event_csv'), 
+    path('manage/generate_event_applications_csv/<int:pk>/', views.generate_event_applications_csv, name='generate_event_applications_csv'), 
 
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),

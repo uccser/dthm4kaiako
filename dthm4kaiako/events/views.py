@@ -1,6 +1,7 @@
 """Views for events application."""
 
 import re
+from unicodedata import name
 from django.views import generic
 from django.utils.timezone import now
 from django_filters.views import FilterView
@@ -522,7 +523,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         Returns:
             Events.
         """
-        return Event.objects.all()
+        return Event.objects.all().order_by("name")
 
 
 @login_required
@@ -1017,13 +1018,13 @@ def generate_event_applications_csv(request, pk):
                 row = []
 
                 if builderFormForEventApplicationsCSV.cleaned_data['event_name']:
-                    row.append(event_application.event_name)
+                    row.append(event_application.event.name)
                 if builderFormForEventApplicationsCSV.cleaned_data['submitted_datetime']:
                     row.append(event_application.submitted)
                 if builderFormForEventApplicationsCSV.cleaned_data['updated_datetime']:
                     row.append(event_application.updated)
                 if builderFormForEventApplicationsCSV.cleaned_data['status']:
-                    row.append(event_application.status)
+                    row.append(event_application.status_string_for_user)
                 if builderFormForEventApplicationsCSV.cleaned_data['participant_type']:
                     row.append(event_application.participant_type)
                 if builderFormForEventApplicationsCSV.cleaned_data['staff_comments']:
