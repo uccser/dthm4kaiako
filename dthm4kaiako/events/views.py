@@ -534,26 +534,23 @@ def manage_event(request, pk):
     """
 
     event = Event.objects.get(pk=pk)
-    user = request.user
     event_applications = EventApplication.objects.filter(event=event)
     registration_form = event.registration_form
     context = {
         'event': event,
     }
+    context['event_pk'] = event.pk
 
-    if len(event_applications) == 0:
-        return render(request, 'events/event_management.html', context)
-    else:
-        if request.method == 'GET':
-            manage_event_details_form = ManageEventDetailsForm(instance=event)
-            manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
-
-        context['event_applications'] = event_applications
+    if request.method == 'GET':
+        manage_event_details_form = ManageEventDetailsForm(instance=event)
+        manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
         context['manage_event_details_form'] = manage_event_details_form
         context['manage_registration_form_details_form'] = manage_registration_form_details_form
-        context['event_pk'] = event.pk
+        
+        context['event_applications'] = event_applications
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
+
         return render(request, 'events/event_management.html', context)
 
 

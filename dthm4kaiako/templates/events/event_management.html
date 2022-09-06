@@ -146,90 +146,77 @@
             </div>
         </div>
 
+        <br>
+
         <!-- Event Details -->
         <details>
             <summary>Event Details</summary>
             {% if manage_event_details_form %}
-                <form method="post" action="{% url 'events:manage_event_details' event_pk %}">
-                    {% csrf_token %}
-                    {% crispy manage_event_details_form %}
-                    <input class="btn btn-primary" type="submit" value="Update event details">
-                </form>
-                <br>
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <form method="post" action="{% url 'events:manage_event_details' event_pk %}">
+                        {% csrf_token %}
+                        {% crispy manage_event_details_form %}
+                        <input class="btn btn-primary" type="submit" value="Update event details">
+                    </form>
+                    <br>
+                </div>
             {% endif %}        
         </details>
 
         <!-- Event Registration Form Details -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#event-registration-form-details">Event Registration Form Details</a>
-                </h4>
+        <details>
+            <summary>Event Registration Form Details</summary>
+            {% if manage_registration_form_details_form %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <form method="post" action="{% url 'events:manage_event_registration_form_details' registration_form_pk %}">
+                        {% csrf_token %}
+                        {% crispy manage_registration_form_details_form %}
+                        <input class="btn btn-primary" type="submit" value="Update registration form details">
+                    </form>
+                    <br>
                 </div>
-                <div id="event-registration-form-details" class="panel-collapse collapse">
-                <div class="panel-body">
-                    {% if manage_registration_form_details_form %}
-                        <form method="post" action="{% url 'events:manage_event_registration_form_details' registration_form_pk %}">
-                            {% csrf_token %}
-                            {% crispy manage_registration_form_details_form %}
-                            <input class="btn btn-primary" type="submit" value="Update registration form details">
-                        </form>
-                        <br>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
+            {% endif %}        
+        </details>
 
         <!-- Event Applications -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#event-applications">Event Applications</a>
-                </h4>
-                </div>
-                <div id="event-applications" class="panel-collapse collapse">
-                <div class="panel-body">
+        <details>
+            <summary>Event Applications</summary>
+            <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
+                {% if not is_free %}
+                <!-- Bulk mark all participants as paid -->
+                    <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                        Mark all participants as paid
+                    </a>
+                {% endif %}
 
-                    {% if not is_free %}
-                        <!-- Bulk mark all participants as paid -->
-                        <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
-                            Mark all participants as paid
-                        </a>
-                    {% endif %}
-
-                    {% if event_applications %}
-                        {% for application in event_applications %}
-                        <div>
-                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No event applications</p>
-                    {% endif %}
-                </div>
+                {% if event_applications %}
+                    {% for application in event_applications %}
+                    <div>
+                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No event applications</p>
+                {% endif %}    
             </div>
-        </div>
+        </details>
 
         <!-- TODO: implement ability to send email to all participants that are attenting i.e. approved -->
-        <!-- Send Email -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#event-email">Email Event Participants</a>
-                </h4>
+        <!-- Send Email -->        
+        <details>
+            <summary>Contact Event Participants</summary>
+            {% if email_event_participants %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <form method="post" action="{% url TODO %}">
+                        {% csrf_token %}
+                        {% crispy email_event_participants %}
+                        <input class="btn btn-primary" type="submit" value="Send email">
+                    </form>
+                    <br>
                 </div>
-                <div id="event-email" class="panel-collapse collapse">
-                <div class="panel-body">
-
-                    
-                </div>
-            </div>
-        </div>
+            {% endif %}        
+        </details>
 
     </div>
 
