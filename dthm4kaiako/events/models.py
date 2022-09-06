@@ -852,6 +852,23 @@ class EventCSV(models.Model):
     rejected_applications_count = models.BooleanField(default=False)
     withdrawn_applications_count = models.BooleanField(default=False)
 
+    def clean(self):
+        """Validate EventCSV model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+
+        file_name_pattern = re.compile("^([a-zA-Z0-9_\- ]+)$")
+
+        if not file_name_pattern.match(str(self.file_name)):
+            raise ValidationError(
+                {
+                    'file_name':
+                    _('Filename can only contain letters, numbers, dashes and underscores.')
+                }
+            )
+
 
 #TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
 class EventApplicationsCSV(models.Model):
@@ -882,3 +899,19 @@ class EventApplicationsCSV(models.Model):
     billing_email_address = models.BooleanField(default=False)
     admin_billing_comments = models.BooleanField(default=False)
 
+    def clean(self):
+        """Validate EventApplicationsCSV model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+
+        file_name_pattern = re.compile("^([a-zA-Z0-9_\- ]+)$")
+
+        if not file_name_pattern.match(str(self.file_name)):
+            raise ValidationError(
+                {
+                    'file_name':
+                    _('Filename can only contain letters, numbers, dashes and underscores.')
+                }
+            )

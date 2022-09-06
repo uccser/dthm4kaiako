@@ -913,6 +913,10 @@ def generate_event_csv(request):
     
             return response
 
+        else:
+            return HttpResponseRedirect(reverse("events:event_management_hub"))
+
+
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_applications_csv(request, pk):
@@ -1021,6 +1025,19 @@ def generate_event_applications_csv(request, pk):
                 writer.writerow(row)
     
             return response
+        
+        else:
+            messages.warning(request, 'Event applications CSV builder form has an invalid field.')
+        
+    context = {
+        'event': event,
+        'event_pk': event.pk,
+        'applications_csv_builder_form': builderFormForEventApplicationsCSV,
+    }
+
+    return render(request, 'events/event_management.html', context)
+
+
 
 
 # TODO: add staff and admin permissions
