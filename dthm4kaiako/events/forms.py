@@ -8,7 +8,10 @@ from events.models import (Address,
                            EventApplication, 
                            Event, 
                            RegistrationForm,
-                           Location)
+                           Location,
+                           EventCSV,
+                           EventApplicationsCSV,
+                           )
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
@@ -168,4 +171,40 @@ class ManageEventLocationForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+
+
+class BuilderFormForEventCSV(ModelForm):
+    """ Simple form for selecting which Event model fields will be included the generated CSV."""
+
+    class Meta:
+        """Metadata for CSVBuilderFormForEvent class."""
+
+        model = EventCSV
+        fields = '__all__'
+        exclude = ['event']
+        
+    def __init__(self, *args, **kwargs):
+        super(BuilderFormForEventCSV, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+
+class BuilderFormForEventApplicationsCSV(ModelForm):
+    """ Simple form for selecting which Event Application model fields will be included the generated CSV."""
+
+    class Meta:
+        """Metadata for BuilderFormForEventApplicationsCSV class."""
+
+        model = EventApplicationsCSV
+        fields = '__all__'
+        exclude = ['event']
+        
+    def __init__(self, *args, **kwargs):
+        super(BuilderFormForEventApplicationsCSV, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+
         

@@ -24,6 +24,8 @@ from .forms import (EventApplicationForm,
                     ManageEventDetailsForm,
                     ManageEventRegistrationFormDetailsForm,
                     ManageEventLocationForm,
+                    BuilderFormForEventCSV,
+                    BuilderFormForEventApplicationsCSV,
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -33,8 +35,6 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import formset_factory
-from django.core.exceptions import ValidationError
 import csv
 from django.utils.html import format_html_join
 
@@ -507,9 +507,10 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
             if Event.objects.filter(event_staff__pk=user.pk).exists():
                 # TODO: order these 
                 context['events_user_is_staff_for'] = Event.objects.filter(event_staff__pk=user.pk)
-  
-        return context
+                event_csv_builder_form = BuilderFormForEventCSV()
+                context['event_csv_builder_form'] = event_csv_builder_form
 
+        return context
 
     def get_queryset(self):
         """Show all events.
@@ -544,9 +545,12 @@ def manage_event(request, pk):
     if request.method == 'GET':
         manage_event_details_form = ManageEventDetailsForm(instance=event)
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+        applications_csv_builder_form = BuilderFormForEventApplicationsCSV()
+
         context['manage_event_details_form'] = manage_event_details_form
         context['manage_registration_form_details_form'] = manage_registration_form_details_form
-        
+        context['applications_csv_builder_form'] = applications_csv_builder_form
+
         context['event_applications'] = event_applications
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
@@ -782,6 +786,113 @@ def manage_event_location_details(request, pk):
     context['event_pk'] = event.pk
 
     return render(request, 'events/event_management.html', context)
+
+
+@login_required
+def generate_event_applications_csv(request, pk):
+    """Generates a custom CSV of event applications' data""" 
+
+    event = Event.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        builderFormForEventApplicationsCSV = BuilderFormForEventApplicationsCSV(request.POST)
+        if builderFormForEventApplicationsCSV.is_valid():
+
+            first_wrote_titles = []
+
+            if builderFormForEventApplicationsCSV.cleaned_data['event_name']:
+                first_wrote_titles.append('event_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['submitted_datetime']:
+                first_wrote_titles.append('submitted_datetime')
+            if builderFormForEventApplicationsCSV.cleaned_data['updated_datetime']:
+                first_wrote_titles.append('updated_datetime')
+            if builderFormForEventApplicationsCSV.cleaned_data['status']:
+                first_wrote_titles.append('status')
+            if builderFormForEventApplicationsCSV.cleaned_data['participant_type']:
+                first_wrote_titles.append('participant_type')
+            if builderFormForEventApplicationsCSV.cleaned_data['staff_comments']:
+                first_wrote_titles.append('staff_comments')
+            if builderFormForEventApplicationsCSV.cleaned_data['participant_first_name']:
+                first_wrote_titles.append('participant_first_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['participant_last_name']:
+                first_wrote_titles.append('participant_last_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['representing']:
+                first_wrote_titles.append('representing')
+            if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_first_name']:
+                first_wrote_titles.append('emergency_contact_first_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_last_name']:
+                first_wrote_titles.append('emergency_contact_last_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_relationship']:
+                first_wrote_titles.append('emergency_contact_relationship')
+            if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_phone_number']:
+                first_wrote_titles.append('emergency_contact_phone_number')
+            if builderFormForEventApplicationsCSV.cleaned_data['paid']:
+                first_wrote_titles.append('paid')
+            if builderFormForEventApplicationsCSV.cleaned_data['bill_to']:
+                first_wrote_titles.append('bill_to')
+            if builderFormForEventApplicationsCSV.cleaned_data['billing_physical_address']:
+                first_wrote_titles.append('billing_physical_address')
+            if builderFormForEventApplicationsCSV.cleaned_data['billing_email_address']:
+                first_wrote_titles.append('billing_email_address')
+            if builderFormForEventApplicationsCSV.cleaned_data['admin_billing_comments']:
+                first_wrote_titles.append('admin_billing_comments')
+
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] ='attachment; filename=event_applications.csv'
+
+            # Create a csv writer
+            writer = csv.writer(response)
+
+            # Designate the model
+            event_applications = EventApplication.objects.filter(event=event)
+
+            # Add column headings to the csv file
+            writer.writerow(first_wrote_titles)
+
+            for event_application in event_applications:
+                user = event_application.user
+                row = []
+
+                if builderFormForEventApplicationsCSV.cleaned_data['event_name']:
+                    row.append(event_application.event_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['submitted_datetime']:
+                    row.append(event_application.submitted)
+                if builderFormForEventApplicationsCSV.cleaned_data['updated_datetime']:
+                    row.append(event_application.updated)
+                if builderFormForEventApplicationsCSV.cleaned_data['status']:
+                    row.append(event_application.status)
+                if builderFormForEventApplicationsCSV.cleaned_data['participant_type']:
+                    row.append(event_application.participant_type)
+                if builderFormForEventApplicationsCSV.cleaned_data['staff_comments']:
+                    row.append(event_application.staff_comments)
+                if builderFormForEventApplicationsCSV.cleaned_data['participant_first_name']:
+                    row.append(user.first_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['participant_last_name']:
+                    row.append(user.last_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['representing']:
+                    row.append(event_application.representing)
+                if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_first_name']:
+                    row.append(event_application.emergency_contact_first_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_last_name']:
+                    row.append(event_application.emergency_contact_last_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_relationship']:
+                    row.append(event_application.emergency_contact_relationship)
+                if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_phone_number']:
+                    row.append(event_application.emergency_contact_phone_number)
+                if builderFormForEventApplicationsCSV.cleaned_data['paid']:
+                    row.append(event_application.paid)
+                if builderFormForEventApplicationsCSV.cleaned_data['bill_to']:
+                    row.append(event_application.bill_to)
+                if builderFormForEventApplicationsCSV.cleaned_data['billing_physical_address']:
+                    row.append(event_application.billing_physical_address)
+                if builderFormForEventApplicationsCSV.cleaned_data['billing_email_address']:
+                    row.append(event_application.billing_email_address)
+                if builderFormForEventApplicationsCSV.cleaned_data['admin_billing_comments']:
+                    row.append(event_application.admin_billing_comments)
+
+                writer.writerow(row)
+    
+            return response
 
 
 @login_required

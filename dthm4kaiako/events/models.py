@@ -816,3 +816,67 @@ def create_registration_form(sender, instance, created, **kwargs):
     """Create a registration form when an event is created."""
     if created:
         RegistrationForm.objects.create(event=instance)
+
+
+#TODO: come up with a way to not have to manually put in the Event fields as modifying Event will impact this model.
+class EventCSV(models.Model):
+    """Model for which fields are included within an Event based CSV."""
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name="event_csv"
+    )
+    name = models.BooleanField(default=True)
+    description = models.BooleanField(default=False)
+    published_status = models.BooleanField(default=False)
+    show_schedule = models.BooleanField(default=False)
+    featured_status = models.BooleanField(default=False)
+    registration_type = models.BooleanField(default=False)
+    registration_link = models.BooleanField(default=False)
+    start_datetime = models.BooleanField(default=False)
+    end_datetime = models.BooleanField(default=False)
+    accessible_online = models.BooleanField(default=False)
+    is_free = models.BooleanField(default=False)
+    locations = models.BooleanField(default=False)
+    sponsors = models.BooleanField(default=False)
+    organisers = models.BooleanField(default=False)
+    series = models.BooleanField(default=False)
+    is_catered = models.BooleanField(default=False)
+    contact_email_address = models.BooleanField(default=False)
+    event_staff = models.BooleanField(default=False)
+    is_cancelled = models.BooleanField(default=False)
+    approved_applications_count = models.BooleanField(default=False)
+    pending_applications_count = models.BooleanField(default=False)
+    rejected_applications_count = models.BooleanField(default=False)
+    withdrawn_applications_count = models.BooleanField(default=False)
+
+
+#TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
+class EventApplicationsCSV(models.Model):
+    """Model for which fields are included within an Event Application based CSV."""
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name="event_application_csv"
+    )
+    event_name = models.BooleanField(default=True)
+    submitted_datetime = models.BooleanField(default=False)
+    updated_datetime = models.BooleanField(default=False)
+    status = models.BooleanField(default=False)
+    participant_type = models.BooleanField(default=False)
+    staff_comments = models.BooleanField(default=False)
+    participant_first_name = models.BooleanField(default=False)
+    participant_last_name = models.BooleanField(default=False)
+    representing = models.BooleanField(default=False)
+    emergency_contact_first_name = models.BooleanField(default=False)
+    emergency_contact_last_name = models.BooleanField(default=False)
+    emergency_contact_relationship = models.BooleanField(default=False)
+    emergency_contact_phone_number = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False)
+    bill_to = models.BooleanField(default=False)
+    billing_physical_address = models.BooleanField(default=False)
+    billing_email_address = models.BooleanField(default=False)
+    admin_billing_comments = models.BooleanField(default=False)
+

@@ -10,9 +10,29 @@
 
 {% block content %}
     {% if events_user_is_staff_for %}
+
+        <!-- Generate Event CSVs -->        
+        <details>
+            <summary>Create Event CSVs</summary>
+            {% if event_csv_builder_form %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <p style="font-style: italic">
+                        Select the fields you wish to include in the CSV
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% crispy event_csv_builder_form %}
+                        <input class="btn btn-primary" type="submit" value="Generate csv">
+                    </form>
+                    <br>
+                </div>
+            {% endif %}        
+        </details>
+
         <h4>
             Events you are staff for
         </h4>
+
         {% for event in events_user_is_staff_for %}
             <div class="card-header title-header align-middle">
                 <div class="row">

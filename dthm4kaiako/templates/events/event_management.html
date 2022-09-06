@@ -202,6 +202,24 @@
             </div>
         </details>
 
+        <!-- Generate Event Applications CSVs -->         
+        <details>
+            <summary>Create Event Applications CSVs</summary>
+            {% if applications_csv_builder_form %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <p style="font-style: italic">
+                        Select the fields you wish to include in the CSV
+                    </p>
+                    <form method="post" action="{% url 'events:generate_event_applications_csv' event_pk %}">
+                        {% csrf_token %}
+                        {% crispy applications_csv_builder_form %}
+                        <input class="btn btn-primary" type="submit" value="Generate csv">
+                    </form>
+                    <br>
+                </div>
+            {% endif %}        
+        </details>
+
         <!-- TODO: implement ability to send email to all participants that are attenting i.e. approved -->
         <!-- Send Email -->        
         <details>
