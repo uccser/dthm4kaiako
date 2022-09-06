@@ -786,7 +786,7 @@ def manage_event_location_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
-
+# TODO: fix UI bug where the validation error message only disappears if go back out and back to events management hub page
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_csv(request):
@@ -914,9 +914,17 @@ def generate_event_csv(request):
             return response
 
         else:
-            return HttpResponseRedirect(reverse("events:event_management_hub"))
+            messages.warning(request, 'Event applications CSV builder form has an invalid field.')
+        
+    context = {
+        'event_csv_builder_form': builderFormForEventsCSV,
+        'events_user_is_staff_for': Event.objects.filter(event_staff__pk=request.user.pk)
+    }
+
+    return render(request, 'events/events_management_hub.html', context)
 
 
+# TODO: fix UI bug where the validation error message only disappears if go back out and back to event management page
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_applications_csv(request, pk):
