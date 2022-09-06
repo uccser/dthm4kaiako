@@ -173,10 +173,10 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
                 context['withdraw_event_application_form'] = withdraw_event_application_form
                 context['has_user_applied'] = True
                 context['application_pk'] = self.get_application_pk(user)
+                context['event_application'] = EventApplication.objects.get(event=self.object.pk, user=user)
         else:
             context['user_is_authenticated'] = False
 
-        
         return context
 
 
@@ -208,7 +208,9 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
                 'event__start')
             context['event_applications'] = unordered_event_applications
             context['user'] = self.request.user
-            context['withdraw_event_application_form'] = WithdrawEventApplicationForm(self.request.POST)
+            if len(unordered_event_applications) != 0:
+                context['withdraw_event_application_form'] = WithdrawEventApplicationForm(self.request.POST)
+           
         return context
 
     def get_object(self):

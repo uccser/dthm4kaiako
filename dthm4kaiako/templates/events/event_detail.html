@@ -55,7 +55,7 @@
         <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
         <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
         <p class="mb-0">
-            <strong>Cost</strong>
+            <strong>Cost: </strong>
                 {% if event.price == 0 %}
                     Free!
                 {% else %}
@@ -224,7 +224,7 @@
                         Are you sure you want to withdraw your application to attend <b>{{event.name}}</b>?
                         </div>
                         <div class="modal-footer" style="justify-content:center">
-                            <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
+                            <form action="{% url 'events:delete_application_via_event_page' event_application.id %}" method="post">
                                 {% csrf_token %}
                                 {% crispy withdraw_event_application_form %}
                                 <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
