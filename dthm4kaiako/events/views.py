@@ -883,7 +883,7 @@ def generate_event_csv(request):
                 if builderFormForEventsCSV.cleaned_data['featured_status']:
                     row.append(event.featured)
                 if builderFormForEventsCSV.cleaned_data['registration_type']:
-                    row.append(event.registration_type)
+                    row.append(event.get_event_type_short)
                 if builderFormForEventsCSV.cleaned_data['registration_link']:
                     row.append(event.registration_link)
                 if builderFormForEventsCSV.cleaned_data['start_datetime']:

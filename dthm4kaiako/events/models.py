@@ -282,6 +282,10 @@ class Event(models.Model):
             return "Apply"
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Register"
+        elif self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY:
+            return "Invite only"
+        elif self.registration_type == self.REGISTRATION_TYPE_EXTERNAL:
+            return "External"
 
     @property
     def start_weekday_name(self):

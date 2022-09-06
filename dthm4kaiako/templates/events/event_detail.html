@@ -54,14 +54,16 @@
         {% endif %}
         <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
         <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
-        <!-- <p class="mb-0">
-            <strong>Cost:</strong>
-            {% if event.price == 0 %}
-                Free!
-            {% else %}
-                {{ event.price }}
-            {% endif %}
-        </p> -->
+        <p class="mb-0">
+            <strong>
+                {% if event.price == 0 %}
+                    Free!
+                {% else %}
+                    Attendance fee required
+                    {{ event.price }}
+                {% endif %}
+            </strong>
+        </p>
 
         <div class="d-flex flex-row">
             <div class="pr-1"><strong>Location{{ locations|pluralize }}:</strong></div>
