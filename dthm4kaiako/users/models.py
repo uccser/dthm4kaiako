@@ -103,21 +103,21 @@ class User(AbstractUser):
 
 
 # TODO: figure out why valid phone numbers are not being accepted in form!    
-    def clean(self):
-        """Validate user model attributes.
+    # def clean(self):
+    #     """Validate user model attributes.
 
-        Raises:
-            ValidationError if invalid attributes.
-        """
+    #     Raises:
+    #         ValidationError if invalid attributes.
+    #     """
 
-        mobile_phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
+    #     mobile_phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
 
-        if not mobile_phone_number_pattern.match(str(self.mobile_phone_number)):
-            raise ValidationError(
-                {
-                    'mobile_phone_number':
-                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
-                }
-            )
+    #     if not mobile_phone_number_pattern.match(str(self.mobile_phone_number)):
+    #         raise ValidationError(
+    #             {
+    #                 'mobile_phone_number':
+    #                 _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
+    #             }
+    #         )
 
 

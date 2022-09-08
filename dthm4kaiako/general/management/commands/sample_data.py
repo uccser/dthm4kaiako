@@ -211,11 +211,13 @@ class Command(management.base.BaseCommand):
 
         User = get_user_model()
 
+        #TODO: update passwords prior to merging into main branch (settings.SAMPLE_DATA_ADMIN_PASSWORD and settings.SAMPLE_DATA_USER_PASSWORD)
+
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
             'admin@dthm4kaiako.ac.nz',
-            password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
+            password="password",
             first_name='Admin',
             last_name='Account'
         )
@@ -231,7 +233,7 @@ class Command(management.base.BaseCommand):
         user = User.objects.create_user(
             'user',
             'user@dthm4kaiako.ac.nz',
-            password=settings.SAMPLE_DATA_USER_PASSWORD,
+            password="password",
             first_name='Alex',
             last_name='Doe'
         )

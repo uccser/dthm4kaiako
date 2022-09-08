@@ -561,7 +561,7 @@ class Address(models.Model):
                 }
             )
 
-
+# TODO: make emergency contact details only mandatory for events that are in person i.e. don't show them for online events and allow them to be empty
 class EventApplication(models.Model):
     """Model for an event application."""
 
@@ -606,30 +606,30 @@ class EventApplication(models.Model):
         related_name='event_applications',
     )
     emergency_contact_first_name = models.CharField(
-        max_length=100, 
+        max_length=200, 
         verbose_name='emergency contact\'s first name',
-        # blank=False,
+        blank=False,
         null=False,
         default='',
         )
     emergency_contact_last_name = models.CharField(
-        max_length=100, 
+        max_length=200, 
         verbose_name='emergency contact\'s last name',
-        # blank=False,
+        blank=False,
         null=False,
         default='',
         )
     emergency_contact_relationship = models.CharField(
-        max_length=200, 
+        max_length=150, 
         verbose_name='relationship with emergency contact',
-        # blank=False,
+        blank=False,
         null=False,
         default='',
         )
     emergency_contact_phone_number =  models.CharField(
-        max_length=50, 
+        max_length=40, 
         verbose_name='emergency contact\'s phone number',
-        # blank=False,
+        blank=False,
         null=False,
         default='',
         )
@@ -671,23 +671,22 @@ class EventApplication(models.Model):
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
 
 
-    def clean(self):
-        """Validate event application model attributes.
+    # def clean(self):
+    #     """Validate event application model attributes.
 
-        Raises:
-            ValidationError if invalid attributes.
-        """
+    #     Raises:
+    #         ValidationError if invalid attributes.
+    #     """
 
-        phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
+    #     # phone_number_pattern = re.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
 
-        if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
-            raise ValidationError(
-                {
-                    'emergency_contact_phone_number':
-                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
-                }
-            )
-
+    #     # if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
+    #     #     raise ValidationError(
+    #     #         {
+    #     #             'emergency_contact_phone_number':
+    #     #             _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
+    #     #         }
+    #     #     )
 
     @property
     def status_string_for_user(self):
@@ -883,7 +882,7 @@ class EventApplicationsCSV(models.Model):
         primary_key=True,
         related_name="event_application_csv"
     )
-    file_name = models.CharField(null=False, blank=False, max_length=200, default="events_data")
+    file_name = models.CharField(null=False, blank=False, max_length=200, default="event_application_data")
     event_name = models.BooleanField(default=True)
     submitted_datetime = models.BooleanField(default=False)
     updated_datetime = models.BooleanField(default=False)
