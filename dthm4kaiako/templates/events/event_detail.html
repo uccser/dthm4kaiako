@@ -26,8 +26,6 @@
         {% endif %}
         </div>
 
-
-
         {% for organiser in organisers %}
             {% if organiser.logo %}
                 <img src="{{ organiser.logo.url }}" class="img-inline-lg mr-4" alt="{{ organiser.name }}">
@@ -120,6 +118,13 @@
                 {% endif %}
             </nav>
 
+        {% if event.is_cancelled %} 
+            <div class="h6 text-center m-3">
+                <p>
+                    <b>CANCELLED</b>
+                </p>
+            </div>
+        {% else %}
             {% if event.registration_link and not event.has_ended %}
                 <hr>
                 <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
@@ -198,6 +203,8 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+        {% endif %}
+
         </div>
     </div>
 {% endblock content_container %}

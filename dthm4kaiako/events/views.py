@@ -1,6 +1,8 @@
 """Views for events application."""
 
 import re
+import string
+# from turtle import heading
 from unicodedata import name
 from django.views import generic
 from django.utils.timezone import now
@@ -470,7 +472,6 @@ def apply_for_event(request, pk):
             if application_exists:
                 # Update existing event application
                 messages.success(request, "Updated event application successfully")
-                messages.success(request, user.event_applications.filter(event=event))
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
 
             else:
@@ -796,8 +797,12 @@ def convertStringListToOneString(listToConvert):
         return listToConvert[0]
     else:
         newBigString = ""
-        for string in listToConvert:
-            newBigString += string + ",\n" 
+        for i in range(0, len(listToConvert)):
+            string = listToConvert[i]
+            if i == len(listToConvert) - 1:
+                newBigString += string
+            else:
+                newBigString += string + " & " 
         return newBigString
 
 # TODO: fix UI bug where the validation error message only disappears if go back out and back to events management hub page
@@ -1070,6 +1075,45 @@ def generate_event_applications_csv(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
+# TODO: add staff and admin permissions
+@login_required
+def generate_event_dietary_requirement_counts_csv(request, pk):
+    """Generates a custom CSV of event dietary requirement counts data""" 
+
+    event = Event.objects.get(pk=pk)
+
+    heading_row = ["event name", "dietary requirements", "counts"]
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename= "dietary_requirement_counts_for_{}.csv"'.format(event.name)
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    # Designate the model
+    event_applications = EventApplication.objects.filter(event=event)
+
+    # Add column headings to the csv file
+    writer.writerow(heading_row)
+
+    dietary_reqs_dict = dict()
+
+    event_applications = EventApplication.objects.filter(event=event)
+
+    for application in event_applications:
+        dietary_requirements = [dR.name for dR in application.user.dietary_requirements.all()]
+        if frozenset(dietary_requirements) in dietary_reqs_dict:
+            dietary_reqs_dict[frozenset(dietary_requirements)] += 1
+        else:
+            dietary_reqs_dict[frozenset(dietary_requirements)] = 1
+
+    row_lists = [[event.name, convertStringListToOneString(list(frozenset_dietary_reqs)), dietary_reqs_dict[frozenset_dietary_reqs]] for frozenset_dietary_reqs in dietary_reqs_dict.keys()]
+
+    for row in row_lists:
+        writer.writerow(row)
+
+    return response
+
 
 
 # TODO: add staff and admin permissions
@@ -1078,7 +1122,7 @@ def mark_all_participants_as_paid(request, pk):
     """Bulk mark all event applications as being paid for for a given event"""
     event_id = pk
     event = Event.objects.get(id=event_id)
-    event_applications = EventApplication.objects.filter(event=event)
+    event_applications = [EventApplication.objects.filter(event=event)]
 
     for event_application in event_applications:
 

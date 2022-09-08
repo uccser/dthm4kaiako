@@ -220,6 +220,12 @@
             {% endif %}        
         </details>
 
+        <div>
+            <a class="btn btn-success btn-block btn-lg" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
+                Dietary Requirements Counts CSV
+            </a>
+        </div>
+
     </div>
 
 {% endblock content %}
