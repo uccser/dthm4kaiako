@@ -38,11 +38,11 @@
 
             <div id="event-published-status-btn" class="float-right">
                 {% if event.published == False %} 
-                    <a class="btn btn-primary" href="{% url 'events:publish_event' event.pk %}" role="button">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-publish-modal" role="button">
                         Publish event
                     </a>
                 {% elif event.published == True and event.is_cancelled == False %}
-                    <a class="btn btn-primary" href="{% url 'events:cancel_event' event.pk %}" role="button">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-cancel-modal" role="button">
                         Cancel event
                     </a>                
                 {% endif %}
@@ -229,3 +229,79 @@
     </div>
 
 {% endblock content %}
+
+{% block modal %}
+
+    {% if user.is_authenticated %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="event-publish-modal" tabindex="-1" role="dialog" aria-labelledby="event-publish-modal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Confirm Event Publification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <b>Are you sure you want to publish this event?</b>
+                        <br>
+                        <br>
+                        All event details will be made available to individuals who are logged in and who are not logged in.
+                    </div>
+                    <div class="modal-footer" style="justify-content:center">
+                        <form action="{% url 'events:publish_event' event.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="row" style="display: flex; justify-content: space-between">
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                </div>
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <input class="btn btn-warning" type="submit" value="Yes">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="event-cancel-modal" tabindex="-1" role="dialog" aria-labelledby="event-publish-modal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Confirm Event Cancellation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <b>Are you sure you want to cancel this event?</b>
+                        <br>
+                        This <b>CANNOT</b> be undone.
+                        <br>
+                        <br>
+                        You can still update the event description after cancelling.
+                    </div>
+                    <div class="modal-footer" style="justify-content:center">
+                        <form action="{% url 'events:cancel_event' event.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="row" style="display: flex; justify-content: space-between">
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                </div>
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <input class="btn btn-warning" type="submit" value="Yes">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock modal %}
+

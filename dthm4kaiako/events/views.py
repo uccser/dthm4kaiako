@@ -1159,20 +1159,23 @@ def mark_all_participants_as_paid(request, pk):
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
+# TODO: consider - add logic for checking if has close datetime for registrations - make sure closing date for application is on details page
+# TODO: add logic for event detail page saying event registrations opening soon!
 # TODO: add staff permission for this
 @login_required
 def publish_event(request, pk):
     """Publish event as event staff"""
+
     event_id = pk
+    event_query_set = Event.objects.filter(id=event_id)
     event = Event.objects.get(id=event_id)
 
-    event_query_set = Event.objects.filter(id=event_id)
-
-    if (event.published == True and event.start == None) or (event.published == True and event.end == None):
+    if (event.published == False and event.start == None) or (event.published == False and event.end == None):
             messages.error(request, 'Event must have a start and end datetime to be published.')
     else:
         event_query_set.update(published=True)
-        event.save()
+        updated_event = Event.objects.get(id=event_id)
+        updated_event.save()
         messages.success(request, 'Event successfully published')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
