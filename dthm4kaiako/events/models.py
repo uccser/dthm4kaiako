@@ -872,7 +872,6 @@ class EventCSV(models.Model):
                 }
             )
 
-
 #TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
 class EventApplicationsCSV(models.Model):
     """Model for which fields are included within an Event Application based CSV."""
@@ -891,6 +890,14 @@ class EventApplicationsCSV(models.Model):
     staff_comments = models.BooleanField(default=False)
     participant_first_name = models.BooleanField(default=False)
     participant_last_name = models.BooleanField(default=False)
+
+    dietary_requirements = models.BooleanField(default=False)
+    educational_entities = models.BooleanField(default=False) # TODO: check user facing name
+    region = models.BooleanField(default=False)
+    mobile_phone_number = models.BooleanField(default=False)
+    email_address = models.BooleanField(default=False)
+    how_we_can_best_accommodate_them = models.BooleanField(default=False) # NOTE: called medical notes elsewhere but called this for user-friendliness since this is a user-facing string
+    
     representing = models.BooleanField(default=False)
     emergency_contact_first_name = models.BooleanField(default=False)
     emergency_contact_last_name = models.BooleanField(default=False)
@@ -901,6 +908,7 @@ class EventApplicationsCSV(models.Model):
     billing_physical_address = models.BooleanField(default=False)
     billing_email_address = models.BooleanField(default=False)
     admin_billing_comments = models.BooleanField(default=False)
+
 
     def clean(self):
         """Validate EventApplicationsCSV model attributes.

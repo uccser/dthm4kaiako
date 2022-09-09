@@ -985,6 +985,18 @@ def generate_event_applications_csv(request, pk):
                 first_wrote_titles.append('participant_first_name')
             if builderFormForEventApplicationsCSV.cleaned_data['participant_last_name']:
                 first_wrote_titles.append('participant_last_name')
+            if builderFormForEventApplicationsCSV.cleaned_data['dietary_requirements']:
+                first_wrote_titles.append('dietary_requirements')
+            if builderFormForEventApplicationsCSV.cleaned_data['educational_entities']:
+                first_wrote_titles.append('educational_entities')
+            if builderFormForEventApplicationsCSV.cleaned_data['region']:
+                first_wrote_titles.append('region')
+            if builderFormForEventApplicationsCSV.cleaned_data['mobile_phone_number']:
+                first_wrote_titles.append('mobile_phone_number')
+            if builderFormForEventApplicationsCSV.cleaned_data['email_address']:
+                first_wrote_titles.append('email_address')
+            if builderFormForEventApplicationsCSV.cleaned_data['how_we_can_best_accommodate_them']:
+                first_wrote_titles.append('how_we_can_best_accommodate_them')
             if builderFormForEventApplicationsCSV.cleaned_data['representing']:
                 first_wrote_titles.append('representing')
             if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_first_name']:
@@ -1038,6 +1050,18 @@ def generate_event_applications_csv(request, pk):
                     row.append(user.first_name)
                 if builderFormForEventApplicationsCSV.cleaned_data['participant_last_name']:
                     row.append(user.last_name)
+                if builderFormForEventApplicationsCSV.cleaned_data['dietary_requirements']:
+                    row.append(convertStringListToOneString([dR.name for dR in user.dietary_requirements.all()]))
+                if builderFormForEventApplicationsCSV.cleaned_data['educational_entities']:
+                    row.append(convertStringListToOneString([entity.name for entity in user.educational_entities.all()]))
+                if builderFormForEventApplicationsCSV.cleaned_data['region']:
+                    row.append(user.get_user_region_display())
+                if builderFormForEventApplicationsCSV.cleaned_data['mobile_phone_number']:
+                    row.append(user.mobile_phone_number)
+                if builderFormForEventApplicationsCSV.cleaned_data['email_address']:
+                    row.append(user.email_address)
+                if builderFormForEventApplicationsCSV.cleaned_data['how_we_can_best_accommodate_them']:
+                    row.append(user.medical_notes)
                 if builderFormForEventApplicationsCSV.cleaned_data['representing']:
                     row.append(event_application.representing)
                 if builderFormForEventApplicationsCSV.cleaned_data['emergency_contact_first_name']:
