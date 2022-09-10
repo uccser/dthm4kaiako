@@ -28,7 +28,7 @@ from users.models import (
 from events.models import (
     Location,
     Series,
-    ParticipantType,
+    Ticket,
     Event,
 )
 from tests.events.factories import (
@@ -200,14 +200,6 @@ class Command(management.base.BaseCommand):
 
 
         # --------------------------------------------------------------------------------------------------
-
-
-        # Create common participant types
-        ParticipantType.objects.create(name="Event staff")
-        ParticipantType.objects.create(name="Teacher")
-        ParticipantType.objects.create(name="Student")
-        ParticipantType.objects.create(name="Facilitator")
-
 
         User = get_user_model()
 
@@ -387,3 +379,18 @@ class Command(management.base.BaseCommand):
             event.save()
         admin.save()
         print('Admin account set as event staff for all events')
+
+        # Create common participant types
+        staff_ticket = Ticket.objects.create(name="Event Staff", price=0.0)
+        staff_ticket.save()
+        teacher_ticket = Ticket.objects.create(name="Teacher", price=0.0)
+        teacher_ticket.save()
+        student_ticket = Ticket.objects.create(name="Student", price=0.0)
+        student_ticket.save()
+        facilitator_ticket = Ticket.objects.create(name="Facilitator", price=0.0)
+        facilitator_ticket.save()
+
+        # Tickets
+        for event in events:
+            event.ticket_types.add(staff_ticket)
+            event.save()

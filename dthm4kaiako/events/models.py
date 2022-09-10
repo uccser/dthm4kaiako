@@ -455,6 +455,15 @@ class Event(models.Model):
                     _('End datetime is required when the event is published.')
                 }
             )
+        
+        # TODO: check this with Jack and Tracy
+        # if self.published == True and self.ticket_types == None:
+        #     raise ValidationError(
+        #         {
+        #             'end':
+        #             _('At least one ticket/participant type is required to publish an event.')
+        #         }
+        #     )
 
     class Meta:
         """Meta options for class."""
@@ -706,6 +715,7 @@ class EventApplication(models.Model):
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
 
 
+    # TODO: figure out why not working
     # def clean(self):
     #     """Validate event application model attributes.
 
