@@ -28,15 +28,20 @@ class ParticipantTypeForm(ModelForm):
     class Meta:
         """Metadata for ParticipantTypeForm class."""
 
-        model = Event
-        fields = ['ticket_types',]
+        model = EventApplication
+        fields = ['participant_type',]
 
     def __init__(self, *args, **kwargs):
         super(ParticipantTypeForm, self).__init__(*args, **kwargs) 
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-        self.fields['ticket_types'].queryset = Ticket.objects.filter(events=self.instance)
+
+        if 'initial_for_participant_type' in kwargs:
+            initial_data_dict = kwargs.get('initial_for_participant_type')
+            if 'event' in initial_data_dict:
+                self.event = initial_data_dict.get('event')
+                self.fields['participant_type'].queryset = Ticket.objects.filter(events=self.event)
 
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
