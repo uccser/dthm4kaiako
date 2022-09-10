@@ -15,7 +15,8 @@ from events.models import (
     EventApplication,
     Address,
     RegistrationForm,
-    Series
+    Series,
+    Ticket
 )
 from users.models import ( DietaryRequirement, Entity, User )
 from events.filters import UpcomingEventFilter, PastEventFilter
@@ -573,6 +574,7 @@ def manage_event(request, pk):
         context['event_applications'] = event_applications
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
+        context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
 
         return render(request, 'events/event_management.html', context)
 

@@ -73,6 +73,21 @@
                         <b>Withdrawn:</b> {{event.application_status_counts.withdrawn}}
                     </div>
                 </div>
+
+                <br>
+
+                <!-- Event Application Status Counts -->
+                <div id="event-applications-status-counts">
+                    <h4>
+                        Participant Types           
+                    </h4>
+                    {% for participant_type in participant_types %}
+                        <div>
+                            {{participant_type}}
+                        </div>
+                    {% endfor %}
+                </div>
+
             </div>
 
             <div class="column">
