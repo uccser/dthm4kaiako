@@ -34,12 +34,15 @@
         </div>
 
         <div class="tabs">
-            <button class="tablink events-time-period-blue" onclick="openEvents(event, 'Past')">Past</button>
-            <button class="tablink" onclick="openEvents(event, 'Future')">Future</button>
+            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
+                <b>Past</b>
+            </button>
+            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
+                <b>Future</b>
+            </button>
         </div>
         
         <div id="Past" class="time">
-            <h2>Past</h2>
             {% for event in events_user_is_staff_for_past %}
                 <div class="card-header title-header align-middle">
                     <div class="row">
@@ -98,7 +101,6 @@
         </div>
         
         <div id="Future" class="time" style="display:none">
-            <h2>Future</h2>
             {% for event in events_user_is_staff_for_future %}
                 <div class="card-header title-header align-middle">
                     <div class="row">
