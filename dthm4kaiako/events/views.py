@@ -350,7 +350,7 @@ def apply_for_event(request, pk):
 
         if application_exists:
             current_application = user.event_applications.get(event=event)
-            # TODO: figure out how to pass current application's participant type to ParticipantTypeForm - using Event model to show relevant subset of ticket/participant types
+            participant_type_form =  ParticipantTypeForm(instance=current_application, initial=initial_for_participant_type)
             event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
@@ -361,6 +361,7 @@ def apply_for_event(request, pk):
                             'email_address': user.email_address}
         else:
             event_application_form = EventApplicationForm(initial=initial_event_application_data)
+            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
         
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
         if billing_required:
@@ -370,7 +371,6 @@ def apply_for_event(request, pk):
                 initial={'I_agree_to_the_terms_and_conditions': False,
                 } # User must re-agree each time they update the form
             )
-        participant_type_form =  ParticipantTypeForm(instance=event)
 
         
         if event.is_less_than_one_week_prior_event and event.is_catered:
@@ -382,13 +382,14 @@ def apply_for_event(request, pk):
         
         user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, initial=initial_user_data)
 
-
         if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
             event_application_form = EventApplicationForm(request.POST, instance=current_application)
-            participant_type_form = ParticipantTypeForm(request.POST, instance=event)
+            participant_type_form =  ParticipantTypeForm(instance=current_application, initial=initial_for_participant_type)
+
         else:
             event_application_form = EventApplicationForm(request.POST)
+            participant_type_form = ParticipantTypeForm(request.POST, initial=initial_for_participant_type)
 
         if billing_required:
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
@@ -419,7 +420,7 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            # new_participant_type = participant_type_form.cleaned_data['ticket_types']
+            new_participant_type = participant_type_form.cleaned_data['participant_type']
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
@@ -455,11 +456,11 @@ def apply_for_event(request, pk):
                         'representing': new_representing,
                         'billing_physical_address': new_billing_address,
                         'billing_email_address': new_billing_email,
+                        'bill_to': new_bill_to,
                         'emergency_contact_first_name': new_emergency_contact_first_name,
                         'emergency_contact_last_name': new_emergency_contact_last_name,
                         'emergency_contact_relationship': new_emergency_contact_relationship,
                         'emergency_contact_phone_number': new_emergency_contact_phone_number,
-                        'bill_to': new_bill_to,
                     }
                 )
                 event_application.save()
@@ -474,7 +475,6 @@ def apply_for_event(request, pk):
                     'emergency_contact_last_name': new_emergency_contact_last_name,
                     'emergency_contact_relationship': new_emergency_contact_relationship,
                     'emergency_contact_phone_number': new_emergency_contact_phone_number,
-                    'bill_to': new_bill_to,
                 }
             )
             event_application.save()            
