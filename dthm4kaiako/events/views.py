@@ -41,6 +41,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 import csv
 from django.utils.html import format_html_join
+from datetime import datetime
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -512,7 +513,9 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         if user.is_authenticated:
             if Event.objects.filter(event_staff__pk=user.pk).exists():
                 # TODO: order these 
-                context['events_user_is_staff_for'] = Event.objects.filter(event_staff__pk=user.pk)
+                today = datetime.today()
+                context['events_user_is_staff_for_future'] = Event.objects.filter(event_staff__pk=user.pk, start__gte=today).order_by('name')
+                context['events_user_is_staff_for_past'] = Event.objects.filter(event_staff__pk=user.pk, start__lte=today).order_by('name')
                 event_csv_builder_form = BuilderFormForEventsCSV()
                 context['event_csv_builder_form'] = event_csv_builder_form
 
@@ -524,7 +527,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         Returns:
             Events.
         """
-        return Event.objects.all().order_by("name")
+        return Event.objects.all().order_by('name')
 
 
 @login_required

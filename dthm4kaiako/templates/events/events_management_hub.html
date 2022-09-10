@@ -9,7 +9,7 @@
 {% endblock page_heading %}
 
 {% block content %}
-    {% if events_user_is_staff_for %}
+    {% if events_user_is_staff_for_future and events_user_is_staff_for_past %}
 
         <!-- Generate Event CSVs -->        
         <details>
@@ -29,68 +29,157 @@
             {% endif %}        
         </details>
 
-        <h4>
-            Events you are staff for
-        </h4>
+        <div class="events-container">
+            <h4>Events you are staff for</h4>
+        </div>
 
-        {% for event in events_user_is_staff_for %}
-            <div class="card-header title-header align-middle">
-                <div class="row">
-                    <div class="col-12 col-lg-9">
-                        {% if event.organisers.all or event.series %}
-                            <div class="mb-2">
-                                {% if event.series.logo %}
-                                    <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
-                                {% elif event.series.abbreviation %}
-                                    <small class="text-muted">
-                                        Part of {{ event.series.abbreviation }} series
-                                    </small>
-                                {% endif %}
-                                {% for organiser in event.organisers.all %}
-                                    <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
-                                        {% if organiser.logo %}
-                                            <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
-                                        {% else %}
-                                            <small class="mr-4">
-                                                {{ organiser.name }}
-                                            </small>
-                                        {% endif %}
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        <h4 class="mb-0">
-                            <div>
-                                <a href="{{ event.get_absolute_url }}">
-                                    {{ event.name }}
-                                </a>
-                            </div>
-                            <br>
-                            <div>
-                                <a href="{% url 'events:event_management' event.pk %}" class="btn btn-sm btn-secondary float-left">
-                                    Manage 
-                                </a>
-                            </div>
-                        </h4>
-                    </div>
-                    <div class="col text-left text-lg-right align-self-center">
-                        {% if event.start|date:"j" != event.end|date:"j" %}
-                            {% if event.start|date:"F" == event.end|date:"F" %}
-                                {{ event.start|date:"j" }}
-                            {% else %}
-                                {{ event.start|date:"j F" }}
+        <div class="tabs">
+            <button class="tablink" onclick="openEvents(event, 'Past')">Past</button>
+            <button class="tablink events-time-period-blue" onclick="openEvents(event, 'Future')">Future</button>
+        </div>
+        
+        <div id="Past" class="time">
+            <h2>Past</h2>
+            {% for event in events_user_is_staff_for_past %}
+                <div class="card-header title-header align-middle">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            {% if event.organisers.all or event.series %}
+                                <div class="mb-2">
+                                    {% if event.series.logo %}
+                                        <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                                    {% elif event.series.abbreviation %}
+                                        <small class="text-muted">
+                                            Part of {{ event.series.abbreviation }} series
+                                        </small>
+                                    {% endif %}
+                                    {% for organiser in event.organisers.all %}
+                                        <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
+                                            {% if organiser.logo %}
+                                                <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
+                                            {% else %}
+                                                <small class="mr-4">
+                                                    {{ organiser.name }}
+                                                </small>
+                                            {% endif %}
+                                        </a>
+                                    {% endfor %}
+                                </div>
                             {% endif %}
-                            to
-                        {% endif %}
-                        {{ event.end|date:" j F Y" }}<br>
-                        <small class="text-muted">{{ event.start|naturaltime }}</small>
+                            <h4 class="mb-0">
+                                <div>
+                                    <a href="{{ event.get_absolute_url }}">
+                                        {{ event.name }}
+                                    </a>
+                                </div>
+                                <br>
+                                <div>
+                                    <a href="{% url 'events:event_management' event.pk %}" class="btn btn-sm btn-secondary float-left">
+                                        Manage 
+                                    </a>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="col text-left text-lg-right align-self-center">
+                            {% if event.start|date:"j" != event.end|date:"j" %}
+                                {% if event.start|date:"F" == event.end|date:"F" %}
+                                    {{ event.start|date:"j" }}
+                                {% else %}
+                                    {{ event.start|date:"j F" }}
+                                {% endif %}
+                                to
+                            {% endif %}
+                            {{ event.end|date:" j F Y" }}<br>
+                            <small class="text-muted">{{ event.start|naturaltime }}</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+        
+        <div id="Future" class="city" style="display:none">
+            <h2>Future</h2>
+            {% for event in events_user_is_staff_for_future %}
+                <div class="card-header title-header align-middle">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            {% if event.organisers.all or event.series %}
+                                <div class="mb-2">
+                                    {% if event.series.logo %}
+                                        <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                                    {% elif event.series.abbreviation %}
+                                        <small class="text-muted">
+                                            Part of {{ event.series.abbreviation }} series
+                                        </small>
+                                    {% endif %}
+                                    {% for organiser in event.organisers.all %}
+                                        <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
+                                            {% if organiser.logo %}
+                                                <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
+                                            {% else %}
+                                                <small class="mr-4">
+                                                    {{ organiser.name }}
+                                                </small>
+                                            {% endif %}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <h4 class="mb-0">
+                                <div>
+                                    <a href="{{ event.get_absolute_url }}">
+                                        {{ event.name }}
+                                    </a>
+                                </div>
+                                <br>
+                                <div>
+                                    <a href="{% url 'events:event_management' event.pk %}" class="btn btn-sm btn-secondary float-left">
+                                        Manage 
+                                    </a>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="col text-left text-lg-right align-self-center">
+                            {% if event.start|date:"j" != event.end|date:"j" %}
+                                {% if event.start|date:"F" == event.end|date:"F" %}
+                                    {{ event.start|date:"j" }}
+                                {% else %}
+                                    {{ event.start|date:"j F" }}
+                                {% endif %}
+                                to
+                            {% endif %}
+                            {{ event.end|date:" j F Y" }}<br>
+                            <small class="text-muted">{{ event.start|naturaltime }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
     {% else %}
         <p class="text-center">
             You are not staffing any events.
         </p>
     {% endif %}
 {% endblock content %}
+
+
+{% block scripts %}
+<script>
+    function openEvents(evt, time) {
+      var i, x, tablinks;
+      x = document.getElementsByClassName("time");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < x.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace("events-time-period-blue", "");
+      }
+      document.getElementById(time).style.display = "block";
+      evt.currentTarget.className += "events-time-period-blue";
+    }
+    </script>
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}
+
