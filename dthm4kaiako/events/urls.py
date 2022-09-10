@@ -30,6 +30,8 @@ urlpatterns = [
     path('manage/generate_event_applications_csv/<int:pk>/', views.generate_event_applications_csv, name='generate_event_applications_csv'), 
     path('manage/generate_event_dietary_requirement_counts_csv/<int:pk>/', views.generate_event_dietary_requirement_counts_csv, name='generate_event_dietary_requirement_counts_csv'), 
     path('manage/create_new_ticket/<int:pk>/', views.create_new_ticket, name='create_new_ticket'), 
+    path('manage/<int:event_pk>/update_ticket/<int:ticket_pk>/', views.update_ticket, name='update_ticket'), 
+    path('manage/<int:event_pk>/delete_ticket/<int:ticket_pk>/', views.delete_ticket, name='delete_ticket'), 
 
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),

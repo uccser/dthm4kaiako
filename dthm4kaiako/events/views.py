@@ -32,7 +32,7 @@ from .forms import (EventApplicationForm,
                     BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
                     ParticipantTypeForm,
-                    NewTicketTypeForm
+                    TicketTypeForm
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -571,7 +571,8 @@ def manage_event(request, pk):
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
-        context['new_ticket_form'] = NewTicketTypeForm()
+        context['new_ticket_form'] = TicketTypeForm()
+        context['update_ticket_form'] = TicketTypeForm()
 
         return render(request, 'events/event_management.html', context)
 
@@ -1236,3 +1237,20 @@ def create_new_ticket(request, pk):
         messages.success(request, f"Ticket with the name of {name}, with a price of ${price} has been successfully created.")
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
+
+# TODO: add staff permission for this
+@login_required
+def update_ticket(request, event_pk, ticket_pk):
+    """Cancel event as event staff"""
+    ticket = Ticket.objects.get(pk=ticket_pk)
+
+    #TODO: finish off!!!!
+
+
+# TODO: add staff permission for this
+@login_required
+def delete_ticket(request, event_pk, ticket_pk):
+    """Cancel event as event staff"""
+    ticket = Ticket.objects.get(pk=ticket_pk)
+
+    #TODO: finish off!!!!

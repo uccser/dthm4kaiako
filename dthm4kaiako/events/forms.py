@@ -231,7 +231,7 @@ class BuilderFormForEventApplicationsCSV(ModelForm):
         self.helper.disable_csrf = True
 
 
-class NewTicketTypeForm(ModelForm):
+class TicketTypeForm(ModelForm):
     """ Simple form for creating new ticket/participant type for an event."""
 
     class Meta:
@@ -241,7 +241,7 @@ class NewTicketTypeForm(ModelForm):
         fields = '__all__'
         
     def __init__(self, *args, **kwargs):
-        super(NewTicketTypeForm, self).__init__(*args, **kwargs)
+        super(TicketTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
