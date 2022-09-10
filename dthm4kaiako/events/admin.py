@@ -12,7 +12,7 @@ from events.models import (
     Series,
     EventApplication,
     RegistrationForm,
-    ParticipantType,
+    Ticket,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
@@ -136,7 +136,7 @@ class EventAdmin(ClonableModelAdmin):
                     'series',
                     'organisers',
                     'sponsors',
-                    'is_free',
+                    'ticket_types',
                     'is_catered',
                     'contact_email_address',
                 )
@@ -167,6 +167,7 @@ class EventAdmin(ClonableModelAdmin):
     filter_horizontal = (
         'organisers',
         'sponsors',
+        'ticket_types'
     )
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'published', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
@@ -289,6 +290,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
             application.user.dietary_requirements.values_list('name'),
         )
 
+    # TODO: fix display!
     @admin.display
     def event_start_end(self, application):
         # formatted_start = datetime.datetime.strptime(str(application.event.start), old_format).strftime(new_format)
@@ -300,11 +302,6 @@ class EventApplicationAdmin(admin.ModelAdmin):
     @admin.display
     def event_location(self, application):
         return application.event.location_summary()
-
-    # TODO: remove this and replace with participant type attendance fee
-    # @admin.display
-    # def event_price(self, application):
-    #     return f'${application.event.price:.2f}'
 
     @admin.display
     def mobile_phone_number(self, application):
@@ -349,5 +346,5 @@ admin.site.register(Series),
 admin.site.register(Session),
 admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(RegistrationForm),
-admin.site.register(ParticipantType),
 admin.site.register(DeletedEventApplication)
+admin.site.register(Ticket)

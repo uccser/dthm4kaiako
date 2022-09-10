@@ -123,6 +123,29 @@ class Series(models.Model):
         verbose_name_plural = "series"
 
 
+class Ticket(models.Model):
+    """Model for event tickets e.g. event staff, facilitator, teacher, student, with costs e.g. $0 for free or say $40 to attend. 
+    This is usually for events that require event applications to be approved i.e. paid"""
+    name = models.CharField(max_length=200, help_text="Participant type e.g. teacher, event staff")
+    price = models.FloatField(help_text="Cost for participant to attend in NZD")
+
+    class Meta:
+        """Meta options for class."""
+        unique_together = ('name', 'price',)
+        ordering = ['name', ]
+        verbose_name_plural = 'ticket type'
+
+    def __str__(self):
+        """Text representation of a participant type with their ticket price."""
+        if self.isFree():
+            return f"{self.name} (free)"
+        else:
+            return f"{self.name} (${self.price})"
+
+    def isFree(self):
+        return self.price == 0.0
+
+
 class Event(models.Model):
     """Model for an event."""
 
@@ -153,10 +176,6 @@ class Event(models.Model):
     accessible_online = models.BooleanField( 
         default=False,
         help_text='Select if this event will be attended online'
-    )
-    is_free = models.BooleanField(
-        default=False,
-        help_text='Select if this event is free for all types of participants'
     )
     locations = models.ManyToManyField(
         Location,
@@ -202,7 +221,18 @@ class Event(models.Model):
         null=False,    
         help_text='This event has been cancelled'    
     )
+    ticket_types = models.ManyToManyField(
+        Ticket,
+        related_name='events',
+        blank=False,
+    )
 
+    def is_free(self):
+        free = True
+        for ticket_type in self.ticket_types:
+            if ticket_type.cost != 0.0:
+                free = False
+        return free
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -462,28 +492,32 @@ class Session(models.Model):
         ordering = ['start', 'end', 'name']
 
 
-class ParticipantType(models.Model):
-    """Model for a participant type.
-       Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
-    name = models.CharField(max_length=100)
-    cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
-    event = models.ForeignKey(
-        Event,
-        related_name="participant_types",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
+# class ParticipantType(models.Model):
+#     """Model for a participant type.
+#        Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
+#     name = models.CharField(max_length=100)
+#     cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
+#     event = models.ForeignKey(
+#         Event,
+#         related_name="participant_types",
+#         on_delete=models.CASCADE,
+#         null=True,
+#         blank=True,
+#     )
 
-    def __str__(self):
-        """Text representation of an participant type."""
-        return self.name
+    # def __str__(self):
+    #     """Text representation of a participant type."""
+    #     return self.name
 
-    class Meta:
-        """Meta options for class."""
+    # def name_and_cost(self):
+    #     """Text representation of a participant type with their ticket cost."""
+    #     return f"{self.name} (${self.cost})"
 
-        ordering = ['name', ]
-        verbose_name_plural = 'participant type'
+    # class Meta:
+    #     """Meta options for class."""
+
+    #     ordering = ['name', ]
+    #     verbose_name_plural = 'participant type'
 
 
 class Address(models.Model):
@@ -581,7 +615,7 @@ class EventApplication(models.Model):
         default=PENDING,
     )
     participant_type = models.ForeignKey(
-        ParticipantType,
+        Ticket,
         on_delete=models.CASCADE,
         related_name='event_applications',
         null=True,
@@ -635,10 +669,9 @@ class EventApplication(models.Model):
         )
     paid = models.BooleanField(
         default=False
-    ) #TODO: use a computed function for this, based on participant types which have associated attendance fees
+    )
     bill_to = models.CharField(
         max_length=200, 
-        # blank=False,
         null=False,
         default='',
         help_text="Who will be paying for this participant to attend?"
