@@ -205,6 +205,24 @@
             </div>
         </details>
 
+        <!-- Event Tickets -->         
+        <details>
+            <summary>Event Tickets</summary>
+            {% if new_ticket_form %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <p style="font-style: italic">
+                        Create a new ticket type
+                    </p>
+                    <form method="post" action="{% url 'events:create_new_ticket' event_pk %}">
+                        {% csrf_token %}
+                        {% crispy new_ticket_form %}
+                        <input class="btn btn-primary" type="submit" value="Create">
+                    </form>
+                    <br>
+                </div>
+            {% endif %}        
+        </details>
+
         <!-- Generate Event Applications CSVs -->         
         <details>
             <summary>Create Event Applications CSVs</summary>

@@ -31,7 +31,8 @@ from .forms import (EventApplicationForm,
                     ManageEventLocationForm,
                     BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
-                    ParticipantTypeForm
+                    ParticipantTypeForm,
+                    NewTicketTypeForm
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -563,18 +564,14 @@ def manage_event(request, pk):
     context['event_pk'] = event.pk
 
     if request.method == 'GET':
-        manage_event_details_form = ManageEventDetailsForm(instance=event)
-        manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(instance=registration_form)
-        applications_csv_builder_form = BuilderFormForEventApplicationsCSV()
-
-        context['manage_event_details_form'] = manage_event_details_form
-        context['manage_registration_form_details_form'] = manage_registration_form_details_form
-        context['applications_csv_builder_form'] = applications_csv_builder_form
-
+        context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
+        context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+        context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
         context['event_applications'] = event_applications
         context['registration_form_pk'] = registration_form.pk
         context['is_free'] = event.is_free
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
+        context['new_ticket_form'] = NewTicketTypeForm()
 
         return render(request, 'events/event_management.html', context)
 
@@ -1205,5 +1202,37 @@ def cancel_event(request, pk):
     updated_event = Event.objects.get(id=event_id)
     updated_event.save()
     messages.success(request, 'Event successfully cancelled')
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+
+
+# TODO: add staff permission for this
+@login_required
+def create_new_ticket(request, pk):
+    """Cancel event as event staff"""
+    event_id = pk
+    event = Event.objects.get(pk=pk)
+
+    name = request.POST['name']
+    price = request.POST['price']
+
+    if Ticket.objects.filter(name=name, price=price).exists():
+        # ticket exists in general
+        if Ticket.objects.filter(name=name, price=price, events=event).exists():
+            # ticket already exists for this event
+            messages.warning(request, f"Ticket with the name of {name}, with a price of ${price} already exists for this event.")
+        else:
+            # ticket does exist but is not associated with this event yet
+            existing_ticket = Ticket.objects.get(name=name, price=price)
+            event.ticket_types.add(existing_ticket)
+            event.save()
+            existing_ticket.save()
+            messages.success(request, f"Ticket with the name of {name}, with a price of ${price} has been successfully created.")
+    else:
+        # ticket doesn't exist yet in general
+        new_ticket = Ticket.objects.create(name=name, price=price)
+        event.ticket_types.add(new_ticket)
+        event.save()
+        new_ticket.save()
+        messages.success(request, f"Ticket with the name of {name}, with a price of ${price} has been successfully created.")
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
