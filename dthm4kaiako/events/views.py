@@ -30,6 +30,7 @@ from .forms import (EventApplicationForm,
                     ManageEventLocationForm,
                     BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
+                    ParticipantTypeForm
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -291,13 +292,14 @@ def validate_event_application_form(event_application_form,
                                     terms_and_conditions_form, 
                                     billing_required, 
                                     billing_details_form,
+                                    participant_type_form
                                     ):
     """
     Validates that the event application is valid.
     Also accommodates for the billing section and dietary requirements sections to be only validated if they are needed i.e. are rended.
     """
 
-    if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()):
+    if event_application_form.is_valid() and user_update_details_form.is_valid() and terms_and_conditions_form.is_valid() and (not billing_required or billing_details_form.is_valid()) and participant_type_form.is_valid():
         return True
     else:
         return False
@@ -338,6 +340,7 @@ def apply_for_event(request, pk):
     billing_physical_address = None
     billing_email_address = ""
     bill_to = ""
+    participant_type_form = None
 
     application_exists = does_application_exist(user, event)
 
@@ -346,6 +349,7 @@ def apply_for_event(request, pk):
 
         if application_exists:
             current_application = user.event_applications.get(event=event)
+            # TODO: figure out how to pass current application's participant type to ParticipantTypeForm - using Event model to show relevant subset of ticket/participant types
             event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
@@ -365,6 +369,7 @@ def apply_for_event(request, pk):
                 initial={'I_agree_to_the_terms_and_conditions': False,
                 } # User must re-agree each time they update the form
             )
+        participant_type_form =  ParticipantTypeForm(instance=event)
 
         
         if event.is_less_than_one_week_prior_event and event.is_catered:
@@ -376,9 +381,11 @@ def apply_for_event(request, pk):
         
         user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, initial=initial_user_data)
 
+
         if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
             event_application_form = EventApplicationForm(request.POST, instance=current_application)
+            participant_type_form = ParticipantTypeForm(request.POST, instance=event)
         else:
             event_application_form = EventApplicationForm(request.POST)
 
@@ -393,6 +400,7 @@ def apply_for_event(request, pk):
                                     terms_and_conditions_form, 
                                     billing_required, 
                                     billing_details_form,
+                                    participant_type_form
                                     ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
@@ -410,7 +418,7 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            new_participant_type = event_application_form.cleaned_data['participant_type']
+            # new_participant_type = participant_type_form.cleaned_data['ticket_types']
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
@@ -488,7 +496,8 @@ def apply_for_event(request, pk):
         'billing_details_form': billing_details_form,
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
-        'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST)
+        'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
+        'participant_type_form': participant_type_form
     }
 
     return render(request, 'events/apply.html', context)

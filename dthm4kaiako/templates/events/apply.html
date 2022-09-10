@@ -39,6 +39,8 @@
             {% endfor %}
         {% endfor %}
 
+        {% crispy participant_type_form %}
+
         {% crispy event_application_form %}
 
         {% if billing_required %}

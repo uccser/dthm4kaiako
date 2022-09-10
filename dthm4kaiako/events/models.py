@@ -221,10 +221,12 @@ class Event(models.Model):
         null=False,    
         help_text='This event has been cancelled'    
     )
+    # TODO: add defaults that are free upon creation
     ticket_types = models.ManyToManyField(
         Ticket,
         related_name='events',
-        blank=False,
+        blank=True,
+        null=True
     )
 
     def is_free(self):

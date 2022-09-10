@@ -10,7 +10,7 @@ from events.models import (Address,
                            RegistrationForm,
                            Location,
                            EventCSV,
-                           EventApplicationsCSV,
+                           EventApplicationsCSV, Ticket,
                            )
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
@@ -21,6 +21,22 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
+
+class ParticipantTypeForm(ModelForm):
+    """ Simple form to allow a user to select their ticket/participant type that is specific to the event. """
+
+    class Meta:
+        """Metadata for ParticipantTypeForm class."""
+
+        model = Event
+        fields = ['ticket_types',]
+
+    def __init__(self, *args, **kwargs):
+        super(ParticipantTypeForm, self).__init__(*args, **kwargs) 
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        self.fields['ticket_types'].queryset = Ticket.objects.filter(events=self.instance)
 
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
@@ -47,7 +63,7 @@ class EventApplicationForm(ModelForm):
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['participant_type', 'representing', 'emergency_contact_first_name',
+        fields = ['representing', 'emergency_contact_first_name',
                   'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
                  ]
 
