@@ -81,11 +81,15 @@
                     <h4>
                         Participant Types           
                     </h4>
-                    {% for participant_type in participant_types %}
-                        <div>
-                            {{participant_type}}
-                        </div>
-                    {% endfor %}
+                    {% if participant_types %}
+                        {% for participant_type in participant_types %}
+                            <div>
+                                {{participant_type}}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No participant types yet</p>         
+                    {% endif %}
                 </div>
 
             </div>
