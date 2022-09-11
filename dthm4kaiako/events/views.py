@@ -1293,3 +1293,4 @@ def delete_ticket(request, event_pk, ticket_pk):
 
     messages.success(request, 'Event ticket type successfully deleted')
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
+

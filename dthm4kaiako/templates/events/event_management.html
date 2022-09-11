@@ -233,12 +233,12 @@
                             {{participant_type}}
                         </div>
                         <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
                                 Update Ticket
                             </a>     
                         </div>
                         <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
                                 Delete Ticket
                             </a>     
                         </div>
@@ -374,7 +374,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    <div class="modal-footer" style="justify-content:center">
+                    <div class="modal-body" style="justify-content:center">
+                    </div>
+                    <div class="modal-footer" style="justify-content:center; padding:center">
                         <form id="update_link" method="post">
                             {% csrf_token %}
                             {% crispy update_ticket_form %}
@@ -402,11 +404,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    <div class="modal-body">
-                        <!-- TODO: specify name and price -->
-                        <b>Are you sure you want to delete this ticket?</b>
-                        <br>
-                        This <b>CANNOT</b> be undone.
+                    <div class="modal-body" style="justify-content:center; padding:center">
                     </div>
                     <div class="modal-footer" style="justify-content:center">
                         <form id="update_link" method="post">
@@ -434,16 +432,34 @@
         $("#event-update-ticket-modal").on("show.bs.modal", function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var url = button.data("url"); // Extract info from data-* attributes
+        var ticket = button.data("ticket");
         var modal = $(this);
         modal.find("#update_link").attr("action", url);
+        modal
+            .find(".modal-body")
+            .html(
+            `The ticket being updated is: <b>${ticket}</b>` +
+                "<br>" +
+                "<br>Please specify the new name and price for this ticket type."
+            );
         });
     </script>
     <script>
         $("#event-delete-ticket-modal").on("show.bs.modal", function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var url = button.data("url"); // Extract info from data-* attributes
+        var ticket = button.data("ticket");
         var modal = $(this);
         modal.find("#update_link").attr("action", url);
+        modal
+            .find(".modal-body")
+            .html(
+            `The ticket being deleted is: <b>${ticket}</b>` +
+            "<br>" +
+            "<br><b>Are you sure you want to delete this ticket?</b>" +
+            "<br>" + 
+            "<br>This <b>CANNOT</b> be undone."
+            );
         });
     </script>
     {% include "generic/map-javascript.html" %}
