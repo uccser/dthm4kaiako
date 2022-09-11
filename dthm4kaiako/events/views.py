@@ -1241,16 +1241,37 @@ def create_new_ticket(request, pk):
 # TODO: add staff permission for this
 @login_required
 def update_ticket(request, event_pk, ticket_pk):
-    """Cancel event as event staff"""
-    ticket = Ticket.objects.filter(pk=ticket_pk)
+    """Update event ticket type.
+    
+    We cannot immediately update this specific ticket as it may be being used for other events as well. 
+    So, we check if this ticket is being used by other events. If it is, we create a new ticket. Otherwise we update this specific ticket."""
 
-    ticket.update(name=request.POST['name'], price=request.POST['price'])
-    updated_ticket = Event.objects.get(id=ticket_pk)
-    updated_ticket.save()
+    event = Event.objects.get(pk=event_pk)
+    old_ticket = Ticket.objects.get(pk=ticket_pk)
+
+    # check if ticket used by other events
+    if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
+        # ticket used by other events so just remove this event from the list 
+        old_ticket.events.remove(event)
+        old_ticket.save()
+    else:
+        old_ticket.delete()
+    
+    # check if new ticket already exists
+    if Ticket.objects.filter(name=request.POST['name'], price=request.POST['price']).exists():
+        # add the event to the list of events that use the existing "new" ticket
+        new_ticket = Ticket.objects.get(name=request.POST['name'], price=request.POST['price'])
+        new_ticket_pk = new_ticket.pk
+        new_ticket.events.add(event)
+        new_ticket.save()
+    else:
+        # "update" ticket by creating new ticket
+        new_ticket = Ticket.objects.create(name=request.POST['name'], price=request.POST['price'])
+        new_ticket.events.add(event)
+        new_ticket.save()
+
     messages.success(request, 'Event ticket type updated')
-
     return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
-
 
 
 # TODO: add staff permission for this
