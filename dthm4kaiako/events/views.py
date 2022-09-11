@@ -1269,8 +1269,6 @@ def update_ticket(request, event_pk, ticket_pk):
         new_ticket.save()
 
     messages.success(request, 'Event ticket type updated')
-    # return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
-    # return render(request, 'events/event_management.html')
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
@@ -1287,23 +1285,11 @@ def delete_ticket(request, event_pk, ticket_pk):
     if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
         ticket.delete()
         event.save()
-        messages.success(request, 'Event ticket type deleted - 2')
     else:
         # ticket used by other events so just remove this event from the list 
         event.ticket_types.remove(ticket)
         event.save()
         ticket.save()
-        messages.success(request, {event.ticket_types.all()})
 
-    # check if ticket used by other events
-    # if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
-    #     # ticket used by other events so just remove this event from the list 
-    #     event.ticket_types.remove(ticket)
-    #     event.save()
-    #     ticket.save()
-    #     messages.success(request, {event.ticket_types.all()})
-    # else:
-
-    # return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
-
+    messages.success(request, 'Event ticket type successfully deleted')
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
