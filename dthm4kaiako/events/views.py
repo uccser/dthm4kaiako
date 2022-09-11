@@ -1242,9 +1242,12 @@ def create_new_ticket(request, pk):
 @login_required
 def update_ticket(request, event_pk, ticket_pk):
     """Cancel event as event staff"""
-    ticket = Ticket.objects.get(pk=ticket_pk)
+    ticket = Ticket.objects.filter(pk=ticket_pk)
 
-    #TODO: finish off!!!!
+    ticket.update(name=request.POST['name'], price=request.POST['price'])
+    updated_ticket = Event.objects.get(id=ticket_pk)
+    updated_ticket.save()
+    messages.success(request, 'Event ticket type updated')
 
     return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
 
