@@ -167,20 +167,20 @@
 
 
 {% block scripts %}
-<script>
-    function openEvents(evt, time) {
-      var i, x, tablinks;
-      x = document.getElementsByClassName("time");
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < x.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" events-time-period-blue", "");
-      }
-      document.getElementById(time).style.display = "block";
-      evt.currentTarget.className += " events-time-period-blue";
-    }
+    <script>
+        function openEvents(evt, time) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("time");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" events-time-period-blue", "");
+        }
+        document.getElementById(time).style.display = "block";
+        evt.currentTarget.className += " events-time-period-blue";
+        }
     </script>
     {% include "generic/map-javascript.html" %}
 {% endblock scripts %}

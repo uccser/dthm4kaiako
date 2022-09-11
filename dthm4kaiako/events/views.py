@@ -1246,6 +1246,9 @@ def update_ticket(request, event_pk, ticket_pk):
 
     #TODO: finish off!!!!
 
+    return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
+
+
 
 # TODO: add staff permission for this
 @login_required
@@ -1254,3 +1257,6 @@ def delete_ticket(request, event_pk, ticket_pk):
     ticket = Ticket.objects.get(pk=ticket_pk)
 
     #TODO: finish off!!!!
+
+    return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
+

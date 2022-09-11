@@ -233,12 +233,12 @@
                             {{participant_type}}
                         </div>
                         <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}">
                                 Update Ticket
                             </a>     
                         </div>
                         <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}">
                                 Delete Ticket
                             </a>     
                         </div>
@@ -330,7 +330,7 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="event-cancel-modal" tabindex="-1" role="dialog" aria-labelledby="event-publish-modal" aria-hidden="true">
+        <div class="modal fade" id="event-cancel-modal" tabindex="-1" role="dialog" aria-labelledby="event-cancel-modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -375,17 +375,18 @@
                     </button>
                     </div>
                     <div class="modal-footer" style="justify-content:center">
-                            <form action="{% url 'events:update_ticket' event.id 1 %}" method="post">
-                                {% csrf_token %}
-                                <div class="row" style="display: flex; justify-content: space-between">
-                                    <div class="column" style="padding-left: 50px; padding-right: 50px;">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                    <div class="column" style="padding-left: 50px; padding-right: 50px;">
-                                        <input class="btn btn-warning" type="submit" value="Update">
-                                    </div>
+                        <form id="update_link" method="post">
+                            {% csrf_token %}
+                            {% crispy update_ticket_form %}
+                            <div class="row" style="display: flex; justify-content: space-between">
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
-                            </form>
+                                <div class="column" style="padding-left: 50px; padding-right: 50px;">
+                                    <input class="btn btn-warning" type="submit" value="Update">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -428,3 +429,14 @@
 
 {% endblock modal %}
 
+{% block scripts %}
+    <script>
+        $("#event-update-ticket-modal").on("show.bs.modal", function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var url = button.data("url"); // Extract info from data-* attributes
+        var modal = $(this);
+        modal.find("#update_link").attr("action", url);
+        });
+    </script>
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}
