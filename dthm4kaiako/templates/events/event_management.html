@@ -84,7 +84,7 @@
                     {% if participant_types %}
                         {% for name, count in event.ticket_type_counts.items %}
                             <div>
-                                {{name}}: {{count}}
+                                <b>{{name}}:</b> {{count}}
                             </div>
                         {% endfor %}
                     {% else %}
@@ -229,24 +229,26 @@
             <details>
                 <summary>Manage Ticket Types</summary>
                 {% if participant_types %}
-                    {% for participant_type in participant_types %}
-                        <div class="row">
-                            <div class="column">
-                                {{participant_type}}
+                    <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                        {% for participant_type in participant_types %}
+                            <div class="row">
+                                <div class="column" style="width: 200px;">
+                                    <b>{{participant_type}}</b>
+                                </div>
+                                <div class="column">
+                                    <a class="btn btn-primary" style="margin-left: 10px; margin-right: 30px; margin-bottom: 20px;" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
+                                        Update Ticket
+                                    </a>     
+                                </div>
+                                <div class="column">
+                                    <a class="btn btn-danger" style="margin-left: 30px; margin-right: 30px; margin-bottom: 20px;" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
+                                        Delete Ticket
+                                    </a>     
+                                </div>
                             </div>
-                            <div class="column">
-                                <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                    Update Ticket
-                                </a>     
-                            </div>
-                            <div class="column">
-                                <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                    Delete Ticket
-                                </a>     
-                            </div>
-                        </div>
 
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
             </details>
         {% endif %}
