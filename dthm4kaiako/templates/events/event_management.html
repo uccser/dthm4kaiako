@@ -205,48 +205,51 @@
             </div>
         </details>
 
-        <!-- Event Tickets -->         
-        <details>
-            <summary>Create New Event Ticket</summary>
-            {% if new_ticket_form %}
-                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
-                    <p style="font-style: italic">
-                        Create a new ticket type
-                    </p>
-                    <form method="post" action="{% url 'events:create_new_ticket' event_pk %}">
-                        {% csrf_token %}
-                        {% crispy new_ticket_form %}
-                        <input class="btn btn-primary" type="submit" value="Create">
-                    </form>
-                    <br>
-                </div>
-            {% endif %}        
-        </details>
 
-        <!-- Event Tickets -->         
-        <details>
-            <summary>Manage Ticket Types</summary>
-            {% if participant_types %}
-                {% for participant_type in participant_types %}
-                    <div class="row">
-                        <div class="column">
-                            {{participant_type}}
-                        </div>
-                        <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                Update Ticket
-                            </a>     
-                        </div>
-                        <div class="column">
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                Delete Ticket
-                            </a>     
-                        </div>
+        {% if event.published == False %}
+            <!-- Event Tickets -->         
+            <details>
+                <summary>Create New Event Ticket</summary>
+                {% if new_ticket_form %}
+                    <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                        <p style="font-style: italic">
+                            Create a new ticket type
+                        </p>
+                        <form method="post" action="{% url 'events:create_new_ticket' event_pk %}">
+                            {% csrf_token %}
+                            {% crispy new_ticket_form %}
+                            <input class="btn btn-primary" type="submit" value="Create">
+                        </form>
+                        <br>
                     </div>
+                {% endif %}        
+            </details>
 
-                {% endfor %}
-            {% endif %}
-        </details>
+            <!-- Event Tickets -->         
+            <details>
+                <summary>Manage Ticket Types</summary>
+                {% if participant_types %}
+                    {% for participant_type in participant_types %}
+                        <div class="row">
+                            <div class="column">
+                                {{participant_type}}
+                            </div>
+                            <div class="column">
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
+                                    Update Ticket
+                                </a>     
+                            </div>
+                            <div class="column">
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
+                                    Delete Ticket
+                                </a>     
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+            </details>
+        {% endif %}
 
         <!-- Generate Event Applications CSVs -->         
         <details>

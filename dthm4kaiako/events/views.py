@@ -597,6 +597,8 @@ def manage_event_application(request, pk_event, pk_application):
         'pk_application': pk_application,
         'event_application': event_application
     }
+    context['update_ticket_form'] = TicketTypeForm()
+
     user = User.objects.get(id=event_application.user.pk)
 
 
@@ -643,6 +645,7 @@ def manage_event_details(request, pk):
     context = {
         'event': event,
     }
+    context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'POST':
         manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
@@ -712,7 +715,6 @@ def manage_event_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
-
 # TODO: add event staff access only
 @login_required
 def manage_event_registration_form_details(request, pk):
@@ -728,6 +730,7 @@ def manage_event_registration_form_details(request, pk):
     context = {
         'registration_form': registration_form,
     }
+    context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(request.POST, instance=registration_form)
@@ -767,6 +770,7 @@ def manage_event_location_details(request, pk):
     context = {
         'location': location,
     }
+    context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'POST':
         manage_location_form = ManageEventLocationForm(request.POST, instance=location)

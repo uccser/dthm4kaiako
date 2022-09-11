@@ -456,14 +456,6 @@ class Event(models.Model):
                 }
             )
         
-        # TODO: check this with Jack and Tracy
-        # if self.published == True and self.ticket_types == None:
-        #     raise ValidationError(
-        #         {
-        #             'end':
-        #             _('At least one ticket/participant type is required to publish an event.')
-        #         }
-        #     )
 
     class Meta:
         """Meta options for class."""
@@ -807,8 +799,8 @@ class DeletedEventApplication(models.Model):
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    open_datetime = models.DateTimeField(null=True,blank=True) # TODO: sanity test these
-    close_datetime = models.DateTimeField(null=True,blank=True) # TODO: sanity test these
+    open_datetime = models.DateTimeField(null=True,blank=True) 
+    close_datetime = models.DateTimeField(null=True,blank=True)
     terms_and_conditions = models.TextField(blank=True)
     event = models.OneToOneField(
         Event,
@@ -832,6 +824,7 @@ class RegistrationForm(models.Model):
         """Text representation of an event registration form."""
         return f'{self.event.name}'
     
+    # TODO: test these
     def clean(self):
         """Validate event registration form model attributes.
 
@@ -851,6 +844,14 @@ class RegistrationForm(models.Model):
                 {
                     'close_datetime':
                     _('Close datetime must be after the open datatime')
+                }
+            )
+
+        if self.open_datetime != None and self.event.ticket_types.count() == 0:
+            raise ValidationError(
+                {
+                    'open_datetime':
+                    _('At least one ticket/participant type is required for registrations to open.')
                 }
             )
         
