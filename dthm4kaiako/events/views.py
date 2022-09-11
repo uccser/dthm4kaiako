@@ -562,6 +562,7 @@ def manage_event(request, pk):
         'event': event,
     }
     context['event_pk'] = event.pk
+    context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'GET':
         context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
@@ -572,9 +573,11 @@ def manage_event(request, pk):
         context['is_free'] = event.is_free
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
         context['new_ticket_form'] = TicketTypeForm()
-        context['update_ticket_form'] = TicketTypeForm()
 
         return render(request, 'events/event_management.html', context)
+    
+    # return render(request, 'events/event_management.html', context)
+
 
 
 def user_dietary_requirements(application):
@@ -1243,8 +1246,7 @@ def create_new_ticket(request, pk):
 def update_ticket(request, event_pk, ticket_pk):
     """Update event ticket type.
     
-    We cannot immediately update this specific ticket as it may be being used for other events as well. 
-    So, we check if this ticket is being used by other events. If it is, we create a new ticket. Otherwise we update this specific ticket."""
+    Note that we cannot immediately update this specific ticket as it may be being used for other events as well."""
 
     event = Event.objects.get(pk=event_pk)
     old_ticket = Ticket.objects.get(pk=ticket_pk)
@@ -1277,10 +1279,37 @@ def update_ticket(request, event_pk, ticket_pk):
 # TODO: add staff permission for this
 @login_required
 def delete_ticket(request, event_pk, ticket_pk):
-    """Cancel event as event staff"""
-    ticket = Ticket.objects.get(pk=ticket_pk)
+    """Delete event ticket type.
+    
+    We cannot immediately delete this specific ticket as it may be being used for other events as well."""
+    event = Event.objects.get(pk=event_pk)
+    ticket= get_object_or_404(Ticket, id=ticket_pk)
 
-    #TODO: finish off!!!!
+    messages.success(request, {ticket})
+    messages.success(request, {ticket.pk})
+    messages.success(request, {Event.objects.filter(ticket_types=ticket).count()})
+
+
+    if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
+        ticket.delete()
+        event.save()
+        messages.success(request, 'Event ticket type deleted - 2')
+    else:
+        # ticket used by other events so just remove this event from the list 
+        event.ticket_types.remove(ticket)
+        event.save()
+        ticket.save()
+        messages.success(request, {event.ticket_types.all()})
+
+    # check if ticket used by other events
+    # if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
+    #     # ticket used by other events so just remove this event from the list 
+    #     event.ticket_types.remove(ticket)
+    #     event.save()
+    #     ticket.save()
+    #     messages.success(request, {event.ticket_types.all()})
+    # else:
+
 
     return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
 
