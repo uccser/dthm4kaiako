@@ -266,7 +266,7 @@ def delete_application_via_event_page(request, pk):
 
     return render(request, 'event_details.html')
 
-
+@login_required
 def create_deleted_event_application(event, request):
     """
     Create and save DeletedEventApplication based on the retrieved deletion reason and/or other reason for deletion.
@@ -562,7 +562,6 @@ def manage_event(request, pk):
         'event': event,
     }
     context['event_pk'] = event.pk
-    context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'GET':
         context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
@@ -573,11 +572,8 @@ def manage_event(request, pk):
         context['is_free'] = event.is_free
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
         context['new_ticket_form'] = TicketTypeForm()
-
+        context['update_ticket_form'] = TicketTypeForm()
         return render(request, 'events/event_management.html', context)
-    
-    # return render(request, 'events/event_management.html', context)
-
 
 
 def user_dietary_requirements(application):
@@ -1273,7 +1269,10 @@ def update_ticket(request, event_pk, ticket_pk):
         new_ticket.save()
 
     messages.success(request, 'Event ticket type updated')
-    return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
+    # return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
+    # return render(request, 'events/event_management.html')
+
+    return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
 
 # TODO: add staff permission for this
@@ -1284,11 +1283,6 @@ def delete_ticket(request, event_pk, ticket_pk):
     We cannot immediately delete this specific ticket as it may be being used for other events as well."""
     event = Event.objects.get(pk=event_pk)
     ticket= get_object_or_404(Ticket, id=ticket_pk)
-
-    messages.success(request, {ticket})
-    messages.success(request, {ticket.pk})
-    messages.success(request, {Event.objects.filter(ticket_types=ticket).count()})
-
 
     if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
         ticket.delete()
@@ -1310,6 +1304,6 @@ def delete_ticket(request, event_pk, ticket_pk):
     #     messages.success(request, {event.ticket_types.all()})
     # else:
 
+    # return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
 
-    return redirect(reverse('events:event_management', kwargs={'pk': event_pk}))
-
+    return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
