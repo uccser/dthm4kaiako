@@ -371,6 +371,22 @@ class Event(models.Model):
         status_counts['withdrawn'] = DeletedEventApplication.objects.filter(event=self).count()       
 
         return status_counts
+    
+    @property
+    def ticket_type_counts(self):
+        """
+        Counts the number of event tickets per type.
+        """
+
+        ticket_type_counts = {}
+        
+        for type in self.ticket_types.all():
+            if type.name in ticket_type_counts:
+                ticket_type_counts[type.name] += 1
+            else:
+                ticket_type_counts[type.name] = 1    
+
+        return ticket_type_counts
 
     @property
     def reasons_for_withdrawing_counts(self):
