@@ -34,8 +34,18 @@ class ParticipantTypeForm(forms.Form):
         self.helper.disable_csrf = True
 
         ticket_types = self.initial['ticket_types']
-        choices = [(ticket.pk, ticket.toString()) for ticket in ticket_types]
+        choices = [(0, "Select participant type")]
+        choices += [(ticket.pk, ticket.toString()) for ticket in ticket_types]
         self.fields['participant_type'].choices = choices
+
+    # TODO: test this
+    def clean(self):
+        cleaned_data = super(ParticipantTypeForm, self).clean()
+        participant_type = cleaned_data.get('participant_type')
+
+        if participant_type == 0:
+            self._errors['participant_type'] = self.error_class(['Must select participant type.'])
+
 
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
