@@ -388,12 +388,14 @@ class Event(models.Model):
         ticket_type_counts = {}
         applications = EventApplication.objects.filter(event=self.pk)
 
+        for ticket in self.ticket_types.all():
+            key_string = ticket.toString()
+            ticket_type_counts[key_string] = 0
+
         for application in applications:
             key_string = application.participant_type.toString()
             if key_string in ticket_type_counts:
                 ticket_type_counts[key_string] += 1
-            else:
-                ticket_type_counts[key_string] = 1
 
         return ticket_type_counts
 
