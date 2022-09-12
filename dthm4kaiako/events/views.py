@@ -422,7 +422,9 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            new_participant_type = participant_type_form.cleaned_data['participant_type']
+            new_participant_type_id = participant_type_form.cleaned_data['participant_type']
+            new_participant_type = Ticket.objects.get(pk=int(new_participant_type_id))
+
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
