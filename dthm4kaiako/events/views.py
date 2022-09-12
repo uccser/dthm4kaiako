@@ -343,7 +343,7 @@ def apply_for_event(request, pk):
     billing_email_address = ""
     bill_to = ""
     participant_type_form = None
-    initial_for_participant_type={'event': event}
+    initial_for_participant_type={'ticket_types': event.ticket_types.all()}
 
     application_exists = does_application_exist(user, event)
 

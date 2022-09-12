@@ -33,17 +33,9 @@ class ParticipantTypeForm(forms.Form):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        event = self.initial['event']
-
-        choices = [(ticket.pk, ticket.toString()) for ticket in Ticket.objects.filter(events=event)]
-
+        ticket_types = self.initial['ticket_types']
+        choices = [(ticket.pk, ticket.toString()) for ticket in ticket_types]
         self.fields['participant_type'].choices = choices
-
-        # if 'initial_for_participant_type' in kwargs:
-        #     initial_data_dict = kwargs.get('initial_for_participant_type')
-        #     if 'event' in initial_data_dict:
-        #         self.event = initial_data_dict.get('event')
-        #         self.fields['participant_type'].queryset = Ticket.objects.filter(events=self.event)
 
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
