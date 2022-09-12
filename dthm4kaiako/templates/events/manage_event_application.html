@@ -36,7 +36,7 @@
         </div>
         <div class="column" style="float:left; width: 50%">
             {% if perms.events %}
-            <a href="{% url 'events:event_management' event_application.pk %}" class="btn btn-sm btn-secondary float-right" style="margin-left: 10px">
+            <a href="{% url 'events:event_management' event.pk %}" class="btn btn-sm btn-secondary float-right" style="margin-left: 10px">
                 Manage event 
             </a>
             {% endif %}
