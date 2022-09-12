@@ -352,7 +352,7 @@ def apply_for_event(request, pk):
 
         if application_exists:
             current_application = user.event_applications.get(event=event)
-            participant_type_form =  ParticipantTypeForm(instance=current_application, initial=initial_for_participant_type)
+            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
             event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
@@ -387,7 +387,7 @@ def apply_for_event(request, pk):
         if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
             event_application_form = EventApplicationForm(request.POST, instance=current_application)
-            participant_type_form =  ParticipantTypeForm(instance=current_application, initial=initial_for_participant_type)
+            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
 
         else:
             event_application_form = EventApplicationForm(request.POST)
@@ -505,7 +505,7 @@ def apply_for_event(request, pk):
 
     return render(request, 'events/apply.html', context)
 
-
+#TODO: add filter 
 class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
 

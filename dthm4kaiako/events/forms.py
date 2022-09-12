@@ -22,14 +22,10 @@ from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
-class ParticipantTypeForm(ModelForm):
+class ParticipantTypeForm(forms.Form):
     """ Simple form to allow a user to select their ticket/participant type that is specific to the event. """
 
-    class Meta:
-        """Metadata for ParticipantTypeForm class."""
-
-        model = EventApplication
-        fields = ['participant_type',]
+    participant_type = forms.ChoiceField(choices=[], widget=forms.Select())
 
     def __init__(self, *args, **kwargs):
         super(ParticipantTypeForm, self).__init__(*args, **kwargs) 
@@ -37,11 +33,17 @@ class ParticipantTypeForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        if 'initial_for_participant_type' in kwargs:
-            initial_data_dict = kwargs.get('initial_for_participant_type')
-            if 'event' in initial_data_dict:
-                self.event = initial_data_dict.get('event')
-                self.fields['participant_type'].queryset = Ticket.objects.filter(events=self.event)
+        event = self.initial['event']
+
+        choices = [(ticket.pk, ticket.toString()) for ticket in Ticket.objects.filter(events=event)]
+
+        self.fields['participant_type'].choices = choices
+
+        # if 'initial_for_participant_type' in kwargs:
+        #     initial_data_dict = kwargs.get('initial_for_participant_type')
+        #     if 'event' in initial_data_dict:
+        #         self.event = initial_data_dict.get('event')
+        #         self.fields['participant_type'].queryset = Ticket.objects.filter(events=self.event)
 
 class EventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """

@@ -9,6 +9,9 @@
 {% endblock page_heading %}
 
 {% block content %}
+
+    <!-- TODO: add filter (see past and upcoming eventings pages )-->
+
     {% if events_user_is_staff_for_future and events_user_is_staff_for_past %}
 
         <!-- Generate Event CSVs -->        
@@ -38,7 +41,7 @@
                 <b>Past</b>
             </button>
             <button class="events-time-period-button tablink" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
-                <b>Future</b>
+                <b>Upcoming</b>
             </button>
         </div>
         
