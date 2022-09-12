@@ -1322,26 +1322,42 @@ def email_participants(request, event_pk):
             message = MESSAGE_TEMPLATE.format(message=contact_participants_form.cleaned_data['message'], user=name, email=from_email)
 
             event = Event.objects.get(pk=event_pk)
-            # TODO: filter by approved
-            applications = event.event_applications.all()
-            participants = [application.user for application in applications]
-            participant_emails = [participant.email for participant in participants]
 
-            total_participants = len(participant_emails)
+            send_to_emails = []
+
+            approved_status = 2
+            pending_status = 1
+
+            custom_message = "event applicant"
+
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True):
+                applications = EventApplication.objects.filter(event=event, status=approved_status)
+                participants = [application.user for application in applications]
+                send_to_emails += [participant.email for participant in participants]
+                custom_message = "approved event participant"
+            if (contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+                applications = EventApplication.objects.filter(event=event, status=pending_status)
+                participants = [application.user for application in applications]
+                send_to_emails += [participant.email for participant in participants]
+                custom_message = "pending event applicant"
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True and contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+                custom_message = "event applicant"
+
+            total_participants = len(send_to_emails)
 
             if total_participants > 0:
-                for participant_email in participant_emails:
+                for email_address in send_to_emails:
                     send_mail(
                         subject,
                         message,
                         from_email,
-                        [participant_email],
+                        [email_address],
                         fail_silently=False,
                     )
                 if total_participants > 1:
-                    messages.success(request, f"Email successfully sent to all {total_participants} event participants")
+                    messages.success(request, f"Email successfully sent to all {total_participants} {custom_message}s")
                 else:
-                    messages.success(request, f"Email successfully sent to the {total_participants} event participant")
+                    messages.success(request, f"Email successfully sent to the {total_participants} {custom_message}")
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
             else:
                 messages.success(request, f"No event participants to email yet")        
