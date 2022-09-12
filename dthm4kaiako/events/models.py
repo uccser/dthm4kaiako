@@ -140,7 +140,14 @@ class Ticket(models.Model):
         if self.isFree():
             return f"{self.name} (free)"
         else:
-            return f"{self.name} (${self.price})"
+            return f"{self.name} (${'{0:.2f}'.format(self.price)})"
+
+    def toString(self):
+        """Text representation of a participant type with their ticket price."""
+        if self.isFree():
+            return f"{self.name} (free)"
+        else:
+            return f"{self.name} (${'{0:.2f}'.format(self.price)})"
 
     def isFree(self):
         return self.price == 0.0
@@ -379,12 +386,14 @@ class Event(models.Model):
         """
 
         ticket_type_counts = {}
-        
-        for type in self.ticket_types.all():
-            if type.name in ticket_type_counts:
-                ticket_type_counts[type.name] += 1
+        applications = EventApplication.objects.filter(event=self.pk)
+
+        for application in applications:
+            key_string = application.participant_type.toString()
+            if key_string in ticket_type_counts:
+                ticket_type_counts[key_string] += 1
             else:
-                ticket_type_counts[type.name] = 1    
+                ticket_type_counts[key_string] = 1
 
         return ticket_type_counts
 

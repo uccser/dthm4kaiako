@@ -82,9 +82,9 @@
                         Participant Types           
                     </h4>
                     {% if participant_types %}
-                        {% for name, count in event.ticket_type_counts.items %}
+                        {% for key, value in event.ticket_type_counts.items %}
                             <div>
-                                <b>{{name}}:</b> {{count}}
+                                <b>{{key}}:</b> {{value}}
                             </div>
                         {% endfor %}
                     {% else %}
