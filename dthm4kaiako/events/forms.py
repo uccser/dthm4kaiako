@@ -19,7 +19,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 User = get_user_model()
 
 class ParticipantTypeForm(ModelForm):
@@ -246,4 +247,23 @@ class TicketTypeForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        
+
+MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
+
+
+class ContactParticipantsForm(forms.Form):
+    """Form for contacting event participants owners."""
+
+    name = forms.CharField(required=True, label='Your name', max_length=100)
+    from_email = forms.EmailField(required=True, label='Email to contact you')
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
+    cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself')
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True

@@ -32,7 +32,8 @@ from .forms import (EventApplicationForm,
                     BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
                     ParticipantTypeForm,
-                    TicketTypeForm
+                    TicketTypeForm,
+                    ContactParticipantsForm,
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -45,6 +46,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import csv
 from django.utils.html import format_html_join
 from datetime import datetime
+from django.core.mail import send_mass_mail
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -573,6 +575,7 @@ def manage_event(request, pk):
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
         context['new_ticket_form'] = TicketTypeForm()
         context['update_ticket_form'] = TicketTypeForm()
+        context['contact_participants_form'] = ContactParticipantsForm()
         return render(request, 'events/event_management.html', context)
 
 
@@ -1298,3 +1301,34 @@ def delete_ticket(request, event_pk, ticket_pk):
     messages.success(request, 'Event ticket type successfully deleted')
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
+
+MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
+
+# TODO: add staff permission for this
+@login_required
+def email_participants(request, event_pk):
+    """Send bulk email to all event participants as event staff."""
+
+    #TODO: clean/validate data before directly using
+
+    name = request.POST['name']
+    subject = request.POST['subject']
+    from_email = request.POST['from_email']
+    message = MESSAGE_TEMPLATE.format(message=request.POST['message'], user=name, email=from_email)
+
+    event = Event.objects.get(pk=event_pk)
+    # TODO: filter by approved
+    applications = event.event_applications.all()
+    participants = [application.user for application in applications]
+    participant_emails = [participant.email for participant in participants]
+
+    if len(participant_emails) > 0:
+
+        bulk_email = (subject, message, from_email, participant_emails)
+        email_count = send_mass_mail((bulk_email), fail_silently=False)
+
+        messages.success(request, f"Bulk emails successfully send to all {email_count} event particiapnts")
+    else:
+        messages.success(request, f"No event participants to email yet")
+
+    return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
