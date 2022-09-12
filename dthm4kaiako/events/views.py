@@ -1364,7 +1364,7 @@ def email_participants(request, event_pk):
     context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
     context['new_ticket_form'] = TicketTypeForm()
     context['update_ticket_form'] = TicketTypeForm()
-    context['contact_participants_form'] = contact_participants_form
+    context['contact_participants_form'] = contact_participants_form #use the existing form in order to load the valid inputs in the form whilst showing errors
 
     return render(request, 'events/event_management.html', context)
 
