@@ -6,7 +6,7 @@
 
 {% block page_heading %}
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1>{{event.name}}</h1>
+        <h1>{{ event.get_event_type_short }} for {{event.name}}</h1>
     </div>
 
 {% endblock page_heading %}

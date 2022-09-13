@@ -658,7 +658,7 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='event_applications'
     )
-    representing = models.TextField(
+    representing = models.CharField(
         max_length=300,
         blank=False,
         null=False,
