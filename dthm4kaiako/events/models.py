@@ -1,6 +1,7 @@
 """Models for events application."""
 
 
+from email.policy import default
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.core.exceptions import ValidationError
@@ -824,11 +825,14 @@ class DeletedEventApplication(models.Model):
         super(DeletedEventApplication, self).save(*args, **kwargs)
 
 
+TERMS_AND_CONDITIONS_DEFAULT = "<p>Expenses for travel and accommodation are not covered by the event organisers, and are to be organised by the attendees themselves. Event organisers may provide details of available funding options that attendees&rsquo; may apply for.</p> <p>Should you need to cancel your application/registration, please let us know as soon as possible and we&#39;ll remove it. If you do not show to the event without informing us, you may be liable for a &lsquo;did not show&rsquo; fee. We understand life happens.</p> <p>In the event of cancellation of the event, we will notify you as soon as possible. It is your responsibility to understand any cancellation clauses for your flights and accommodation. While we are sorry if this causes inconvenience, the organisers will not be liable for any loss, damages, or sadness arising from such changes.</p> <p>Please be aware the event organisers and attendees may be taking photographs, video, and/or audio to record events. These may be displayed on websites or social media for education and/or promotional purposes. By attending the event you understand that these images and recordings may be used by the event organisers for related marketing and promotions. You understand that if you do not wish to have your image or voice recorded you must inform any media person taking your photo, videoing you, or recording your voice at the workshop. It is your responsibility to remove yourself from the photo, video, or voice recording situations. Photographers will do their best to take group images that do not identify people and will seek permission in particular instances where close ups are taken. Attendees posting on social media will be asked to check with you first, before posting. The event organisers does not accept responsibility for media posted by attendees.</p> <p>By registering for this event, you agree to us storing your information for organising and running the event. You are required to follow all health and safety instructions from event organisers while attending the event.</p> <p>Finally, you agree to and understand with the terms and conditions regarding the Code of Conduct. Read our Code of Conduct here: https://gist.github.com/uccser-admin/56de956a32ccf68e253be8632957c014</p>"
+
+
 class RegistrationForm(models.Model):
     """Model for a registration form."""
     open_datetime = models.DateTimeField(null=True,blank=True) 
     close_datetime = models.DateTimeField(null=True,blank=True)
-    terms_and_conditions = models.TextField(blank=True)
+    terms_and_conditions = RichTextUploadingField(default=TERMS_AND_CONDITIONS_DEFAULT)
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,

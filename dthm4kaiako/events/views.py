@@ -344,6 +344,7 @@ def apply_for_event(request, pk):
     bill_to = ""
     participant_type_form = None
     initial_for_participant_type={'ticket_types': event.ticket_types.all()}
+    new_participant_type = ""
 
     application_exists = does_application_exist(user, event)
 
@@ -422,8 +423,10 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
+            # TODO: fix possible issue here?
             new_participant_type_id = participant_type_form.cleaned_data['participant_type']
             new_participant_type = Ticket.objects.get(pk=int(new_participant_type_id))
+            messages.warning(request, {new_participant_type})
 
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
@@ -492,7 +495,10 @@ def apply_for_event(request, pk):
                 # Create new event application
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
-
+        
+        else:
+            messages.warning(request, 'Could not submit event application due it have invalid field(s)')
+            return HttpResponseRedirect(reverse("events:apply", kwargs={'pk': event.pk})) # Return to event detail page
 
     context = {
         'event': event,

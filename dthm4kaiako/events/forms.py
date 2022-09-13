@@ -43,7 +43,7 @@ class ParticipantTypeForm(forms.Form):
         cleaned_data = super(ParticipantTypeForm, self).clean()
         participant_type = cleaned_data.get('participant_type')
 
-        if participant_type == 0:
+        if participant_type == "0":
             self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
 
@@ -150,7 +150,7 @@ class ManageEventDetailsForm(ModelForm):
         """Metadata for ManageEventDetailsForm class."""
 
         model = Event
-        exclude = ('published', 'is_cancelled')
+        exclude = ('published', 'is_cancelled', 'ticket_types')
     
     def __init__(self, *args, **kwargs):
         super(ManageEventDetailsForm, self).__init__(*args, **kwargs)

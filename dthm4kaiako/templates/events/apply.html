@@ -39,7 +39,9 @@
             {% endfor %}
         {% endfor %}
 
-        {% crispy participant_type_form %}
+        {% if participant_type_form %}
+            {% crispy participant_type_form %}
+        {% endif %}
 
         {% crispy event_application_form %}
 
@@ -54,7 +56,8 @@
             <h5>
                 <b>Terms and Conditions</b>
             </h5>
-            {{ event.registration_form.terms_and_conditions }}
+            {{ event.registration_form.terms_and_conditions|safe }}
+
         </div>
         {% crispy terms_and_conditions_form %}
 
