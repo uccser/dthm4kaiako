@@ -127,7 +127,8 @@ class WithdrawEventApplicationForm(ModelForm):
         model = DeletedEventApplication
         fields = ['deletion_reason', 'other_reason_for_deletion']
 
-# ---------------------------- forms for event management ----------------------------------
+
+# ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventApplicationForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
@@ -251,7 +252,7 @@ class TicketTypeForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-
+        
 MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
 
@@ -283,3 +284,82 @@ class ContactParticipantsForm(forms.Form):
         send_to_pending_applicants = cleaned_data.get('send_to_pending_applicants')
         if send_to_approved_participants == False and send_to_pending_applicants == False:
             self._errors['send_to_approved_participants'] = self.error_class(['Must choose to send email to either or both groups of participants.'])
+
+
+# ---------------------------- Forms for event management when event is cancelled or in the past ----------------------------------
+
+class ManageEventApplicationReadOnlyForm(ModelForm):
+    """ Simple form to allow a user to submit an application to attend an event. """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['status'].widget.attrs['readonly'] = True
+            self.fields['paid'].widget.attrs['readonly'] = True
+            self.fields['staff_comments'].widget.attrs['readonly'] = True
+            self.fields['admin_billing_comments'].widget.attrs['readonly'] = True
+
+    class Meta:
+        """Metadata for EventApplicationForm class."""
+        model = EventApplication
+        fields = ['status', 'paid', 'participant_type', 'staff_comments', 'admin_billing_comments']
+
+
+class ManageEventDetailsReadOnlyForm(ModelForm):
+    """ Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+
+    class Meta:
+        """Metadata for ManageEventDetailsForm class."""
+
+        model = Event
+        exclude = ('published', 'is_cancelled', 'ticket_types')
+    
+    def __init__(self, *args, **kwargs):
+        super(ManageEventDetailsReadOnlyForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['name'].widget.attrs['readonly'] = True
+            self.fields['show_schedule'].widget.attrs['readonly'] = True
+            self.fields['featured'].widget.attrs['readonly'] = True
+            self.fields['registration_type'].widget.attrs['readonly'] = True
+            self.fields['registration_link'].widget.attrs['readonly'] = True
+            self.fields['start'].widget.attrs['readonly'] = True
+            self.fields['end'].widget.attrs['readonly'] = True
+            self.fields['accessible_online'].widget.attrs['readonly'] = True
+            self.fields['locations'].widget.attrs['readonly'] = True
+            self.fields['sponsors'].widget.attrs['readonly'] = True
+            self.fields['organisers'].widget.attrs['readonly'] = True
+            self.fields['series'].widget.attrs['readonly'] = True
+            self.fields['is_catered'].widget.attrs['readonly'] = True
+            self.fields['contact_email_address'].widget.attrs['readonly'] = True
+            self.fields['event_staff'].widget.attrs['readonly'] = True
+
+
+class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
+    """ Simple form for updating the event registration form information as an event staff member."""
+
+    class Meta:
+        """Metadata for ManageEventRegistrationFormDetailsForm class."""
+
+        model = RegistrationForm
+        field = ['open_datetime', 'close_datetime', 'terms_and_conditions']
+        exclude = ['event']        
+    
+    def __init__(self, *args, **kwargs):
+        super(ManageEventRegistrationFormDetailsReadOnlyForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['open_datetime'].widget.attrs['readonly'] = True
+            self.fields['close_datetime'].widget.attrs['readonly'] = True
+            self.fields['terms_and_conditions'].widget.attrs['readonly'] = True
+

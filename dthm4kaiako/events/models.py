@@ -523,34 +523,6 @@ class Session(models.Model):
         ordering = ['start', 'end', 'name']
 
 
-# class ParticipantType(models.Model):
-#     """Model for a participant type.
-#        Alternative name would be 'TicketType', e.g. front section ticket, back section ticket, or student ticket, staff ticket."""
-#     name = models.CharField(max_length=100)
-#     cost = models.DecimalField(default=0, max_digits=4, decimal_places=2)
-#     event = models.ForeignKey(
-#         Event,
-#         related_name="participant_types",
-#         on_delete=models.CASCADE,
-#         null=True,
-#         blank=True,
-#     )
-
-    # def __str__(self):
-    #     """Text representation of a participant type."""
-    #     return self.name
-
-    # def name_and_cost(self):
-    #     """Text representation of a participant type with their ticket cost."""
-    #     return f"{self.name} (${self.cost})"
-
-    # class Meta:
-    #     """Meta options for class."""
-
-    #     ordering = ['name', ]
-    #     verbose_name_plural = 'participant type'
-
-
 class Address(models.Model):
     """Model for an address.
 

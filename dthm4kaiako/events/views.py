@@ -35,6 +35,9 @@ from .forms import (EventApplicationForm,
                     ParticipantTypeForm,
                     TicketTypeForm,
                     ContactParticipantsForm,
+                    ManageEventDetailsReadOnlyForm,
+                    ManageEventRegistrationFormDetailsReadOnlyForm,
+                    ManageEventApplicationReadOnlyForm,
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -516,6 +519,7 @@ def apply_for_event(request, pk):
 
     return render(request, 'events/apply.html', context)
 
+
 #TODO: add filter 
 class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
@@ -553,6 +557,11 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
         return Event.objects.all().order_by('name')
 
 
+def is_in_past_or_cancelled(event):
+    """Returns True if event is in the past or it has been cancelled."""
+    return event.end < now() or event.is_cancelled
+
+
 @login_required
 def manage_event(request, pk):
     """
@@ -575,16 +584,29 @@ def manage_event(request, pk):
     context['event_pk'] = event.pk
 
     if request.method == 'GET':
-        context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
-        context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(instance=registration_form)
-        context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
-        context['event_applications'] = event_applications
-        context['registration_form_pk'] = registration_form.pk
-        context['is_free'] = event.is_free
-        context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
-        context['new_ticket_form'] = TicketTypeForm()
-        context['update_ticket_form'] = TicketTypeForm()
-        context['contact_participants_form'] = ContactParticipantsForm()
+
+        if is_in_past_or_cancelled(event):
+            context['manage_event_details_form'] = ManageEventDetailsReadOnlyForm(instance=event)
+            context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsReadOnlyForm(instance=registration_form)
+            context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
+            context['event_applications'] = event_applications
+            context['registration_form_pk'] = registration_form.pk
+            context['is_free'] = event.is_free
+            context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
+            context['new_ticket_form'] = TicketTypeForm()
+            context['update_ticket_form'] = TicketTypeForm()
+            context['contact_participants_form'] = ContactParticipantsForm()
+        else:
+            context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
+            context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+            context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
+            context['event_applications'] = event_applications
+            context['registration_form_pk'] = registration_form.pk
+            context['is_free'] = event.is_free
+            context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
+            context['new_ticket_form'] = TicketTypeForm()
+            context['update_ticket_form'] = TicketTypeForm()
+            context['contact_participants_form'] = ContactParticipantsForm()
         return render(request, 'events/event_management.html', context)
 
 
@@ -618,10 +640,18 @@ def manage_event_application(request, pk_event, pk_application):
     educational_entities = Entity.objects.filter(users=user)
 
     if request.method == 'GET':
-        manage_application_form = ManageEventApplicationForm(instance=event_application)
+        if is_in_past_or_cancelled(event):
+            manage_application_form = ManageEventApplicationReadOnlyForm(instance=event_application)
+        else:
+            manage_application_form = ManageEventApplicationForm(instance=event_application)
 
     elif request.method == 'POST':
-        manage_application_form = ManageEventApplicationForm(request.POST, instance=event_application)
+
+        if is_in_past_or_cancelled(event):
+            manage_application_form = ManageEventApplicationReadOnlyForm(request.POST, instance=event_application)
+        else:
+            manage_application_form = ManageEventApplicationForm(request.POST, instance=event_application)
+
         if manage_application_form.is_valid():
 
             updated_staff_comments = manage_application_form.cleaned_data['staff_comments']
