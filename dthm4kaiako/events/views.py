@@ -405,6 +405,12 @@ def apply_for_event(request, pk):
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
+        # messages.warning(request, {event_application_form.is_valid()}) #Valid
+        # messages.warning(request, {user_update_details_form.is_valid()})
+        messages.warning(request, {terms_and_conditions_form.is_valid()})
+
+        # messages.warning(request, {billing_details_form.is_valid()})
+        # messages.warning(request, {participant_type_form.is_valid()})
 
         if validate_event_application_form(event_application_form, 
                                     user_update_details_form, 
@@ -504,8 +510,17 @@ def apply_for_event(request, pk):
         
         else:
             messages.warning(request, 'Could not submit event application due it have invalid field(s)')
-            return HttpResponseRedirect(reverse("events:apply", kwargs={'pk': event.pk})) # Return to event detail page
-
+            context = {
+                'event': event,
+                'event_application_form': event_application_form,
+                'user_form': user_update_details_form,
+                'billing_details_form': billing_details_form,
+                'billing_required': billing_required,
+                'terms_and_conditions_form': terms_and_conditions_form,
+                'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
+                'participant_type_form': None #TODO: fix me
+            }
+            return render(request, 'events/apply.html', context)
     context = {
         'event': event,
         'event_application_form': event_application_form,
@@ -514,7 +529,7 @@ def apply_for_event(request, pk):
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
         'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
-        'participant_type_form': participant_type_form
+        'participant_type_form': None #TODO: fix me
     }
 
     return render(request, 'events/apply.html', context)
