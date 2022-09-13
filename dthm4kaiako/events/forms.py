@@ -19,7 +19,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 User = get_user_model()
 
 class ParticipantTypeForm(forms.Form):
@@ -250,4 +251,35 @@ class TicketTypeForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        
+
+MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
+
+
+class ContactParticipantsForm(forms.Form):
+    """Form for contacting event participants owners."""
+
+    name = forms.CharField(required=True, label='Your name', max_length=100)
+    from_email = forms.EmailField(required=True, label='Email to contact event participants')
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
+
+    #TODO: figure out how to get validation for this to work - currently wipes form when invalid
+    send_to_approved_participants = forms.BooleanField(required=False, label='Send to event participants who have been approved')
+    send_to_pending_applicants = forms.BooleanField(required=False, label='Send to event applicants who are pending approval') #TODO: hide this for events where events are "apply" type (compared to "register" type)
+    
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
+
+    def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+    
+    # TODO: figure out how to get this to show
+    def clean(self):
+        cleaned_data = super(ContactParticipantsForm, self).clean()
+        send_to_approved_participants = cleaned_data.get('send_to_approved_participants')
+        send_to_pending_applicants = cleaned_data.get('send_to_pending_applicants')
+        if send_to_approved_participants == False and send_to_pending_applicants == False:
+            self._errors['send_to_approved_participants'] = self.error_class(['Must choose to send email to either or both groups of participants.'])

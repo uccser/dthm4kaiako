@@ -32,6 +32,7 @@ urlpatterns = [
     path('manage/create_new_ticket/<int:pk>/', views.create_new_ticket, name='create_new_ticket'), 
     path('manage/<int:event_pk>/update_ticket/<int:ticket_pk>/', views.update_ticket, name='update_ticket'), 
     path('manage/<int:event_pk>/delete_ticket/<int:ticket_pk>/', views.delete_ticket, name='delete_ticket'), 
+    path('manage/<int:event_pk>/email_participants/', views.email_participants, name='email_participants'), 
 
     # Redirects
     path('event/', RedirectView.as_view(pattern_name='events:home')),

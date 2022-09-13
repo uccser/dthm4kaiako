@@ -275,11 +275,11 @@
         <!-- Send Email -->        
         <details>
             <summary>Contact Event Participants</summary>
-            {% if email_event_participants %}
+            {% if contact_participants_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
-                    <form method="post" action="{% url TODO %}">
+                    <form method="post" action="{% url 'events:email_participants' event.pk %}">
                         {% csrf_token %}
-                        {% crispy email_event_participants %}
+                        {% crispy contact_participants_form %}
                         <input class="btn btn-primary" type="submit" value="Send email">
                     </form>
                     <br>

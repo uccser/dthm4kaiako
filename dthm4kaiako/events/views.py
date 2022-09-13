@@ -1,5 +1,6 @@
 """Views for events application."""
 
+from calendar import c
 import re
 import string
 # from turtle import heading
@@ -32,7 +33,8 @@ from .forms import (EventApplicationForm,
                     BuilderFormForEventsCSV,
                     BuilderFormForEventApplicationsCSV,
                     ParticipantTypeForm,
-                    TicketTypeForm
+                    TicketTypeForm,
+                    ContactParticipantsForm,
                     )
 from django.shortcuts import render, redirect
 from users.forms import UserUpdateDetailsForm
@@ -45,6 +47,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import csv
 from django.utils.html import format_html_join
 from datetime import datetime
+from django.core.mail import send_mail
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -581,6 +584,7 @@ def manage_event(request, pk):
         context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
         context['new_ticket_form'] = TicketTypeForm()
         context['update_ticket_form'] = TicketTypeForm()
+        context['contact_participants_form'] = ContactParticipantsForm()
         return render(request, 'events/event_management.html', context)
 
 
@@ -1224,6 +1228,8 @@ def create_new_ticket(request, pk):
     event_id = pk
     event = Event.objects.get(pk=pk)
 
+    #TODO: validate name and price!
+
     name = request.POST['name']
     price = request.POST['price']
 
@@ -1306,3 +1312,84 @@ def delete_ticket(request, event_pk, ticket_pk):
     messages.success(request, 'Event ticket type successfully deleted')
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
+
+MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
+
+# TODO: add staff permission for this
+@login_required
+def email_participants(request, event_pk):
+    """Send bulk email to all event participants as event staff."""
+
+    if request.method == 'POST':
+        contact_participants_form = ContactParticipantsForm(request.POST)
+        if contact_participants_form.is_valid():
+
+            name = contact_participants_form.cleaned_data['name']
+            subject = contact_participants_form.cleaned_data['subject']
+            from_email = contact_participants_form.cleaned_data['from_email']
+            message = MESSAGE_TEMPLATE.format(message=contact_participants_form.cleaned_data['message'], user=name, email=from_email)
+
+            event = Event.objects.get(pk=event_pk)
+
+            send_to_emails = []
+
+            approved_status = 2
+            pending_status = 1
+
+            custom_message = "event applicant"
+
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True):
+                applications = EventApplication.objects.filter(event=event, status=approved_status)
+                participants = [application.user for application in applications]
+                send_to_emails += [participant.email for participant in participants]
+                custom_message = "approved event participant"
+            if (contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+                applications = EventApplication.objects.filter(event=event, status=pending_status)
+                participants = [application.user for application in applications]
+                send_to_emails += [participant.email for participant in participants]
+                custom_message = "pending event applicant"
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True and contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+                custom_message = "event applicant"
+
+            total_participants = len(send_to_emails)
+
+            if total_participants > 0:
+                for email_address in send_to_emails:
+                    send_mail(
+                        subject,
+                        message,
+                        from_email,
+                        [email_address],
+                        fail_silently=False,
+                    )
+                if total_participants > 1:
+                    messages.success(request, f"Email successfully sent to all {total_participants} {custom_message}s")
+                else:
+                    messages.success(request, f"Email successfully sent to the {total_participants} {custom_message}")
+                return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
+            else:
+                messages.success(request, f"No event participants to email yet")        
+        else:
+            messages.warning(request, 'Email could not be sent. Must choose to send email to either or both groups of participants.')
+
+    event = Event.objects.get(pk=event_pk)
+    context = {
+        'event': event,
+        'event_pk': event_pk,
+    }
+    registration_form = event.registration_form
+    event_applications = EventApplication.objects.filter(event=event)
+    context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
+    context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+    context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
+    context['event_applications'] = event_applications
+    context['registration_form_pk'] = registration_form.pk
+    context['is_free'] = event.is_free
+    context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
+    context['new_ticket_form'] = TicketTypeForm()
+    context['update_ticket_form'] = TicketTypeForm()
+    context['contact_participants_form'] = contact_participants_form #use the existing form in order to load the valid inputs in the form whilst showing errors
+
+    return render(request, 'events/event_management.html', context)
+
+    
