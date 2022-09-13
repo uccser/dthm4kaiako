@@ -405,20 +405,26 @@ def apply_for_event(request, pk):
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-        # messages.warning(request, {event_application_form.is_valid()}) #Valid
-        # messages.warning(request, {user_update_details_form.is_valid()})
-        messages.warning(request, {terms_and_conditions_form.is_valid()})
+        if not event_application_form.is_valid():
+            messages.warning(request, "event_application_form not valid")
+        if not user_update_details_form.is_valid():
+            messages.warning(request, "user_update_details_form not valid")
+        if not terms_and_conditions_form.is_valid():
+            messages.warning(request, "terms_and_conditions_form not valid")
+        if not (not billing_required or billing_details_form.is_valid()):
+            messages.warning(request, "billing_details_form not valid")
+        if not participant_type_form.is_valid():
+            messages.warning(request, "participant_type_form not valid")
 
-        # messages.warning(request, {billing_details_form.is_valid()})
-        # messages.warning(request, {participant_type_form.is_valid()})
+        if 1==1:
 
-        if validate_event_application_form(event_application_form, 
-                                    user_update_details_form, 
-                                    terms_and_conditions_form, 
-                                    billing_required, 
-                                    billing_details_form,
-                                    participant_type_form
-                                    ):                  
+        # if validate_event_application_form(event_application_form, 
+        #                             user_update_details_form, 
+        #                             terms_and_conditions_form, 
+        #                             billing_required, 
+        #                             billing_details_form,
+        #                             participant_type_form
+        #                             ):                  
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
@@ -439,6 +445,7 @@ def apply_for_event(request, pk):
             new_participant_type_id = participant_type_form.cleaned_data['participant_type']
             new_participant_type = Ticket.objects.get(pk=int(new_participant_type_id))
             messages.warning(request, {new_participant_type})
+
 
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
@@ -518,7 +525,7 @@ def apply_for_event(request, pk):
                 'billing_required': billing_required,
                 'terms_and_conditions_form': terms_and_conditions_form,
                 'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
-                'participant_type_form': None #TODO: fix me
+                'participant_type_form': participant_type_form
             }
             return render(request, 'events/apply.html', context)
     context = {
@@ -529,7 +536,7 @@ def apply_for_event(request, pk):
         'billing_required': billing_required,
         'terms_and_conditions_form': terms_and_conditions_form,
         'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
-        'participant_type_form': None #TODO: fix me
+        'participant_type_form': participant_type_form
     }
 
     return render(request, 'events/apply.html', context)
