@@ -35,6 +35,13 @@
                     </label>
                 {% endif %}
             </div>
+            <div class="float-left">
+                {% if event.has_ended %}
+                    <label style="margin-left: 20px; background-color:rgb(88, 88, 88); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                        Ended
+                    </label>
+                {% endif %}
+            </div>
 
             <div id="event-published-status-btn" class="float-right">
                 {% if event.published == False %} 
