@@ -678,7 +678,10 @@ def manage_event_application(request, pk_event, pk_application):
             )
             event_application.save()
             messages.success(request, 'Event application updated successfully')
-            return HttpResponseRedirect(reverse("events:manage_event_application", kwargs={'pk_event': pk_event, 'pk_application': pk_application}))
+            return HttpResponseRedirect(reverse(
+                "events:manage_event_application", 
+                kwargs={'pk_event': pk_event, 'pk_application': pk_application}
+                ))
         else:
             messages.warning(request, 'Event application could not be updated. Please resolve invalid fields.')
 
@@ -733,7 +736,7 @@ def manage_event_details(request, pk):
             all_event_staff_ids = [event_staff.id for event_staff in all_event_staff]
             event.event_staff.set(all_event_staff_ids)
 
-            #TODO: update otherside of M2M relationships for locations, sponsors, organisers, serieses and event staff!
+            # TODO: update otherside of M2M relationships for locations, sponsors, organisers, serieses and event staff!
 
             Event.objects.filter(id=event.pk).update(
                 name=updated_name,
@@ -749,7 +752,7 @@ def manage_event_details(request, pk):
                 contact_email_address=update_contact_email_address,
                 series=update_series,
             )
-            event.save() 
+            event.save()
             messages.success(request, 'Event details updated successfully')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
         else:
@@ -766,15 +769,13 @@ def manage_event_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
+
 # TODO: add event staff access only
 @login_required
 def manage_event_registration_form_details(request, pk):
     """ Allowing event staff to update event registration form details.
-    
-    Note that registration_form is the RegistrationForm object (as per the model) and 
-    registration_form_details_form is a Form object (for UI).
-    
-    """
+    Note that registration_form is the RegistrationForm object (as per the model) and
+    registration_form_details_form is a Form object (for UI)."""
 
     registration_form = RegistrationForm.objects.get(pk=pk)
     event = registration_form.event
@@ -784,7 +785,10 @@ def manage_event_registration_form_details(request, pk):
     context['update_ticket_form'] = TicketTypeForm()
 
     if request.method == 'POST':
-        manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(request.POST, instance=registration_form)
+        manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
+            request.POST,
+            instance=registration_form
+            )
         if manage_registration_form_details_form.is_valid():
 
             updated_open_datetime = manage_registration_form_details_form.cleaned_data['open_datetime']
@@ -796,7 +800,7 @@ def manage_event_registration_form_details(request, pk):
                 close_datetime=updated_close_datetime,
                 terms_and_conditions=updated_terms_and_conditions,
             )
-            registration_form.save() 
+            registration_form.save()
             messages.success(request, 'Event registration form details updated successfully')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
         else:
@@ -817,7 +821,7 @@ def manage_event_location_details(request, pk):
     """ Allowing event staff to update event location details."""
 
     location = Location.objects.get(pk=pk)
-    event = location.event #TODO: check this is correct
+    event = location.event  # TODO: check this is correct
     context = {
         'location': location,
     }
@@ -846,7 +850,7 @@ def manage_event_location_details(request, pk):
                 description=updated_description,
                 coords=updated_coords,
             )
-            location.save() 
+            location.save()
             messages.success(request, 'Event location details updated successfully')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
         else:
@@ -859,24 +863,27 @@ def manage_event_location_details(request, pk):
 
     return render(request, 'events/event_management.html', context)
 
+
 def convertStringListToOneString(listToConvert):
     if len(listToConvert) == 1:
         return listToConvert[0]
     else:
         newBigString = ""
         for i in range(0, len(listToConvert)):
-            string = listToConvert[i]
+            currentString = listToConvert[i]
             if i == len(listToConvert) - 1:
-                newBigString += string
+                newBigString += currentString
             else:
-                newBigString += string + " & " 
+                newBigString += currentString + " & "
         return newBigString
 
-# TODO: fix UI bug where the validation error message only disappears if go back out and back to events management hub page
+
+# TODO: fix UI bug where the validation error message only disappears
+# if go back out and back to events management hub page
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_csv(request):
-    """Generates a custom CSV of events' data""" 
+    """Generates a custom CSV of events' data"""
 
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
@@ -1006,12 +1013,12 @@ def generate_event_csv(request):
                     row.append(event.application_status_counts['withdrawn'])
 
                 writer.writerow(row)
-    
+
             return response
 
         else:
             messages.warning(request, 'Event applications CSV builder form has an invalid field.')
-        
+
     context = {
         'event_csv_builder_form': builderFormForEventsCSV,
         'events_user_is_staff_for': Event.objects.filter(event_staff__pk=request.user.pk)
@@ -1024,7 +1031,7 @@ def generate_event_csv(request):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_applications_csv(request, pk):
-    """Generates a custom CSV of event applications' data""" 
+    """Generates a custom CSV of event applications' data"""
 
     event = Event.objects.get(pk=pk)
 
@@ -1120,7 +1127,10 @@ def generate_event_applications_csv(request, pk):
                 if builderFormForEventApplicationsCSV.cleaned_data['dietary_requirements']:
                     row.append(convertStringListToOneString([dR.name for dR in user.dietary_requirements.all()]))
                 if builderFormForEventApplicationsCSV.cleaned_data['educational_entities']:
-                    row.append(convertStringListToOneString([entity.name for entity in user.educational_entities.all()]))
+                    row.append(convertStringListToOneString(
+                        [entity.name for entity in user.educational_entities.all()]
+                        )
+                    )
                 if builderFormForEventApplicationsCSV.cleaned_data['region']:
                     row.append(user.get_user_region_display())
                 if builderFormForEventApplicationsCSV.cleaned_data['mobile_phone_number']:
@@ -1151,12 +1161,12 @@ def generate_event_applications_csv(request, pk):
                     row.append(event_application.admin_billing_comments)
 
                 writer.writerow(row)
-    
+
             return response
-        
+
         else:
             messages.warning(request, 'Event applications CSV builder form has an invalid field.')
-        
+
     context = {
         'event': event,
         'event_pk': event.pk,
@@ -1169,14 +1179,16 @@ def generate_event_applications_csv(request, pk):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_dietary_requirement_counts_csv(request, pk):
-    """Generates a custom CSV of event dietary requirement counts data""" 
+    """Generates a custom CSV of event dietary requirement counts data"""
 
     event = Event.objects.get(pk=pk)
 
     heading_row = ["event name", "dietary requirements", "counts"]
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename= "dietary_requirement_counts_for_{}.csv"'.format(event.name)
+    response['Content-Disposition'] = 'attachment; filename="dietary_requirement_counts_for_{}.csv"'.format(
+        event.name
+    )
 
     # Create a csv writer
     writer = csv.writer(response)
