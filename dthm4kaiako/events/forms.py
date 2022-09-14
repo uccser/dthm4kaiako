@@ -38,7 +38,7 @@ class ParticipantTypeForm(forms.Form):
 
         ticket_types = self.initial['ticket_types']
         choices = [(0, "Select participant type")]
-        choices = [(ticket.pk, ticket.toString()) for ticket in ticket_types]
+        choices = [(ticket.pk, str(ticket)) for ticket in ticket_types]
         self.fields['participant_type'].choices = choices
 
     # TODO: test this
