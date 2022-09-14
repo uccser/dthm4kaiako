@@ -2,6 +2,8 @@
 
 # from attr import fields
 from dataclasses import field
+from decimal import MAX_EMAX
+from email.policy import default
 from django import forms
 from events.models import (Address, 
                            DeletedEventApplication, 
@@ -26,7 +28,7 @@ User = get_user_model()
 class ParticipantTypeForm(forms.Form):
     """ Simple form to allow a user to select their ticket/participant type that is specific to the event. """
 
-    participant_type = forms.ChoiceField(choices=[], widget=forms.Select())
+    participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
     def __init__(self, *args, **kwargs):
         super(ParticipantTypeForm, self).__init__(*args, **kwargs) 
@@ -36,16 +38,16 @@ class ParticipantTypeForm(forms.Form):
 
         ticket_types = self.initial['ticket_types']
         choices = [(0, "Select participant type")]
-        choices += [(ticket.pk, ticket.toString()) for ticket in ticket_types]
+        choices = [(ticket.pk, ticket.toString()) for ticket in ticket_types]
         self.fields['participant_type'].choices = choices
 
     # TODO: test this
-    def clean(self):
-        cleaned_data = super(ParticipantTypeForm, self).clean()
-        participant_type = cleaned_data.get('participant_type')
+    # def clean(self):
+    #     cleaned_data = super(ParticipantTypeForm, self).clean()
+    #     participant_type = cleaned_data.get('participant_type')
 
-        if participant_type == "0":
-            self._errors['participant_type'] = self.error_class(['Must select participant type.'])
+    #     if participant_type == "0":
+    #         self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
 
 class EventApplicationForm(ModelForm):
@@ -288,25 +290,38 @@ class ContactParticipantsForm(forms.Form):
 
 # ---------------------------- Forms for event management when event is cancelled or in the past ----------------------------------
 
+PENDING = 1
+APPROVED = 2
+REJECTED = 3
+APPLICATION_STATUSES = (
+    (PENDING, _('Pending')),
+    (APPROVED, _('Approved')),
+    (REJECTED, _('Rejected')),
+)
+
 class ManageEventApplicationReadOnlyForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
+
+    status = forms.ChoiceField(disabled = True, choices = APPLICATION_STATUSES, required=False)
+    paid = forms.BooleanField(disabled = True, required=False)
+    staff_comments = forms.CharField(disabled=True, required=False)
+    admin_billing_comments = forms.CharField(disabled = True, required=False)
+
+    #TODO: ticket type
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-        instance = getattr(self, 'instance', None)
-        if instance and instance.pk:
-            self.fields['status'].widget.attrs['readonly'] = True
-            self.fields['paid'].widget.attrs['readonly'] = True
-            self.fields['staff_comments'].widget.attrs['readonly'] = True
-            self.fields['admin_billing_comments'].widget.attrs['readonly'] = True
 
     class Meta:
         """Metadata for EventApplicationForm class."""
         model = EventApplication
-        fields = ['status', 'paid', 'participant_type', 'staff_comments', 'admin_billing_comments']
+        exclude = ['submitted', 'updated', 'status', 'staff_comments', 'participant_type',
+        'staff_comments', 'user', 'representing', 'event', 'emergency_contact_first_name',
+        'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number',
+        'paid', 'bill_to', 'billing_physical_address', 'billing_email_address', 'admin_billing_comments']
 
 
 class ManageEventDetailsReadOnlyForm(ModelForm):
