@@ -2,10 +2,7 @@
 
 import django_filters
 from django.utils.timezone import now
-from events.models import (
-    Event,
-    Location,
-)
+from events.models import (Event)
 from users.models import Entity
 from utils.new_zealand_regions import REGION_CHOICES
 

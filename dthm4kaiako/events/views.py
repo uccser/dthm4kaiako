@@ -425,7 +425,7 @@ def apply_for_event(request, pk):
             user.email_address = user_update_details_form.cleaned_data['email_address']
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
 
-            if event.accessible_online == False:
+            if event.accessible_online is False:
                 user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
 
             if display_catering_info:
@@ -1198,13 +1198,17 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
         else:
             dietary_reqs_dict[frozenset(dietary_requirements)] = 1
 
-    row_lists = [[event.name, convertStringListToOneString(list(frozenset_dietary_reqs)), dietary_reqs_dict[frozenset_dietary_reqs]] for frozenset_dietary_reqs in dietary_reqs_dict.keys()]
+    row_lists = [
+        [
+            event.name, convertStringListToOneString(list(frozenset_dietary_reqs)),
+            dietary_reqs_dict[frozenset_dietary_reqs]
+        ] for frozenset_dietary_reqs in dietary_reqs_dict.keys()
+    ]
 
     for row in row_lists:
         writer.writerow(row)
 
     return response
-
 
 
 # TODO: add staff and admin permissions
@@ -1221,12 +1225,13 @@ def mark_all_participants_as_paid(request, pk):
         application_to_update.update(paid=True)
         application_to_update = EventApplication.objects.get(id=event_application.id)
         application_to_update.save()
-    
+
     messages.success(request, 'All event participants successfully marked as paid')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
-# TODO: consider - add logic for checking if has close datetime for registrations - make sure closing date for application is on details page
+# TODO: consider - add logic for checking if has close datetime for registrations
+# make sure closing date for application is on details page
 # TODO: add logic for event detail page saying event registrations opening soon!
 # TODO: add staff permission for this
 @login_required
@@ -1237,8 +1242,11 @@ def publish_event(request, pk):
     event_query_set = Event.objects.filter(id=event_id)
     event = Event.objects.get(id=event_id)
 
-    if (event.published == False and event.start == None) or (event.published == False and event.end == None):
-            messages.error(request, 'Event must have a start and end datetime to be published.')
+    if (
+        (event.published is False and event.start is None)
+        or (event.published is False and event.end is None)
+    ):
+        messages.error(request, 'Event must have a start and end datetime to be published.')
     else:
         event_query_set.update(published=True)
         updated_event = Event.objects.get(id=event_id)
@@ -1264,10 +1272,9 @@ def cancel_event(request, pk):
 @login_required
 def create_new_ticket(request, pk):
     """Cancel event as event staff"""
-    event_id = pk
     event = Event.objects.get(pk=pk)
 
-    #TODO: validate name and price!
+    # TODO: validate name and price!
 
     name = request.POST['name']
     price = request.POST['price']
@@ -1276,21 +1283,30 @@ def create_new_ticket(request, pk):
         # ticket exists in general
         if Ticket.objects.filter(name=name, price=price, events=event).exists():
             # ticket already exists for this event
-            messages.warning(request, f"Ticket with the name of {name}, with a price of ${price} already exists for this event.")
+            messages.warning(
+                request,
+                f"Ticket with the name of {name}, with a price of ${price} already exists for this event."
+            )
         else:
             # ticket does exist but is not associated with this event yet
             existing_ticket = Ticket.objects.get(name=name, price=price)
             event.ticket_types.add(existing_ticket)
             event.save()
             existing_ticket.save()
-            messages.success(request, f"Ticket with the name of {name}, with a price of ${price} has been successfully created.")
+            messages.success(
+                request,
+                f"Ticket with the name of {name}, with a price of ${price} has been successfully created."
+            )
     else:
         # ticket doesn't exist yet in general
         new_ticket = Ticket.objects.create(name=name, price=price)
         event.ticket_types.add(new_ticket)
         event.save()
         new_ticket.save()
-        messages.success(request, f"Ticket with the name of {name}, with a price of ${price} has been successfully created.")
+        messages.success(
+            request,
+            f"Ticket with the name of {name}, with a price of ${price} has been successfully created."
+        )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
@@ -1298,7 +1314,6 @@ def create_new_ticket(request, pk):
 @login_required
 def update_ticket(request, event_pk, ticket_pk):
     """Update event ticket type.
-    
     Note that we cannot immediately update this specific ticket as it may be being used for other events as well."""
 
     event = Event.objects.get(pk=event_pk)
@@ -1306,17 +1321,16 @@ def update_ticket(request, event_pk, ticket_pk):
 
     # check if ticket used by other events
     if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
-        # ticket used by other events so just remove this event from the list 
+        # ticket used by other events so just remove this event from the list
         old_ticket.events.remove(event)
         old_ticket.save()
     else:
         old_ticket.delete()
-    
+
     # check if new ticket already exists
     if Ticket.objects.filter(name=request.POST['name'], price=request.POST['price']).exists():
         # add the event to the list of events that use the existing "new" ticket
         new_ticket = Ticket.objects.get(name=request.POST['name'], price=request.POST['price'])
-        new_ticket_pk = new_ticket.pk
         new_ticket.events.add(event)
         new_ticket.save()
     else:
@@ -1334,16 +1348,15 @@ def update_ticket(request, event_pk, ticket_pk):
 @login_required
 def delete_ticket(request, event_pk, ticket_pk):
     """Delete event ticket type.
-    
     We cannot immediately delete this specific ticket as it may be being used for other events as well."""
     event = Event.objects.get(pk=event_pk)
-    ticket= get_object_or_404(Ticket, id=ticket_pk)
+    ticket = get_object_or_404(Ticket, id=ticket_pk)
 
     if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
         ticket.delete()
         event.save()
     else:
-        # ticket used by other events so just remove this event from the list 
+        # ticket used by other events so just remove this event from the list
         event.ticket_types.remove(ticket)
         event.save()
         ticket.save()
@@ -1354,6 +1367,7 @@ def delete_ticket(request, event_pk, ticket_pk):
 
 MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
+
 # TODO: add staff permission for this
 @login_required
 def email_participants(request, event_pk):
@@ -1363,10 +1377,13 @@ def email_participants(request, event_pk):
         contact_participants_form = ContactParticipantsForm(request.POST)
         if contact_participants_form.is_valid():
 
-            name = contact_participants_form.cleaned_data['name']
             subject = contact_participants_form.cleaned_data['subject']
             from_email = contact_participants_form.cleaned_data['from_email']
-            message = MESSAGE_TEMPLATE.format(message=contact_participants_form.cleaned_data['message'], user=name, email=from_email)
+            message = MESSAGE_TEMPLATE.format(
+                message=contact_participants_form.cleaned_data['message'],
+                user=contact_participants_form.cleaned_data['name'],
+                email=from_email
+            )
 
             event = Event.objects.get(pk=event_pk)
 
@@ -1377,17 +1394,18 @@ def email_participants(request, event_pk):
 
             custom_message = "event applicant"
 
-            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True):
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] is True):
                 applications = EventApplication.objects.filter(event=event, status=approved_status)
                 participants = [application.user for application in applications]
                 send_to_emails += [participant.email for participant in participants]
                 custom_message = "approved event participant"
-            if (contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+            if (contact_participants_form.cleaned_data['send_to_pending_applicants'] is True):
                 applications = EventApplication.objects.filter(event=event, status=pending_status)
                 participants = [application.user for application in applications]
                 send_to_emails += [participant.email for participant in participants]
                 custom_message = "pending event applicant"
-            if (contact_participants_form.cleaned_data['send_to_approved_participants'] == True and contact_participants_form.cleaned_data['send_to_pending_applicants'] == True):
+            if (contact_participants_form.cleaned_data['send_to_approved_participants'] is True
+                and contact_participants_form.cleaned_data['send_to_pending_applicants'] is True):
                 custom_message = "event applicant"
 
             total_participants = len(send_to_emails)
@@ -1402,14 +1420,23 @@ def email_participants(request, event_pk):
                         fail_silently=False,
                     )
                 if total_participants > 1:
-                    messages.success(request, f"Email successfully sent to all {total_participants} {custom_message}s")
+                    messages.success(
+                        request,
+                        f"Email successfully sent to all {total_participants} {custom_message}s"
+                    )
                 else:
-                    messages.success(request, f"Email successfully sent to the {total_participants} {custom_message}")
+                    messages.success(
+                        request,
+                        f"Email successfully sent to the {total_participants} {custom_message}"
+                    )
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
             else:
-                messages.success(request, f"No event participants to email yet")        
+                messages.success(request, "No event participants to email yet")
         else:
-            messages.warning(request, 'Email could not be sent. Must choose to send email to either or both groups of participants.')
+            messages.warning(
+                request,
+                'Email could not be sent. Must choose to send email to either or both groups of participants.'
+                )
 
     event = Event.objects.get(pk=event_pk)
     context = {
@@ -1419,7 +1446,9 @@ def email_participants(request, event_pk):
     registration_form = event.registration_form
     event_applications = EventApplication.objects.filter(event=event)
     context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
-    context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(instance=registration_form)
+    context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(
+        instance=registration_form
+        )
     context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
     context['event_applications'] = event_applications
     context['registration_form_pk'] = registration_form.pk
@@ -1427,8 +1456,7 @@ def email_participants(request, event_pk):
     context['participant_types'] = Ticket.objects.filter(events=event).order_by('-price', 'name')
     context['new_ticket_form'] = TicketTypeForm()
     context['update_ticket_form'] = TicketTypeForm()
-    context['contact_participants_form'] = contact_participants_form #use the existing form in order to load the valid inputs in the form whilst showing errors
+    context['contact_participants_form'] = contact_participants_form
+    # use the existing form in order to load the valid inputs in the form whilst showing errors
 
     return render(request, 'events/event_management.html', context)
-
-    
