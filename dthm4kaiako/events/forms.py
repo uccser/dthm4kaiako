@@ -307,21 +307,22 @@ class ManageEventApplicationReadOnlyForm(ModelForm):
     staff_comments = forms.CharField(disabled=True, required=False)
     admin_billing_comments = forms.CharField(disabled = True, required=False)
 
-    #TODO: ticket type
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['status'].widget.attrs['disabled'] = True
+            self.fields['paid'].widget.attrs['disabled'] = True
+            self.fields['staff_comments'].widget.attrs['disabled'] = True
+            self.fields['admin_billing_comments'].widget.attrs['disabled'] = True
 
     class Meta:
         """Metadata for EventApplicationForm class."""
         model = EventApplication
-        exclude = ['submitted', 'updated', 'status', 'staff_comments', 'participant_type',
-        'staff_comments', 'user', 'representing', 'event', 'emergency_contact_first_name',
-        'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number',
-        'paid', 'bill_to', 'billing_physical_address', 'billing_email_address', 'admin_billing_comments']
+        fields = ['status', 'paid', 'staff_comments', 'admin_billing_comments']
 
 
 class ManageEventDetailsReadOnlyForm(ModelForm):
@@ -340,21 +341,21 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
         self.helper.disable_csrf = True
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
-            self.fields['name'].widget.attrs['readonly'] = True
-            self.fields['show_schedule'].widget.attrs['readonly'] = True
-            self.fields['featured'].widget.attrs['readonly'] = True
-            self.fields['registration_type'].widget.attrs['readonly'] = True
-            self.fields['registration_link'].widget.attrs['readonly'] = True
-            self.fields['start'].widget.attrs['readonly'] = True
-            self.fields['end'].widget.attrs['readonly'] = True
-            self.fields['accessible_online'].widget.attrs['readonly'] = True
-            self.fields['locations'].widget.attrs['readonly'] = True
-            self.fields['sponsors'].widget.attrs['readonly'] = True
-            self.fields['organisers'].widget.attrs['readonly'] = True
-            self.fields['series'].widget.attrs['readonly'] = True
-            self.fields['is_catered'].widget.attrs['readonly'] = True
-            self.fields['contact_email_address'].widget.attrs['readonly'] = True
-            self.fields['event_staff'].widget.attrs['readonly'] = True
+            self.fields['name'].widget.attrs['disabled'] = True
+            self.fields['show_schedule'].widget.attrs['disabled'] = True
+            self.fields['featured'].widget.attrs['disabled'] = True
+            self.fields['registration_type'].widget.attrs['disabled'] = True
+            self.fields['registration_link'].widget.attrs['disabled'] = True
+            self.fields['start'].widget.attrs['disabled'] = True
+            self.fields['end'].widget.attrs['disabled'] = True
+            self.fields['accessible_online'].widget.attrs['disabled'] = True
+            self.fields['locations'].widget.attrs['disabled'] = True
+            self.fields['sponsors'].widget.attrs['disabled'] = True
+            self.fields['organisers'].widget.attrs['disabled'] = True
+            self.fields['series'].widget.attrs['disabled'] = True
+            self.fields['is_catered'].widget.attrs['disabled'] = True
+            self.fields['contact_email_address'].widget.attrs['disabled'] = True
+            self.fields['event_staff'].widget.attrs['disabled'] = True
 
 
 class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
@@ -374,7 +375,6 @@ class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
         self.helper.disable_csrf = True
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
-            self.fields['open_datetime'].widget.attrs['readonly'] = True
-            self.fields['close_datetime'].widget.attrs['readonly'] = True
-            self.fields['terms_and_conditions'].widget.attrs['readonly'] = True
-
+            self.fields['open_datetime'].widget.attrs['disabled'] = True
+            self.fields['close_datetime'].widget.attrs['disabled'] = True
+            self.fields['terms_and_conditions'].widget.attrs['disabled'] = True

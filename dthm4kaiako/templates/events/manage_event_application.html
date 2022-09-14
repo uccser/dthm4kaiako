@@ -161,7 +161,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                 <h3 class="panel-title">
-                    <a data-toggle="collapse" href="#application-update">Update Details</a>
+                    <a data-toggle="collapse" href="#application-update">
+                        {% if not event.has_ended and not event.is_cancelled %}
+                            Update Details
+                        {% else %}
+                            Details
+                        {% endif %}
+                    </a>
                 </h3>
                 </div>
                 <div id="application-update" class="panel-collapse collapse">

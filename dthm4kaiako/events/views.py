@@ -667,8 +667,6 @@ def manage_event_application(request, pk_event, pk_application):
     dietary_requirements = DietaryRequirement.objects.filter(users=user)
     educational_entities = Entity.objects.filter(users=user)
 
-    messages.warning(request, is_in_past_or_cancelled(event))
-
     if request.method == 'GET':
         if is_in_past_or_cancelled(event):
             manage_application_form = ManageEventApplicationReadOnlyForm(instance=event_application)
