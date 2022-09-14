@@ -21,20 +21,36 @@
                     <b>Ends:</b> {{event_application.event.end|date:"g:i a l j F, Y" }}
                 </h6>
                 <br>
-                <h6>
-                    <b>Status:</b> {{ event_application.status_string_for_user }}
-                </h6>
+                {% if event_application.event.is_cancelled %}
+                    <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                        Cancelled
+                    </label>
+                {% endif %}
+                {% if event_application.event.has_ended %}
+                    <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                        Ended
+                    </label>
+                {% endif %}
+                {% if not event_application.event.is_cancelled and not event_application.event.has_ended %}
+                    <h6>
+                        <b>Status:</b> {{ event_application.status_string_for_user }}
+                    </h6>
+                {% endif %}
             </div>
             <div class="col-sm-4">
 
-                <a class="btn btn-success m-2" href="{% url 'events:apply' event_application.event.pk %}" role="button">
-                    Update application
-                </a>
+                {% if event_application.event.is_cancelled or event_application.event.has_ended %}
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal-{{event_application.pk}}">
-                    Withdraw
-                </button>
+                {% else %}
+                    <a class="btn btn-success m-2" href="{% url 'events:apply' event_application.event.pk %}" role="button">
+                        Update application
+                    </a>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal-{{event_application.pk}}">
+                        Withdraw
+                    </button>
+                {% endif %}
 
                 {% if user.is_authenticated %}
 

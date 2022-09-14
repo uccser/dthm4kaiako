@@ -42,12 +42,12 @@ class ParticipantTypeForm(forms.Form):
         self.fields['participant_type'].choices = choices
 
     # TODO: test this
-    # def clean(self):
-    #     cleaned_data = super(ParticipantTypeForm, self).clean()
-    #     participant_type = cleaned_data.get('participant_type')
+    def clean(self):
+        cleaned_data = super(ParticipantTypeForm, self).clean()
+        participant_type = cleaned_data.get('participant_type')
 
-    #     if participant_type == "0":
-    #         self._errors['participant_type'] = self.error_class(['Must select participant type.'])
+        if participant_type == "0":
+            self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
 
 class EventApplicationForm(ModelForm):

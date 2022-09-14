@@ -730,7 +730,6 @@ def manage_event_details(request, pk):
             updated_start = manage_event_details_form.cleaned_data['start']
             updated_end = manage_event_details_form.cleaned_data['end']
             updated_accessible_online = manage_event_details_form.cleaned_data['accessible_online']
-            updated_is_free = manage_event_details_form.cleaned_data['is_free'] #TODO: needs updating as this is calculated based on participant type costs.
             update_is_catered = manage_event_details_form.cleaned_data['is_catered']
             update_contact_email_address = manage_event_details_form.cleaned_data['contact_email_address']
             update_series = manage_event_details_form.cleaned_data['series']
@@ -763,7 +762,6 @@ def manage_event_details(request, pk):
                 start=updated_start,
                 end=updated_end,
                 accessible_online=updated_accessible_online,
-                is_free=updated_is_free,
                 is_catered=update_is_catered,
                 contact_email_address=update_contact_email_address,
                 series=update_series,
