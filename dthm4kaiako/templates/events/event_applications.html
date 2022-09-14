@@ -1,19 +1,62 @@
 {% extends "events/base.html" %}
 
+{% load static %}
 {% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block page_heading %}
     <h1>Event applications</h1>
 {% endblock page_heading %}
 
 {% block content %}
-    {% if event_applications %}
-        {% for event_application in event_applications %}
-            {% include 'events/application_card.html' %}
-        {% endfor %}
+
+    {% if event_applications_upcoming and event_applications_future %}
+        <div class="tabs">
+            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
+                <b>Past</b>
+            </button>
+            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
+                <b>Upcoming</b>
+            </button>
+        </div>
+        
+        <div id="Past" class="time">
+            {% for event_application in event_applications_upcoming %}
+                {% include 'events/application_card.html' %}
+            {% endfor %}
+        </div>
+        
+        <div id="Future" class="time" style="display:none">
+            {% for event_application in event_applications_future %}
+                {% include 'events/application_card.html' %}
+            {% endfor %}
+        </div>
+
+
+
     {% else %}
         <p class="text-center">
-            No event applications exist.
+            You have no event applications.
         </p>
     {% endif %}
 {% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        function openEvents(evt, time) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("time");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" events-time-period-blue", "");
+        }
+        document.getElementById(time).style.display = "block";
+        evt.currentTarget.className += " events-time-period-blue";
+        }
+    </script>
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}

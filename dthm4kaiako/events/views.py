@@ -216,14 +216,24 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
+# event__start__gte=today
+# event__start__lte=today
+
         if user.is_authenticated:
-            unordered_event_applications = EventApplication.objects.filter(user=user).order_by(
+            today = datetime.today()
+            event_applications_upcoming = EventApplication.objects.filter(user=user, event__start__gte=today).order_by(
                 'event__start')
-            context['event_applications'] = unordered_event_applications
+            event_applications_future = EventApplication.objects.filter(user=user, event__start__lte=today).order_by(
+                'event__start')
+            context['event_applications_upcoming'] = event_applications_upcoming
+            context['event_applications_future'] = event_applications_future
             context['user'] = self.request.user
-            if len(unordered_event_applications) != 0:
+            if len(event_applications_upcoming) != 0:
                 context['withdraw_event_application_form'] = WithdrawEventApplicationForm(self.request.POST)
-           
+
+        messages.warning(self.request, event_applications_upcoming)
+        messages.warning(self.request, event_applications_future)
+
         return context
 
     def get_object(self):
