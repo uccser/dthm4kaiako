@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from users.models import Entity, DietaryRequirement
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField, ChoiceField, Select
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
@@ -63,7 +63,9 @@ class UserUpdateDetailsForm(ModelForm):
     mobile_phone_number_confirm = CharField(max_length=30, required=True, label="Confim mobile phone number")
     educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
     dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-    
+    user_region = ChoiceField(required=True, choices=REGION_CHOICES, label="region", widget=Select())
+
+
     # TODO: add in for requirmement U38 (ability to add custom dietary requirements)
     # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
 
