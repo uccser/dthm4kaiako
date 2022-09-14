@@ -30,18 +30,17 @@ class ParticipantTypeForm(forms.Form):
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
-    def __init__(self, *args, **kwargs):
-        super(ParticipantTypeForm, self).__init__(*args, **kwargs) 
+    def __init__(self, event, *args, **kwargs):
+        super(ParticipantTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        ticket_types = self.initial['ticket_types']
         choices = [(0, "Select participant type")]
-        choices = [(ticket.pk, str(ticket)) for ticket in ticket_types]
+        for ticket in event.ticket_types.all():
+            choices += [(ticket.pk, str(ticket))]
         self.fields['participant_type'].choices = choices
 
-    # TODO: test this
     def clean(self):
         cleaned_data = super(ParticipantTypeForm, self).clean()
         participant_type = cleaned_data.get('participant_type')

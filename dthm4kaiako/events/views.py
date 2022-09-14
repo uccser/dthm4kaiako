@@ -339,17 +339,12 @@ def apply_for_event(request, pk):
     terms_and_conditions_form = None
     billing_required = not event.is_free
     display_catering_info = event.is_catered
-    initial_user_data={'show_dietary_requirements': event.is_catered, 
-                    'show_medical_notes': not event.accessible_online
-                    }
-    initial_event_application_data={'show_emergency_contact_fields': not event.accessible_online}
     new_billing_email = None
     current_application = None
     billing_physical_address = None
     billing_email_address = ""
     bill_to = ""
     participant_type_form = None
-    initial_for_participant_type={'ticket_types': event.ticket_types.all()}
     new_participant_type = ""
 
     application_exists = does_application_exist(user, event)
@@ -359,8 +354,8 @@ def apply_for_event(request, pk):
 
         if application_exists:
             current_application = user.event_applications.get(event=event)
-            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
-            event_application_form = EventApplicationForm(instance=current_application, initial=initial_event_application_data)
+            participant_type_form =  ParticipantTypeForm(event, initial={'participant_type': current_application.participant_type.pk})            
+            event_application_form = EventApplicationForm(instance=current_application, initial={'show_emergency_contact_fields': not event.accessible_online})
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
             bill_to = current_application.bill_to
@@ -369,10 +364,13 @@ def apply_for_event(request, pk):
                             'mobile_phone_number': user.mobile_phone_number,
                             'email_address': user.email_address}
         else:
-            event_application_form = EventApplicationForm(initial=initial_event_application_data)
+            event_application_form = EventApplicationForm(initial={'show_emergency_contact_fields': not event.accessible_online})
             participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
         
-        user_update_details_form = UserUpdateDetailsForm(instance=user, initial=initial_user_data) # autoload existing event application's user data
+        user_update_details_form = UserUpdateDetailsForm(instance=user, initial={'show_dietary_requirements': event.is_catered, 
+                    'show_medical_notes': not event.accessible_online
+                    }) # autoload existing event application's user data
+        
         if billing_required:
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(instance=billing_physical_address, initial=initial_billing_data) # TODO: figure out how to autoload billing info
@@ -389,39 +387,25 @@ def apply_for_event(request, pk):
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
         
-        user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, initial=initial_user_data)
+        user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, 
+            initial={
+                'show_dietary_requirements': event.is_catered, 
+                'show_medical_notes': not event.accessible_online
+                }
+            )
 
         if does_application_exist(user, event):
             current_application = user.event_applications.get(event=event)
             event_application_form = EventApplicationForm(request.POST, instance=current_application)
-            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
-
         else:
             event_application_form = EventApplicationForm(request.POST)
-            participant_type_form = ParticipantTypeForm(request.POST, initial=initial_for_participant_type)
+
+        participant_type_form =  ParticipantTypeForm(event, request.POST)
 
         if billing_required:
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
-
-
-        # TODO: remove after debuggin
-        if not event_application_form.is_valid():
-            messages.warning(request, "event_application_form not valid")
-        if not user_update_details_form.is_valid():
-            messages.warning(request, "user_update_details_form not valid")
-        if not terms_and_conditions_form.is_valid():
-            messages.warning(request, "terms_and_conditions_form not valid")
-        if not (not billing_required or billing_details_form.is_valid()):
-            messages.warning(request, "billing_details_form not valid")
-
-        if participant_type_form.is_valid():
-            messages.warning(request, "participant_type_form valid")
-        else:
-            messages.warning(request, "participant_type_form not valid")
-
-
 
         if validate_event_application_form(event_application_form, 
                                     user_update_details_form, 
@@ -446,12 +430,8 @@ def apply_for_event(request, pk):
                 user.dietary_requirements.set(all_dietary_reqs)
             user.save()
 
-            # TODO: fix possible issue here?
             new_participant_type_id = participant_type_form.cleaned_data['participant_type']
             new_participant_type = Ticket.objects.get(pk=int(new_participant_type_id))
-            messages.warning(request, {new_participant_type})
-
-
             new_representing = event_application_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_application_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_application_form.cleaned_data['emergency_contact_last_name']
