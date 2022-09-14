@@ -10,7 +10,7 @@
 
 {% block content %}
 
-    {% if event_applications_upcoming and event_applications_future %}
+    {% if event_applications_upcoming and event_applications_past %}
         <div class="tabs">
             <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
                 <b>Past</b>
@@ -21,19 +21,16 @@
         </div>
         
         <div id="Past" class="time">
-            {% for event_application in event_applications_upcoming %}
+            {% for event_application in event_applications_past %}
                 {% include 'events/application_card.html' %}
             {% endfor %}
         </div>
         
         <div id="Future" class="time" style="display:none">
-            {% for event_application in event_applications_future %}
+            {% for event_application in event_applications_upcoming %}
                 {% include 'events/application_card.html' %}
             {% endfor %}
         </div>
-
-
-
     {% else %}
         <p class="text-center">
             You have no event applications.
