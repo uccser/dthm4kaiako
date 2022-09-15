@@ -1,17 +1,12 @@
 """Class to generate test data required for testing dthm4kaiako system."""
 
 from django.contrib.auth import get_user_model
-from django.core import management
 import datetime
-from users.models import (
-    DietaryRequirement,
-    User,
-    Entity
-)
+from users.models import DietaryRequirement
 from events.models import (
     Location,
     Series,
-    Event, 
+    Event,
     Session,
     ParticipantType,
     Address,
@@ -92,7 +87,7 @@ def generate_dietary_requirements():
 
 def generate_addresses():
     """Generate billing addresses for use in dthm4kaiako tests."""
-    
+
     billing_address_1 = Address.objects.create(
         id=1,
         street_number='12',
@@ -115,7 +110,7 @@ def generate_users():
         password='potato',
     )
     user_kate.save()
-   
+
     user_fiona = User.objects.create_user(
         id=2,
         username='fiona',
@@ -125,7 +120,7 @@ def generate_users():
         password='potato',
     )
     user_fiona.save()
-    
+
     user_tori = User.objects.create_user(
         id=3,
         username='tori',
@@ -144,7 +139,7 @@ def generate_entities():
 
 def generate_locations():
     """Generate locations for use in dthm4kaiako tests."""
-    
+
     location_1 = Location.objects.create(
         id=1,
         room='Room 123',
@@ -153,7 +148,7 @@ def generate_locations():
         suburb='Riccarton',
         city='Chrirstchurch',
         region=14,
-        coords=Point(-43,172)
+        coords=Point(-43, 172)
     )
     location_1.save()
 
@@ -165,7 +160,7 @@ def generate_locations():
         suburb='Riccarton',
         city='Chrirstchurch',
         region=14,
-        coords=Point(-12,149)
+        coords=Point(-12, 149)
     )
     location_2.save()
 
@@ -177,18 +172,18 @@ def generate_locations():
         suburb='Riccarton',
         city='Chrirstchurch',
         region=14,
-        coords=Point(-27,188)
+        coords=Point(-27, 188)
     )
     location_3.save()
-    
+
 
 def generate_serieses():
     """Generate serieses for use in dthm4kaiako tests."""
     series_1 = Series.objects.create(
         id=1,
-        name = 'Artificial Intelligence series',
-        abbreviation = 'AI series',
-        description = 'Some description',
+        name='Artificial Intelligence series',
+        abbreviation='AI series',
+        description='Some description',
     )
     series_1.save()
 
@@ -204,7 +199,7 @@ def generate_events():
         id=1,
         name="DTHM for Kaiako Conference 2023",
         description="description",
-        registration_type = 1,
+        registration_type=1,
         start=datetime.date(2023, 6, 24),
         end=datetime.date(2023, 6, 26),
         accessible_online=False,
@@ -216,7 +211,7 @@ def generate_events():
         id=2,
         name="Security in CS",
         description="description",
-        registration_type = 2,
+        registration_type=2,
         start=datetime.date(2023, 2, 13),
         end=datetime.date(2023, 2, 14),
         accessible_online=False,
@@ -228,7 +223,7 @@ def generate_events():
         id=3,
         name="Teaching with AI",
         description="description",
-        registration_type = 4,
+        registration_type=4,
         start=datetime.date(2023, 4, 15),
         end=datetime.date(2023, 4, 15),
         accessible_online=False,
@@ -241,7 +236,7 @@ def generate_events():
         id=4,
         name="Teaching with AI",
         description="description",
-        registration_type = 4,
+        registration_type=4,
         start=datetime.date(2020, 4, 15),
         end=datetime.date(2020, 4, 15),
         accessible_online=False,
@@ -254,7 +249,7 @@ def generate_events():
         id=5,
         name="Intro to logic gates",
         description="description",
-        registration_type = 1,
+        registration_type=1,
         start=datetime.date(2023, 1, 24),
         end=datetime.date(2023, 1, 26),
         accessible_online=False,
@@ -265,7 +260,7 @@ def generate_events():
         id=6,
         name="Cryptocurrency - what is it?",
         description="description",
-        registration_type = 1,
+        registration_type=1,
         start=datetime.date(2023, 4, 3),
         end=datetime.date(2023, 4, 10),
         accessible_online=False,
@@ -276,7 +271,7 @@ def generate_events():
         id=7,
         name="Resource jam!",
         description="description",
-        registration_type = 1,
+        registration_type=1,
         start=datetime.date(2023, 2, 28),
         end=datetime.date(2023, 3, 3),
         accessible_online=False,
@@ -287,7 +282,7 @@ def generate_events():
         id=8,
         name="Zoom for Beginners",
         description="description",
-        registration_type = 1,
+        registration_type=1,
         start=datetime.date(2023, 2, 14),
         end=datetime.date(2023, 3, 14),
         accessible_online=True,
@@ -298,7 +293,8 @@ def generate_events():
 def generate_sessions():
     """Generate sessions for use in dthm4kaiako tests."""
 
-    session_2_event_1 = Session.objects.create(
+    # session_2_event_1
+    Session.objects.create(
         id=1,
         name="session 2",
         description="some description",
@@ -307,7 +303,8 @@ def generate_sessions():
         event=Event.objects.get(id=1),
     )
 
-    session_1_event_1 = Session.objects.create(
+    # session_1_event_1
+    Session.objects.create(
         id=2,
         name="session 1",
         description="some description",
@@ -316,7 +313,8 @@ def generate_sessions():
         event=Event.objects.get(id=1),
     )
 
-    session_1_event_2 = Session.objects.create(
+    # session_1_event_2
+    Session.objects.create(
         id=3,
         name="session 1",
         description="some description",
@@ -325,8 +323,8 @@ def generate_sessions():
         event=Event.objects.get(id=2),
     )
 
-
-    session_2_event_2 = Session.objects.create(
+    # session_2_event_2
+    Session.objects.create(
         id=4,
         name="session 2",
         description="some description",
@@ -335,8 +333,8 @@ def generate_sessions():
         event=Event.objects.get(id=2),
     )
 
-    
-    session_1_event_3 = Session.objects.create(
+    # session_1_event_3
+    Session.objects.create(
         id=5,
         name="session 1",
         description="some description",
@@ -345,8 +343,8 @@ def generate_sessions():
         event=Event.objects.get(id=3),
     )
 
-
-    session_2_event_3 = Session.objects.create(
+    # session_2_event_3
+    Session.objects.create(
         id=6,
         name="session 2",
         description="some description",
@@ -355,7 +353,8 @@ def generate_sessions():
         event=Event.objects.get(id=3),
     )
 
-    session_1_event_4 = Session.objects.create(
+    # session_1_event_4
+    Session.objects.create(
         id=7,
         name="session 1",
         description="some description",
@@ -364,7 +363,8 @@ def generate_sessions():
         event=Event.objects.get(id=4),
     )
 
-    session_2_event_4 = Session.objects.create(
+    # session_2_event_4
+    Session.objects.create(
         id=8,
         name="session 2",
         description="some description",
@@ -373,7 +373,8 @@ def generate_sessions():
         event=Event.objects.get(id=4),
     )
 
-    session_3_event_4 = Session.objects.create(
+    # session_3_event_4
+    Session.objects.create(
         id=9,
         name="session 3",
         description="some description",
@@ -382,7 +383,8 @@ def generate_sessions():
         event=Event.objects.get(id=4),
     )
 
-    session_3_event_5 = Session.objects.create(
+    # session_3_event_5
+    Session.objects.create(
         id=12,
         name="session 3",
         description="some description",
@@ -391,7 +393,8 @@ def generate_sessions():
         event=Event.objects.get(id=5),
     )
 
-    session_4_event_5 = Session.objects.create(
+    # session_4_event_5
+    Session.objects.create(
         id=13,
         name="session 4",
         description="some description",
@@ -400,7 +403,8 @@ def generate_sessions():
         event=Event.objects.get(id=5),
     )
 
-    session_1_event_5 = Session.objects.create(
+    # session_1_event_5
+    Session.objects.create(
         id=10,
         name="session 1",
         description="some description",
@@ -409,7 +413,8 @@ def generate_sessions():
         event=Event.objects.get(id=5),
     )
 
-    session_2_event_5 = Session.objects.create(
+    # session_2_event_5
+    Session.objects.create(
         id=11,
         name="session 2",
         description="some description",
@@ -418,7 +423,8 @@ def generate_sessions():
         event=Event.objects.get(id=5),
     )
 
-    session_3_event_6 = Session.objects.create(
+    # session_3_event_6
+    Session.objects.create(
         id=14,
         name="session 3",
         description="some description",
@@ -427,7 +433,8 @@ def generate_sessions():
         event=Event.objects.get(id=6),
     )
 
-    session_4_event_6 = Session.objects.create(
+    # session_4_event_6
+    Session.objects.create(
         id=15,
         name="session 4",
         start=datetime.datetime(2023, 4, 3, 12, 30, 0),
@@ -435,7 +442,8 @@ def generate_sessions():
         event=Event.objects.get(id=6),
     )
 
-    session_1_event_6 = Session.objects.create(
+    # session_1_event_6
+    Session.objects.create(
         id=16,
         name="session 1",
         description="some description",
@@ -444,7 +452,8 @@ def generate_sessions():
         event=Event.objects.get(id=6),
     )
 
-    session_2_event_6 = Session.objects.create(
+    # session_2_event_6
+    Session.objects.create(
         id=17,
         name="session 2",
         description="some description",
@@ -453,7 +462,8 @@ def generate_sessions():
         event=Event.objects.get(id=6),
     )
 
-    session_3_event_7 = Session.objects.create(
+    # session_3_event_7
+    Session.objects.create(
         id=18,
         name="session 3",
         start=datetime.datetime(2023, 3, 2, 14, 0, 0),
@@ -461,7 +471,8 @@ def generate_sessions():
         event=Event.objects.get(id=7),
     )
 
-    session_1_event_7 = Session.objects.create(
+    # session_1_event_7
+    Session.objects.create(
         id=19,
         name="session 1",
         description="some description",
@@ -470,7 +481,8 @@ def generate_sessions():
         event=Event.objects.get(id=7),
     )
 
-    session_2_event_7 = Session.objects.create(
+    # session_2_event_7
+    Session.objects.create(
         id=20,
         name="session 2",
         description="some description",
@@ -511,48 +523,49 @@ def generate_event_applications():
     """Generate event applications for use in dthm4kaiako tests."""
     event_application_1_pending = EventApplication.objects.create(
         id=1,
-        participant_type = ParticipantType.objects.get(name="Teacher"),
-        user = User.objects.get(id=1),
-        event = Event.objects.get(id=1),
-        billing_physical_address = Address.objects.get(id=1),
-        billing_email_address = "test@test.co.nz"
+        participant_type=ParticipantType.objects.get(name="Teacher"),
+        user=User.objects.get(id=1),
+        event=Event.objects.get(id=1),
+        billing_physical_address=Address.objects.get(id=1),
+        billing_email_address="test@test.co.nz"
     )
     event_application_1_pending.status = 1
     event_application_1_pending.save()
 
     event_application_2_approved = EventApplication.objects.create(
         id=2,
-        participant_type = ParticipantType.objects.get(name="Teacher"),
-        user = User.objects.get(id=2),
-        event = Event.objects.get(id=1),
-        billing_physical_address = Address.objects.get(id=1),
-        billing_email_address = "test@test.co.nz"
+        participant_type=ParticipantType.objects.get(name="Teacher"),
+        user=User.objects.get(id=2),
+        event=Event.objects.get(id=1),
+        billing_physical_address=Address.objects.get(id=1),
+        billing_email_address="test@test.co.nz"
     )
-    event_application_2_approved.status = 2 
+    event_application_2_approved.status = 2
     event_application_2_approved.save()
 
     event_application_3_rejected = EventApplication.objects.create(
         id=3,
-        participant_type = ParticipantType.objects.get(name="Teacher"),
-        user = User.objects.get(id=3),
-        event = Event.objects.get(id=1),
-        billing_physical_address = Address.objects.get(id=1),
-        billing_email_address = "test@test.co.nz"
+        participant_type=ParticipantType.objects.get(name="Teacher"),
+        user=User.objects.get(id=3),
+        event=Event.objects.get(id=1),
+        billing_physical_address=Address.objects.get(id=1),
+        billing_email_address="test@test.co.nz"
     )
     event_application_3_rejected.status = 3
     event_application_3_rejected.save()
 
+
 def generate_event_registration_forms():
     """Generate event registration forms for use in dthm4kaiako tests."""
-    
+
     RegistrationForm.objects.filter(event_id=1).update(
-        open_datetime = datetime.date(2022, 1, 1),
-        close_datetime = datetime.date(2023, 6, 1),
-        terms_and_conditions = "Some terms and conditions.",
+        open_datetime=datetime.date(2022, 1, 1),
+        close_datetime=datetime.date(2023, 6, 1),
+        terms_and_conditions="Some terms and conditions.",
     )
 
     RegistrationForm.objects.filter(event_id=2).update(
-        open_datetime = datetime.date(2022, 1, 2),
-        close_datetime = datetime.date(2023, 2, 1),
-        terms_and_conditions = "Some terms and conditions.",
+        open_datetime=datetime.date(2022, 1, 2),
+        close_datetime=datetime.date(2023, 2, 1),
+        terms_and_conditions="Some terms and conditions.",
     )

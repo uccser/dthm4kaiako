@@ -1,17 +1,15 @@
-from django.test import TestCase
 from http import HTTPStatus
+from unittest import mock
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from allauth.account.models import EmailAddress
-from unittest import mock
-from django.test.client import Client
-from unittest import mock
 
 # TODO: resolve all these failing tests!
+
 
 class AddEventApplicationViewTests(TestCase):
 
     def test_get(self):
-        client = Client()
         User = get_user_model()
         user = User.objects.create_user(
             'user',
@@ -26,18 +24,14 @@ class AddEventApplicationViewTests(TestCase):
             primary=True,
             verified=True
         )
-
         self.client.login(id=1, password='password')
         response = self.client.get("/events/register/1/")
-
-
         with mock.patch('requests.get') as mock_get:
             mock_get.return_value.ok = True
             mock_get.return_value.status_code = 200
             # mock_get.return_value.text = 'Bad Request El'
-
         self.assertEqual(response.status_code, HTTPStatus.OK)
-    
+
     # TODO: need to log in
     def test_post_success(self):
         event_name = "CSSE BBQ"
@@ -68,7 +62,6 @@ class AddEventApplicationViewTests(TestCase):
             'billing_email_address': "testtest@test.com",
             'I_agree_to_the_terms_and_conditions': "on"
         })
-        
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertEqual(response["Location"], f"/events/register/{event_id}/{event_name}/")
 
