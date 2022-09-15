@@ -1,9 +1,4 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
-from django.urls import reverse
-from http import HTTPStatus
-from django.test.utils import override_settings
 
 
 class DeletingApplicationsViaEventDetailViewTest(BaseTestWithDB):
