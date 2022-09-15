@@ -1,6 +1,5 @@
 """Module for the custom Django sample_data command."""
 
-from array import array
 import csv
 import random
 from django.core import management
@@ -8,7 +7,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 from tests.users.factories import EntityFactory
-import datetime
 from resources.models import (
     Language,
     TechnologicalArea,
@@ -82,11 +80,16 @@ class Command(management.base.BaseCommand):
         DietaryRequirement.objects.create(name="As long as there's coffee, I'm happy!")
         print('Dietary requirements created.')
 
-
         # -------------------------- Realistic events for informal demonstrations --------------------------
-        #TODO: finish creating realistic events
+        # TODO: finish creating realistic events
 
-        # sample_location_1 = Location.objects.create(name='University of Canterbury', suburb='Ilam', city='Christchurch', region='14',coords=Point(-43,172))
+        # sample_location_1 = Location.objects.create(
+        #   name='University of Canterbury',
+        #   suburb='Ilam',
+        #   city='Christchurch',
+        #   region='14',
+        #   coords=Point(-43, 172)
+        # )
         # sample_location_2 = Location.objects.create(
         #     room='Room 456',
         #     name='Middleton Grange School',
@@ -94,7 +97,7 @@ class Command(management.base.BaseCommand):
         #     suburb='Riccarton',
         #     city='Chrirstchurch',
         #     region=14,
-        #     coords=Point(-12,149)
+        #     coords=Point(-12, 149)
         # )
 
         # sample_location_3 = Location.objects.create(
@@ -104,27 +107,33 @@ class Command(management.base.BaseCommand):
         #     suburb='Riccarton',
         #     city='Chrirstchurch',
         #     region=14,
-        #     coords=Point(-27,188)
+        #     coords=Point(-27, 188)
         # )
 
         # sample_location_1.save()
         # sample_location_2.save()
         # sample_location_3.save()
 
-        # sample_event_free_1 = Event.objects.create(name='DTHM for Kaiako Conference 2021',
-        #                                      description='Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
-        #                                      + 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject association event, for all teachers in Aotearoa. It\'s all about building your practice as a kaiako, for your learners.\n\n'
-        #                                      + 'Join us for 3 days of:\n\n'
-        #                                      + 'Connecting and reconnecting with colleagues across Aotearoa\n\n'
-        #                                      + 'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
-        #                                      + 'Developing programmes of learning that you will confidently take into your classroom and use immediately',
-        #                                      start=datetime.datetime(2023, 4, 23, 8, 0, 0),
-        #                                      end=datetime.datetime(2023, 4, 23, 8, 0, 0),
-        #                                      published=True,
-        #                                      featured=True,
-        #                                      price=0,
-        #                                      )
-        
+        # sample_event_free_1 = Event.objects.create(
+        #     name='DTHM for Kaiako Conference 2021',
+        #     description=(
+        #         'Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
+        #         'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject '
+        #         'association event, for all teachers in Aotearoa. It\'s all about building your '
+        #         'practice as a kaiako, for your learners.\n\n'
+        #         'Join us for 3 days of:\n\n'
+        #         'Connecting and reconnecting with colleagues across Aotearoa\n\n'
+        #         'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
+        #         'Developing programmes of learning that you will confidently take '
+        #         'into your classroom and use immediately',
+        #     ),
+        #     start=datetime.datetime(2023, 4, 23, 8, 0, 0),
+        #     end=datetime.datetime(2023, 4, 23, 8, 0, 0),
+        #     published=True,
+        #     featured=True,
+        #     price=0,
+        # )
+
         # event_physical_register_1 = Event.objects.create(
         #     name="Python Introduction",
         #     description="Some description",
@@ -198,12 +207,11 @@ class Command(management.base.BaseCommand):
 
         # #TODO: free and paid events
 
-
         # --------------------------------------------------------------------------------------------------
 
         User = get_user_model()
 
-        #TODO: update passwords prior to merging into main branch (settings.SAMPLE_DATA_ADMIN_PASSWORD and settings.SAMPLE_DATA_USER_PASSWORD)
+        # TODO: update passwords prior to merging into main branch (settings.SAMPLE_DATA_ADMIN_PASSWORD and settings.SAMPLE_DATA_USER_PASSWORD)
 
         # Create admin account
         admin = User.objects.create_superuser(

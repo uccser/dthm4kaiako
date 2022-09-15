@@ -23,10 +23,10 @@ from users.models import ( DietaryRequirement, Entity, User )
 from events.filters import UpcomingEventFilter, PastEventFilter
 from events.utils import create_filter_helper, organise_schedule_data
 from .forms import (EventApplicationForm,
-                    TermsAndConditionsForm, 
-                    BillingDetailsForm, 
-                    WithdrawEventApplicationForm, 
-                    ManageEventApplicationForm, 
+                    TermsAndConditionsForm,
+                    BillingDetailsForm,
+                    WithdrawEventApplicationForm,
+                    ManageEventApplicationForm,
                     ManageEventDetailsForm,
                     ManageEventRegistrationFormDetailsForm,
                     ManageEventLocationForm,
@@ -147,10 +147,10 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
     def does_application_exist(self, user):
         """Determines if the user has submitted an application to attend the event.
         The user must also be logged in to see if they have.
-        
+
         Returns:
             True if the user has an application and is logged in, otherwise False.
-        """ 
+        """
 
         return EventApplication.objects.filter(event=self.object.pk, user=user).exists() and user.is_authenticated
 
@@ -206,7 +206,7 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
     template_name = 'events/event_applications.html'
     model = EventApplication
 
-    
+
     def get_context_data(self, **kwargs):
         """Provide the context data for the event applictions view.
 
@@ -298,10 +298,10 @@ def create_deleted_event_application(event, request):
     deleted_event_application.save()
 
 
-def validate_event_application_form(event_application_form, 
-                                    user_update_details_form, 
-                                    terms_and_conditions_form, 
-                                    billing_required, 
+def validate_event_application_form(event_application_form,
+                                    user_update_details_form,
+                                    terms_and_conditions_form,
+                                    billing_required,
                                     billing_details_form,
                                     participant_type_form
                                     ):
@@ -357,23 +357,23 @@ def apply_for_event(request, pk):
 
         if application_exists:
             current_application = user.event_applications.get(event=event)
-            participant_type_form =  ParticipantTypeForm(event, initial={'participant_type': current_application.participant_type.pk})            
+            participant_type_form =  ParticipantTypeForm(event, initial={'participant_type': current_application.participant_type.pk})
             event_application_form = EventApplicationForm(instance=current_application, initial={'show_emergency_contact_fields': not event.accessible_online})
             billing_physical_address = current_application.billing_physical_address
             billing_email_address = current_application.billing_email_address
             bill_to = current_application.bill_to
-            initial_user_data={'show_dietary_requirements': event.is_catered, 
+            initial_user_data={'show_dietary_requirements': event.is_catered,
                             'show_medical_notes': not event.accessible_online,
                             'mobile_phone_number': user.mobile_phone_number,
                             'email_address': user.email_address}
         else:
             event_application_form = EventApplicationForm(initial={'show_emergency_contact_fields': not event.accessible_online})
             participant_type_form =  ParticipantTypeForm(event)
-        
-        user_update_details_form = UserUpdateDetailsForm(instance=user, initial={'show_dietary_requirements': event.is_catered, 
+
+        user_update_details_form = UserUpdateDetailsForm(instance=user, initial={'show_dietary_requirements': event.is_catered,
                     'show_medical_notes': not event.accessible_online
                     }) # autoload existing event application's user data
-        
+
         if billing_required:
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(instance=billing_physical_address, initial=initial_billing_data) # TODO: figure out how to autoload billing info
@@ -382,17 +382,17 @@ def apply_for_event(request, pk):
                 } # User must re-agree each time they update the form
             )
 
-        
+
         if event.is_less_than_one_week_prior_event and event.is_catered:
             messages.warning(request, f'Your dietary requirements may not be considered for catering due to it being too close to the event commencing. Please consider contacting us at {event.contact_email_address}')
-    
+
 
     elif request.method == 'POST':
         # If creating a new application or updating existing application (as Django forms don't support PUT)
-        
-        user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user, 
+
+        user_update_details_form = UserUpdateDetailsForm(request.POST, instance=user,
             initial={
-                'show_dietary_requirements': event.is_catered, 
+                'show_dietary_requirements': event.is_catered,
                 'show_medical_notes': not event.accessible_online
                 }
             )
@@ -410,13 +410,13 @@ def apply_for_event(request, pk):
             billing_details_form = BillingDetailsForm(request.POST, initial=initial_billing_data)
         terms_and_conditions_form = TermsAndConditionsForm(request.POST)
 
-        if validate_event_application_form(event_application_form, 
-                                    user_update_details_form, 
-                                    terms_and_conditions_form, 
-                                    billing_required, 
+        if validate_event_application_form(event_application_form,
+                                    user_update_details_form,
+                                    terms_and_conditions_form,
+                                    billing_required,
                                     billing_details_form,
                                     participant_type_form
-                                    ):          
+                                    ):
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
@@ -478,7 +478,7 @@ def apply_for_event(request, pk):
                     }
                 )
                 event_application.save()
-            
+
             else:
                 event_application, created = EventApplication.objects.update_or_create(
                 user=user, event=event,
@@ -492,7 +492,7 @@ def apply_for_event(request, pk):
                     }
                 )
 
-                event_application.save()            
+                event_application.save()
 
             if application_exists:
                 # Update existing event application
@@ -503,7 +503,7 @@ def apply_for_event(request, pk):
                 # Create new event application
                 messages.success(request, 'New event application created successfully')
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug})) # Return to event detail page
-        
+
         # else:
         #     messages.warning(request, 'Could not submit event application due it have invalid field(s)')
         #     context = {
@@ -531,7 +531,7 @@ def apply_for_event(request, pk):
     return render(request, 'events/apply.html', context)
 
 
-#TODO: add filter 
+#TODO: add filter
 class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
 
@@ -550,7 +550,7 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 
         if user.is_authenticated:
             if Event.objects.filter(event_staff__pk=user.pk).exists():
-                # TODO: order these 
+                # TODO: order these
                 today = datetime.today()
                 context['events_user_is_staff_for_future'] = Event.objects.filter(event_staff__pk=user.pk, start__gte=today).order_by('name')
                 context['events_user_is_staff_for_past'] = Event.objects.filter(event_staff__pk=user.pk, start__lte=today).order_by('name')
@@ -576,12 +576,12 @@ def is_in_past_or_cancelled(event):
 @login_required
 def manage_event(request, pk):
     """
-    View for event management. 
+    View for event management.
     Contains form sets for each event related object (similar to that in Admin app).
     These can be viewed, updated (based on non-read only fields) and deleted.
     """
     """
-    View for event management. 
+    View for event management.
     Contains form sets for each event related object (similar to that in Admin app).
     These can be viewed, updated (based on non-read only fields) and deleted.
     """
@@ -630,8 +630,8 @@ def user_dietary_requirements(application):
 
 @login_required
 def manage_event_application(request, pk_event, pk_application):
-    """ 
-    
+    """
+
     """
 
     event_application = EventApplication.objects.get(pk=pk_application)
@@ -679,7 +679,7 @@ def manage_event_application(request, pk_event, pk_application):
             event_application.save()
             messages.success(request, 'Event application updated successfully')
             return HttpResponseRedirect(reverse(
-                "events:manage_event_application", 
+                "events:manage_event_application",
                 kwargs={'pk_event': pk_event, 'pk_application': pk_application}
                 ))
         else:

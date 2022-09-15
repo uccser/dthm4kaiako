@@ -71,8 +71,18 @@ class User(AbstractUser):
     username = models.CharField(max_length=50, default='user')
     first_name = models.CharField(max_length=50, verbose_name='first name')
     last_name = models.CharField(max_length=150, verbose_name='last name')
-    dietary_requirements = models.ManyToManyField(DietaryRequirement, related_name='users', blank=True, default='None')
-    educational_entities = models.ManyToManyField(Entity, related_name='users', max_length=200, verbose_name='School(s) and/or educational organisation or association participiant is from')
+    dietary_requirements = models.ManyToManyField(
+        DietaryRequirement,
+        related_name='users',
+        blank=True,
+        default='None'
+    )
+    educational_entities = models.ManyToManyField(
+        Entity,
+        related_name='users',
+        max_length=200,
+        verbose_name='School(s) and/or educational organisation or association participiant is from'
+    )
     user_region = models.PositiveSmallIntegerField(
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
@@ -86,8 +96,11 @@ class User(AbstractUser):
         null=False,
         default='',
     )
-    medical_notes = models.TextField(default='', help_text="How can we better look after you? e.g. accessibility, allergies",blank=True)
-
+    medical_notes = models.TextField(
+        default='',
+        help_text="How can we better look after you? e.g. accessibility, allergies",
+        blank=True
+    )
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['first_name']
@@ -96,28 +109,25 @@ class User(AbstractUser):
         """Return URL for user's webpage."""
         return reverse('users:detail', kwargs={'pk': self.pk})
 
-
     def __str__(self):
         """Name of the user."""
         return f'{self.first_name} {self.last_name}'
 
-
-# TODO: figure out why valid phone numbers are not being accepted in form!    
+# TODO: figure out why valid phone numbers are not being accepted in form!
     def clean(self):
         """Validate user model attributes.
 
         Raises:
             ValidationError if invalid attributes.
         """
-
-        mobile_phone_number_pattern = re.compile("^[-\(\)\+\s\./0-9]*$")
-
+        mobile_phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
         if not mobile_phone_number_pattern.match(str(self.mobile_phone_number)):
             raise ValidationError(
                 {
                     'mobile_phone_number':
-                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
+                    _(
+                        'Phone number can include the area code, follow by any number of '
+                        'numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678'
+                    )
                 }
             )
-
-

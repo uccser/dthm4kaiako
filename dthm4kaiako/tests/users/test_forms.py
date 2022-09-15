@@ -14,7 +14,7 @@ class UserUpdateDetailsFormTests(TestCase):
             username="Johnny",
             email="testing@testing.com",
             password="poorpassword123"
-            )
+        )
 
     def test_all_fields_present(self):
         form = UserUpdateDetailsForm()

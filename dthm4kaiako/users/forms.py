@@ -8,9 +8,10 @@ from users.models import Entity, DietaryRequirement
 from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField, ChoiceField, Select
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
-from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
+from utils.new_zealand_regions import REGION_CHOICES
 
 User = get_user_model()
+
 
 class SignupForm(ModelForm):
     """Sign up for user registration."""
@@ -52,6 +53,7 @@ class UserCreationForm(forms.UserCreationForm):
         model = User
         fields = ('email', 'first_name', 'last_name')
 
+
 class UserUpdateDetailsForm(ModelForm):
     """
     Form class for updating the user's details.
@@ -61,23 +63,44 @@ class UserUpdateDetailsForm(ModelForm):
     email_address_confirm = EmailField(max_length=150, label="Confirm email address", required=True)
     mobile_phone_number = CharField(max_length=30, required=True)
     mobile_phone_number_confirm = CharField(max_length=30, required=True, label="Confim mobile phone number")
-    educational_entities = ModelMultipleChoiceField(queryset=Entity.objects.all(), required=True, widget=CheckboxSelectMultiple, label="What school(s) and/or educational organisation or association do you belong to?")
-    dietary_requirements = ModelMultipleChoiceField(queryset=DietaryRequirement.objects.filter(~Q(name='None')), required=False, widget=CheckboxSelectMultiple)
-    user_region = ChoiceField(required=True, choices=REGION_CHOICES, label="region", widget=Select())
-
+    educational_entities = ModelMultipleChoiceField(
+        queryset=Entity.objects.all(),
+        required=True,
+        widget=CheckboxSelectMultiple,
+        label="What school(s) and/or educational organisation or association do you belong to?"
+    )
+    dietary_requirements = ModelMultipleChoiceField(
+        queryset=DietaryRequirement.objects.filter(~Q(name='None')),
+        required=False,
+        widget=CheckboxSelectMultiple
+    )
+    user_region = ChoiceField(
+        required=True,
+        choices=REGION_CHOICES,
+        label="region",
+        widget=Select()
+    )
 
     # TODO: add in for requirmement U38 (ability to add custom dietary requirements)
     # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
-
-    #TODO: change the label for the user_region field to just be "label"
+    # TODO: change the label for the user_region field to just be "label"
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'user_region', 'educational_entities', 'medical_notes', 'dietary_requirements']
+        fields = [
+            'first_name',
+            'last_name',
+            'user_region',
+            'educational_entities',
+            'medical_notes',
+            'dietary_requirements'
+        ]
 
     def __init__(self, *args, **kwargs):
-        """
-        If the dietary requirments multi-check box lists is not desired to be visible, 'show_dietary_requirements' in the initial dictionary indicates False.
+        """Initialise method for user update details form.
+
+        If the dietary requirments multi-check box lists is not desired to be
+        visible, 'show_dietary_requirements' in the initial dictionary indicates False.
         """
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -110,5 +133,5 @@ class UserUpdateDetailsForm(ModelForm):
         if mobile_phone_number and mobile_phone_number_confirm and mobile_phone_number != mobile_phone_number_confirm:
             self._errors['mobile_phone_number_confirm'] = self.error_class(['Mobile phone numbers do not match.'])
             del self.cleaned_data['mobile_phone_number_confirm']
-        
+
         return cleaned_data

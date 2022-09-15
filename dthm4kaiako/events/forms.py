@@ -1,29 +1,27 @@
 """Forms for events application."""
 
-# from attr import fields
-from dataclasses import field
-from decimal import MAX_EMAX
-from email.policy import default
 from django import forms
-from events.models import (Address, 
-                           DeletedEventApplication, 
-                           EventApplication, 
-                           Event, 
-                           RegistrationForm,
-                           Location,
-                           EventCSV,
-                           EventApplicationsCSV, Ticket,
-                           )
+from events.models import (
+    Address,
+    DeletedEventApplication,
+    Event,
+    EventApplication,
+    EventApplicationsCSV,
+    EventCSV,
+    Location,
+    RegistrationForm,
+    Ticket,
+)
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from django.forms import EmailField
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
+
 User = get_user_model()
+
 
 class ParticipantTypeForm(forms.Form):
     """ Simple form to allow a user to select their ticket/participant type that is specific to the event. """
@@ -69,14 +67,17 @@ class EventApplicationForm(ModelForm):
         #             del self.fields['emergency_contact_relationship']
         #             del self.fields['emergency_contact_phone_number']
 
-
     class Meta:
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['representing', 'emergency_contact_first_name',
-                  'emergency_contact_last_name', 'emergency_contact_relationship', 'emergency_contact_phone_number'
-                 ]
+        fields = [
+            'representing',
+            'emergency_contact_first_name',
+            'emergency_contact_last_name',
+            'emergency_contact_relationship',
+            'emergency_contact_phone_number',
+        ]
 
 
 class TermsAndConditionsForm(forms.Form):
@@ -154,7 +155,7 @@ class ManageEventDetailsForm(ModelForm):
 
         model = Event
         exclude = ('published', 'is_cancelled', 'ticket_types')
-    
+
     def __init__(self, *args, **kwargs):
         super(ManageEventDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -174,8 +175,8 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
 
         model = RegistrationForm
         field = ['open_datetime', 'close_datetime', 'terms_and_conditions']
-        exclude = ['event']        
-    
+        exclude = ['event']
+
     def __init__(self, *args, **kwargs):
         super(ManageEventRegistrationFormDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -192,8 +193,8 @@ class ManageEventLocationForm(ModelForm):
         model = Location
         fields = '__all__'
         exclude = ['event']
-        
-    
+
+
     def __init__(self, *args, **kwargs):
         super(ManageEventLocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -211,7 +212,7 @@ class BuilderFormForEventsCSV(ModelForm):
         model = EventCSV
         fields = '__all__'
         exclude = ['event']
-        
+
     def __init__(self, *args, **kwargs):
         super(BuilderFormForEventsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -230,7 +231,7 @@ class BuilderFormForEventApplicationsCSV(ModelForm):
         model = EventApplicationsCSV
         fields = '__all__'
         exclude = ['event']
-        
+
     def __init__(self, *args, **kwargs):
         super(BuilderFormForEventApplicationsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -246,14 +247,14 @@ class TicketTypeForm(ModelForm):
 
         model = Ticket
         fields = '__all__'
-        
+
     def __init__(self, *args, **kwargs):
         super(TicketTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        
+
 MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
 
@@ -268,7 +269,7 @@ class ContactParticipantsForm(forms.Form):
     #TODO: figure out how to get validation for this to work - currently wipes form when invalid
     send_to_approved_participants = forms.BooleanField(required=False, label='Send to event participants who have been approved')
     send_to_pending_applicants = forms.BooleanField(required=False, label='Send to event applicants who are pending approval') #TODO: hide this for events where events are "apply" type (compared to "register" type)
-    
+
     captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     def __init__(self, *args, **kwargs):
@@ -277,7 +278,7 @@ class ContactParticipantsForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-    
+
     # TODO: figure out how to get this to show
     def clean(self):
         cleaned_data = super(ContactParticipantsForm, self).clean()
@@ -332,7 +333,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
 
         model = Event
         exclude = ('published', 'is_cancelled', 'ticket_types')
-    
+
     def __init__(self, *args, **kwargs):
         super(ManageEventDetailsReadOnlyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -365,8 +366,8 @@ class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
 
         model = RegistrationForm
         field = ['open_datetime', 'close_datetime', 'terms_and_conditions']
-        exclude = ['event']        
-    
+        exclude = ['event']
+
     def __init__(self, *args, **kwargs):
         super(ManageEventRegistrationFormDetailsReadOnlyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
