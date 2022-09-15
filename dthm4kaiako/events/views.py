@@ -368,7 +368,7 @@ def apply_for_event(request, pk):
                             'email_address': user.email_address}
         else:
             event_application_form = EventApplicationForm(initial={'show_emergency_contact_fields': not event.accessible_online})
-            participant_type_form =  ParticipantTypeForm(initial=initial_for_participant_type)
+            participant_type_form =  ParticipantTypeForm(event)
         
         user_update_details_form = UserUpdateDetailsForm(instance=user, initial={'show_dietary_requirements': event.is_catered, 
                     'show_medical_notes': not event.accessible_online
