@@ -125,7 +125,7 @@ class Series(models.Model):
 
 
 class Ticket(models.Model):
-    """Model for event tickets e.g. event staff, facilitator, teacher, student, with costs e.g. $0 for free or say $40 to attend. 
+    """Model for event tickets e.g. event staff, facilitator, teacher, student, with costs e.g. $0 for free or say $40 to attend.
     This is usually for events that require event applications to be approved i.e. paid"""
     name = models.CharField(max_length=200, help_text="Participant type e.g. teacher, event staff")
     price = models.FloatField(help_text="Cost for participant to attend in NZD")
@@ -174,7 +174,7 @@ class Event(models.Model):
     registration_link = models.URLField(blank=True, null=True, help_text="Optional. This is a link to an external location that will gather event applications' information e.g. Google Form")
     start = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")     # TODO: Cannot be null if published or event applications exist
     end = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")       # TODO: Cannot be null if published or event applications exist
-    accessible_online = models.BooleanField( 
+    accessible_online = models.BooleanField(
         default=False,
         help_text='Select if this event will be attended online'
     )
@@ -219,8 +219,8 @@ class Event(models.Model):
     )
     is_cancelled = models.BooleanField(
         default=False,
-        null=False,    
-        help_text='This event has been cancelled'    
+        null=False,
+        help_text='This event has been cancelled'
     )
     # TODO: add defaults that are free upon creation
     ticket_types = models.ManyToManyField(
@@ -284,7 +284,7 @@ class Event(models.Model):
         return super().save(*args, **kwargs)
 
 
-    #TODO: use this function instead of including logic in template to improve tidiness
+    # TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):
         """ Returns True if the event is an event which users can register or apply to attend.
@@ -323,7 +323,7 @@ class Event(models.Model):
     @property
     def start_weekday_name(self):
         """
-        Returns the weekday name of the start date of the event. 
+        Returns the weekday name of the start date of the event.
         For example, "Wednesday".
         """
         return self.start.strftime('%A')
@@ -351,10 +351,10 @@ class Event(models.Model):
         """
 
         status_counts = {
-            'pending' : 0,
-            'approved' : 0,
-            'rejected' : 0,
-            'withdrawn' : 0
+            'pending': 0,
+            'approved': 0,
+            'rejected': 0,
+            'withdrawn': 0
         }
         event_applications = EventApplication.objects.filter(event=self)
 
@@ -369,10 +369,10 @@ class Event(models.Model):
 
             status_counts[status_string] += 1
 
-        status_counts['withdrawn'] = DeletedEventApplication.objects.filter(event=self).count()       
+        status_counts['withdrawn'] = DeletedEventApplication.objects.filter(event=self).count()
 
         return status_counts
-    
+
     @property
     def ticket_type_counts(self):
         """
@@ -401,10 +401,10 @@ class Event(models.Model):
         """
 
         reason_counts = {
-            'prefer_not_to_say' : 0,
-            'illness' : 0,
-            'not_interested' : 0,
-            'change_of_plans' : 0,
+            'prefer_not_to_say': 0,
+            'illness': 0,
+            'not_interested': 0,
+            'change_of_plans': 0,
             'too_expensive': 0,
             'inconvenient_location': 0,
             'other': 0
@@ -468,7 +468,7 @@ class Event(models.Model):
                     _('Start datetime is required when the event is published.')
                 }
             )
-        
+
         if self.published == True and self.end == None:
             raise ValidationError(
                 {
@@ -476,7 +476,7 @@ class Event(models.Model):
                     _('End datetime is required when the event is published.')
                 }
             )
-        
+
 
     class Meta:
         """Meta options for class."""
@@ -553,7 +553,7 @@ class Address(models.Model):
         max_length=300,
         default='New Zealand'
         )
-    
+
     def __str__(self):
         """Text representation of an address."""
         return self.get_full_address()
@@ -636,28 +636,28 @@ class EventApplication(models.Model):
         related_name='event_applications',
     )
     emergency_contact_first_name = models.CharField(
-        max_length=200, 
+        max_length=200,
         verbose_name='emergency contact\'s first name',
         blank=False,
         null=False,
         default='',
         )
     emergency_contact_last_name = models.CharField(
-        max_length=200, 
+        max_length=200,
         verbose_name='emergency contact\'s last name',
         blank=False,
         null=False,
         default='',
         )
     emergency_contact_relationship = models.CharField(
-        max_length=150, 
+        max_length=150,
         verbose_name='relationship with emergency contact',
         blank=False,
         null=False,
         default='',
         )
     emergency_contact_phone_number =  models.CharField(
-        max_length=40, 
+        max_length=40,
         verbose_name='emergency contact\'s phone number',
         blank=False,
         null=False,
@@ -667,7 +667,7 @@ class EventApplication(models.Model):
         default=False
     )
     bill_to = models.CharField(
-        max_length=200, 
+        max_length=200,
         null=False,
         default='',
         help_text="Who will be paying for this participant to attend?"
@@ -737,7 +737,7 @@ class EventApplication(models.Model):
 
 class DeletedEventApplication(models.Model):
     """
-    Model for a deleted event application. 
+    Model for a deleted event application.
     It contains the bare minimum information so that there is no identifiable information.
     """
 
@@ -780,11 +780,11 @@ class DeletedEventApplication(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Override save to check that if the deletion reasons is 'other' 
-        that there is a related reason for this (not an empty string), 
+        Override save to check that if the deletion reasons is 'other'
+        that there is a related reason for this (not an empty string),
         otherwise, we change the reason from 'other' to 'prefer not to say'.
         """
-        
+
         if self.deletion_reason == 7 and not self.other_reason_for_deletion:
             self.deletion_reason = 1
         super(DeletedEventApplication, self).save(*args, **kwargs)
@@ -795,7 +795,7 @@ TERMS_AND_CONDITIONS_DEFAULT = "<p>Expenses for travel and accommodation are not
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    open_datetime = models.DateTimeField(null=True,blank=True) 
+    open_datetime = models.DateTimeField(null=True,blank=True)
     close_datetime = models.DateTimeField(null=True,blank=True)
     terms_and_conditions = RichTextUploadingField(default=TERMS_AND_CONDITIONS_DEFAULT)
     event = models.OneToOneField(
@@ -819,7 +819,7 @@ class RegistrationForm(models.Model):
     def __str__(self):
         """Text representation of an event registration form."""
         return f'{self.event.name}'
-    
+
     # TODO: test these
     def clean(self):
         """Validate event registration form model attributes.
@@ -850,7 +850,7 @@ class RegistrationForm(models.Model):
                     _('At least one ticket/participant type is required for registrations to open.')
                 }
             )
-        
+
     def save(self, *args, **kwargs):
         self.full_clean()
         return super(RegistrationForm, self).save(*args, **kwargs)
@@ -863,7 +863,7 @@ def create_registration_form(sender, instance, created, **kwargs):
         RegistrationForm.objects.create(event=instance)
 
 
-#TODO: come up with a way to not have to manually put in the Event fields as modifying Event will impact this model.
+# TODO: come up with a way to not have to manually put in the Event fields as modifying Event will impact this model.
 class EventCSV(models.Model):
     """Model for which fields are included within an Event based CSV."""
     event = models.OneToOneField(
@@ -914,7 +914,8 @@ class EventCSV(models.Model):
                 }
             )
 
-#TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
+
+# TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
 class EventApplicationsCSV(models.Model):
     """Model for which fields are included within an Event Application based CSV."""
     event = models.OneToOneField(
@@ -939,7 +940,7 @@ class EventApplicationsCSV(models.Model):
     mobile_phone_number = models.BooleanField(default=False)
     email_address = models.BooleanField(default=False)
     how_we_can_best_accommodate_them = models.BooleanField(default=False) # NOTE: called medical notes elsewhere but called this for user-friendliness since this is a user-facing string
-    
+
     representing = models.BooleanField(default=False)
     emergency_contact_first_name = models.BooleanField(default=False)
     emergency_contact_last_name = models.BooleanField(default=False)

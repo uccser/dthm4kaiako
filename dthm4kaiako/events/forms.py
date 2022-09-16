@@ -99,7 +99,11 @@ class BillingDetailsForm(ModelForm):
     """Simple form for event registration billing details."""
 
     bill_to = forms.CharField(max_length=200, required=True, help_text="Who will be paying for you?")
-    billing_email_address = EmailField(required=True, label='Billing email address', help_text="Email address of who will be paying for you")
+    billing_email_address = EmailField(
+        required=True,
+        label='Billing email address',
+        help_text="Email address of who will be paying for you"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -147,6 +151,7 @@ class ManageEventApplicationForm(ModelForm):
         model = EventApplication
         fields = ['status', 'paid', 'participant_type', 'staff_comments', 'admin_billing_comments']
 
+
 class ManageEventDetailsForm(ModelForm):
     """ Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
 
@@ -164,7 +169,8 @@ class ManageEventDetailsForm(ModelForm):
 
 
 class DateTimePickerInput(forms.DateTimeInput):
-        input_type = 'datetime'
+
+    input_type = 'datetime'
 
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
@@ -194,12 +200,12 @@ class ManageEventLocationForm(ModelForm):
         fields = '__all__'
         exclude = ['event']
 
-
     def __init__(self, *args, **kwargs):
         super(ManageEventLocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+
 
 # TODO: allow for selecting all boxes at once
 # TODO: add multi select for choosing subset of events
@@ -266,9 +272,16 @@ class ContactParticipantsForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
 
-    #TODO: figure out how to get validation for this to work - currently wipes form when invalid
-    send_to_approved_participants = forms.BooleanField(required=False, label='Send to event participants who have been approved')
-    send_to_pending_applicants = forms.BooleanField(required=False, label='Send to event applicants who are pending approval') #TODO: hide this for events where events are "apply" type (compared to "register" type)
+    # TODO: figure out how to get validation for this to work - currently wipes form when invalid
+    send_to_approved_participants = forms.BooleanField(
+        required=False,
+        label='Send to event participants who have been approved'
+    )
+    # TODO: hide this for events where events are "apply" type (compared to "register" type)
+    send_to_pending_applicants = forms.BooleanField(
+        required=False,
+        label='Send to event applicants who are pending approval'
+    )
 
     captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
@@ -284,11 +297,13 @@ class ContactParticipantsForm(forms.Form):
         cleaned_data = super(ContactParticipantsForm, self).clean()
         send_to_approved_participants = cleaned_data.get('send_to_approved_participants')
         send_to_pending_applicants = cleaned_data.get('send_to_pending_applicants')
-        if send_to_approved_participants == False and send_to_pending_applicants == False:
-            self._errors['send_to_approved_participants'] = self.error_class(['Must choose to send email to either or both groups of participants.'])
+        if not send_to_approved_participants and not send_to_pending_applicants:
+            self._errors['send_to_approved_participants'] = self.error_class(
+                ['Must choose to send email to either or both groups of participants.']
+            )
 
 
-# ---------------------------- Forms for event management when event is cancelled or in the past ----------------------------------
+# ------------- Forms for event management when event is cancelled or in the past -------------
 
 PENDING = 1
 APPROVED = 2
@@ -299,13 +314,14 @@ APPLICATION_STATUSES = (
     (REJECTED, _('Rejected')),
 )
 
+
 class ManageEventApplicationReadOnlyForm(ModelForm):
     """ Simple form to allow a user to submit an application to attend an event. """
 
-    status = forms.ChoiceField(disabled = True, choices = APPLICATION_STATUSES, required=False)
-    paid = forms.BooleanField(disabled = True, required=False)
+    status = forms.ChoiceField(disabled=True, choices=APPLICATION_STATUSES, required=False)
+    paid = forms.BooleanField(disabled=True, required=False)
     staff_comments = forms.CharField(disabled=True, required=False)
-    admin_billing_comments = forms.CharField(disabled = True, required=False)
+    admin_billing_comments = forms.CharField(disabled=True, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

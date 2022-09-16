@@ -33,7 +33,8 @@ class EventFactory(DjangoModelFactory):
 
     name = Faker('sentence', nb_words=3)
     description = Faker('paragraph', nb_sentences=50)
-    # registration_link = Faker('url') #TODO: turn off while testing register button
+    # TODO: turn off while testing register button
+    # registration_link = Faker('url')
     published = True
     show_schedule = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))

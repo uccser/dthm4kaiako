@@ -205,19 +205,17 @@ class Command(management.base.BaseCommand):
         # # event_physical_url_1.locations.set(sample_location_3)
         # event_physical_url_1.save()
 
-        # #TODO: free and paid events
+        # TODO: free and paid events
 
         # --------------------------------------------------------------------------------------------------
 
         User = get_user_model()
 
-        # TODO: update passwords prior to merging into main branch (settings.SAMPLE_DATA_ADMIN_PASSWORD and settings.SAMPLE_DATA_USER_PASSWORD)
-
         # Create admin account
         admin = User.objects.create_superuser(
             'admin',
             'admin@dthm4kaiako.ac.nz',
-            password="password",
+            password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
             first_name='Admin',
             last_name='Account'
         )
@@ -233,7 +231,7 @@ class Command(management.base.BaseCommand):
         user = User.objects.create_user(
             'user',
             'user@dthm4kaiako.ac.nz',
-            password="password",
+            password=settings.SAMPLE_DATA_USER_PASSWORD,
             first_name='Alex',
             last_name='Doe'
         )

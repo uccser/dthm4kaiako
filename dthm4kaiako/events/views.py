@@ -531,7 +531,7 @@ def apply_for_event(request, pk):
     return render(request, 'events/apply.html', context)
 
 
-#TODO: add filter
+# TODO: add filter
 class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
 
