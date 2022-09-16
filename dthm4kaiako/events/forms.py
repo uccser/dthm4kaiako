@@ -24,7 +24,7 @@ User = get_user_model()
 
 
 class ParticipantTypeForm(forms.Form):
-    """ Simple form to allow a user to select their ticket/participant type that is specific to the event. """
+    """Simple form to allow a user to select their ticket/participant type that is specific to the event."""
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
@@ -48,7 +48,7 @@ class ParticipantTypeForm(forms.Form):
 
 
 class EventApplicationForm(ModelForm):
-    """ Simple form to allow a user to submit an application to attend an event. """
+    """Simple form to allow a user to submit an application to attend an event."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -81,7 +81,7 @@ class EventApplicationForm(ModelForm):
 
 
 class TermsAndConditionsForm(forms.Form):
-    """ Simple form to allow the user to agree to the terms and conditions.
+    """Simple form to allow the user to agree to the terms and conditions.
     This is a different form from the EventRegistrationForm so that the terms
     and conditions can appear nicely after that form.
     """
@@ -137,7 +137,7 @@ class WithdrawEventApplicationForm(ModelForm):
 # ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventApplicationForm(ModelForm):
-    """ Simple form to allow a user to submit an application to attend an event. """
+    """Simple form to allow a user to submit an application to attend an event."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -153,7 +153,7 @@ class ManageEventApplicationForm(ModelForm):
 
 
 class ManageEventDetailsForm(ModelForm):
-    """ Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -174,7 +174,7 @@ class DateTimePickerInput(forms.DateTimeInput):
 
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
-    """ Simple form for updating the event registration form information as an event staff member."""
+    """Simple form for updating the event registration form information as an event staff member."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""
@@ -191,7 +191,7 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
 
 
 class ManageEventLocationForm(ModelForm):
-    """ Simple form for updating the event location information as an event staff member."""
+    """Simple form for updating the event location information as an event staff member."""
 
     class Meta:
         """Metadata for ManageEventLocationForm class."""
@@ -210,7 +210,7 @@ class ManageEventLocationForm(ModelForm):
 # TODO: allow for selecting all boxes at once
 # TODO: add multi select for choosing subset of events
 class BuilderFormForEventsCSV(ModelForm):
-    """ Simple form for selecting which Event model fields will be included the generated CSV."""
+    """Simple form for selecting which Event model fields will be included the generated CSV."""
 
     class Meta:
         """Metadata for CSVBuilderFormForEvent class."""
@@ -229,7 +229,7 @@ class BuilderFormForEventsCSV(ModelForm):
 # TODO: allow for selecting all boxes at once
 # TODO: add multi select for choosing subset of event applications OR based on type e.g. approved
 class BuilderFormForEventApplicationsCSV(ModelForm):
-    """ Simple form for selecting which Event Application model fields will be included the generated CSV."""
+    """Simple form for selecting which Event Application model fields will be included the generated CSV."""
 
     class Meta:
         """Metadata for BuilderFormForEventApplicationsCSV class."""
@@ -246,7 +246,7 @@ class BuilderFormForEventApplicationsCSV(ModelForm):
 
 
 class TicketTypeForm(ModelForm):
-    """ Simple form for creating new ticket/participant type for an event."""
+    """Simple form for creating new ticket/participant type for an event."""
 
     class Meta:
         """Metadata for NewTicketType class."""
@@ -316,7 +316,7 @@ APPLICATION_STATUSES = (
 
 
 class ManageEventApplicationReadOnlyForm(ModelForm):
-    """ Simple form to allow a user to submit an application to attend an event. """
+    """Simple form to allow a user to submit an application to attend an event."""
 
     status = forms.ChoiceField(disabled=True, choices=APPLICATION_STATUSES, required=False)
     paid = forms.BooleanField(disabled=True, required=False)
@@ -324,6 +324,7 @@ class ManageEventApplicationReadOnlyForm(ModelForm):
     admin_billing_comments = forms.CharField(disabled=True, required=False)
 
     def __init__(self, *args, **kwargs):
+        """Initialiser method for class."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -337,12 +338,13 @@ class ManageEventApplicationReadOnlyForm(ModelForm):
 
     class Meta:
         """Metadata for EventApplicationForm class."""
+
         model = EventApplication
         fields = ['status', 'paid', 'staff_comments', 'admin_billing_comments']
 
 
 class ManageEventDetailsReadOnlyForm(ModelForm):
-    """ Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -375,7 +377,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
 
 
 class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
-    """ Simple form for updating the event registration form information as an event staff member."""
+    """Form for updating the event registration form information as an event staff member."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""

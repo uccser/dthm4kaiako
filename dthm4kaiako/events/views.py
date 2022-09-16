@@ -146,18 +146,17 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         return Event.objects.filter(published=True).prefetch_related('locations')
 
     def does_application_exist(self, user):
-        """Determines if the user has submitted an application to attend the event.
+        """Determine if the user has submitted an application to attend the event.
+
         The user must also be logged in to see if they have.
 
         Returns:
             True if the user has an application and is logged in, otherwise False.
         """
-
         return EventApplication.objects.filter(event=self.object.pk, user=user).exists() and user.is_authenticated
 
     def get_application_pk(self, user):
-        """Returns the primary key of the user's event application of the event."""
-
+        """Return the primary key of the user's event application of the event."""
         event_application_pk = 0
         if EventApplication.objects.filter(event=self.object.pk, user=user).exists():
             event_application = EventApplication.objects.get(event=self.object.pk, user=user)
@@ -235,8 +234,7 @@ class EventApplicationsView(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def delete_application_via_application_page(request, pk):
-    """Allowing a user to delete an existing event application from their event applications page."""
-
+    """Allow a user to delete an existing event application from their event applications page."""
     event_application = get_object_or_404(EventApplication, pk=pk)
     event = Event.objects.get(pk=event_application.event.pk)
 
@@ -257,8 +255,7 @@ def delete_application_via_application_page(request, pk):
 
 @login_required
 def delete_application_via_event_page(request, pk):
-    """ Allowing a user to delete an existing event application from their event applications page."""
-
+    """Allow a user to delete an existing event application from their event applications page."""
     event_application = get_object_or_404(EventApplication, pk=pk)
     event = Event.objects.get(pk=event_application.event.pk)
 
@@ -279,10 +276,7 @@ def delete_application_via_event_page(request, pk):
 
 @login_required
 def create_deleted_event_application(event, request):
-    """
-    Create and save DeletedEventApplication based on the retrieved deletion reason and/or other reason for deletion.
-    """
-
+    """Create DeletedEventApplication based on the retrieved deletion reason and/or other reason for deletion."""
     reason = request.POST['deletion_reason']
     deleted_event_application = DeletedEventApplication.objects.create(
         deletion_reason=reason,
@@ -308,12 +302,11 @@ def validate_event_application_form(
             billing_details_form,
             participant_type_form
         ):
-    """Validates that the event application is valid.
+    """Validate that the event application is valid.
 
     Also accommodates for the billing section and dietary requirements sections
     to be only validated if they are needed i.e. are rended.
     """
-
     if (
             event_application_form.is_valid() and
             user_update_details_form.is_valid() and
@@ -327,9 +320,7 @@ def validate_event_application_form(
 
 
 def does_application_exist(user, event):
-    """
-    Returns True if event application already exists for the given user and event.
-    """
+    """Return True if event application already exists for the given user and event."""
     return user.event_applications.filter(event=event).exists()
 
 
@@ -343,7 +334,6 @@ def apply_for_event(request, pk):
     We create a new application if it doesn't already exist, otherwise
     we allow the user to update their existing application.
     """
-
     event = Event.objects.get(pk=pk)
     user = request.user
 
@@ -608,23 +598,17 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 
 
 def is_in_past_or_cancelled(event):
-    """Returns True if event is in the past or it has been cancelled."""
+    """Return True if event is in the past or it has been cancelled."""
     return event.end < now() or event.is_cancelled
 
 
 @login_required
 def manage_event(request, pk):
-    """
-    View for event management.
-    Contains form sets for each event related object (similar to that in Admin app).
-    These can be viewed, updated (based on non-read only fields) and deleted.
-    """
-    """
-    View for event management.
-    Contains form sets for each event related object (similar to that in Admin app).
-    These can be viewed, updated (based on non-read only fields) and deleted.
-    """
+    """View for event management.
 
+    Contains form sets for each event related object (similar to that in Admin app).
+    These can be viewed, updated (based on non-read only fields) and deleted.
+    """
     event = Event.objects.get(pk=pk)
     event_applications = EventApplication.objects.filter(event=event)
     registration_form = event.registration_form
@@ -665,6 +649,7 @@ def manage_event(request, pk):
 
 
 def user_dietary_requirements(application):
+    """"""
     return format_html_join(
         '\n',
         '<li>{}</li>',
@@ -674,10 +659,7 @@ def user_dietary_requirements(application):
 
 @login_required
 def manage_event_application(request, pk_event, pk_application):
-    """
-
-    """
-
+    """"""
     event_application = EventApplication.objects.get(pk=pk_application)
     event = event_application.event
     context = {
@@ -738,8 +720,7 @@ def manage_event_application(request, pk_event, pk_application):
 # TODO: add event staff access only
 @login_required
 def manage_event_details(request, pk):
-    """ Allowing event staff to update event details as well as deleting the event if desired."""
-
+    """Allow event staff to update event details as well as deleting the event if desired."""
     event = Event.objects.get(pk=pk)
     context = {
         'event': event,
@@ -817,10 +798,11 @@ def manage_event_details(request, pk):
 # TODO: add event staff access only
 @login_required
 def manage_event_registration_form_details(request, pk):
-    """ Allowing event staff to update event registration form details.
-    Note that registration_form is the RegistrationForm object (as per the model) and
-    registration_form_details_form is a Form object (for UI)."""
+    """Allow event staff to update event registration form details.
 
+    Note that registration_form is the RegistrationForm object (as per the model) and
+    registration_form_details_form is a Form object (for UI).
+    """
     registration_form = RegistrationForm.objects.get(pk=pk)
     event = registration_form.event
     context = {
@@ -862,8 +844,7 @@ def manage_event_registration_form_details(request, pk):
 # TODO: add event staff access only
 @login_required
 def manage_event_location_details(request, pk):
-    """ Allowing event staff to update event location details."""
-
+    """Allow event staff to update event location details."""
     location = Location.objects.get(pk=pk)
     event = location.event  # TODO: check this is correct
     context = {
@@ -909,6 +890,11 @@ def manage_event_location_details(request, pk):
 
 
 def convertStringListToOneString(listToConvert):
+    """Convert list to string.
+
+    Returns:
+        A string of values separated by &'s.
+    """
     if len(listToConvert) == 1:
         return listToConvert[0]
     else:
@@ -927,8 +913,7 @@ def convertStringListToOneString(listToConvert):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_csv(request):
-    """Generates a custom CSV of events' data"""
-
+    """Generate a custom CSV of events' data."""
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
         if builderFormForEventsCSV.is_valid():
@@ -1075,8 +1060,7 @@ def generate_event_csv(request):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_applications_csv(request, pk):
-    """Generates a custom CSV of event applications' data"""
-
+    """Generate a custom CSV of event applications' data."""
     event = Event.objects.get(pk=pk)
 
     if request.method == 'POST':
@@ -1223,8 +1207,7 @@ def generate_event_applications_csv(request, pk):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_dietary_requirement_counts_csv(request, pk):
-    """Generates a custom CSV of event dietary requirement counts data"""
-
+    """Generate a custom CSV of event dietary requirement counts data."""
     event = Event.objects.get(pk=pk)
 
     heading_row = ["event name", "dietary requirements", "counts"]
@@ -1270,7 +1253,7 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
 # TODO: add staff and admin permissions
 @login_required
 def mark_all_participants_as_paid(request, pk):
-    """Bulk mark all event applications as being paid for for a given event"""
+    """Bulk mark all event applications as being paid for for a given event."""
     event_id = pk
     event = Event.objects.get(id=event_id)
     event_applications = [EventApplication.objects.filter(event=event)]
@@ -1292,8 +1275,7 @@ def mark_all_participants_as_paid(request, pk):
 # TODO: add staff permission for this
 @login_required
 def publish_event(request, pk):
-    """Publish event as event staff"""
-
+    """Publish event as event staff."""
     event_id = pk
     event_query_set = Event.objects.filter(id=event_id)
     event = Event.objects.get(id=event_id)
@@ -1314,7 +1296,7 @@ def publish_event(request, pk):
 # TODO: add staff permission for this
 @login_required
 def cancel_event(request, pk):
-    """Cancel event as event staff"""
+    """Cancel event as event staff."""
     event_id = pk
     event = Event.objects.filter(id=event_id)
     event.update(is_cancelled=True)
@@ -1327,7 +1309,7 @@ def cancel_event(request, pk):
 # TODO: add staff permission for this
 @login_required
 def create_new_ticket(request, pk):
-    """Cancel event as event staff"""
+    """Cancel event as event staff."""
     event = Event.objects.get(pk=pk)
 
     # TODO: validate name and price!
@@ -1370,8 +1352,9 @@ def create_new_ticket(request, pk):
 @login_required
 def update_ticket(request, event_pk, ticket_pk):
     """Update event ticket type.
-    Note that we cannot immediately update this specific ticket as it may be being used for other events as well."""
 
+    Note that we cannot immediately update this specific ticket as it may be being used for other events as well.
+    """
     event = Event.objects.get(pk=event_pk)
     old_ticket = Ticket.objects.get(pk=ticket_pk)
 
@@ -1404,7 +1387,9 @@ def update_ticket(request, event_pk, ticket_pk):
 @login_required
 def delete_ticket(request, event_pk, ticket_pk):
     """Delete event ticket type.
-    We cannot immediately delete this specific ticket as it may be being used for other events as well."""
+
+    We cannot immediately delete this specific ticket as it may be being used for other events as well.
+    """
     event = Event.objects.get(pk=event_pk)
     ticket = get_object_or_404(Ticket, id=ticket_pk)
 
@@ -1428,7 +1413,6 @@ MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 @login_required
 def email_participants(request, event_pk):
     """Send bulk email to all event participants as event staff."""
-
     if request.method == 'POST':
         contact_participants_form = ContactParticipantsForm(request.POST)
         if contact_participants_form.is_valid():

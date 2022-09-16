@@ -124,7 +124,7 @@ class Series(models.Model):
 
 
 class Ticket(models.Model):
-    """Model for event tickets
+    """Model for event ticket.
 
     For example: event staff, facilitator, teacher, student, with
     costs e.g. $0 for free or say $40 to attend.
@@ -136,6 +136,7 @@ class Ticket(models.Model):
 
     class Meta:
         """Meta options for class."""
+
         unique_together = ('name', 'price',)
         ordering = ['name', ]
         verbose_name_plural = 'ticket type'
@@ -302,15 +303,16 @@ class Event(models.Model):
             return None
 
     def save(self, *args, **kwargs):
+        """"""
         return super().save(*args, **kwargs)
 
     # TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):
-        """ Returns True if the event is an event which users can register or apply to attend.
+        """Return True if the event is an event which users can register or apply to attend.
 
-            Returns:
-                Boolean if the event is an event which users can register or apply to attend.
+        Returns:
+            Boolean if the event is an event which users can register or apply to attend.
         """
         return self.registration_type in {self.REGISTRATION_TYPE_APPLY, self.REGISTRATION_TYPE_REGISTER}
 
@@ -325,12 +327,11 @@ class Event(models.Model):
 
     @property
     def get_event_type_short(self):
-        """ Returns 'Apply' if the registration type is apply or 'Register' if it is register.
+        """Return 'Apply' if the registration type is apply or 'Register' if it is register.
 
         Returns:
             String
         """
-
         if self.registration_type == self.REGISTRATION_TYPE_APPLY:
             return "Apply"
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
@@ -342,16 +343,16 @@ class Event(models.Model):
 
     @property
     def start_weekday_name(self):
-        """
-        Returns the weekday name of the start date of the event.
+        """Return the weekday name of the start date of the event.
+
         For example, "Wednesday".
         """
         return self.start.strftime('%A')
 
     @property
     def is_less_than_one_week_prior_event(self):
-        """
-        If there is less than a week until the event commences, returns True.
+        """Return true if there is less than a week until the event commencing.
+
         This is so that a catering order for the event can be finalised a week before the event starts.
         Flase is returned if the current date is exactly one week prior to the event start datetime.
         """
@@ -363,12 +364,16 @@ class Event(models.Model):
 
     @property
     def application_status_counts(self):
-        """
-        Counts the number of event applications with each of the possible statuses of "Pending" (1),
-        "Approved" (2), "Rejected" (3) and "Withdrawn" (4).
+        """Count the number of event applications with each of the possible statuses.
+
+        Includes:
+            - "Pending" (1)
+            - "Approved" (2)
+            - "Rejected" (3)
+            - "Withdrawn" (4)
+
         Returns a dictionary of the counts.
         """
-
         status_counts = {
             'pending': 0,
             'approved': 0,
@@ -394,10 +399,7 @@ class Event(models.Model):
 
     @property
     def ticket_type_counts(self):
-        """
-        Counts the number of event tickets per type.
-        """
-
+        """Count the number of event tickets per type."""
         ticket_type_counts = {}
         applications = EventApplication.objects.filter(event=self.pk)
 
@@ -414,11 +416,10 @@ class Event(models.Model):
 
     @property
     def reasons_for_withdrawing_counts(self):
-        """
-        Counts the number of each reason for an event application to be withdrawn.
+        """Count the number of each reason for an event application to be withdrawn.
+
         Returns a dictionary of the counts.
         """
-
         reason_counts = {
             'prefer_not_to_say': 0,
             'illness': 0,
@@ -453,9 +454,7 @@ class Event(models.Model):
 
     @property
     def other_reasons_for_withdrawing(self):
-        """
-        Returns a list of the other reasons for why event applications were withdrawn for the given event.
-        """
+        """Return a list of reasons for why event applications were withdrawn for the given event."""
         deleted_event_applications = DeletedEventApplication.objects.filter(event=self, deletion_reason=7)
         other_reasons = []
         for deleted_event_application in deleted_event_applications:
@@ -597,7 +596,6 @@ class Address(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-
         post_code_pattern = re.compile("^([0-9]){4}$")
 
         if not post_code_pattern.match(str(self.post_code)):
@@ -724,7 +722,7 @@ class EventApplication(models.Model):
         unique_together = ('event', 'user')
 
     def __str__(self):
-        """String representation of an event application."""
+        """Return string representation of an event application."""
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
 
     # TODO: figure out why not working
@@ -734,9 +732,7 @@ class EventApplication(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-
         phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
-
         if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
             raise ValidationError(
                 {
@@ -766,8 +762,8 @@ class EventApplication(models.Model):
 
 
 class DeletedEventApplication(models.Model):
-    """
-    Model for a deleted event application.
+    """Model for a deleted event application.
+
     It contains the bare minimum information so that there is no identifiable information.
     """
 
@@ -809,12 +805,12 @@ class DeletedEventApplication(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        """
+        """Override for save method.
+
         Override save to check that if the deletion reasons is 'other'
         that there is a related reason for this (not an empty string),
         otherwise, we change the reason from 'other' to 'prefer not to say'.
         """
-
         if self.deletion_reason == 7 and not self.other_reason_for_deletion:
             self.deletion_reason = 1
         super(DeletedEventApplication, self).save(*args, **kwargs)
@@ -852,6 +848,7 @@ TERMS_AND_CONDITIONS_DEFAULT = (
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
+
     open_datetime = models.DateTimeField(null=True, blank=True)
     close_datetime = models.DateTimeField(null=True, blank=True)
     terms_and_conditions = RichTextUploadingField(default=TERMS_AND_CONDITIONS_DEFAULT)
@@ -906,6 +903,7 @@ class RegistrationForm(models.Model):
             )
 
     def save(self, *args, **kwargs):
+        """"""
         self.full_clean()
         return super(RegistrationForm, self).save(*args, **kwargs)
 
@@ -920,6 +918,7 @@ def create_registration_form(sender, instance, created, **kwargs):
 # TODO: come up with a way to not have to manually put in the Event fields as modifying Event will impact this model.
 class EventCSV(models.Model):
     """Model for which fields are included within an Event based CSV."""
+
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
@@ -957,7 +956,6 @@ class EventCSV(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-
         file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
 
         if not file_name_pattern.match(str(self.file_name)):
@@ -973,6 +971,7 @@ class EventCSV(models.Model):
 # fields as modifying Event Application will impact this model.
 class EventApplicationsCSV(models.Model):
     """Model for which fields are included within an Event Application based CSV."""
+
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
@@ -1015,7 +1014,6 @@ class EventApplicationsCSV(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-
         file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
 
         if not file_name_pattern.match(str(self.file_name)):
