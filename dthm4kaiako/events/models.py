@@ -1,7 +1,5 @@
 """Models for events application."""
 
-
-from email.policy import default
 from django.db import models
 from django.contrib.gis.db import models as geomodels
 from django.core.exceptions import ValidationError
@@ -17,6 +15,7 @@ from django.db.models.signals import post_save
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 import datetime
 import re
+
 
 class Location(models.Model):
     """Model for a physical location."""
@@ -125,8 +124,13 @@ class Series(models.Model):
 
 
 class Ticket(models.Model):
-    """Model for event tickets e.g. event staff, facilitator, teacher, student, with costs e.g. $0 for free or say $40 to attend.
-    This is usually for events that require event applications to be approved i.e. paid"""
+    """Model for event tickets
+
+    For example: event staff, facilitator, teacher, student, with
+    costs e.g. $0 for free or say $40 to attend.
+
+    This is usually for events that require event applications to be approved i.e. paid
+    """
     name = models.CharField(max_length=200, help_text="Participant type e.g. teacher, event staff")
     price = models.FloatField(help_text="Cost for participant to attend in NZD")
 
@@ -171,9 +175,26 @@ class Event(models.Model):
         choices=REGISTRATION_TYPE_CHOICES,
         default=REGISTRATION_TYPE_REGISTER,
     )
-    registration_link = models.URLField(blank=True, null=True, help_text="Optional. This is a link to an external location that will gather event applications' information e.g. Google Form")
-    start = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")     # TODO: Cannot be null if published or event applications exist
-    end = models.DateTimeField(blank=True, null=True, help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)")       # TODO: Cannot be null if published or event applications exist
+    registration_link = models.URLField(
+        blank=True,
+        null=True,
+        help_text=(
+            "Optional. This is a link to an external location that "
+            "will gather event applications' information e.g. Google Form"
+        )
+    )
+    # TODO: Cannot be null if published or event applications exist
+    start = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)"
+    )
+    # TODO: Cannot be null if published or event applications exist
+    end = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Desired format is YYYY-MM-DD hh:mm:ss, e.g. 2022-06-09 11:30:00 (9th May 2022 at 11.30am)"
+    )
     accessible_online = models.BooleanField(
         default=False,
         help_text='Select if this event will be attended online'
@@ -283,7 +304,6 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
 
-
     # TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):
@@ -292,7 +312,7 @@ class Event(models.Model):
             Returns:
                 Boolean if the event is an event which users can register or apply to attend.
         """
-        return self.registration_type == self.REGISTRATION_TYPE_APPLY or self.registration_type == self.REGISTRATION_TYPE_REGISTER
+        return self.registration_type in {self.REGISTRATION_TYPE_APPLY, self.REGISTRATION_TYPE_REGISTER}
 
     @property
     def has_ended(self):
@@ -340,7 +360,6 @@ class Event(models.Model):
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
         one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
         return today.isoformat() > one_week_prior_event_start.isoformat()
-
 
     @property
     def application_status_counts(self):
@@ -461,7 +480,7 @@ class Event(models.Model):
                 }
             )
 
-        if self.published == True and self.start == None:
+        if self.published and self.start is None:
             raise ValidationError(
                 {
                     'start':
@@ -469,14 +488,13 @@ class Event(models.Model):
                 }
             )
 
-        if self.published == True and self.end == None:
+        if self.published and self.end is None:
             raise ValidationError(
                 {
                     'end':
                     _('End datetime is required when the event is published.')
                 }
             )
-
 
     class Meta:
         """Meta options for class."""
@@ -503,8 +521,12 @@ class Session(models.Model):
         related_name='sessions',
         blank=True,
     )
-    facilitators = models.ManyToManyField(User, related_name='sessions', blank=True, verbose_name="Facilitators of this session")
-
+    facilitators = models.ManyToManyField(
+        User,
+        related_name='sessions',
+        blank=True,
+        verbose_name="Facilitators of this session"
+    )
 
     def __str__(self):
         """Text representation of an session."""
@@ -558,10 +580,15 @@ class Address(models.Model):
         """Text representation of an address."""
         return self.get_full_address()
 
-
     def get_full_address(self):
         """Get full text representation of an address."""
-        address = '{} {},\n{},\n{},\n{}'.format(self.street_number, self.street_name, self.suburb, self.city, self.post_code)
+        address = '{} {},\n{},\n{},\n{}'.format(
+            self.street_number,
+            self.street_name,
+            self.suburb,
+            self.city,
+            self.post_code
+        )
         return address
 
     def clean(self):
@@ -591,7 +618,9 @@ class Address(models.Model):
                 }
             )
 
-# TODO: make emergency contact details only mandatory for events that are in person i.e. don't show them for online events and allow them to be empty
+
+# TODO: make emergency contact details only mandatory for events that are in
+# person i.e. don't show them for online events and allow them to be empty
 class EventApplication(models.Model):
     """Model for an event application."""
 
@@ -604,8 +633,8 @@ class EventApplication(models.Model):
         (REJECTED, _('Rejected')),
     )
 
-    submitted = models.DateTimeField(auto_now_add=True) # user does not edit
-    updated = models.DateTimeField(auto_now=True) # user does not edit
+    submitted = models.DateTimeField(auto_now_add=True)  # user does not edit
+    updated = models.DateTimeField(auto_now=True)  # user does not edit
     status = models.PositiveSmallIntegerField(
         choices=APPLICATION_STATUSES,
         default=PENDING,
@@ -656,7 +685,7 @@ class EventApplication(models.Model):
         null=False,
         default='',
         )
-    emergency_contact_phone_number =  models.CharField(
+    emergency_contact_phone_number = models.CharField(
         max_length=40,
         verbose_name='emergency contact\'s phone number',
         blank=False,
@@ -677,7 +706,7 @@ class EventApplication(models.Model):
         on_delete=models.CASCADE,
         related_name='event_applications',
         blank=True,
-        null=True, # since not needed for events that are free
+        null=True,  # since not needed for events that are free
         verbose_name='billing address',
     )
     billing_email_address = models.EmailField(
@@ -694,11 +723,9 @@ class EventApplication(models.Model):
         verbose_name_plural = 'event applications'
         unique_together = ('event', 'user')
 
-
     def __str__(self):
         """String representation of an event application."""
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
-
 
     # TODO: figure out why not working
     def clean(self):
@@ -708,13 +735,16 @@ class EventApplication(models.Model):
             ValidationError if invalid attributes.
         """
 
-        phone_number_pattern = re.compile("^[-\(\)\+\s\./0-9]*$")
+        phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
 
         if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
             raise ValidationError(
                 {
                     'emergency_contact_phone_number':
-                    _('Phone number can include the area code, follow by any number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678')
+                    _(
+                        'Phone number can include the area code, follow by any '
+                        'number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678'
+                    )
                 }
             )
 
@@ -767,7 +797,7 @@ class DeletedEventApplication(models.Model):
         help_text="Reason the participant has chosen to withdraw their application."
     )
     other_reason_for_deletion = models.CharField(
-        max_length = 300,
+        max_length=300,
         null=True,
         blank=True,
     )
@@ -790,13 +820,40 @@ class DeletedEventApplication(models.Model):
         super(DeletedEventApplication, self).save(*args, **kwargs)
 
 
-TERMS_AND_CONDITIONS_DEFAULT = "<p>Expenses for travel and accommodation are not covered by the event organisers, and are to be organised by the attendees themselves. Event organisers may provide details of available funding options that attendees&rsquo; may apply for.</p> <p>Should you need to cancel your application/registration, please let us know as soon as possible and we&#39;ll remove it. If you do not show to the event without informing us, you may be liable for a &lsquo;did not show&rsquo; fee. We understand life happens.</p> <p>In the event of cancellation of the event, we will notify you as soon as possible. It is your responsibility to understand any cancellation clauses for your flights and accommodation. While we are sorry if this causes inconvenience, the organisers will not be liable for any loss, damages, or sadness arising from such changes.</p> <p>Please be aware the event organisers and attendees may be taking photographs, video, and/or audio to record events. These may be displayed on websites or social media for education and/or promotional purposes. By attending the event you understand that these images and recordings may be used by the event organisers for related marketing and promotions. You understand that if you do not wish to have your image or voice recorded you must inform any media person taking your photo, videoing you, or recording your voice at the workshop. It is your responsibility to remove yourself from the photo, video, or voice recording situations. Photographers will do their best to take group images that do not identify people and will seek permission in particular instances where close ups are taken. Attendees posting on social media will be asked to check with you first, before posting. The event organisers does not accept responsibility for media posted by attendees.</p> <p>By registering for this event, you agree to us storing your information for organising and running the event. You are required to follow all health and safety instructions from event organisers while attending the event.</p> <p>Finally, you agree to and understand with the terms and conditions regarding the Code of Conduct. Read our Code of Conduct here: https://gist.github.com/uccser-admin/56de956a32ccf68e253be8632957c014</p>"
+TERMS_AND_CONDITIONS_DEFAULT = (
+    "<p>Expenses for travel and accommodation are not covered by the event organisers, and "
+    "are to be organised by the attendees themselves. Event organisers may provide details "
+    "of available funding options that attendees&rsquo; may apply for.</p> <p>Should you need "
+    "to cancel your application/registration, please let us know as soon as possible and "
+    "we&#39;ll remove it. If you do not show to the event without informing us, you may be "
+    "liable for a &lsquo;did not show&rsquo; fee. We understand life happens.</p> <p>In the "
+    "event of cancellation of the event, we will notify you as soon as possible. It is your "
+    "responsibility to understand any cancellation clauses for your flights and accommodation. "
+    "While we are sorry if this causes inconvenience, the organisers will not be liable for "
+    "any loss, damages, or sadness arising from such changes.</p> <p>Please be aware the event "
+    "organisers and attendees may be taking photographs, video, and/or audio to record events. "
+    "These may be displayed on websites or social media for education and/or promotional "
+    "purposes. By attending the event you understand that these images and recordings may be "
+    "used by the event organisers for related marketing and promotions. You understand that if "
+    "you do not wish to have your image or voice recorded you must inform any media person "
+    "taking your photo, videoing you, or recording your voice at the workshop. It is your "
+    "responsibility to remove yourself from the photo, video, or voice recording situations. "
+    "Photographers will do their best to take group images that do not identify people and will "
+    "seek permission in particular instances where close ups are taken. Attendees posting on "
+    "social media will be asked to check with you first, before posting. The event organisers "
+    "does not accept responsibility for media posted by attendees.</p> <p>By registering for this "
+    "event, you agree to us storing your information for organising and running the event. You "
+    "are required to follow all health and safety instructions from event organisers while "
+    "attending the event.</p> <p>Finally, you agree to and understand with the terms and "
+    "conditions regarding the Code of Conduct. Read our Code of Conduct here: "
+    "https://gist.github.com/uccser-admin/56de956a32ccf68e253be8632957c014</p>"
+)
 
 
 class RegistrationForm(models.Model):
     """Model for a registration form."""
-    open_datetime = models.DateTimeField(null=True,blank=True)
-    close_datetime = models.DateTimeField(null=True,blank=True)
+    open_datetime = models.DateTimeField(null=True, blank=True)
+    close_datetime = models.DateTimeField(null=True, blank=True)
     terms_and_conditions = RichTextUploadingField(default=TERMS_AND_CONDITIONS_DEFAULT)
     event = models.OneToOneField(
         Event,
@@ -811,10 +868,7 @@ class RegistrationForm(models.Model):
         Returns:
             URL as a string.
         """
-        return reverse('events:apply', kwargs={'pk': self.event.pk,})
-
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
+        return reverse('events:apply', kwargs={'pk': self.event.pk})
 
     def __str__(self):
         """Text representation of an event registration form."""
@@ -827,7 +881,7 @@ class RegistrationForm(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        if self.open_datetime != None and now() > self.open_datetime:
+        if self.open_datetime is not None and now() > self.open_datetime:
             raise ValidationError(
                 {
                     'open_datetime':
@@ -835,7 +889,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.close_datetime != None and self.close_datetime <= self.open_datetime:
+        if self.close_datetime is not None and self.close_datetime <= self.open_datetime:
             raise ValidationError(
                 {
                     'close_datetime':
@@ -843,7 +897,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.open_datetime != None and self.event.ticket_types.count() == 0:
+        if self.open_datetime is not None and self.event.ticket_types.count() == 0:
             raise ValidationError(
                 {
                     'open_datetime':
@@ -904,7 +958,7 @@ class EventCSV(models.Model):
             ValidationError if invalid attributes.
         """
 
-        file_name_pattern = re.compile("^([a-zA-Z0-9_\- ]+)$")
+        file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
 
         if not file_name_pattern.match(str(self.file_name)):
             raise ValidationError(
@@ -915,7 +969,8 @@ class EventCSV(models.Model):
             )
 
 
-# TODO: come up with a way to not have to manually put in the Event Application fields as modifying Event Application will impact this model.
+# TODO: come up with a way to not have to manually put in the Event Application
+# fields as modifying Event Application will impact this model.
 class EventApplicationsCSV(models.Model):
     """Model for which fields are included within an Event Application based CSV."""
     event = models.OneToOneField(
@@ -935,11 +990,13 @@ class EventApplicationsCSV(models.Model):
     participant_last_name = models.BooleanField(default=False)
 
     dietary_requirements = models.BooleanField(default=False)
-    educational_entities = models.BooleanField(default=False) # TODO: check user facing name
+    educational_entities = models.BooleanField(default=False)  # TODO: check user facing name
     region = models.BooleanField(default=False)
     mobile_phone_number = models.BooleanField(default=False)
     email_address = models.BooleanField(default=False)
-    how_we_can_best_accommodate_them = models.BooleanField(default=False) # NOTE: called medical notes elsewhere but called this for user-friendliness since this is a user-facing string
+    # NOTE: called medical notes elsewhere but called this for user-friendliness since
+    # this is a user-facing string
+    how_we_can_best_accommodate_them = models.BooleanField(default=False)
 
     representing = models.BooleanField(default=False)
     emergency_contact_first_name = models.BooleanField(default=False)
@@ -952,7 +1009,6 @@ class EventApplicationsCSV(models.Model):
     billing_email_address = models.BooleanField(default=False)
     admin_billing_comments = models.BooleanField(default=False)
 
-
     def clean(self):
         """Validate EventApplicationsCSV model attributes.
 
@@ -960,7 +1016,7 @@ class EventApplicationsCSV(models.Model):
             ValidationError if invalid attributes.
         """
 
-        file_name_pattern = re.compile("^([a-zA-Z0-9_\- ]+)$")
+        file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
 
         if not file_name_pattern.match(str(self.file_name)):
             raise ValidationError(
