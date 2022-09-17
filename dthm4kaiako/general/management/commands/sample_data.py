@@ -21,6 +21,7 @@ from tests.resources.factories import (
 # Users
 from users.models import (
     DietaryRequirement,
+    Entity,
 )
 # Events
 from events.models import (
@@ -47,6 +48,8 @@ from tests.poet.factories import (
 )
 from allauth.account.models import EmailAddress
 from utils.new_zealand_regions import REGION_CHOICES
+from datetime import datetime
+from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 
 
 class Command(management.base.BaseCommand):
@@ -66,19 +69,578 @@ class Command(management.base.BaseCommand):
         print('Database wiped.')
 
         # Create common dietary requirements
-        DietaryRequirement.objects.create(name="None")
-        DietaryRequirement.objects.create(name="Dairy free")
-        DietaryRequirement.objects.create(name="Gluten free")
-        DietaryRequirement.objects.create(name="Vegetarian")
-        DietaryRequirement.objects.create(name="Vegan")
-        DietaryRequirement.objects.create(name="Paleo")
-        DietaryRequirement.objects.create(name="FODMAP")
-        DietaryRequirement.objects.create(name="Nut allergies")
-        DietaryRequirement.objects.create(name="Fish and shellfish allergies")
-        DietaryRequirement.objects.create(name="Keto")
-        DietaryRequirement.objects.create(name="Halal")
-        DietaryRequirement.objects.create(name="As long as there's coffee, I'm happy!")
+        dietary_requirement_none = DietaryRequirement.objects.create(name="None")
+        dietary_requirement_dairy_free = DietaryRequirement.objects.create(name="Dairy free")
+        dietary_requirement_gluten_free = DietaryRequirement.objects.create(name="Gluten free")
+        dietary_requirement_vegetarian = DietaryRequirement.objects.create(name="Vegetarian")
+        dietary_requirement_vegan = DietaryRequirement.objects.create(name="Vegan")
+        dietary_requirement_keto = DietaryRequirement.objects.create(name="Keto")
+        dietary_requirement_FODMAP = DietaryRequirement.objects.create(name="Paleo")
+        dietary_requirement_dairy_free = DietaryRequirement.objects.create(name="FODMAP")
+        dietary_requirement_halal = DietaryRequirement.objects.create(name="Halal")
+        dietary_requirement_coffee = DietaryRequirement.objects.create(name="Give me coffee and no-one gets hurt")
         print('Dietary requirements created.')
+
+        # Create standard ticket types
+        ticket_free_event_staff = Ticket.objects.create(name="Event Staff", price=0.0)
+        ticket_free_teacher = Ticket.objects.create(name="Event Staff", price=0.0)
+        ticket_free_student = Ticket.objects.create(name="Event Staff", price=0.0)
+        ticket_free_facilitator = Ticket.objects.create(name="Event Staff", price=0.0)
+        ticket_paid_event_staff = Ticket.objects.create(name="Event Staff", price=3.0)
+        ticket_paid_teacher = Ticket.objects.create(name="Event Staff", price=50.0)
+        ticket_paid_student = Ticket.objects.create(name="Event Staff", price=20.0)
+        ticket_paid_facilitator = Ticket.objects.create(name="Event Staff", price=25.0)
+        print('Common tickets created.')
+
+        # Create a selection of entities
+
+        entity_1 = Entity(name="Aidanfield Christian School, Christchurch")
+        entity_2 = Entity(name="Otahuhu College, Auckland")
+        entity_3 = Entity(name="St Bedes College, Christchurch")
+        entity_4 = Entity(name="Papanui High School, Christchurch")
+        entity_5 = Entity(name="Burnside High School, Christchurch")
+        entity_6 = Entity(name="Avonside Girls' High School, Christchurch")
+        entity_7 = Entity(name="Villa Maria College, Christchurch")
+        entity_8 = Entity(name="Christchurch Boys' High School, Christchurch")
+        entity_9 = Entity(name="Christchurch Girls' High School -Te Kura o Hine Waiora, Christchurch")
+        entity_10 = Entity(name="Mangakino Area School, Waikato")
+        entity_11 = Entity(name="Bayfield High School, Dunedin")
+        entity_12 = Entity(name="Digital Technologies Teachers Aotearoa")
+        entity_12 = Entity(name="Digital Technologies Hangarau Matihiko")
+        entity_12 = Entity(name="Ministry of Education")
+        print('Random selection of educational entities created.')
+
+        User = get_user_model()
+
+        # TODO: make some non-trivial passwords prior study!
+
+        # Create admin account
+        admin = User.objects.create_superuser(
+            'admin',
+            'admin@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Admin',
+            last_name='Account'
+        )
+        EmailAddress.objects.create(
+            user=admin,
+            email=admin.email,
+            primary=True,
+            verified=True
+        )
+        print('Admin created.')
+
+
+        # Create user accounts
+
+        user_1 = User()
+        user_1 = User.objects.create_user(
+            'user',
+            'user_1@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Alex',
+            last_name='Doe',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 22 1124 0481'
+        )
+        EmailAddress.objects.create(
+            user=user_1,
+            email=user_1.email,
+            primary=True,
+            verified=True
+        )
+        user_1.dietary_requirements.set(dietary_requirement_coffee, dietary_requirement_gluten_free)
+        user_1.educational_entities.set(entity_1, entity_11)
+        user_1.save()
+
+        print('User 1 created.')
+
+        user_2 = User()
+        user_2 = User.objects.create_user(
+            'user',
+            'user_2@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='John',
+            last_name='Doe',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 947 001'
+        )
+        EmailAddress.objects.create(
+            user=user_2,
+            email=user_2.email,
+            primary=True,
+            verified=True
+        )
+        user_2.dietary_requirements.set(dietary_requirement_coffee)
+        user_2.educational_entities.set(entity_2)
+        user_2.save()
+        print('User 2 created.')
+
+        user_3 = User()
+        user_3 = User.objects.create_user(
+            'user',
+            'user_3@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='James',
+            last_name='Rando',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 22 836 0980'
+        )
+        EmailAddress.objects.create(
+            user=user_3,
+            email=user_3.email,
+            primary=True,
+            verified=True
+        )
+        user_3.dietary_requirements.set(dietary_requirement_coffee)
+        user_3.educational_entities.set(entity_3)
+        user_3.save()
+        print('User 3 created.')
+
+        user_4 = User()
+        user_4 = User.objects.create_user(
+            'user',
+            'user_4@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Jo',
+            last_name='Brown',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 28 130 4807'
+        )
+        EmailAddress.objects.create(
+            user=user_4,
+            email=user_4.email,
+            primary=True,
+            verified=True
+        )
+        user_4.dietary_requirements.set(dietary_requirement_coffee, dietary_requirement_vegan)
+        user_4.educational_entities.set(entity_4)
+        user_4.save()
+        print('User 4 created.')
+
+        user_5 = User()
+        user_5 = User.objects.create_user(
+            'user',
+            'user_5@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Paul',
+            last_name='Kirsh',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 27 860 8283'
+        )
+        EmailAddress.objects.create(
+            user=user_5,
+            email=user_5.email,
+            primary=True,
+            verified=True
+        )
+        user_5.dietary_requirements.set(dietary_requirement_halal)
+        user_5.educational_entities.set(entity_5)
+        user_5.save()
+        print('User 5 created.')
+
+        user_6 = User()
+        user_6 = User.objects.create_user(
+            'user',
+            'user_6@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Clark',
+            last_name='Kent',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 28 8871 3787'
+        )
+        EmailAddress.objects.create(
+            user=user_6,
+            email=user_6.email,
+            primary=True,
+            verified=True
+        )
+        user_6.dietary_requirements.set(dietary_requirement_keto)
+        user_6.educational_entities.set(entity_6)
+        user_6.save()
+        print('User 6 created.')
+
+        user_7 = User()
+        user_7 = User.objects.create_user(
+            'user',
+            'user_7@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Peter',
+            last_name='Toddrick',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 877 010'
+        )
+        EmailAddress.objects.create(
+            user=user_7,
+            email=user_7.email,
+            primary=True,
+            verified=True
+        )
+        user_7.dietary_requirements.set(dietary_requirement_keto)
+        user_7.educational_entities.set(entity_7)
+        user_7.save()
+        print('User 7 created.')
+
+        user_8 = User()
+        user_8 = User.objects.create_user(
+            'user',
+            'user_8@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Kate',
+            last_name='Pepperson',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 542 958'
+        )
+        EmailAddress.objects.create(
+            user=user_8,
+            email=user_8.email,
+            primary=True,
+            verified=True
+        )
+        user_8.dietary_requirements.set(dietary_requirement_keto)
+        user_8.educational_entities.set(entity_8)
+        user_8.save()
+        print('User 8 created.')
+
+        user_9 = User()
+        user_9 = User.objects.create_user(
+            'user',
+            'user_9@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Kate',
+            last_name='Pepperson',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 274 680 498'
+        )
+        EmailAddress.objects.create(
+            user=user_9,
+            email=user_9.email,
+            primary=True,
+            verified=True
+        )
+        user_9.dietary_requirements.set(dietary_requirement_keto)
+        user_9.educational_entities.set(entity_9)
+        user_9.save()
+        print('User 9 created.')
+
+        user_10 = User()
+        user_10 = User.objects.create_user(
+            'user',
+            'user_10@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Scarlett',
+            last_name='Jonson',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 942 390'
+        )
+        EmailAddress.objects.create(
+            user=user_10,
+            email=user_10.email,
+            primary=True,
+            verified=True
+        )
+        print('User 10 created.')
+
+        user_11 = User()
+        user_11 = User.objects.create_user(
+            'user',
+            'user_11@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='David',
+            last_name='Rodder',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 545 878'
+        )
+        EmailAddress.objects.create(
+            user=user_11,
+            email=user_11.email,
+            primary=True,
+            verified=True,
+        )
+        print('User 11 created.')
+
+        user_12 = User()
+        user_12 = User.objects.create_user(
+            'user',
+            'user_12@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='David',
+            last_name='Rodder',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 545 878'
+        )
+        EmailAddress.objects.create(
+            user=user_12,
+            email=user_12.email,
+            primary=True,
+            verified=True,
+        )
+        print('User 12 created.')
+
+        user_study_participant = User()
+        user_study_participant = User.objects.create_user(
+            'user',
+            'user_study_participant@dthm4kaiako.ac.nz',
+            password="password",
+            first_name='Study',
+            last_name='Participant',
+            user_region=REGION_CANTERBURY,
+            mobile_phone_number='+64 21 545 878'
+        )
+        EmailAddress.objects.create(
+            user=user_study_participant,
+            email=user_study_participant.email,
+            primary=True,
+            verified=True
+        )
+        print('User 13 created.')
+
+
+        # Physical locations 
+        sample_location_1 = Location.objects.create(
+          name='University of Canterbury',
+          suburb='Ilam',
+          city='Christchurch',
+          region='14',
+          coords=Point(-43, 172)
+        )
+        sample_location_2 = Location.objects.create(
+            room='Room 456',
+            name='Middleton Grange School',
+            street_address='12 High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14,
+            coords=Point(-12, 149)
+        )
+        sample_location_3 = Location.objects.create(
+            room='Room 7',
+            name='Middleton Grange School',
+            street_address='12 High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14,
+            coords=Point(-27, 188)
+        )
+        print('Locations created.')
+
+
+        # ALL STAFFED BY STUDY PARTICIPANT
+        # Event - apply - online
+        event_1_apply_online_free_future = Event.objects.create(
+            name='DTHM for Kaiako Conference 2021',
+            description=(
+                'Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
+                'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject '
+                'association event, for all teachers in Aotearoa. It\'s all about building your '
+                'practice as a kaiako, for your learners.\n\n'
+                'Join us for 3 days of:\n\n'
+                'Connecting and reconnecting with colleagues across Aotearoa\n\n'
+                'Engaging with a team to uncover and bring to light inspirational learning resources\n\n'
+                'Developing programmes of learning that you will confidently take '
+                'into your classroom and use immediately',
+            ),
+            start=datetime.datetime(2023, 4, 23, 8, 0, 0),
+            end=datetime.datetime(2023, 4, 23, 11, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            registration_type = 2,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_1_apply_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_1_apply_online_free_future.save()
+
+        # Event - register - online and free
+        event_2_register_online_free_future = Event.objects.create(
+            name='Introduction to Teaching CS with Zoom',
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            start=datetime.datetime(2023, 6, 1, 8, 0, 0),
+            end=datetime.datetime(2023, 6, 1, 10, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            registration_type = 2,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_2_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_2_register_online_free_future.save()
+
+        # Event - register - in person and costs
+        event_3_register_physical_costs_future = Event.objects.create(
+            name="Python Introduction",
+            description=(
+                'TODO'
+                'TODO'
+            ),   
+            registration_type = 1,
+            start=datetime.datetime(2023, 6, 24),
+            end=datetime.datetime(2023, 6, 26),
+            accessible_online=False,
+            published=True,
+            featured=True,
+            is_catered=True,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_3_register_physical_costs_future.locations.set(sample_location_2)
+        event_3_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher)
+        event_3_register_physical_costs_future.save()
+
+        # Event - invite only
+        event_4_invite_physical_free_future = Event.objects.create(
+            name="Teaching with AI 2023",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 4,
+            start=datetime.datetime(2023, 4, 15),
+            end=datetime.datetime(2023, 4, 15),
+            accessible_online=False,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_4_invite_physical_free_future.locations.set(sample_location_3)
+        event_4_invite_physical_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_4_invite_physical_free_future.save()
+
+        # Event - external link
+        event_5_external_online_free_future = Event.objects.create(
+            name="Intro to Computer Graphics",
+            description=(
+                'TODO'
+                'TODO'
+            ), 
+            registration_type = 3,
+            start=datetime.date(2023, 8, 15),
+            end=datetime.date(2023, 8, 15),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            registration_link='www.google.com',
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_5_external_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_5_external_online_free_future.save()
+
+        # Events - 3 in past
+        event_6_apply_online_free_past = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 2,
+            start=datetime.datetime(2022, 4, 15, 10, 0, 0),
+            end=datetime.datetime(2022, 4, 15, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_6_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_6_apply_online_free_past.save()
+
+        event_7_apply_online_free_past = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 2,
+            start=datetime.datetime(2022, 3, 2, 10, 0, 0),
+            end=datetime.datetime(2022, 3, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_7_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_7_apply_online_free_past.save()
+
+        event_8_apply_online_free_past = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 2,
+            start=datetime.datetime(2022, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2022, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_8_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_8_apply_online_free_past.save()
+
+        # Events - 1 cancelled in past
+        event_9_apply_online_free_past_cancelled = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 2,
+            start=datetime.datetime(2022, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2022, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            cancelled=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_9_apply_online_free_past_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_9_apply_online_free_past_cancelled.save()
+
+        # Events - 1 cancellevent_9_apply_online_free_past_cancelleded in future
+        event_10_apply_online_free_past_cancelled = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 2,
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            cancelled=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_10_apply_online_free_past_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_10_apply_online_free_past_cancelled.save()
+
+        # BOTH ARE FOR EVENT STAFF FOR STUDY PARTICIPANT
+        # Event applications - 10 for apply event
+        # Event applications - 10 for register event - mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
+        # TODO: add event staff
+
+        # STUDY PARTICPANT'S 
+        # 4 event applications - so 4 different non-staff events
+        # 2 in past
+        # 4 in future - so can withdraw 2 (diff pages) and can update one
+
+        # Event - not published - use to step through each event phase as event staff
+
+
+
+
 
         # -------------------------- Realistic events for informal demonstrations --------------------------
         # TODO: finish creating realistic events
