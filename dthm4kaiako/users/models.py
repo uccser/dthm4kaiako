@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 
 class DietaryRequirement(models.Model):
     """Model for a dietary requirement e.g. vegetarian."""
+
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -87,7 +88,6 @@ class User(AbstractUser):
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
         help_text="Region that your school, organisation or association is located in",
-        max_length=150
     )
     mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
     email_address = models.EmailField(
@@ -113,7 +113,6 @@ class User(AbstractUser):
         """Name of the user."""
         return f'{self.first_name} {self.last_name}'
 
-# TODO: figure out why valid phone numbers are not being accepted in form!
     def clean(self):
         """Validate user model attributes.
 
@@ -127,7 +126,7 @@ class User(AbstractUser):
                     'mobile_phone_number':
                     _(
                         'Phone number can include the area code, follow by any number of '
-                        'numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678'
+                        'numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
                     )
                 }
             )

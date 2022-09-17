@@ -29,6 +29,7 @@ class ParticipantTypeForm(forms.Form):
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
     def __init__(self, event, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(ParticipantTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -40,6 +41,7 @@ class ParticipantTypeForm(forms.Form):
         self.fields['participant_type'].choices = choices
 
     def clean(self):
+        """Clean participant type so that ones is selected."""
         cleaned_data = super(ParticipantTypeForm, self).clean()
         participant_type = cleaned_data.get('participant_type')
 
@@ -51,6 +53,7 @@ class EventApplicationForm(ModelForm):
     """Simple form to allow a user to submit an application to attend an event."""
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -82,6 +85,7 @@ class EventApplicationForm(ModelForm):
 
 class TermsAndConditionsForm(forms.Form):
     """Simple form to allow the user to agree to the terms and conditions.
+
     This is a different form from the EventRegistrationForm so that the terms
     and conditions can appear nicely after that form.
     """
@@ -89,6 +93,7 @@ class TermsAndConditionsForm(forms.Form):
     I_agree_to_the_terms_and_conditions = forms.BooleanField(required=True)
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -106,6 +111,7 @@ class BillingDetailsForm(ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -122,6 +128,7 @@ class WithdrawEventApplicationForm(ModelForm):
     """Simple form for obtaining the reason for a participant withdrawing from their event application."""
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -140,6 +147,7 @@ class ManageEventApplicationForm(ModelForm):
     """Simple form to allow a user to submit an application to attend an event."""
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -162,15 +170,11 @@ class ManageEventDetailsForm(ModelForm):
         exclude = ('published', 'is_cancelled', 'ticket_types')
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(ManageEventDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-
-
-class DateTimePickerInput(forms.DateTimeInput):
-
-    input_type = 'datetime'
 
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
@@ -184,6 +188,7 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(ManageEventRegistrationFormDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -201,6 +206,7 @@ class ManageEventLocationForm(ModelForm):
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(ManageEventLocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -220,6 +226,7 @@ class BuilderFormForEventsCSV(ModelForm):
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(BuilderFormForEventsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -239,6 +246,7 @@ class BuilderFormForEventApplicationsCSV(ModelForm):
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(BuilderFormForEventApplicationsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -255,6 +263,7 @@ class TicketTypeForm(ModelForm):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
+        """Add crispyform helper to form."""
         super(TicketTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -292,8 +301,11 @@ class ContactParticipantsForm(forms.Form):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-    # TODO: figure out how to get this to show
     def clean(self):
+        """Clean the checkboxes for who to send the email to.
+
+        User must select one or both otherwise error messages shows.
+        """
         cleaned_data = super(ContactParticipantsForm, self).clean()
         send_to_approved_participants = cleaned_data.get('send_to_approved_participants')
         send_to_pending_applicants = cleaned_data.get('send_to_pending_applicants')
@@ -324,7 +336,10 @@ class ManageEventApplicationReadOnlyForm(ModelForm):
     admin_billing_comments = forms.CharField(disabled=True, required=False)
 
     def __init__(self, *args, **kwargs):
-        """Initialiser method for class."""
+        """Initialise for ManageEventRegistrationFormDetailsForm class.
+
+        Fields are all disabled.
+        """
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -353,6 +368,10 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
         exclude = ('published', 'is_cancelled', 'ticket_types')
 
     def __init__(self, *args, **kwargs):
+        """Initialise for ManageEventRegistrationFormDetailsForm class.
+
+        Fields are all disabled.
+        """
         super(ManageEventDetailsReadOnlyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -387,6 +406,10 @@ class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
+        """Initialise for ManageEventRegistrationFormDetailsForm class.
+
+        Fields are all disabled.
+        """
         super(ManageEventRegistrationFormDetailsReadOnlyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False

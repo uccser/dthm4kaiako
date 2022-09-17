@@ -21,7 +21,6 @@ User = get_user_model()
 
 def generate_dietary_requirements():
     """Generate dietary requirements for use in dthm4kaiako tests."""
-
     dietary_requirement_none = DietaryRequirement.objects.create(
         id=1,
         name="None"
@@ -87,7 +86,6 @@ def generate_dietary_requirements():
 
 def generate_addresses():
     """Generate billing addresses for use in dthm4kaiako tests."""
-
     billing_address_1 = Address.objects.create(
         id=1,
         street_number='12',
@@ -139,7 +137,6 @@ def generate_entities():
 
 def generate_locations():
     """Generate locations for use in dthm4kaiako tests."""
-
     location_1 = Location.objects.create(
         id=1,
         room='Room 123',
@@ -190,7 +187,6 @@ def generate_serieses():
 
 def generate_events():
     """Generate events for use in dthm4kaiako tests."""
-
     location_1 = Location.objects.get(id=1)
     location_2 = Location.objects.get(id=2)
     location_3 = Location.objects.get(id=3)
@@ -292,7 +288,6 @@ def generate_events():
 
 def generate_sessions():
     """Generate sessions for use in dthm4kaiako tests."""
-
     # session_2_event_1
     Session.objects.create(
         id=1,
@@ -557,7 +552,6 @@ def generate_event_applications():
 
 def generate_event_registration_forms():
     """Generate event registration forms for use in dthm4kaiako tests."""
-
     RegistrationForm.objects.filter(event_id=1).update(
         open_datetime=datetime.date(2022, 1, 1),
         close_datetime=datetime.date(2023, 6, 1),

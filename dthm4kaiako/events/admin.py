@@ -268,6 +268,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
 
     @admin.display(description="Educational entities participant belongs to")
     def user_education_entities(self, application):
+        """Return the education entities that the user is associated with."""
         return format_html_join(
             '\n',
             '<li>{}</li>',
@@ -276,10 +277,12 @@ class EventApplicationAdmin(admin.ModelAdmin):
 
     @admin.display(description="User's region")
     def user_region(self, application):
+        """Return the user's region."""
         return application.user.region
 
     @admin.display(description="User's dietary requirements")
     def user_dietary_requirements(self, application):
+        """Return the user's dietary requirements as a bullet point list."""
         return format_html_join(
             '\n',
             '<li>{}</li>',
@@ -289,6 +292,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
     # TODO: fix display!
     @admin.display
     def event_start_end(self, application):
+        """Return the event's start and end dates."""
         # formatted_start = datetime.datetime.strptime(str(application.event.start), old_format).strftime(new_format)
         # formatted_end = datetime.datetime.strptime(str(application.event.end), old_format).strftime(new_format)
         # return f'{formatted_start} to {formatted_end}'
@@ -297,42 +301,52 @@ class EventApplicationAdmin(admin.ModelAdmin):
 
     @admin.display
     def event_location(self, application):
+        """Return the event's location."""
         return application.event.location_summary()
 
     @admin.display
     def mobile_phone_number(self, application):
+        """Return the event participant's mobile number."""
         return application.user.mobile_phone_number
 
     @admin.display
     def medical_notes(self, application):
+        """Return the event participant's medical notes."""
         return application.user.medical_notes
 
     @admin.display
     def participant_email_address(self, application):
+        """Return participant's email address."""
         return application.event_application.participant_email_address
 
     @admin.display
     def emergency_contact_first_name(self, application):
+        """Return the event participant's emergency contact's first name."""
         return application.event_application.emergency_contact_first_name
 
     @admin.display
     def emergency_contact_last_name(self, application):
+        """Return the event participant's emergency contact's last name."""
         return application.event_application.emergency_contact_last_name
 
     @admin.display
     def emergency_contact_relationship(self, application):
+        """Return the emergency contact's relationship with the event participant."""
         return application.event_application.emergency_contact_relationship
 
     @admin.display
     def emergency_contact_phone_number(self, application):
+        """Return the emergency contact's phone number of the event participant."""
         return application.event_application.emergency_contact_phone_number
 
     @admin.display
     def bill_to(self, application):
+        """Return the name of the entity who will pay for the event participant to attend."""
         return application.event_application.bill_to
 
     @admin.display
     def email_address(self, application):
+        """Return user's email address."""
         return application.user.email_address
 
 

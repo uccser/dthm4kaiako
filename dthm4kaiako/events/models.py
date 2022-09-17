@@ -131,6 +131,7 @@ class Ticket(models.Model):
 
     This is usually for events that require event applications to be approved i.e. paid
     """
+
     name = models.CharField(max_length=200, help_text="Participant type e.g. teacher, event staff")
     price = models.FloatField(help_text="Cost for participant to attend in NZD")
 
@@ -143,12 +144,16 @@ class Ticket(models.Model):
 
     def __str__(self):
         """Text representation of a participant type with their ticket price."""
-        if self.isFree():
+        if self.is_free():
             return f"{self.name} (free)"
         else:
             return f"{self.name} (${'{0:.2f}'.format(self.price)})"
 
-    def isFree(self):
+    def is_free(self):
+        """Determine whether the event ticket is free or not.
+
+        Returns True if ticket is free.
+        """
         return self.price == 0.0
 
 
@@ -249,10 +254,14 @@ class Event(models.Model):
         Ticket,
         related_name='events',
         blank=True,
-        null=True
     )
 
     def is_free(self):
+        """Determine whether the event is free or not.
+
+        This is based on the prices of the event's tickets.
+        If these are all free tickets then the event is considered to be free.
+        """
         free = True
         for ticket_type in self.ticket_types:
             if ticket_type.cost != 0.0:
@@ -303,7 +312,7 @@ class Event(models.Model):
             return None
 
     def save(self, *args, **kwargs):
-        """"""
+        """Save the event."""
         return super().save(*args, **kwargs)
 
     # TODO: use this function instead of including logic in template to improve tidiness
@@ -725,7 +734,6 @@ class EventApplication(models.Model):
         """Return string representation of an event application."""
         return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
 
-    # TODO: figure out why not working
     def clean(self):
         """Validate event application model attributes.
 
@@ -739,7 +747,7 @@ class EventApplication(models.Model):
                     'emergency_contact_phone_number':
                     _(
                         'Phone number can include the area code, follow by any '
-                        'number of numbers, - and spaces. E.g. +(64) 123 45 678, 123-45-678, 12345678'
+                        'number of numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
                     )
                 }
             )
@@ -903,7 +911,7 @@ class RegistrationForm(models.Model):
             )
 
     def save(self, *args, **kwargs):
-        """"""
+        """Do a full clean prior to saving the registration form."""
         self.full_clean()
         return super(RegistrationForm, self).save(*args, **kwargs)
 

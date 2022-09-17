@@ -55,9 +55,7 @@ class UserCreationForm(forms.UserCreationForm):
 
 
 class UserUpdateDetailsForm(ModelForm):
-    """
-    Form class for updating the user's details.
-    """
+    """Form class for updating the user's details."""
 
     email_address = EmailField(max_length=150, required=True)
     email_address_confirm = EmailField(max_length=150, label="Confirm email address", required=True)
@@ -86,6 +84,8 @@ class UserUpdateDetailsForm(ModelForm):
     # TODO: change the label for the user_region field to just be "label"
 
     class Meta:
+        """Metadata for UserUpdateDetailsForm class."""
+
         model = User
         fields = [
             'first_name',
@@ -120,6 +120,10 @@ class UserUpdateDetailsForm(ModelForm):
                     del self.fields['medical_notes']
 
     def clean(self):
+        """Clean the form to check the mobile phone numbers and email addresses match.
+
+        Error is raised is they do not match.
+        """
         cleaned_data = super(UserUpdateDetailsForm, self).clean()
         email_address = cleaned_data.get('email_address')
         email_address_confirm = cleaned_data.get('email_address_confirm')

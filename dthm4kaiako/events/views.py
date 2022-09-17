@@ -606,7 +606,7 @@ def is_in_past_or_cancelled(event):
 def manage_event(request, pk):
     """View for event management.
 
-    Contains form sets for each event related object (similar to that in Admin app).
+    Contains forms for each event related object (similar to that in Admin app).
     These can be viewed, updated (based on non-read only fields) and deleted.
     """
     event = Event.objects.get(pk=pk)
@@ -649,7 +649,10 @@ def manage_event(request, pk):
 
 
 def user_dietary_requirements(application):
-    """"""
+    """Return a list of the participant's user's dietary requirements.
+
+    This is based on the event application submitted by the participant.
+    """
     return format_html_join(
         '\n',
         '<li>{}</li>',
@@ -659,7 +662,7 @@ def user_dietary_requirements(application):
 
 @login_required
 def manage_event_application(request, pk_event, pk_application):
-    """"""
+    """View for managing event applications."""
     event_application = EventApplication.objects.get(pk=pk_application)
     event = event_application.event
     context = {
