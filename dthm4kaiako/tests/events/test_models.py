@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from events.models import (
     Event,
-    ParticipantType,
+    # ParticipantType,
     Address,
     EventApplication,
     Series,
@@ -16,7 +16,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_locations,
     generate_users,
     generate_events,
-    generate_participant_types,
+    # generate_participant_types,
     generate_addresses,
     generate_event_applications,
     generate_serieses,
@@ -178,13 +178,13 @@ class EventModelTests(TestCase):
 
     # TODO: update these tests since has_attendance_fee is no longer present
 
-    def test_has_attendance_fee__event_has_fee(self):
-        event = Event.objects.get(id=1)
-        self.assertEqual(event.has_attendance_fee, True)
+    # def test_has_attendance_fee__event_has_fee(self):
+    #     event = Event.objects.get(id=1)
+    #     self.assertEqual(event.has_attendance_fee, True)
 
-    def test_has_attendance_fee__event_is_free(self):
-        event = Event.objects.get(id=3)
-        self.assertEqual(event.has_attendance_fee, False)
+    # def test_has_attendance_fee__event_is_free(self):
+    #     event = Event.objects.get(id=3)
+    #     self.assertEqual(event.has_attendance_fee, False)
 
     # ----------------------------- tests for __str__ ------------------------------
 
@@ -297,23 +297,24 @@ class EventModelTests(TestCase):
 
     # TODO: WRITE UNIT TESTS!
 
+# TODO: update
+# class ParticipantTypeTests(TestCase):
 
-class ParticipantTypeTests(TestCase):
+    # @classmethod
+    # def setUpTestData(cls):
+    #     generate_participant_types()
 
-    @classmethod
-    def setUpTestData(cls):
-        generate_participant_types()
-
-    @classmethod
-    def tearDownTestData(cls):
-        ParticipantType.objects.all().delete()
+    # @classmethod
+    # def tearDownTestData(cls):
+    #     ParticipantType.objects.all().delete()
 
     # ----------------------------- tests for __str__ ------------------------------
 
-    def test_str_representation__register(self):
-        test_name = "Event staff"
-        application_type = ParticipantType.objects.get(name=test_name)
-        self.assertEqual(str(application_type), application_type.name)
+    # TODO: update
+    # def test_str_representation__register(self):
+    #     test_name = "Event staff"
+    #     application_type = ParticipantType.objects.get(name=test_name)
+    #     self.assertEqual(str(application_type), application_type.name)
 
 
 class AddressTests(TestCase):
@@ -325,7 +326,7 @@ class AddressTests(TestCase):
         generate_serieses()
         generate_locations()
         generate_events()
-        generate_participant_types()
+        # generate_participant_types()
         generate_event_applications()
 
     @classmethod
@@ -380,7 +381,7 @@ class EventApplicationTests(TestCase):
         generate_locations()
         generate_events()
         generate_users()
-        generate_participant_types()
+        # generate_participant_types()
         generate_event_applications()
 
     @classmethod
@@ -417,7 +418,7 @@ class RegistrationFormTests(TestCase):
         generate_locations()
         generate_events()
         generate_users()
-        generate_participant_types()
+        # generate_participant_types()
         generate_event_applications()
 
     @classmethod
