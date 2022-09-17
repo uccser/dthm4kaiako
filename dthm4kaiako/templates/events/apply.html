@@ -116,9 +116,15 @@
         </div>
         {% crispy terms_and_conditions_form %}
 
-        <button type="submit" class="btn btn-primary">
-            {{ event.get_event_type_short }}
-        </button>
+        {% if not application_exists %}
+            <button type="submit" class="btn btn-primary">
+                {{ event.get_event_type_short }}
+            </button>
+        {% else %}
+            <button type="submit" class="btn btn-primary">
+                {{ event.get_event_type_short_updating}}
+            </button>
+        {% endif %}
 
     </form>
 </div>

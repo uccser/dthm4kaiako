@@ -351,6 +351,20 @@ class Event(models.Model):
             return "External"
 
     @property
+    def get_event_type_short_updating(self):
+        """Return string to update form.
+
+        Returns:
+            String.
+            'Update application form' if the registration type is apply.
+            'Update registeration form' if it is register.
+        """
+        if self.registration_type == self.REGISTRATION_TYPE_APPLY:
+            return "Update application form"
+        elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
+            return "Update registeration form"
+
+    @property
     def start_weekday_name(self):
         """Return the weekday name of the start date of the event.
 
