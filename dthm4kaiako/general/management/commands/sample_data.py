@@ -25,6 +25,8 @@ from users.models import (
 )
 # Events
 from events.models import (
+    DeletedEventApplication,
+    EventApplication,
     Location,
     Series,
     Ticket,
@@ -568,13 +570,13 @@ class Command(management.base.BaseCommand):
         event_7_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
         event_7_apply_online_free_past.save()
 
-        event_8_apply_online_free_past = Event.objects.create(
+        event_8_register_online_free_future = Event.objects.create(
             name="TODO",
             description=(
                 'TODO'
                 'TODO'
             ),
-            registration_type = 2,
+            registration_type = 1,
             start=datetime.datetime(2022, 1, 2, 10, 0, 0),
             end=datetime.datetime(2022, 1, 2, 14, 0, 0),
             accessible_online=True,
@@ -583,8 +585,8 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_8_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
-        event_8_apply_online_free_past.save()
+        event_8_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_8_register_online_free_future.save()
 
         # Events - 1 cancelled in past
         event_9_apply_online_free_past_cancelled = Event.objects.create(
@@ -626,20 +628,532 @@ class Command(management.base.BaseCommand):
         event_10_apply_online_free_past_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
         event_10_apply_online_free_past_cancelled.save()
 
-        # BOTH ARE FOR EVENT STAFF FOR STUDY PARTICIPANT
+        # MORE EVENTS FOR USER STUDY PARTICIPANT TO HAVE APPLIED FOR
+        # Addtional events for user study participant to see on their event applications page
+        event_11_register_online_free_future_cancelled = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            cancelled=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_11_register_online_free_future_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_11_register_online_free_future_cancelled.save()
+
+        event_12_register_online_free_future = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_12_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_12_register_online_free_future.save()
+
+        event_13_register_online_free_future = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=True,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_13_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_13_register_online_free_future.save()
+
+        event_14_register_physical_costs_future = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
+            accessible_online=False,
+            published=True,
+            featured=True,
+            is_catered=True,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_14_register_physical_costs_future.locations.set(sample_location_1)
+        event_14_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_14_register_physical_costs_future.save()
+
+        event_15_register_physical_costs_past = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2021, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2021, 1, 2, 14, 0, 0),
+            accessible_online=False,
+            published=True,
+            featured=True,
+            is_catered=True,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_15_register_physical_costs_past.locations.set(sample_location_1)
+        event_15_register_physical_costs_past.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_15_register_physical_costs_past.save()
+
+        # Event - not published - use to step through each event phase as event staff
+        event_16_register_physical_costs_future = Event.objects.create(
+            name="TODO",
+            description=(
+                'TODO'
+                'TODO'
+            ),
+            registration_type = 1,
+            start=datetime.datetime(2021, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2021, 1, 2, 14, 0, 0),
+            accessible_online=False,
+            published=False,
+            featured=True,
+            is_catered=True,
+            contact_email_address="eventstaff@event.co.nz",
+            )
+        event_16_register_physical_costs_future.locations.set(sample_location_2)
+        event_16_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_16_register_physical_costs_future.save()
+
+
+        # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event applications - 10 for apply event
-        # Event applications - 10 for register event - mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
-        # TODO: add event staff
+        event_application_apply_1 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_1,
+            representing = "Myself",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_2 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_2,
+            representing = "University of Canterbury",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_3 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_3,
+            representing = "DTTA",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_4 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_4,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_5 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_5,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_6 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_6,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_7 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_7,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_8 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_8,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_9 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_9,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        event_application_apply_10 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_10,
+            representing = "My school",
+            event = event_1_apply_online_free_future,
+        )
+
+        # EVENT IS STAFFED BY STUDY PARTICIPANT
+        # Event applications - 10 for register event (online and free) - mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
+        
+        PENDING = 1
+        APPROVED = 2
+        REJECTED = 3
+        
+        event_application_register_1_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_1,
+            representing = "Myself",
+            event = event_2_register_online_free_future,
+        )
+
+        event_application_register_2_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_2,
+            representing = "University of Canterbury",
+            event = event_2_register_online_free_future,
+        )
+
+        event_application_register_3_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_3,
+            representing = "DTTA",
+            event = event_2_register_online_free_future,
+        )
+
+        event_application_register_4_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_4,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+        )
+
+        event_application_register_5_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_5,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+        )
+
+        event_application_register_6_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_6,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+            stauts = APPROVED
+        )
+
+        event_application_register_7_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_7,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+            stauts = APPROVED
+        )
+
+        event_application_register_8_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_8,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+            stauts = APPROVED
+        )
+
+        event_application_register_9_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_9,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+            status = REJECTED
+        )
+
+        event_application_register_10_online_free = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_10,
+            representing = "My school",
+            event = event_2_register_online_free_future,
+            status = REJECTED
+        )
+
+        PREFER_NOT_TO_SAY = 1
+        ILLNESS = 2
+        NOT_INTERESTED = 3
+        CHANGE_OF_PLANS = 4
+        TOO_EXPENSIVE = 5
+        INCONVENIENT_LOCATION = 6
+        OTHER = 7
+
+        event_application_register_online_free_withdrawn_1 = DeletedEventApplication(
+            deletion_reason = PREFER_NOT_TO_SAY,
+            event = event_2_register_online_free_future
+        )
+
+        event_application_register_online_free__withdrawn_2 = DeletedEventApplication(
+            deletion_reason = NOT_INTERESTED,
+            event = event_2_register_online_free_future
+        )
+
+        event_application_register_online_free_withdrawn_3 = DeletedEventApplication(
+            deletion_reason = TOO_EXPENSIVE,
+            event = event_2_register_online_free_future
+        )
+
+        event_application_register_online_free_withdrawn_4 = DeletedEventApplication(
+            deletion_reason = OTHER,
+            event = event_2_register_online_free_future,
+            other_reason_for_deletion = "Clashes with another event I would like to attend."
+        )
+
+        event_application_register_online_free_withdrawn_4 = DeletedEventApplication(
+            deletion_reason = OTHER,
+            event = event_2_register_online_free_future,
+            other_reason_for_deletion = "Didn't realise the event was online."
+        )
+        
+        # EVENT IS STAFFED BY STUDY PARTICIPANT
+        # Event applications - 10 for register event (in person and costs and catered) - mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
+
+        event_application_register_1_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_event_staff,
+            user = user_1,
+            representing = "Myself",
+            event = event_3_register_physical_costs_future,
+            emergency_contact_first_name = "Daniel",
+            emergency_contact_last_name = "Prince",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 21 126 0764"
+        )
+
+        event_application_register_2_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_2,
+            representing = "University of Canterbury",
+            event = event_3_register_physical_costs_future,
+            emergency_contact_first_name = "Neha",
+            emergency_contact_last_name = "Richardson",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 29 370 1241"
+        )
+
+        event_application_register_3_physical_and_costs = EventApplication(
+            participant_type = ticket_free_facilitator,
+            user = user_3,
+            representing = "DTTA",
+            event = event_3_register_physical_costs_future,
+            emergency_contact_first_name = "Lilian",
+            emergency_contact_last_name = "Field",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 21 805 437"
+        )
+
+        event_application_register_4_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_event_staff,
+            user = user_4,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            emergency_contact_first_name = "Leonardo",
+            emergency_contact_last_name = "Sparrow",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 22 1382 0407"
+        )
+
+        event_application_register_5_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_student,
+            user = user_5,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            emergency_contact_first_name = "Stefano",
+            emergency_contact_last_name = "Peralta",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 20 9484 4821"
+        )
+
+        event_application_register_6_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_6,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            stauts = APPROVED,
+            emergency_contact_first_name = "Amelia",
+            emergency_contact_last_name = "Short",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 21 514 286"
+        )
+
+        event_application_register_7_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_7,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            stauts = APPROVED,
+            emergency_contact_first_name = "Aleisha",
+            emergency_contact_last_name = "Galvan",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 20 617 6478"
+        )
+
+        event_application_register_8_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_8,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            stauts = APPROVED,
+            emergency_contact_first_name = "Jasmin",
+            emergency_contact_last_name = "Rayner",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 22 614 5719"
+        )
+
+        event_application_register_9_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_9,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            status = REJECTED,
+            emergency_contact_first_name = "Maryam",
+            emergency_contact_last_name = "Jensen",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 21 485 802"
+        )
+
+        event_application_register_10_physical_and_costs = EventApplication(
+            participant_type = ticket_paid_teacher,
+            user = user_10,
+            representing = "My school",
+            event = event_3_register_physical_costs_future,
+            status = REJECTED,
+            emergency_contact_first_name = "Maison",
+            emergency_contact_last_name = "Fernandez",
+            emergency_contact_relationship = "Partner",
+            emergency_contact_phone_number =  "+64 27 827 89384"
+        )
+
+        event_application_apply_withdrawn_1 = DeletedEventApplication(
+            deletion_reason = PREFER_NOT_TO_SAY,
+            event = event_3_register_physical_costs_future
+        )
+
+        event_application_apply_withdrawn_2 = DeletedEventApplication(
+            deletion_reason = NOT_INTERESTED,
+            event = event_3_register_physical_costs_future
+        )
+
+        event_application_apply_withdrawn_3 = DeletedEventApplication(
+            deletion_reason = TOO_EXPENSIVE,
+            event = event_3_register_physical_costs_future
+        )
+
+        event_application_apply_withdrawn_4 = DeletedEventApplication(
+            deletion_reason = OTHER,
+            event = event_3_register_physical_costs_future,
+            other_reason_for_deletion = "Clashes with another event I would like to attend."
+        )
+
+        event_application_apply_withdrawn_4 = DeletedEventApplication(
+            deletion_reason = OTHER,
+            event = event_3_register_physical_costs_future,
+            other_reason_for_deletion = "Didn't realise the event was online."
+        )
+
+        # Add admin account to all events
+        events = Event.objects.all()
+        for event in events:
+            event.event_staff.add(admin)
+            event.save()
+        admin.save()
+        print('Admin account set as event staff for all events')
+
+        # ADD EVENT STAFF TO THESE THREE EVENTS THAT HAVE EVENT APPLICATION
+        event_1_apply_online_free_future.event_staff.add(user_study_participant)
+        event_1_apply_online_free_future.save()
+        event_2_register_online_free_future.event_staff.add(user_study_participant)
+        event_2_register_online_free_future.save()
+        event_3_register_physical_costs_future.event_staff.add(user_study_participant)
+        event_3_register_physical_costs_future.save()
+        user_study_participant.save()
+        print('User study participant set as event staff for three events')
 
         # STUDY PARTICPANT'S 
         # 4 event applications - so 4 different non-staff events
-        # 2 in past
-        # 4 in future - so can withdraw 2 (diff pages) and can update one
+        # 1) 3 that are free and online and in future - so can withdraw 2 (diff pages) and can update one
+        study_user_event_application_1 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_8_register_online_free_future,
+            stauts = APPROVED
+        )
+        study_user_event_application_2 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_12_register_online_free_future,
+            stauts = APPROVED
+        )
+        study_user_event_application_3 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_13_register_online_free_future,
+            stauts = APPROVED
+        )
 
-        # Event - not published - use to step through each event phase as event staff
+        # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
+        study_user_event_application_4 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_14_register_physical_costs_future,
+            stauts = APPROVED
+        ) 
 
+        # 3) 2 that are in past (one cancelled)
+        study_user_event_application_5 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_9_apply_online_free_past_cancelled,
+            stauts = APPROVED
+        )
+        study_user_event_application_6 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_6_apply_online_free_past,
+            stauts = APPROVED
+        )
 
-
+        # 4) 1 that is reject and in the past
+        study_user_event_application_7 = EventApplication(
+            participant_type = ticket_free_event_staff,
+            user = user_study_participant,
+            representing = "My school",
+            event = event_15_register_physical_costs_past,
+            stauts = REJECTED
+        )
 
 
         # -------------------------- Realistic events for informal demonstrations --------------------------

@@ -639,7 +639,7 @@ class Address(models.Model):
                 }
             )
 
-
+# TODO: consider pulling out emergency contact details into separate model
 # TODO: make emergency contact details only mandatory for events that are in
 # person i.e. don't show them for online events and allow them to be empty
 class EventApplication(models.Model):
