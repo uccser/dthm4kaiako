@@ -20,22 +20,15 @@
                 <h6>
                     <b>Ends:</b> {{event_application.event.end|date:"g:i a l j F, Y" }}
                 </h6>
+                <h6>
+                    <b>Status:</b> {{ event_application.status_string_for_user }}
+                </h6>
                 <br>
                 {% if event_application.event.is_cancelled %}
-                    <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        Cancelled
-                    </label>
-                {% endif %}
-                {% if event_application.event.has_ended %}
-                    <label style="background-color:rgb(88, 88, 88); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        Ended
-                    </label>
-                {% endif %}
-                {% if not event_application.event.is_cancelled and not event_application.event.has_ended %}
-                    <h6>
-                        <b>Status:</b> {{ event_application.status_string_for_user }}
-                    </h6>
-                {% endif %}
+                <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 5px; padding-left: 12px; padding-right: 12px; padding-top: 8px; padding-bottom: 8px;">
+                    Cancelled
+                </label>
+            {% endif %}
             </div>
             <div class="col-sm-4">
 
