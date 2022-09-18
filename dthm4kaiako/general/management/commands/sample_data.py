@@ -1257,14 +1257,6 @@ class Command(management.base.BaseCommand):
         )
         event_3_register_physical_costs_future.save()
 
-        event_16_reg_form_pk = event_16_register_physical_costs_future.registration_form
-        event_16_reg_form = RegistrationForm.objects.filter(pk=event_16_reg_form_pk)
-        event_16_reg_form.update(
-            open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0),
-            close_datetime=datetime.datetime(2022, 4, 1, 0, 0, 0)
-        )
-        event_16_register_physical_costs_future.save()
-
         # STUDY PARTICPANT'S 
         # 4 event applications - so 4 different non-staff events
         # 1) 3 that are free and online and in future - so can withdraw 2 (diff pages) and can update one
@@ -1325,8 +1317,8 @@ class Command(management.base.BaseCommand):
         )
 
         # FOR PARTICIPANT TO APPLY FOR
-                # Event - register - online and free
-        event_17_register_online_free_future=Event.objects.create(
+            # Event - apply - online and free
+        event_17_apply_online_free_future=Event.objects.create(
             name='Code Club 4 Teachers',
             description=(
                 'Whether you are an absolute beginner or someone who has dabbled with '
@@ -1345,8 +1337,8 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_17_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
-        event_17_register_online_free_future.save()
+        event_17_apply_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
+        event_17_apply_online_free_future.save()
 
         # Event - register - in person and costs
         event_18_register_physical_costs_future=Event.objects.create(
@@ -1359,7 +1351,7 @@ class Command(management.base.BaseCommand):
                 'The meetup will be delivered in English and will cater for all participants. '
                 'We invite all Māori and English Medium kaiako to attend as the skills and '
                 'knowledge covered in these sessions are relevant to both contexts.'
-            ), 
+            ),
             registration_type=1,
             start=datetime.datetime(2023, 6, 24),
             end=datetime.datetime(2023, 6, 26),
@@ -1369,9 +1361,9 @@ class Command(management.base.BaseCommand):
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_3_register_physical_costs_future.locations.set([sample_location_2])
-        event_3_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher])
-        event_3_register_physical_costs_future.save()
+        event_18_register_physical_costs_future.locations.set([sample_location_2])
+        event_18_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher])
+        event_18_register_physical_costs_future.save()
 
 
         # -------------------------- Realistic events for informal demonstrations --------------------------
