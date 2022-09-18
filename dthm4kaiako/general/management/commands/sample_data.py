@@ -468,10 +468,12 @@ class Command(management.base.BaseCommand):
 
         # Event - register - online and free
         event_2_register_online_free_future=Event.objects.create(
-            name='Introduction to Teaching CS with Zoom',
+            name='Practical ideas to teach the new digital technologies content',
             description=(
-                'TODO'
-                'TODO'
+                'Join the UC CSERG (Department of Fun Stuff) team to learn how to'
+                ' teach computational thinking and programming through practical '
+                'activities that you can take back to your tamariki and use immediately.'
+                ' This workshop is free and includes coffee in the morning as well as lunch.'
             ),
             start=datetime.datetime(2023, 6, 1, 8, 0, 0),
             end=datetime.datetime(2023, 6, 1, 10, 0, 0),
@@ -487,11 +489,15 @@ class Command(management.base.BaseCommand):
 
         # Event - register - in person and costs
         event_3_register_physical_costs_future=Event.objects.create(
-            name="Python Introduction",
+            name="Code Club 4 Teachers Digital Storytelling (face to face)",
             description=(
-                'TODO'
-                'TODO'
-            ),   
+                'Whether you are an absolute beginner or someone who has dabbled with '
+                'programming and coding. Our focus is on having fun while integrating '
+                'Digital Technologies into your classroom programme.\n\n'
+                'Join Amy Souquet and explore how to integrate digital technologies '
+                'and computational thinking into curriculum areas and gain an understanding '
+                'of the fundamentals of programming using age appropriate programming languages.'
+            ), 
             registration_type=1,
             start=datetime.datetime(2023, 6, 24),
             end=datetime.datetime(2023, 6, 26),
@@ -507,10 +513,11 @@ class Command(management.base.BaseCommand):
 
         # Event - invite only
         event_4_invite_physical_free_future=Event.objects.create(
-            name="Teaching with AI 2023",
+            name="Encryption, cryptosystems and ciphers",
             description=(
-                'TODO'
-                'TODO'
+                'This three part series focuses on these cool concepts that keep us safe online.'
+                'Join Tim Bell and Tracy Henderson to explore why it\'s important to know what\'s'
+                ' happening with your password and why you should have warning bells if a company emails you back your password.\n\n'
             ),
             registration_type=4,
             start=datetime.datetime(2023, 4, 15),
@@ -527,11 +534,19 @@ class Command(management.base.BaseCommand):
 
         # Event - external link
         event_5_external_online_free_future=Event.objects.create(
-            name="Intro to Computer Graphics",
+            name="Inspire your learners through creating great ideas through Digital Technologies",
             description=(
-                'TODO'
-                'TODO'
-            ), 
+                'Use the UN sustainable development goals to generate great ideas for real world Digital'
+                ' Technologies projects (Not yet started, Now underway, 2020 ready, Leading and innovating).\n\n'
+                'Real-world projects will interest and motivate your learners - as well as provide scope for '
+                'incorporating a range of NZC learning areas. In this 30 minute virtual session you will use '
+                'the UN sustainable development goals to generate a range of great ideas for DT projects and '
+                'share them with your fellow participants.\n\n'
+                'This virtual meetup is aligned to the Ministry of Education’s digital technologies '
+                'implementation support tool and starts at being 2020 ready as it supports you to continue to '
+                'get into the detail of the curriculum content and grow your own understanding and leading and '
+                'innovating by supporting you to feel confident with an Ako style of teaching and learning.'
+            ),
             registration_type=3,
             start=datetime.date(2023, 8, 15),
             end=datetime.date(2023, 8, 15),
@@ -547,10 +562,18 @@ class Command(management.base.BaseCommand):
 
         # Events - 3 in past
         event_6_apply_online_free_past=Event.objects.create(
-            name="TODO",
+            name="Solving Problems by Design",
             description=(
-                'TODO'
-                'TODO'
+                'Technology is intervention by design. '
+                'How do you get your ākonga using a good design process? What is the design process anyway?\n\n'
+                'Explore the relationship between design and digital technology with this discussion-based hui. '
+                'This session is an overview of how a design process can be used with your students. '
+                'For a more comprehensive breakdown, including discussion, we highly recommend also attending '
+                'the ‘A Design Process’ sessions on Tuesday the 15th and 22nd of September.\n\n'
+                'This virtual meetup is aligned to the Ministry of Education’s digital technologies implementation '
+                'support tool and starts at \'now underway\'. It supports you to unpack the detail, get organised for change, '
+                'through being \'2020 ready\', to \'leading and innovating\', by supporting you to feel confident with an '
+                'Ako style of teaching and learning.'
             ),
             registration_type=2,
             start=datetime.datetime(2022, 4, 15, 10, 0, 0),
@@ -565,10 +588,21 @@ class Command(management.base.BaseCommand):
         event_6_apply_online_free_past.save()
 
         event_7_apply_online_free_past=Event.objects.create(
-            name="TODO",
+            name="How to make informed decisions when buying DT resources",
             description=(
-                'TODO'
-                'TODO'
+                'There are a lot of DT resources and activities available, so how do you evaluate them?'
+                ' Trevor and Melissa will work through things to consider when looking at resources '
+                'that will interest and challenge your learners.\n\n'
+                'Digital Technologies learning should now be part of your curriculum. We are here to '
+                'support you to achieve this. As you plan and implement the new digital technologies '
+                'curriculum content you will need to evaluate and select learning resources that '
+                'will interest and challenge your learners. This 30 minute session will get you '
+                'thinking about what makes for a great resource - as well as seeking advice and '
+                'sharing successes with colleagues.\n\n'
+                'This virtual meetup is aligned to the Ministry of Education’s digital technologies '
+                'implementation support tool and starts at \'now underway\'. It supports you to unpack '
+                'the detail, get organised for change, through being \'2020 ready\', to \'leading and '
+                'innovating\', by supporting you to feel confident with an Ako style of teaching and learning.'
             ),
             registration_type=2,
             start=datetime.datetime(2022, 3, 2, 10, 0, 0),
@@ -583,10 +617,15 @@ class Command(management.base.BaseCommand):
         event_7_apply_online_free_past.save()
 
         event_8_register_online_free_future=Event.objects.create(
-            name="TODO",
+            name="Code Club 4 Teachers Sustainability",
             description=(
-                'TODO'
-                'TODO'
+                'Mondays 3.30pm to 5.00pm. Whether you are an absolute beginner or '
+                'someone who has dabbled with programming and coding. Our focus is '
+                'on having fun while integrating Digital Technologies into your '
+                'classroom programme.\n\n'
+                'Join Kate Allan and explore how to integrate digital technologies and '
+                'computational thinking into curriculum areas and gain an understanding '
+                'of the fundamentals of programming using age appropriate programming languages.'
             ),
             registration_type=1,
             start=datetime.datetime(2022, 1, 2, 10, 0, 0),
@@ -602,10 +641,18 @@ class Command(management.base.BaseCommand):
 
         # Events - 1 cancelled in past
         event_9_apply_online_free_past_cancelled=Event.objects.create(
-            name="TODO",
+            name="Introduction to 3D Design Tinkercad",
             description=(
-                'TODO'
-                'TODO'
+                'A three part introduction series to 3D design by using basic '
+                'shapes to create more advanced objects.\n\n'
+                'These three webinars will be looking at using Tinkercad and how'
+                ' we can use it to build 3D objects from a blank canvas. Tinkercad '
+                'is easy to understand which makes getting it onto the classroom hassle free.\n\n'
+                'The first webinar will be introducing Tinkercad, the second and third webinars '
+                'will be using 3D shapes to explore possibilities. We will also look at how these '
+                'activities relate to progress outcomes and the Technology learning area. Note: '
+                'these sessions will be interactive with participants being guided to use Tinkercad '
+                'themselves throughout the sessions. No prior experience in Tinkercad is required.'
             ),
             registration_type=2,
             start=datetime.datetime(2022, 1, 2, 10, 0, 0),
@@ -622,10 +669,20 @@ class Command(management.base.BaseCommand):
 
         # Events - 1 cancellevent_9_apply_online_free_past_cancelleded in future
         event_10_apply_online_free_past_cancelled=Event.objects.create(
-            name="TODO",
+            name="DT and Science - A Sound Investigation",
             description=(
-                'TODO'
-                'TODO'
+                'Wondering how to integrate Computational thinking, and Designing and developing '
+                'digital outcomes into your teaching of science for Years 5-10? Here are some ideas.'
+                'This webinar will guide you through a comprehensive resource showing how an authentic '
+                'context, such as teenage hearing loss due to loud music, can be used to integrate '
+                'digital technologies opportunities into your classroom teaching. The webinar will '
+                'be delivered in English, however, the content will be really beneficial to kura Māori '
+                'also. We invite all Māori Medium kaiako to attend as the skills and knowledge covered '
+                'in these sessions are relevant to Māori Medium contexts. This virtual meetup is aligned '
+                'to the Ministry of Education’s digital technologies implementation support tool and starts '
+                'at \'now underway\'. It supports you to unpack the detail, get organised for change, '
+                'through being \'2020 ready\', to \'leading and innovating\', by supporting you to feel '
+                'confident with an Ako style of teaching and learning.'
             ),
             registration_type=2,
             start=datetime.datetime(2023, 1, 2, 10, 0, 0),
@@ -643,10 +700,18 @@ class Command(management.base.BaseCommand):
         # MORE EVENTS FOR USER STUDY PARTICIPANT TO HAVE APPLIED FOR
         # Addtional events for user study participant to see on their event applications page
         event_11_register_online_free_future_cancelled=Event.objects.create(
-            name="TODO",
+            name="How binary digits rule the world",
             description=(
-                'TODO'
-                'TODO'
+                'There is a hidden code that runs the world from food production to the '
+                'air conditioning in your car. Learn to crack the code at this webinar.\n\n'
+                'Everything computers do is based on binary digits. Everything controlled by computers, '
+                'from digital clocks to airplanes, relies on binary digits. Find out how easy it is to '
+                'have fun with this fundamental concept with your students and potentially prevent future digital failures.\n\n'
+                'Binary digits are first mentioned in progress outcome 3 but the activities shown in this webinar support younger students also.'
+                'This virtual meetup is aligned to the Ministry of Education\’s digital technologies '
+                'implementation support tool and starts at now underway as it supports you to unpack '
+                'the detail and get organised for change and takes you through to being 2020 ready '
+                'and leading and innovating by supporting you to feel confident with an Ako style of teaching and learning.'
             ),
             registration_type=1,
             start=datetime.datetime(2023, 1, 2, 10, 0, 0),
@@ -662,10 +727,16 @@ class Command(management.base.BaseCommand):
         event_11_register_online_free_future_cancelled.save()
 
         event_12_register_online_free_future=Event.objects.create(
-            name="TODO",
+            name="Make great decisions - what should be on the purchasing plan?",
             description=(
-                'TODO'
-                'TODO'
+                'Ask canny questions to ensure you make cost-effective Digital Technologies '
+                'purchases (Not yet started, Now underway, 2020 ready, Leading and innovating)'
+                'As you develop and trail programmes of learning, you are likely to consider '
+                'buying digital devices and digital tools and gadgets. This 30 minute virtual '
+                'session will help you ask canny questions, avoid hype and guide you in making '
+                'purchases that provide great value for your time, effort and dollars as you '
+                'implement the new Digital Technologies curriculum content. You will also have '
+                'an opportunity to seek advice and share successes with colleagues.'
             ),
             registration_type=1,
             start=datetime.datetime(2023, 1, 2, 10, 0, 0),
@@ -680,10 +751,17 @@ class Command(management.base.BaseCommand):
         event_12_register_online_free_future.save()
 
         event_13_register_online_free_future=Event.objects.create(
-            name="TODO",
+            name="DT Escape Room for the Curious",
             description=(
-                'TODO'
-                'TODO'
+                'Digital Technologies escape room for the Curious. This event is a '
+                'chance to explore the new and revised Digital Technologies curriculum '
+                'content in a fun way. You’ll work together to solve challenges to escape '
+                'from a (virtual) forest, with challenges inspired by the legends of Māui '
+                'and what he would do to solve these problems.. You don’t need to be '
+                'familiar with DT to do this, and you’ll pick up some ideas along the way, '
+                'including ways to use the escape room approach in your own classroom to engage '
+                'students. You can join the session alone and we’ll help you form a team, or '
+                'you can bring your own group, either sharing one device or on their own devices.'
             ),
             registration_type=1,
             start=datetime.datetime(2023, 1, 2, 10, 0, 0),
@@ -698,10 +776,21 @@ class Command(management.base.BaseCommand):
         event_13_register_online_free_future.save()
 
         event_14_register_physical_costs_future=Event.objects.create(
-            name="TODO",
+            name="Facial recognition, what's it all about?",
             description=(
-                'TODO'
-                'TODO'
+                'Thursday 3.30pm to 4.00pm. Have you been asked to "tag" '
+                'in people on online platforms? '
+                'Ever wondered how that works? Discover the algorithmic thinking '
+                'that is happening behind the scenes.\n\n'
+                'Join Tracy Henderson to explore the computer science '
+                'behind facial recognition and '
+                'how this impacts what we share online.\n\n'
+                'This virtual meetup is aligned to the Ministry of Education\'s '
+                'digital technologies implementation support tool and starts at \'now underway\'.'
+                'It supports you to unpack the details, get organised for change, '
+                'through being \'2020 ready\','
+                ' to \'leading and innovating\', by supporting you to feel '
+                'confident with an Ako style of teaching and learning.'
             ),
             registration_type=1,
             start=datetime.datetime(2023, 1, 2, 10, 0, 0),
@@ -717,10 +806,18 @@ class Command(management.base.BaseCommand):
         event_14_register_physical_costs_future.save()
 
         event_15_register_physical_costs_past=Event.objects.create(
-            name="TODO",
+            name="Design Thinking Process",
             description=(
-                'TODO'
-                'TODO'
+                'Let\'s look at the design thinking process and '
+                'how it can be incorporated into programmes.'
+                'The design process is an approach to learning, collaboration, '
+                'and problem solving within Digital Technologies. We will be '
+                'looking at why and how we can be using this process to '
+                'enhance and support students\' thinking and creativity.'
+                'This virtual meetup is aligned to the Ministry of Education’s digital technologies '
+                'implementation support tool and starts at being 2020 ready as it supports you to continue to '
+                'get into the detail of the curriculum content and grow your own understanding and leading and '
+                'innovating by supporting you to feel confident with an Ako style of teaching and learning.'
             ),
             registration_type=1,
             start=datetime.datetime(2021, 1, 2, 10, 0, 0),
@@ -739,8 +836,33 @@ class Command(management.base.BaseCommand):
         event_16_register_physical_costs_future=Event.objects.create(
             name="TODO",
             description=(
-                'TODO'
-                'TODO'
+                'This three-day workshop is a gentle introduction to programming '
+                '(sometimes referred to as the more mysterious sounding “coding”) '
+                'for teachers with little or no prior experience. We\'ll start from '
+                'absolute basics, and gently introduce the idea of what programming is, '
+                'what it looks like, and help you develop some basic skills in either the '
+                'Scratch or Python programming languages. We\'ll demystify the language of '
+                'Computational Thinking, including ideas like “sequence”, “selection” and '
+                '“iteration”, and explore what “debugging” looks like in a school context. '
+                'The workshops will have breakout sessions for people who want to go at a '
+                'faster or slower pace. And the main rule is that there are no silly '
+                'questions - it\'s a chance to explore in a safe environment. We\'ll '
+                'use examples that are relevant to our context in Aotearoa, and explore '
+                'ideas that are relevant to the new and revised Digital '
+                'Technologies curriculum content.\n\n'
+                'The course will be run by Tim Bell, who has been teaching programming '
+                'for way longer than he\'ll admit, but is particularly interested in '
+                'first steps for beginners. He will be assisted by tutors from his '
+                'CS Education Research group at Canterbury (also known '
+                'as the department of fun stuff).\n'
+                'This course is free, but we don\'t cover travel and accommodation, '
+                'and you will need to make your own arrangements for this if you\'re '
+                'coming from out of town. This is a great chance for you to support '
+                'the local tourist industry! We won\'t start properly until 10am on '
+                'Tuesday, and will finish by 3pm on Thursday, to allow for those who '
+                'want to fly on those days - but if you have time to enjoy Christchurch, '
+                'do take an extra day or two to explore the cafes and laneways '
+                'of our vibrant rebuilt city!'
             ),
             registration_type=1,
             start=datetime.datetime(2021, 1, 2, 10, 0, 0),
