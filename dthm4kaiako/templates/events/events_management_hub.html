@@ -12,7 +12,7 @@
 
     <!-- TODO: add filter (see past and upcoming eventings pages )-->
 
-    {% if events_user_is_staff_for_future and events_user_is_staff_for_past %}
+    {% if events_user_is_staff_for_future or events_user_is_staff_for_past %}
 
         <!-- Generate Event CSVs -->        
         <details>

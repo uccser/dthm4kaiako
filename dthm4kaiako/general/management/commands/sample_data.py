@@ -407,7 +407,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        print('User 13 created.')
+        print('User 13 created - user study participant.')
 
 
         # Physical locations 
@@ -1099,11 +1099,11 @@ class Command(management.base.BaseCommand):
         print('Admin account set as event staff for all events')
 
         # ADD EVENT STAFF TO THESE THREE EVENTS THAT HAVE EVENT APPLICATION
-        event_1_apply_online_free_future.event_staff.add(user_study_participant)
+        event_1_apply_online_free_future.event_staff.set([admin, user_study_participant])
         event_1_apply_online_free_future.save()
-        event_2_register_online_free_future.event_staff.add(user_study_participant)
+        event_2_register_online_free_future.event_staff.set([admin, user_study_participant])
         event_2_register_online_free_future.save()
-        event_3_register_physical_costs_future.event_staff.add(user_study_participant)
+        event_3_register_physical_costs_future.event_staff.set([admin, user_study_participant])
         event_3_register_physical_costs_future.save()
         user_study_participant.save()
         print('User study participant set as event staff for three events')

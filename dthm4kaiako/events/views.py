@@ -586,7 +586,6 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
                 ).order_by('name')
                 event_csv_builder_form = BuilderFormForEventsCSV()
                 context['event_csv_builder_form'] = event_csv_builder_form
-
         return context
 
     def get_queryset(self):
