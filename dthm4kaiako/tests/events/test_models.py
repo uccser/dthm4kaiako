@@ -332,7 +332,7 @@ class AddressTests(TestCase):
     @classmethod
     def tearDownTestData(cls):
         EventApplication.objects.all().delete()
-        ParticipantType.objects.all().delete()
+        # ParticipantType.objects.all().delete()
         Series.objects.all().delete()
         Event.objects.all().delete()
         Location.objects.all().delete()
@@ -391,7 +391,7 @@ class EventApplicationTests(TestCase):
         Location.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
-        ParticipantType.objects.all().delete()
+        # ParticipantType.objects.all().delete()
         EventApplication.objects.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
@@ -428,7 +428,7 @@ class RegistrationFormTests(TestCase):
         Location.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
-        ParticipantType.objects.all().delete()
+        # ParticipantType.objects.all().delete()
         EventApplication.objects.all().delete()
 
     # ------------------------------- tests for get_absolute_url ------------------------------

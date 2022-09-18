@@ -1,8 +1,8 @@
-from django.test import TestCase
-from django.http import HttpRequest
-from users.forms import UserUpdateDetailsForm
-from users.models import User
-from tests.dthm4kaiako_test_data_generator import generate_dietary_requirements
+# from django.test import TestCase
+# from django.http import HttpRequest
+# from users.forms import UserUpdateDetailsForm
+# from users.models import User
+# from tests.dthm4kaiako_test_data_generator import generate_dietary_requirements
 
 # TODO: fix me
 # class UserUpdateDetailsFormTests(TestCase):
