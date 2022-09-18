@@ -1,9 +1,9 @@
-from tests.BaseTestWithDB import BaseTestWithDB
-from django.urls import reverse
-from http import HTTPStatus
-from django.test.utils import override_settings
-from events.models import Location
-from unittest import mock
+# from tests.BaseTestWithDB import BaseTestWithDB
+# from django.urls import reverse
+# from http import HTTPStatus
+# from django.test.utils import override_settings
+# from events.models import Location
+# from unittest import mock
 
 
 # TODO: fix me

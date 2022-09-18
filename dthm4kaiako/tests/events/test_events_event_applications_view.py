@@ -1,7 +1,7 @@
-from http import HTTPStatus
-from django.urls import reverse
-from django.test.utils import override_settings
-from tests.BaseTestWithDB import BaseTestWithDB
+# from http import HTTPStatus
+# from django.urls import reverse
+# from django.test.utils import override_settings
+# from tests.BaseTestWithDB import BaseTestWithDB
 
 # TODO: fix me
 # class EventApplicationsViewTest(BaseTestWithDB):
