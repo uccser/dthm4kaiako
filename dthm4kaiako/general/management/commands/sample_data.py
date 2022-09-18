@@ -28,6 +28,7 @@ from events.models import (
     DeletedEventApplication,
     EventApplication,
     Location,
+    RegistrationForm,
     Series,
     Ticket,
     Event,
@@ -442,7 +443,7 @@ class Command(management.base.BaseCommand):
         # ALL STAFFED BY STUDY PARTICIPANT
         # Event - apply - online
         event_1_apply_online_free_future=Event.objects.create(
-            name='DTHM for Kaiako Conference 2021',
+            name='DTHM for Kaiako Conference 2023',
             description=(
                 'Inspirational collaboration to build your confidence teaching DT & HM.\n\n'
                 'This is a FREE face to face Digital Technologies Teachers Aotearoa (DTTA) subject '
@@ -834,7 +835,7 @@ class Command(management.base.BaseCommand):
 
         # Event - not published - use to step through each event phase as event staff
         event_16_register_physical_costs_future=Event.objects.create(
-            name="TODO",
+            name="Programming with the Department of Fun Stuff",
             description=(
                 'This three-day workshop is a gentle introduction to programming '
                 '(sometimes referred to as the more mysterious sounding “coding”) '
@@ -865,8 +866,8 @@ class Command(management.base.BaseCommand):
                 'of our vibrant rebuilt city!'
             ),
             registration_type=1,
-            start=datetime.datetime(2021, 1, 2, 10, 0, 0),
-            end=datetime.datetime(2021, 1, 2, 14, 0, 0),
+            start=datetime.datetime(2023, 1, 2, 10, 0, 0),
+            end=datetime.datetime(2023, 1, 2, 14, 0, 0),
             accessible_online=False,
             published=False,
             featured=True,
@@ -1227,8 +1228,42 @@ class Command(management.base.BaseCommand):
         event_2_register_online_free_future.save()
         event_3_register_physical_costs_future.event_staff.set([admin, user_study_participant])
         event_3_register_physical_costs_future.save()
+        event_16_register_physical_costs_future.event_staff.set([admin, user_study_participant])
+        event_16_register_physical_costs_future.save()
         user_study_participant.save()
         print('User study participant set as event staff for three events')
+
+        event_1_reg_form_pk = event_1_apply_online_free_future.registration_form
+        event_1_reg_form = RegistrationForm.objects.filter(pk=event_1_reg_form_pk)
+        event_1_reg_form.update(
+            open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            close_datetime=datetime.datetime(2022, 4, 1, 0, 0, 0)
+        )
+        event_1_apply_online_free_future.save()
+
+        event_2_reg_form_pk = event_2_register_online_free_future.registration_form
+        event_2_reg_form = RegistrationForm.objects.filter(pk=event_2_reg_form_pk)
+        event_2_reg_form.update(
+            open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            close_datetime=datetime.datetime(2022, 4, 1, 0, 0, 0)
+        )
+        event_2_register_online_free_future.save()
+
+        event_3_reg_form_pk = event_3_register_physical_costs_future.registration_form
+        event_3_reg_form = RegistrationForm.objects.filter(pk=event_3_reg_form_pk)
+        event_3_reg_form.update(
+            open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            close_datetime=datetime.datetime(2022, 4, 1, 0, 0, 0)
+        )
+        event_3_register_physical_costs_future.save()
+
+        event_16_reg_form_pk = event_16_register_physical_costs_future.registration_form
+        event_16_reg_form = RegistrationForm.objects.filter(pk=event_16_reg_form_pk)
+        event_16_reg_form.update(
+            open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0),
+            close_datetime=datetime.datetime(2022, 4, 1, 0, 0, 0)
+        )
+        event_16_register_physical_costs_future.save()
 
         # STUDY PARTICPANT'S 
         # 4 event applications - so 4 different non-staff events
@@ -1280,7 +1315,7 @@ class Command(management.base.BaseCommand):
             status=APPROVED
         )
 
-        # 4) 1 that is reject and in the past
+        # 4) 1 that is rejected and in the past
         study_user_event_application_7=EventApplication.objects.create(
             participant_type=ticket_free_event_staff,
             user=user_study_participant,
@@ -1288,6 +1323,55 @@ class Command(management.base.BaseCommand):
             event=event_15_register_physical_costs_past,
             status=REJECTED
         )
+
+        # FOR PARTICIPANT TO APPLY FOR
+                # Event - register - online and free
+        event_17_register_online_free_future=Event.objects.create(
+            name='Code Club 4 Teachers',
+            description=(
+                'Whether you are an absolute beginner or someone who has dabbled with '
+                'programming and coding. Our focus is on having fun while integrating '
+                'Digital Technologies and Hangarau Matihiko into your classroom programme.'
+                'Join Tim Harford and explore how to integrate digital technologies and '
+                'computational thinking into curriculum areas and gain an understanding of '
+                'the fundamentals of programming using age appropriate programming languages.'
+            ),
+            start=datetime.datetime(2023, 6, 1, 8, 0, 0),
+            end=datetime.datetime(2023, 6, 1, 10, 0, 0),
+            accessible_online=True,
+            published=True,
+            featured=False,
+            registration_type=2,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_17_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
+        event_17_register_online_free_future.save()
+
+        # Event - register - in person and costs
+        event_18_register_physical_costs_future=Event.objects.create(
+            name="Webinar - How to really get started with Physical Computing",
+            description=(
+                'Uai started out teaching Physical Computing because he doesn\'t say '
+                'no to his students ideas. He’ll share his experiences and discoveries '
+                'that his students uncovered as he approached teaching Physical Computing '
+                'from an inquiry and play based approach.\n\n'
+                'The meetup will be delivered in English and will cater for all participants. '
+                'We invite all Māori and English Medium kaiako to attend as the skills and '
+                'knowledge covered in these sessions are relevant to both contexts.'
+            ), 
+            registration_type=1,
+            start=datetime.datetime(2023, 6, 24),
+            end=datetime.datetime(2023, 6, 26),
+            accessible_online=False,
+            published=True,
+            featured=False,
+            is_catered=True,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_3_register_physical_costs_future.locations.set([sample_location_2])
+        event_3_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher])
+        event_3_register_physical_costs_future.save()
 
 
         # -------------------------- Realistic events for informal demonstrations --------------------------
