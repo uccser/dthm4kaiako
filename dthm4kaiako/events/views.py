@@ -870,58 +870,6 @@ def manage_event_registration_form_details(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-<<<<<<< HEAD
-# TODO: convert to location
-# TODO: add event staff access only
-@login_required
-def manage_event_location_details(request, pk):
-    """Allow event staff to update event location details."""
-    location = Location.objects.get(pk=pk)
-    event = location.event  # TODO: check this is correct
-    context = {
-        'location': location,
-    }
-    context['update_ticket_form'] = TicketTypeForm()
-
-    if request.method == 'POST':
-        manage_location_form = ManageEventLocationForm(request.POST, instance=location)
-        if manage_location_form.is_valid():
-
-            updated_room = manage_location_form.cleaned_data['room']
-            updated_name = manage_location_form.cleaned_data['name']
-            updated_street_address = manage_location_form.cleaned_data['street_address']
-            updated_suburb = manage_location_form.cleaned_data['suburb']
-            updated_city = manage_location_form.cleaned_data['city']
-            updated_region = manage_location_form.cleaned_data['region']
-            updated_description = manage_location_form.cleaned_data['description']
-            updated_coords = manage_location_form.cleaned_data['coords']
-
-            Location.objects.filter(event_id=manage_location_form.pk).update(
-                room=updated_room,
-                name=updated_name,
-                street_address=updated_street_address,
-                suburb=updated_suburb,
-                city=updated_city,
-                region=updated_region,
-                description=updated_description,
-                coords=updated_coords,
-            )
-            location.save()
-            messages.success(request, 'Event location details updated successfully')
-            return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
-        else:
-            messages.warning(request, 'Location details could not be updated. Please resolve invalid fields.')
-
-    context['manage_location_form'] = manage_location_form
-    context['event'] = event
-    context['location_pk'] = location.pk
-    context['event_pk'] = event.pk
-
-    return render(request, 'events/event_management.html', context)
-
-
-=======
->>>>>>> event_staff_permissions
 def convertStringListToOneString(listToConvert):
     """Convert list to string.
 
@@ -946,9 +894,6 @@ def convertStringListToOneString(listToConvert):
 # TODO: add staff and admin permissions
 @login_required
 def generate_event_csv(request):
-<<<<<<< HEAD
-    """Generate a custom CSV of events' data."""
-=======
     """Generates a custom CSV of events' data"""
 
     event = Event.objects.get(pk=request.event.pk)
@@ -957,7 +902,6 @@ def generate_event_csv(request):
         messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
->>>>>>> event_staff_permissions
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
         if builderFormForEventsCSV.is_valid():
@@ -1491,15 +1435,12 @@ MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 @login_required
 def email_participants(request, event_pk):
     """Send bulk email to all event participants as event staff."""
-<<<<<<< HEAD
-=======
 
     event = Event.objects.get(pk=event_pk)
     if not can_view_event_management_content(request, event):
         messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
->>>>>>> event_staff_permissions
     if request.method == 'POST':
         contact_participants_form = ContactParticipantsForm(request.POST)
         if contact_participants_form.is_valid():
