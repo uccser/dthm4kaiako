@@ -375,8 +375,8 @@ class Command(management.base.BaseCommand):
             'user',
             'user_12@dthm4kaiako.ac.nz',
             password="password",
-            first_name='David',
-            last_name='Rodder',
+            first_name='Chris',
+            last_name='Masters',
             user_region=REGION_CANTERBURY,
             mobile_phone_number='+64 21 545 878'
         )
@@ -758,70 +758,70 @@ class Command(management.base.BaseCommand):
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event applications - 10 for apply event
-        event_application_apply_1 = EventApplication(
+        event_application_apply_1 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_1,
             representing = "Myself",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_2 = EventApplication(
+        event_application_apply_2 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_2,
             representing = "University of Canterbury",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_3 = EventApplication(
+        event_application_apply_3 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_3,
             representing = "DTTA",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_4 = EventApplication(
+        event_application_apply_4 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_4,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_5 = EventApplication(
+        event_application_apply_5 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_5,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_6 = EventApplication(
+        event_application_apply_6 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_6,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_7 = EventApplication(
+        event_application_apply_7 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_7,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_8 = EventApplication(
+        event_application_apply_8 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_8,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_9 = EventApplication(
+        event_application_apply_9 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_9,
             representing = "My school",
             event = event_1_apply_online_free_future,
         )
 
-        event_application_apply_10 = EventApplication(
+        event_application_apply_10 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_10,
             representing = "My school",
@@ -835,42 +835,42 @@ class Command(management.base.BaseCommand):
         APPROVED = 2
         REJECTED = 3
         
-        event_application_register_1_online_free = EventApplication(
+        event_application_register_1_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_1,
             representing = "Myself",
             event = event_2_register_online_free_future,
         )
 
-        event_application_register_2_online_free = EventApplication(
+        event_application_register_2_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_2,
             representing = "University of Canterbury",
             event = event_2_register_online_free_future,
         )
 
-        event_application_register_3_online_free = EventApplication(
+        event_application_register_3_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_3,
             representing = "DTTA",
             event = event_2_register_online_free_future,
         )
 
-        event_application_register_4_online_free = EventApplication(
+        event_application_register_4_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_4,
             representing = "My school",
             event = event_2_register_online_free_future,
         )
 
-        event_application_register_5_online_free = EventApplication(
+        event_application_register_5_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_5,
             representing = "My school",
             event = event_2_register_online_free_future,
         )
 
-        event_application_register_6_online_free = EventApplication(
+        event_application_register_6_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_6,
             representing = "My school",
@@ -878,7 +878,7 @@ class Command(management.base.BaseCommand):
             status = APPROVED
         )
 
-        event_application_register_7_online_free = EventApplication(
+        event_application_register_7_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_7,
             representing = "My school",
@@ -886,7 +886,7 @@ class Command(management.base.BaseCommand):
             status = APPROVED
         )
 
-        event_application_register_8_online_free = EventApplication(
+        event_application_register_8_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_8,
             representing = "My school",
@@ -894,7 +894,7 @@ class Command(management.base.BaseCommand):
             status = APPROVED
         )
 
-        event_application_register_9_online_free = EventApplication(
+        event_application_register_9_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_9,
             representing = "My school",
@@ -902,7 +902,7 @@ class Command(management.base.BaseCommand):
             status = REJECTED
         )
 
-        event_application_register_10_online_free = EventApplication(
+        event_application_register_10_online_free = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_10,
             representing = "My school",
@@ -918,28 +918,28 @@ class Command(management.base.BaseCommand):
         INCONVENIENT_LOCATION = 6
         OTHER = 7
 
-        event_application_register_online_free_withdrawn_1 = DeletedEventApplication(
+        event_application_register_online_free_withdrawn_1 = DeletedEventApplication.objects.create(
             deletion_reason = PREFER_NOT_TO_SAY,
             event = event_2_register_online_free_future
         )
 
-        event_application_register_online_free__withdrawn_2 = DeletedEventApplication(
+        event_application_register_online_free__withdrawn_2 = DeletedEventApplication.objects.create(
             deletion_reason = NOT_INTERESTED,
             event = event_2_register_online_free_future
         )
 
-        event_application_register_online_free_withdrawn_3 = DeletedEventApplication(
+        event_application_register_online_free_withdrawn_3 = DeletedEventApplication.objects.create(
             deletion_reason = TOO_EXPENSIVE,
             event = event_2_register_online_free_future
         )
 
-        event_application_register_online_free_withdrawn_4 = DeletedEventApplication(
+        event_application_register_online_free_withdrawn_4 = DeletedEventApplication.objects.create(
             deletion_reason = OTHER,
             event = event_2_register_online_free_future,
             other_reason_for_deletion = "Clashes with another event I would like to attend."
         )
 
-        event_application_register_online_free_withdrawn_4 = DeletedEventApplication(
+        event_application_register_online_free_withdrawn_4 = DeletedEventApplication.objects.create(
             deletion_reason = OTHER,
             event = event_2_register_online_free_future,
             other_reason_for_deletion = "Didn't realise the event was online."
@@ -948,7 +948,7 @@ class Command(management.base.BaseCommand):
         # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event applications - 10 for register event (in person and costs and catered) - mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
 
-        event_application_register_1_physical_and_costs = EventApplication(
+        event_application_register_1_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_event_staff,
             user = user_1,
             representing = "Myself",
@@ -959,7 +959,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 21 126 0764"
         )
 
-        event_application_register_2_physical_and_costs = EventApplication(
+        event_application_register_2_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_2,
             representing = "University of Canterbury",
@@ -970,7 +970,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 29 370 1241"
         )
 
-        event_application_register_3_physical_and_costs = EventApplication(
+        event_application_register_3_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_free_facilitator,
             user = user_3,
             representing = "DTTA",
@@ -981,7 +981,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 21 805 437"
         )
 
-        event_application_register_4_physical_and_costs = EventApplication(
+        event_application_register_4_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_event_staff,
             user = user_4,
             representing = "My school",
@@ -992,7 +992,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 22 1382 0407"
         )
 
-        event_application_register_5_physical_and_costs = EventApplication(
+        event_application_register_5_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_student,
             user = user_5,
             representing = "My school",
@@ -1003,7 +1003,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 20 9484 4821"
         )
 
-        event_application_register_6_physical_and_costs = EventApplication(
+        event_application_register_6_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_6,
             representing = "My school",
@@ -1015,7 +1015,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 21 514 286"
         )
 
-        event_application_register_7_physical_and_costs = EventApplication(
+        event_application_register_7_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_7,
             representing = "My school",
@@ -1027,7 +1027,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 20 617 6478"
         )
 
-        event_application_register_8_physical_and_costs = EventApplication(
+        event_application_register_8_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_8,
             representing = "My school",
@@ -1039,7 +1039,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 22 614 5719"
         )
 
-        event_application_register_9_physical_and_costs = EventApplication(
+        event_application_register_9_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_9,
             representing = "My school",
@@ -1051,7 +1051,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 21 485 802"
         )
 
-        event_application_register_10_physical_and_costs = EventApplication(
+        event_application_register_10_physical_and_costs = EventApplication.objects.create(
             participant_type = ticket_paid_teacher,
             user = user_10,
             representing = "My school",
@@ -1063,28 +1063,28 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number =  "+64 27 827 89384"
         )
 
-        event_application_apply_withdrawn_1 = DeletedEventApplication(
+        event_application_apply_withdrawn_1 = DeletedEventApplication.objects.create(
             deletion_reason = PREFER_NOT_TO_SAY,
             event = event_3_register_physical_costs_future
         )
 
-        event_application_apply_withdrawn_2 = DeletedEventApplication(
+        event_application_apply_withdrawn_2 = DeletedEventApplication.objects.create(
             deletion_reason = NOT_INTERESTED,
             event = event_3_register_physical_costs_future
         )
 
-        event_application_apply_withdrawn_3 = DeletedEventApplication(
+        event_application_apply_withdrawn_3 = DeletedEventApplication.objects.create(
             deletion_reason = TOO_EXPENSIVE,
             event = event_3_register_physical_costs_future
         )
 
-        event_application_apply_withdrawn_4 = DeletedEventApplication(
+        event_application_apply_withdrawn_4 = DeletedEventApplication.objects.create(
             deletion_reason = OTHER,
             event = event_3_register_physical_costs_future,
             other_reason_for_deletion = "Clashes with another event I would like to attend."
         )
 
-        event_application_apply_withdrawn_4 = DeletedEventApplication(
+        event_application_apply_withdrawn_4 = DeletedEventApplication.objects.create(
             deletion_reason = OTHER,
             event = event_3_register_physical_costs_future,
             other_reason_for_deletion = "Didn't realise the event was online."
@@ -1111,21 +1111,21 @@ class Command(management.base.BaseCommand):
         # STUDY PARTICPANT'S 
         # 4 event applications - so 4 different non-staff events
         # 1) 3 that are free and online and in future - so can withdraw 2 (diff pages) and can update one
-        study_user_event_application_1 = EventApplication(
+        study_user_event_application_1 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_8_register_online_free_future,
             status = APPROVED
         )
-        study_user_event_application_2 = EventApplication(
+        study_user_event_application_2 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_12_register_online_free_future,
             status = APPROVED
         )
-        study_user_event_application_3 = EventApplication(
+        study_user_event_application_3 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
@@ -1134,7 +1134,7 @@ class Command(management.base.BaseCommand):
         )
 
         # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
-        study_user_event_application_4 = EventApplication(
+        study_user_event_application_4 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
@@ -1143,14 +1143,14 @@ class Command(management.base.BaseCommand):
         ) 
 
         # 3) 2 that are in past (one cancelled)
-        study_user_event_application_5 = EventApplication(
+        study_user_event_application_5 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_9_apply_online_free_past_cancelled,
             status = APPROVED
         )
-        study_user_event_application_6 = EventApplication(
+        study_user_event_application_6 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
@@ -1159,7 +1159,7 @@ class Command(management.base.BaseCommand):
         )
 
         # 4) 1 that is reject and in the past
-        study_user_event_application_7 = EventApplication(
+        study_user_event_application_7 = EventApplication.objects.create(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
