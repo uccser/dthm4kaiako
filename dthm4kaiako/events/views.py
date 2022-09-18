@@ -573,6 +573,12 @@ def is_in_past_or_cancelled(event):
     return event.end < now() or event.is_cancelled
 
 
+def can_view_event_management_content(request, event):
+    """Return True if the user is event staff for the event management page."""
+    user = request.user
+    return user.pk in event.event_staff.all()
+
+
 @login_required
 def manage_event(request, pk):
     """
@@ -587,6 +593,11 @@ def manage_event(request, pk):
     """
 
     event = Event.objects.get(pk=pk)
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     event_applications = EventApplication.objects.filter(event=event)
     registration_form = event.registration_form
     context = {
@@ -636,6 +647,11 @@ def manage_event_application(request, pk_event, pk_application):
 
     event_application = EventApplication.objects.get(pk=pk_application)
     event = event_application.event
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     context = {
         'event': event,
         'pk_event': pk_event,
@@ -698,6 +714,11 @@ def manage_event_details(request, pk):
     """ Allowing event staff to update event details as well as deleting the event if desired."""
 
     event = Event.objects.get(pk=pk)
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     context = {
         'event': event,
     }
@@ -779,6 +800,11 @@ def manage_event_registration_form_details(request, pk):
 
     registration_form = RegistrationForm.objects.get(pk=pk)
     event = registration_form.event
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     context = {
         'registration_form': registration_form,
     }
@@ -814,56 +840,6 @@ def manage_event_registration_form_details(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-# TODO: convert to location
-# TODO: add event staff access only
-@login_required
-def manage_event_location_details(request, pk):
-    """ Allowing event staff to update event location details."""
-
-    location = Location.objects.get(pk=pk)
-    event = location.event  # TODO: check this is correct
-    context = {
-        'location': location,
-    }
-    context['update_ticket_form'] = TicketTypeForm()
-
-    if request.method == 'POST':
-        manage_location_form = ManageEventLocationForm(request.POST, instance=location)
-        if manage_location_form.is_valid():
-
-            updated_room = manage_location_form.cleaned_data['room']
-            updated_name = manage_location_form.cleaned_data['name']
-            updated_street_address = manage_location_form.cleaned_data['street_address']
-            updated_suburb = manage_location_form.cleaned_data['suburb']
-            updated_city = manage_location_form.cleaned_data['city']
-            updated_region = manage_location_form.cleaned_data['region']
-            updated_description = manage_location_form.cleaned_data['description']
-            updated_coords = manage_location_form.cleaned_data['coords']
-
-            Location.objects.filter(event_id=manage_location_form.pk).update(
-                room=updated_room,
-                name=updated_name,
-                street_address=updated_street_address,
-                suburb=updated_suburb,
-                city=updated_city,
-                region=updated_region,
-                description=updated_description,
-                coords=updated_coords,
-            )
-            location.save()
-            messages.success(request, 'Event location details updated successfully')
-            return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
-        else:
-            messages.warning(request, 'Location details could not be updated. Please resolve invalid fields.')
-
-    context['manage_location_form'] = manage_location_form
-    context['event'] = event
-    context['location_pk'] = location.pk
-    context['event_pk'] = event.pk
-
-    return render(request, 'events/event_management.html', context)
-
-
 def convertStringListToOneString(listToConvert):
     if len(listToConvert) == 1:
         return listToConvert[0]
@@ -884,6 +860,12 @@ def convertStringListToOneString(listToConvert):
 @login_required
 def generate_event_csv(request):
     """Generates a custom CSV of events' data"""
+
+    event = Event.objects.get(pk=request.event.pk)
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
 
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
@@ -1035,6 +1017,10 @@ def generate_event_applications_csv(request, pk):
 
     event = Event.objects.get(pk=pk)
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     if request.method == 'POST':
         builderFormForEventApplicationsCSV = BuilderFormForEventApplicationsCSV(request.POST)
         if builderFormForEventApplicationsCSV.is_valid():
@@ -1183,6 +1169,10 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
 
     event = Event.objects.get(pk=pk)
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     heading_row = ["event name", "dietary requirements", "counts"]
 
     response = HttpResponse(content_type='text/csv')
@@ -1231,6 +1221,10 @@ def mark_all_participants_as_paid(request, pk):
     event = Event.objects.get(id=event_id)
     event_applications = [EventApplication.objects.filter(event=event)]
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     for event_application in event_applications:
 
         application_to_update = EventApplication.objects.filter(id=event_application.id)
@@ -1254,6 +1248,10 @@ def publish_event(request, pk):
     event_query_set = Event.objects.filter(id=event_id)
     event = Event.objects.get(id=event_id)
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     if (
         (event.published is False and event.start is None)
         or (event.published is False and event.end is None)
@@ -1273,6 +1271,12 @@ def cancel_event(request, pk):
     """Cancel event as event staff"""
     event_id = pk
     event = Event.objects.filter(id=event_id)
+
+    event_obj = Event.objects.get(pk=event_id)
+    if not can_view_event_management_content(request, event_obj):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     event.update(is_cancelled=True)
     updated_event = Event.objects.get(id=event_id)
     updated_event.save()
@@ -1285,6 +1289,10 @@ def cancel_event(request, pk):
 def create_new_ticket(request, pk):
     """Cancel event as event staff"""
     event = Event.objects.get(pk=pk)
+
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
 
     # TODO: validate name and price!
 
@@ -1331,6 +1339,10 @@ def update_ticket(request, event_pk, ticket_pk):
     event = Event.objects.get(pk=event_pk)
     old_ticket = Ticket.objects.get(pk=ticket_pk)
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     # check if ticket used by other events
     if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
         # ticket used by other events so just remove this event from the list
@@ -1364,6 +1376,10 @@ def delete_ticket(request, event_pk, ticket_pk):
     event = Event.objects.get(pk=event_pk)
     ticket = get_object_or_404(Ticket, id=ticket_pk)
 
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
         ticket.delete()
         event.save()
@@ -1385,6 +1401,11 @@ MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 def email_participants(request, event_pk):
     """Send bulk email to all event participants as event staff."""
 
+    event = Event.objects.get(pk=event_pk)
+    if not can_view_event_management_content(request, event):
+        messages.warning(request, "You are not a staff member of that event. Only event staff members can view information about their events.")
+        return HttpResponseRedirect(reverse("events:events_management_hub"))
+
     if request.method == 'POST':
         contact_participants_form = ContactParticipantsForm(request.POST)
         if contact_participants_form.is_valid():
@@ -1396,8 +1417,6 @@ def email_participants(request, event_pk):
                 user=contact_participants_form.cleaned_data['name'],
                 email=from_email
             )
-
-            event = Event.objects.get(pk=event_pk)
 
             send_to_emails = []
 

@@ -21,7 +21,6 @@ urlpatterns = [
     url(r'^delete-via-event/(?P<pk>[0-9]+)/$', views.delete_application_via_event_page, name='delete_application_via_event_page'),
     url(r'^manage-event-details/(?P<pk>[0-9]+)/$', views.manage_event_details, name='manage_event_details'),
     url(r'^manage-event-registration-form-details/(?P<pk>[0-9]+)/$', views.manage_event_registration_form_details, name='manage_event_registration_form_details'),
-    url(r'^manage-event-location-details/(?P<pk>[0-9]+)/$', views.manage_event_location_details, name='manage_event_location_details'),
     url(r'^event/(?P<pk_event>[0-9]+)/manage-event-application/(?P<pk_application>[0-9]+)/$', views.manage_event_application, name='manage_event_application'),
     path('manage/mark_all_participants_as_paid/<int:pk>/', views.mark_all_participants_as_paid, name='mark_all_participants_as_paid'),
     path('manage/publish_event/<int:pk>/', views.publish_event, name='publish_event'),
