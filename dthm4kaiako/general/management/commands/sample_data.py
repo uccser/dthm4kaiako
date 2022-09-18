@@ -50,7 +50,7 @@ from tests.poet.factories import (
 )
 from allauth.account.models import EmailAddress
 from utils.new_zealand_regions import REGION_CHOICES
-from datetime import datetime
+import datetime
 from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
 
 
@@ -85,31 +85,31 @@ class Command(management.base.BaseCommand):
 
         # Create standard ticket types
         ticket_free_event_staff = Ticket.objects.create(name="Event Staff", price=0.0)
-        ticket_free_teacher = Ticket.objects.create(name="Event Staff", price=0.0)
-        ticket_free_student = Ticket.objects.create(name="Event Staff", price=0.0)
-        ticket_free_facilitator = Ticket.objects.create(name="Event Staff", price=0.0)
+        ticket_free_teacher = Ticket.objects.create(name="Teacher", price=0.0)
+        ticket_free_student = Ticket.objects.create(name="Student", price=0.0)
+        ticket_free_facilitator = Ticket.objects.create(name="Facilitator", price=0.0)
         ticket_paid_event_staff = Ticket.objects.create(name="Event Staff", price=3.0)
-        ticket_paid_teacher = Ticket.objects.create(name="Event Staff", price=50.0)
-        ticket_paid_student = Ticket.objects.create(name="Event Staff", price=20.0)
-        ticket_paid_facilitator = Ticket.objects.create(name="Event Staff", price=25.0)
+        ticket_paid_teacher = Ticket.objects.create(name="Teacher", price=50.0)
+        ticket_paid_student = Ticket.objects.create(name="Student", price=20.0)
+        ticket_paid_facilitator = Ticket.objects.create(name="Facilitator", price=25.0)
         print('Common tickets created.')
 
         # Create a selection of entities
 
-        entity_1 = Entity(name="Aidanfield Christian School, Christchurch")
-        entity_2 = Entity(name="Otahuhu College, Auckland")
-        entity_3 = Entity(name="St Bedes College, Christchurch")
-        entity_4 = Entity(name="Papanui High School, Christchurch")
-        entity_5 = Entity(name="Burnside High School, Christchurch")
-        entity_6 = Entity(name="Avonside Girls' High School, Christchurch")
-        entity_7 = Entity(name="Villa Maria College, Christchurch")
-        entity_8 = Entity(name="Christchurch Boys' High School, Christchurch")
-        entity_9 = Entity(name="Christchurch Girls' High School -Te Kura o Hine Waiora, Christchurch")
-        entity_10 = Entity(name="Mangakino Area School, Waikato")
-        entity_11 = Entity(name="Bayfield High School, Dunedin")
-        entity_12 = Entity(name="Digital Technologies Teachers Aotearoa")
-        entity_12 = Entity(name="Digital Technologies Hangarau Matihiko")
-        entity_12 = Entity(name="Ministry of Education")
+        entity_1 = Entity.objects.create(name="Aidanfield Christian School, Christchurch")
+        entity_2 = Entity.objects.create(name="Otahuhu College, Auckland")
+        entity_3 = Entity.objects.create(name="St Bedes College, Christchurch")
+        entity_4 = Entity.objects.create(name="Papanui High School, Christchurch")
+        entity_5 = Entity.objects.create(name="Burnside High School, Christchurch")
+        entity_6 = Entity.objects.create(name="Avonside Girls' High School, Christchurch")
+        entity_7 = Entity.objects.create(name="Villa Maria College, Christchurch")
+        entity_8 = Entity.objects.create(name="Christchurch Boys' High School, Christchurch")
+        entity_9 = Entity.objects.create(name="Christchurch Girls' High School -Te Kura o Hine Waiora, Christchurch")
+        entity_10 = Entity.objects.create(name="Mangakino Area School, Waikato")
+        entity_11 = Entity.objects.create(name="Bayfield High School, Dunedin")
+        entity_12 = Entity.objects.create(name="Digital Technologies Teachers Aotearoa")
+        entity_13 = Entity.objects.create(name="Digital Technologies Hangarau Matihiko")
+        entity_14 = Entity.objects.create(name="Ministry of Education")
         print('Random selection of educational entities created.')
 
         User = get_user_model()
@@ -151,8 +151,11 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_1.dietary_requirements.set(dietary_requirement_coffee, dietary_requirement_gluten_free)
-        user_1.educational_entities.set(entity_1, entity_11)
+        user_1_drs = [dietary_requirement_coffee, dietary_requirement_gluten_free]
+        user_1.dietary_requirements.set(user_1_drs)
+        user_1.save()
+        user_1_entities = [entity_1, entity_11]
+        user_1.educational_entities.set(user_1_entities)
         user_1.save()
 
         print('User 1 created.')
@@ -173,8 +176,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_2.dietary_requirements.set(dietary_requirement_coffee)
-        user_2.educational_entities.set(entity_2)
+        user_2.dietary_requirements.set([dietary_requirement_coffee])
+        user_2.educational_entities.set([entity_2])
         user_2.save()
         print('User 2 created.')
 
@@ -194,8 +197,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_3.dietary_requirements.set(dietary_requirement_coffee)
-        user_3.educational_entities.set(entity_3)
+        user_3.dietary_requirements.set([dietary_requirement_coffee])
+        user_3.educational_entities.set([entity_3])
         user_3.save()
         print('User 3 created.')
 
@@ -215,8 +218,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_4.dietary_requirements.set(dietary_requirement_coffee, dietary_requirement_vegan)
-        user_4.educational_entities.set(entity_4)
+        user_4.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_vegan])
+        user_4.educational_entities.set([entity_4])
         user_4.save()
         print('User 4 created.')
 
@@ -236,8 +239,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_5.dietary_requirements.set(dietary_requirement_halal)
-        user_5.educational_entities.set(entity_5)
+        user_5.dietary_requirements.set([dietary_requirement_halal])
+        user_5.educational_entities.set([entity_5])
         user_5.save()
         print('User 5 created.')
 
@@ -257,8 +260,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_6.dietary_requirements.set(dietary_requirement_keto)
-        user_6.educational_entities.set(entity_6)
+        user_6.dietary_requirements.set([dietary_requirement_keto])
+        user_6.educational_entities.set([entity_6])
         user_6.save()
         print('User 6 created.')
 
@@ -278,8 +281,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_7.dietary_requirements.set(dietary_requirement_keto)
-        user_7.educational_entities.set(entity_7)
+        user_7.dietary_requirements.set([dietary_requirement_keto])
+        user_7.educational_entities.set([entity_7])
         user_7.save()
         print('User 7 created.')
 
@@ -299,8 +302,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_8.dietary_requirements.set(dietary_requirement_keto)
-        user_8.educational_entities.set(entity_8)
+        user_8.dietary_requirements.set([dietary_requirement_keto])
+        user_8.educational_entities.set([entity_8])
         user_8.save()
         print('User 8 created.')
 
@@ -320,8 +323,8 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_9.dietary_requirements.set(dietary_requirement_keto)
-        user_9.educational_entities.set(entity_9)
+        user_9.dietary_requirements.set([dietary_requirement_keto])
+        user_9.educational_entities.set([entity_9])
         user_9.save()
         print('User 9 created.')
 
@@ -341,6 +344,9 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
+        user_10.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_dairy_free])
+        user_10.educational_entities.set([entity_7])
+        user_10.save()
         print('User 10 created.')
 
         user_11 = User()
@@ -359,6 +365,9 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True,
         )
+        user_11.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_vegetarian])
+        user_11.educational_entities.set([entity_10])
+        user_11.save()
         print('User 11 created.')
 
         user_12 = User()
@@ -377,6 +386,9 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True,
         )
+        user_12.dietary_requirements.set([dietary_requirement_FODMAP])
+        user_12.educational_entities.set([entity_12, entity_13, entity_14])
+        user_12.save()
         print('User 12 created.')
 
         user_study_participant = User()
@@ -451,7 +463,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_1_apply_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_1_apply_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_1_apply_online_free_future.save()
 
         # Event - register - online and free
@@ -470,7 +482,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_2_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_2_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_2_register_online_free_future.save()
 
         # Event - register - in person and costs
@@ -489,8 +501,8 @@ class Command(management.base.BaseCommand):
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_3_register_physical_costs_future.locations.set(sample_location_2)
-        event_3_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher)
+        event_3_register_physical_costs_future.locations.set([sample_location_2])
+        event_3_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_teacher])
         event_3_register_physical_costs_future.save()
 
         # Event - invite only
@@ -509,8 +521,8 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_4_invite_physical_free_future.locations.set(sample_location_3)
-        event_4_invite_physical_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_4_invite_physical_free_future.locations.set([sample_location_3])
+        event_4_invite_physical_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_4_invite_physical_free_future.save()
 
         # Event - external link
@@ -530,7 +542,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_5_external_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_5_external_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_5_external_online_free_future.save()
 
         # Events - 3 in past
@@ -549,7 +561,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_6_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_6_apply_online_free_past.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_6_apply_online_free_past.save()
 
         event_7_apply_online_free_past = Event.objects.create(
@@ -567,7 +579,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_7_apply_online_free_past.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_7_apply_online_free_past.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_7_apply_online_free_past.save()
 
         event_8_register_online_free_future = Event.objects.create(
@@ -585,7 +597,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_8_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_8_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_8_register_online_free_future.save()
 
         # Events - 1 cancelled in past
@@ -601,11 +613,11 @@ class Command(management.base.BaseCommand):
             accessible_online=True,
             published=True,
             featured=True,
-            cancelled=True,
+            is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_9_apply_online_free_past_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_9_apply_online_free_past_cancelled.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_9_apply_online_free_past_cancelled.save()
 
         # Events - 1 cancellevent_9_apply_online_free_past_cancelleded in future
@@ -621,11 +633,11 @@ class Command(management.base.BaseCommand):
             accessible_online=True,
             published=True,
             featured=True,
-            cancelled=True,
+            is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_10_apply_online_free_past_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_10_apply_online_free_past_cancelled.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_10_apply_online_free_past_cancelled.save()
 
         # MORE EVENTS FOR USER STUDY PARTICIPANT TO HAVE APPLIED FOR
@@ -642,11 +654,11 @@ class Command(management.base.BaseCommand):
             accessible_online=True,
             published=True,
             featured=True,
-            cancelled=True,
+            is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_11_register_online_free_future_cancelled.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_11_register_online_free_future_cancelled.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_11_register_online_free_future_cancelled.save()
 
         event_12_register_online_free_future = Event.objects.create(
@@ -664,7 +676,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_12_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_12_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_12_register_online_free_future.save()
 
         event_13_register_online_free_future = Event.objects.create(
@@ -682,7 +694,7 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_13_register_online_free_future.ticket_types.set(ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher)
+        event_13_register_online_free_future.ticket_types.set([ticket_free_event_staff, ticket_free_facilitator, ticket_free_teacher])
         event_13_register_online_free_future.save()
 
         event_14_register_physical_costs_future = Event.objects.create(
@@ -700,8 +712,8 @@ class Command(management.base.BaseCommand):
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_14_register_physical_costs_future.locations.set(sample_location_1)
-        event_14_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_14_register_physical_costs_future.locations.set([sample_location_1])
+        event_14_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher])
         event_14_register_physical_costs_future.save()
 
         event_15_register_physical_costs_past = Event.objects.create(
@@ -719,8 +731,8 @@ class Command(management.base.BaseCommand):
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_15_register_physical_costs_past.locations.set(sample_location_1)
-        event_15_register_physical_costs_past.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_15_register_physical_costs_past.locations.set([sample_location_1])
+        event_15_register_physical_costs_past.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher])
         event_15_register_physical_costs_past.save()
 
         # Event - not published - use to step through each event phase as event staff
@@ -739,8 +751,8 @@ class Command(management.base.BaseCommand):
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_16_register_physical_costs_future.locations.set(sample_location_2)
-        event_16_register_physical_costs_future.ticket_types.set(ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher)
+        event_16_register_physical_costs_future.locations.set([sample_location_2])
+        event_16_register_physical_costs_future.ticket_types.set([ticket_paid_event_staff, ticket_paid_facilitator, ticket_paid_student, ticket_paid_teacher])
         event_16_register_physical_costs_future.save()
 
 
@@ -863,7 +875,7 @@ class Command(management.base.BaseCommand):
             user = user_6,
             representing = "My school",
             event = event_2_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
 
         event_application_register_7_online_free = EventApplication(
@@ -871,7 +883,7 @@ class Command(management.base.BaseCommand):
             user = user_7,
             representing = "My school",
             event = event_2_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
 
         event_application_register_8_online_free = EventApplication(
@@ -879,7 +891,7 @@ class Command(management.base.BaseCommand):
             user = user_8,
             representing = "My school",
             event = event_2_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
 
         event_application_register_9_online_free = EventApplication(
@@ -996,7 +1008,7 @@ class Command(management.base.BaseCommand):
             user = user_6,
             representing = "My school",
             event = event_3_register_physical_costs_future,
-            stauts = APPROVED,
+            status = APPROVED,
             emergency_contact_first_name = "Amelia",
             emergency_contact_last_name = "Short",
             emergency_contact_relationship = "Partner",
@@ -1008,7 +1020,7 @@ class Command(management.base.BaseCommand):
             user = user_7,
             representing = "My school",
             event = event_3_register_physical_costs_future,
-            stauts = APPROVED,
+            status = APPROVED,
             emergency_contact_first_name = "Aleisha",
             emergency_contact_last_name = "Galvan",
             emergency_contact_relationship = "Partner",
@@ -1020,7 +1032,7 @@ class Command(management.base.BaseCommand):
             user = user_8,
             representing = "My school",
             event = event_3_register_physical_costs_future,
-            stauts = APPROVED,
+            status = APPROVED,
             emergency_contact_first_name = "Jasmin",
             emergency_contact_last_name = "Rayner",
             emergency_contact_relationship = "Partner",
@@ -1104,21 +1116,21 @@ class Command(management.base.BaseCommand):
             user = user_study_participant,
             representing = "My school",
             event = event_8_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
         study_user_event_application_2 = EventApplication(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_12_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
         study_user_event_application_3 = EventApplication(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_13_register_online_free_future,
-            stauts = APPROVED
+            status = APPROVED
         )
 
         # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
@@ -1127,7 +1139,7 @@ class Command(management.base.BaseCommand):
             user = user_study_participant,
             representing = "My school",
             event = event_14_register_physical_costs_future,
-            stauts = APPROVED
+            status = APPROVED
         ) 
 
         # 3) 2 that are in past (one cancelled)
@@ -1136,14 +1148,14 @@ class Command(management.base.BaseCommand):
             user = user_study_participant,
             representing = "My school",
             event = event_9_apply_online_free_past_cancelled,
-            stauts = APPROVED
+            status = APPROVED
         )
         study_user_event_application_6 = EventApplication(
             participant_type = ticket_free_event_staff,
             user = user_study_participant,
             representing = "My school",
             event = event_6_apply_online_free_past,
-            stauts = APPROVED
+            status = APPROVED
         )
 
         # 4) 1 that is reject and in the past
@@ -1152,7 +1164,7 @@ class Command(management.base.BaseCommand):
             user = user_study_participant,
             representing = "My school",
             event = event_15_register_physical_costs_past,
-            stauts = REJECTED
+            status = REJECTED
         )
 
 
@@ -1285,128 +1297,130 @@ class Command(management.base.BaseCommand):
 
         # --------------------------------------------------------------------------------------------------
 
-        User = get_user_model()
+        # RANDOMLY GENERATED SAMPLE DATA FOR DEVELOPING
 
-        # Create admin account
-        admin = User.objects.create_superuser(
-            'admin',
-            'admin@dthm4kaiako.ac.nz',
-            password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
-            first_name='Admin',
-            last_name='Account'
-        )
-        EmailAddress.objects.create(
-            user=admin,
-            email=admin.email,
-            primary=True,
-            verified=True
-        )
-        print('Admin created.')
+        # User = get_user_model()
 
-        # Create user account
-        user = User.objects.create_user(
-            'user',
-            'user@dthm4kaiako.ac.nz',
-            password=settings.SAMPLE_DATA_USER_PASSWORD,
-            first_name='Alex',
-            last_name='Doe'
-        )
-        EmailAddress.objects.create(
-            user=user,
-            email=user.email,
-            primary=True,
-            verified=True
-        )
-        print('User created.')
+        # # Create admin account
+        # admin = User.objects.create_superuser(
+        #     'admin',
+        #     'admin@dthm4kaiako.ac.nz',
+        #     password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
+        #     first_name='Admin',
+        #     last_name='Account'
+        # )
+        # EmailAddress.objects.create(
+        #     user=admin,
+        #     email=admin.email,
+        #     primary=True,
+        #     verified=True
+        # )
+        # print('Admin created.')
 
-        # Create entities
-        EntityFactory.create_batch(size=10)
-        print('Entities created.')
+        # # Create user account
+        # user = User.objects.create_user(
+        #     'user',
+        #     'user@dthm4kaiako.ac.nz',
+        #     password=settings.SAMPLE_DATA_USER_PASSWORD,
+        #     first_name='Alex',
+        #     last_name='Doe'
+        # )
+        # EmailAddress.objects.create(
+        #     user=user,
+        #     email=user.email,
+        #     primary=True,
+        #     verified=True
+        # )
+        # print('User created.')
 
-        # Resources
-        Language.objects.create(name='English', css_class='language-en')
-        Language.objects.create(name='Māori', css_class='language-mi')
-        print('Languages created.')
+        # # Create entities
+        # EntityFactory.create_batch(size=10)
+        # print('Entities created.')
 
-        curriculum_learning_areas = {
-            'English': 'english',
-            'Arts': 'arts',
-            'Health and physical education': 'health-pe',
-            'Learning languages': 'languages',
-            'Mathematics and statistics': 'mathematics',
-            'Science': 'science',
-            'Social sciences': 'social-sciences',
-            'Technology': 'technology',
-        }
-        for area_name, area_css_class in curriculum_learning_areas.items():
-            CurriculumLearningArea.objects.create(
-                name=area_name,
-                css_class=area_css_class,
-            )
-        print('Curriculum learning areas created.')
+        # # Resources
+        # Language.objects.create(name='English', css_class='language-en')
+        # Language.objects.create(name='Māori', css_class='language-mi')
+        # print('Languages created.')
 
-        ta_ct = TechnologicalArea.objects.create(
-            name='Computational thinking',
-            abbreviation='CT',
-            css_class='ta-ct',
-        )
-        for i in range(1, 9):
-            ProgressOutcome.objects.create(
-                name='Computational thinking - Progress outcome {}'.format(i),
-                abbreviation='CT PO{}'.format(i),
-                technological_area=ta_ct,
-                css_class='po-ct',
-            )
-        ta_dddo = TechnologicalArea.objects.create(
-            name='Designing and developing digital outcomes',
-            abbreviation='DDDO',
-            css_class='ta-dddo',
-        )
-        for i in range(1, 7):
-            ProgressOutcome.objects.create(
-                name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
-                abbreviation='DDDO PO{}'.format(i),
-                technological_area=ta_dddo,
-                css_class='po-dddo',
-            )
-        print('Technological areas created.')
-        print('Progress outcomes created.')
+        # curriculum_learning_areas = {
+        #     'English': 'english',
+        #     'Arts': 'arts',
+        #     'Health and physical education': 'health-pe',
+        #     'Learning languages': 'languages',
+        #     'Mathematics and statistics': 'mathematics',
+        #     'Science': 'science',
+        #     'Social sciences': 'social-sciences',
+        #     'Technology': 'technology',
+        # }
+        # for area_name, area_css_class in curriculum_learning_areas.items():
+        #     CurriculumLearningArea.objects.create(
+        #         name=area_name,
+        #         css_class=area_css_class,
+        #     )
+        # print('Curriculum learning areas created.')
 
-        NZQAStandardFactory.create_batch(size=20)
-        for i in range(0, 14):
-            YearLevel.objects.create(
-                level=i
-            )
-        print('NZQA standards created.')
+        # ta_ct = TechnologicalArea.objects.create(
+        #     name='Computational thinking',
+        #     abbreviation='CT',
+        #     css_class='ta-ct',
+        # )
+        # for i in range(1, 9):
+        #     ProgressOutcome.objects.create(
+        #         name='Computational thinking - Progress outcome {}'.format(i),
+        #         abbreviation='CT PO{}'.format(i),
+        #         technological_area=ta_ct,
+        #         css_class='po-ct',
+        #     )
+        # ta_dddo = TechnologicalArea.objects.create(
+        #     name='Designing and developing digital outcomes',
+        #     abbreviation='DDDO',
+        #     css_class='ta-dddo',
+        # )
+        # for i in range(1, 7):
+        #     ProgressOutcome.objects.create(
+        #         name='Designing and developing digital outcomes - Progress outcome {}'.format(i),
+        #         abbreviation='DDDO PO{}'.format(i),
+        #         technological_area=ta_dddo,
+        #         css_class='po-dddo',
+        #     )
+        # print('Technological areas created.')
+        # print('Progress outcomes created.')
 
-        ResourceFactory.create_batch(size=20)
-        print('Resources created.')
+        # NZQAStandardFactory.create_batch(size=20)
+        # for i in range(0, 14):
+        #     YearLevel.objects.create(
+        #         level=i
+        #     )
+        # print('NZQA standards created.')
 
-        # Events
-        event_series = {
-            (
-                'Computer Science for High Schools',
-                'CS4HS',
-            ),
-            (
-                'Computer Science for Primary Schools',
-                'CS4PS',
-            ),
-            (
-                'Computer Science for Professional Development',
-                'CS4PD',
-            ),
-            (
-                'Code Club for Teachers',
-                'CC4T',
-            ),
-        }
-        for (name, abbreviation) in event_series:
-            Series.objects.create(
-                name=name,
-                abbreviation=abbreviation,
-            )
-        print('Event series created.')
+        # ResourceFactory.create_batch(size=20)
+        # print('Resources created.')
+
+        # # Events
+        # event_series = {
+        #     (
+        #         'Computer Science for High Schools',
+        #         'CS4HS',
+        #     ),
+        #     (
+        #         'Computer Science for Primary Schools',
+        #         'CS4PS',
+        #     ),
+        #     (
+        #         'Computer Science for Professional Development',
+        #         'CS4PD',
+        #     ),
+        #     (
+        #         'Code Club for Teachers',
+        #         'CC4T',
+        #     ),
+        # }
+        # for (name, abbreviation) in event_series:
+        #     Series.objects.create(
+        #         name=name,
+        #         abbreviation=abbreviation,
+        #     )
+        # print('Event series created.')
 
         region_codes = dict()
         region_suffix = ' region'
@@ -1432,47 +1446,47 @@ class Command(management.base.BaseCommand):
                     )
         print('Event locations created.')
 
-        EventFactory.create_batch(size=50)
-        print('Events created.')
+        # EventFactory.create_batch(size=50)
+        # print('Events created.')
 
-        # DTTA
-        NewsArticleFactory.create_batch(size=20)
-        print('DTTA news articles created.')
-        PageFactory.create_batch(size=5)
-        print('DTTA pages created.')
-        ProjectFactory.create_batch(size=5)
-        print('DTTA projects created.')
-        RelatedLinkFactory.create_batch(size=10)
-        print('DTTA related links created.')
+        # # DTTA
+        # NewsArticleFactory.create_batch(size=20)
+        # print('DTTA news articles created.')
+        # PageFactory.create_batch(size=5)
+        # print('DTTA pages created.')
+        # ProjectFactory.create_batch(size=5)
+        # print('DTTA projects created.')
+        # RelatedLinkFactory.create_batch(size=10)
+        # print('DTTA related links created.')
 
-        # POET
-        management.call_command('load_poet_data')
-        POETFormResourceFactory.create_batch(size=20)
-        print('POET resources created.')
-        POETFormProgressOutcomeGroupFactory.create_batch(size=6)
-        print('POET progress outcome groups created.')
-        POETFormSubmissionFactory.create_batch(size=800)
-        print('POET submissions created.')
+        # # POET
+        # management.call_command('load_poet_data')
+        # POETFormResourceFactory.create_batch(size=20)
+        # print('POET resources created.')
+        # POETFormProgressOutcomeGroupFactory.create_batch(size=6)
+        # print('POET progress outcome groups created.')
+        # POETFormSubmissionFactory.create_batch(size=800)
+        # print('POET submissions created.')
 
-        # Event staff
-        events = Event.objects.all()
-        for event in events:
-            event.event_staff.add(admin)
-            event.save()
-        admin.save()
-        print('Admin account set as event staff for all events')
+        # # Event staff
+        # events = Event.objects.all()
+        # for event in events:
+        #     event.event_staff.add(admin)
+        #     event.save()
+        # admin.save()
+        # print('Admin account set as event staff for all events')
 
-        # Create common participant types
-        staff_ticket = Ticket.objects.create(name="Event Staff", price=0.0)
-        staff_ticket.save()
-        teacher_ticket = Ticket.objects.create(name="Teacher", price=0.0)
-        teacher_ticket.save()
-        student_ticket = Ticket.objects.create(name="Student", price=0.0)
-        student_ticket.save()
-        facilitator_ticket = Ticket.objects.create(name="Facilitator", price=0.0)
-        facilitator_ticket.save()
+        # # Create common participant types
+        # staff_ticket = Ticket.objects.create(name="Event Staff", price=0.0)
+        # staff_ticket.save()
+        # teacher_ticket = Ticket.objects.create(name="Teacher", price=0.0)
+        # teacher_ticket.save()
+        # student_ticket = Ticket.objects.create(name="Student", price=0.0)
+        # student_ticket.save()
+        # facilitator_ticket = Ticket.objects.create(name="Facilitator", price=0.0)
+        # facilitator_ticket.save()
 
-        # Tickets
-        for event in events:
-            event.ticket_types.add(staff_ticket)
-            event.save()
+        # # Tickets
+        # for event in events:
+        #     event.ticket_types.add(staff_ticket)
+        #     event.save()
