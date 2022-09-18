@@ -1,7 +1,10 @@
 """Mixins used by Django system."""
 
 from django.shortcuts import redirect
-
+from users.models import User
+from events.models import Event
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 class RedirectToCosmeticURLMixin(object):
     """Mixin for a view that redirects to readable URL.
@@ -36,3 +39,4 @@ class RedirectToCosmeticURLMixin(object):
         else:
             context = self.get_context_data(object=self.object)
             return self.render_to_response(context)
+            
