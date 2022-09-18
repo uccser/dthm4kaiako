@@ -77,11 +77,6 @@ urlpatterns = [
         name='manage_event_registration_form_details'
     ),
     url(
-        r'^manage-event-location-details/(?P<pk>[0-9]+)/$',
-        views.manage_event_location_details,
-        name='manage_event_location_details'
-    ),
-    url(
         r'^event/(?P<pk_event>[0-9]+)/manage-event-application/(?P<pk_application>[0-9]+)/$',
         views.manage_event_application,
         name='manage_event_application'
