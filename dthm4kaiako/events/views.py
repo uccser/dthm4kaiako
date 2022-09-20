@@ -604,7 +604,7 @@ def is_in_past_or_cancelled(event):
 def can_view_event_management_content(request, event):
     """Return True if the user is event staff for the event management page."""
     user = request.user
-    return user.pk in event.event_staff.all()
+    return user in event.event_staff.all()
 
 
 @login_required
@@ -619,7 +619,7 @@ def manage_event(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
+            "You are not a staff member of \"" + event.name + "\". " +
             "Only event staff members can view information about their events."
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
