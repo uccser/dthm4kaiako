@@ -346,8 +346,6 @@ def apply_for_event(request, pk):
     new_participant_type = ""
 
     application_exists = does_application_exist(user, event)
-    
-    messages.warning(request, billing_required)
 
     if request.method == 'GET':
         # Prior to creating/updating registration form

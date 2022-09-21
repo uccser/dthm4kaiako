@@ -529,7 +529,6 @@ class Event(models.Model):
 
         ordering = ['start', 'end']
 
-    
     @property
     def is_free(self):
         """Determine whether the event is free or not.
