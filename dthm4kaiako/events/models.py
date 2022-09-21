@@ -281,8 +281,8 @@ class Event(models.Model):
         If these are all free tickets then the event is considered to be free.
         """
         free = True
-        for ticket_type in self.ticket_types:
-            if ticket_type.cost != 0.0:
+        for ticket_type in self.ticket_types.all():
+            if ticket_type.price != 0.0:
                 free = False
         return free
 
