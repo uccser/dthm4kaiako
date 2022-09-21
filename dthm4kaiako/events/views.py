@@ -51,7 +51,7 @@ import csv
 from django.utils.html import format_html_join
 from datetime import datetime
 from django.core.mail import send_mail
-
+from events.utils import can_view_event_management_content
 
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
 
@@ -178,6 +178,7 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
             self.object.sessions.all().prefetch_related('locations')
         )
         context['locations'] = self.object.locations.all()
+        context['is_event_staff'] = can_view_event_management_content(self.request, self.object)
 
         user = self.request.user
 
@@ -592,12 +593,6 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
 def is_in_past_or_cancelled(event):
     """Return True if event is in the past or it has been cancelled."""
     return event.end < now() or event.is_cancelled
-
-
-def can_view_event_management_content(request, event):
-    """Return True if the user is event staff for the event management page."""
-    user = request.user
-    return user in event.event_staff.all()
 
 
 @login_required
