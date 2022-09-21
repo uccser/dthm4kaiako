@@ -163,11 +163,14 @@ class Event(models.Model):
     """Model for an event."""
 
     name = models.CharField(max_length=200)
-    description = RichTextUploadingField(help_text="This is the description that will appear on this event's page that participants will view.")
+    description = RichTextUploadingField(
+        help_text="This is the description that will appear on this event's page that participants will view.")
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
-    show_schedule = models.BooleanField(default=False, help_text="Select if you would like to show this event's schedule to prospective event participants.")
+    show_schedule = models.BooleanField(
+        default=False,
+        help_text="Select if you would like to show this event's schedule to prospective event participants.")
     featured = models.BooleanField(default=False, help_text="Select if this event is a featured event.")
     REGISTRATION_TYPE_REGISTER = 1
     REGISTRATION_TYPE_APPLY = 2
@@ -182,8 +185,7 @@ class Event(models.Model):
     registration_type = models.PositiveSmallIntegerField(
         choices=REGISTRATION_TYPE_CHOICES,
         default=REGISTRATION_TYPE_REGISTER,
-        help_text=
-        "Register type events will not require you to " + 
+        help_text="Register type events will not require you to " +
         "approve or reject event reigstration forms.\n\n" +
         "Apply type events require you to approve event " +
         "applications in order for a participant to be attending this event."
@@ -192,7 +194,8 @@ class Event(models.Model):
         blank=True,
         null=True,
         help_text=(
-            "Only required when the event registration type is 'external'. \n\nThis is a link to an external location that "
+            "Only required when the event registration type is 'external'. \n\n" +
+            "This is a link to an external location that "
             "will gather event applications' information e.g. Google Form"
         )
     )
@@ -242,7 +245,8 @@ class Event(models.Model):
         default=False,
         null=False,
         blank=False,
-        help_text='Select if food will be provided at this event. Participants will be ask for their dietary requirements when registering/applying'
+        help_text="Select if food will be provided at this event. " +
+        "Participants will be ask for their dietary requirements when registering/applying"
     )
     contact_email_address = models.EmailField(
         max_length=150,
@@ -886,9 +890,19 @@ TERMS_AND_CONDITIONS_DEFAULT = (
 class RegistrationForm(models.Model):
     """Model for a registration form."""
 
-    open_datetime = models.DateTimeField(null=True, blank=True, help_text="This is the date and time that participants can register/apply for this event.\n\n" + DATETIME_HELP_TEXT )
-    close_datetime = models.DateTimeField(null=True, blank=True, help_text="This is the date and time that participants registerations/applications close for this event.\n\n" + DATETIME_HELP_TEXT)
-    terms_and_conditions = RichTextUploadingField(default=TERMS_AND_CONDITIONS_DEFAULT, help_text="Event participants must agree to this to register/apply for this event.")
+    open_datetime = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="This is the date and time that participants " +
+        "can begin registering for this event.\n\n" + DATETIME_HELP_TEXT)
+    close_datetime = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="This is the date and time that participants " +
+        "registerations close for this event.\n\n" + DATETIME_HELP_TEXT)
+    terms_and_conditions = RichTextUploadingField(
+        default=TERMS_AND_CONDITIONS_DEFAULT,
+        help_text="Event participants must agree to this to register/apply for this event.")
     event = models.OneToOneField(
         Event,
         on_delete=models.CASCADE,
