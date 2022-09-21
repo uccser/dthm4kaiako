@@ -20,13 +20,13 @@
             </button>
         </div>
         
-        <div id="Past" class="time">
+        <div id="Past" class="time" style="display:none">
             {% for event_application in event_applications_past %}
                 {% include 'events/application_card.html' %}
             {% endfor %}
         </div>
         
-        <div id="Future" class="time" style="display:none">
+        <div id="Future" class="time">
             {% for event_application in event_applications_upcoming %}
                 {% include 'events/application_card.html' %}
             {% endfor %}
