@@ -10,7 +10,7 @@ from events.models import (
     EventCSV,
     Location,
     RegistrationForm,
-    Ticket,
+    TicketType,
 )
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
@@ -259,7 +259,7 @@ class TicketTypeForm(ModelForm):
     class Meta:
         """Metadata for NewTicketType class."""
 
-        model = Ticket
+        model = TicketType
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):

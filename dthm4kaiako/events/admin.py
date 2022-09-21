@@ -12,7 +12,7 @@ from events.models import (
     Series,
     EventApplication,
     RegistrationForm,
-    Ticket,
+    TicketType,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
@@ -357,4 +357,4 @@ admin.site.register(Session),
 admin.site.register(EventApplication, EventApplicationAdmin),
 admin.site.register(RegistrationForm),
 admin.site.register(DeletedEventApplication)
-admin.site.register(Ticket)
+admin.site.register(TicketType)

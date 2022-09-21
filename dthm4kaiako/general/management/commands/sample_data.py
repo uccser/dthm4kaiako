@@ -30,7 +30,7 @@ from events.models import (
     Location,
     RegistrationForm,
     # Series,
-    Ticket,
+    TicketType,
     Event,
 )
 # from tests.events.factories import (
@@ -84,14 +84,14 @@ class Command(management.base.BaseCommand):
         print('Dietary requirements created.')
 
         # Create standard ticket types
-        ticket_free_event_staff = Ticket.objects.create(name="Event Staff", price=0.0)
-        ticket_free_teacher = Ticket.objects.create(name="Teacher", price=0.0)
+        ticket_free_event_staff = TicketType.objects.create(name="Event Staff", price=0.0)
+        ticket_free_teacher = TicketType.objects.create(name="Teacher", price=0.0)
         # ticket_free_student = Ticket.objects.create(name="Student", price=0.0)
-        ticket_free_facilitator = Ticket.objects.create(name="Facilitator", price=0.0)
-        ticket_paid_event_staff = Ticket.objects.create(name="Event Staff", price=3.0)
-        ticket_paid_teacher = Ticket.objects.create(name="Teacher", price=50.0)
-        ticket_paid_student = Ticket.objects.create(name="Student", price=20.0)
-        ticket_paid_facilitator = Ticket.objects.create(name="Facilitator", price=25.0)
+        ticket_free_facilitator = TicketType.objects.create(name="Facilitator", price=0.0)
+        ticket_paid_event_staff = TicketType.objects.create(name="Event Staff", price=3.0)
+        ticket_paid_teacher = TicketType.objects.create(name="Teacher", price=50.0)
+        ticket_paid_student = TicketType.objects.create(name="Student", price=20.0)
+        ticket_paid_facilitator = TicketType.objects.create(name="Facilitator", price=25.0)
         print('Common tickets created.')
 
         # Create a selection of entities

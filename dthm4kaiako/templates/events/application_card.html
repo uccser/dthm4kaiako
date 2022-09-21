@@ -64,7 +64,7 @@
                                 Are you sure you want to withdraw your application to attend <b>{{event_application.event.name}}</b>?
                                 </div>
                                 <div class="modal-footer" style="justify-content:center">
-                                    <form action="{% url 'events:delete_application_via_application_page' event_application.id %}" method="post">
+                                    <form action="{% url 'events:delete_application_via_application_page' event_application.pk %}" method="post">
                                         {% csrf_token %}
                                         {% crispy withdraw_event_application_form %}
                                         <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">

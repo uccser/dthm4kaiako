@@ -125,7 +125,7 @@ class Series(models.Model):
         verbose_name_plural = "series"
 
 
-class Ticket(models.Model):
+class TicketType(models.Model):
     """Model for event ticket.
 
     For example: event staff, facilitator, teacher, student, with
@@ -268,7 +268,7 @@ class Event(models.Model):
     )
     # TODO: add defaults that are free upon creation
     ticket_types = models.ManyToManyField(
-        Ticket,
+        TicketType,
         related_name='events',
         blank=True,
         help_text="The ticket types that will be available for event participants to choose from."
@@ -680,7 +680,7 @@ class EventApplication(models.Model):
         default=PENDING,
     )
     participant_type = models.ForeignKey(
-        Ticket,
+        TicketType,
         on_delete=models.CASCADE,
         related_name='event_applications',
         null=True,
