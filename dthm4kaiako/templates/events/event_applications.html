@@ -5,18 +5,18 @@
 {% load humanize %}
 
 {% block page_heading %}
-    <h1>Event applications</h1>
+    <h1>My event applications</h1>
 {% endblock page_heading %}
 
 {% block content %}
 
     {% if event_applications_upcoming and event_applications_past %}
         <div class="tabs">
-            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
+            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
                 <b>Past</b>
             </button>
-            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
-                <b>Upcoming</b>
+            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
+                <b>Upcoming</b> 
             </button>
         </div>
         

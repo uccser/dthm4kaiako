@@ -5,7 +5,7 @@
 {% load humanize %}
 
 {% block page_heading %}
-    <h1>Event management</h1>
+    <h1>Event management hub</h1>
 {% endblock page_heading %}
 
 {% block content %}
@@ -16,7 +16,7 @@
 
         <!-- Generate Event CSVs -->        
         <details>
-            <summary>Create Event CSVs</summary>
+            <summary>Generate Custom Events Data Spreadsheet</summary>
             {% if event_csv_builder_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                     <p style="font-style: italic">
@@ -25,22 +25,24 @@
                     <form method="post" action="{% url 'events:generate_event_csv' %}">
                         {% csrf_token %}
                         {% crispy event_csv_builder_form %}
-                        <input class="btn btn-primary" type="submit" value="Generate csv">
+                        <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
                     </form>
                     <br>
                 </div>
             {% endif %}        
         </details>
 
+        <br>
+
         <div class="events-container">
             <h4>Events you are staff for</h4>
         </div>
 
         <div class="tabs">
-            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
+            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
                 <b>Past</b>
             </button>
-            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
+            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
                 <b>Upcoming</b>
             </button>
         </div>
