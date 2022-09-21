@@ -612,6 +612,11 @@ def manage_event(request, pk):
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
     event_applications = EventApplication.objects.filter(event=event)
+
+    pending_event_applications = EventApplication.objects.filter(event=event, status=1)
+    approved_event_applications = EventApplication.objects.filter(event=event, status=2)
+    rejected_event_applications = EventApplication.objects.filter(event=event, status=3)
+
     registration_form = event.registration_form
     context = {
         'event': event,
@@ -620,13 +625,17 @@ def manage_event(request, pk):
 
     if request.method == 'GET':
 
+        context['event_applications'] = event_applications
+        context['pending_event_applications'] = pending_event_applications
+        context['approved_event_applications'] = approved_event_applications
+        context['rejected_event_applications'] = rejected_event_applications
+
         if is_in_past_or_cancelled(event):
             context['manage_event_details_form'] = ManageEventDetailsReadOnlyForm(instance=event)
             context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsReadOnlyForm(
                 instance=registration_form
             )
             context['applications_csv_builder_form'] = BuilderFormForEventApplicationsCSV()
-            context['event_applications'] = event_applications
             context['registration_form_pk'] = registration_form.pk
             context['is_free'] = event.is_free
             context['participant_types'] = TicketType.objects.filter(events=event).order_by('-price', 'name')

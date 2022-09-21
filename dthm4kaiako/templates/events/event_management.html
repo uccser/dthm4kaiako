@@ -71,7 +71,6 @@
 
         <br>
 
-        <!-- TODO: add breakpoint for these two columns to stack when mobile phone used -->
         <!-- Key Data Counts -->
         <div class="row" style="display: grid; grid-template-columns: 50% 50%; padding-left: 15px;">
 
@@ -204,16 +203,36 @@
 
                     {% if not is_free %}
                     <!-- Bulk mark all participants as paid -->
-                        <a class="btn btn-success" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                        <a class="btn btn-primary" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
                             Mark all participants as paid
                         </a>
+                        <br>
+                        <br>
                     {% endif %}
 
-                    {% for application in event_applications %}
+                    <b>Pending event applications</b>
+                    {% for application in pending_event_applications %}
                     <div>
                         <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
                     </div>
                     {% endfor %}
+
+                    <br>
+                    <b>Approved event applications</b>
+                    {% for application in approved_event_applications %}
+                    <div>
+                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                    </div>
+                    {% endfor %}
+
+                    <br>
+                    <b>Rejected event applications</b>
+                    {% for application in rejected_event_applications %}
+                    <div>
+                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                    </div>
+                    {% endfor %}
+
                 {% else %}
                     <p>No event applications</p>
                 {% endif %}    
