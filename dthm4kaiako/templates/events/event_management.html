@@ -128,28 +128,20 @@
                     <div>
                         
                         <!-- Other Reasons for Withdrawing -->
-                        <div class="panel-group">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <a data-toggle="collapse" href="#other-reason-for-withdrawing-counts">
-                                            <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
-                                        </a>
-                                    </div>
+
+                        <details style="margin-right: 20px; margin-top: 10px;">
+                            <summary>Other ({{event.reasons_for_withdrawing_counts.other}})</summary>
+                            {% if manage_event_details_form %}
+                                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                                    {% for reason in event.other_reasons_for_withdrawing %}
+                                        <div>
+                                            <li>{{reason}}</li>
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                <div id="other-reason-for-withdrawing-counts" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul>
-                                            {% for reason in event.other_reasons_for_withdrawing %}
-                                                <div>
-                                                    <li>{{reason}}</li>
-                                                </div>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            {% endif %}        
+                        </details>
+
                     </div>
                 </div>
             </div>
@@ -264,7 +256,7 @@
 
         <!-- Generate Event Applications CSVs -->         
         <details>
-            <summary>Create Event Applications CSVs</summary>
+            <summary>Generate Custom Event Applications Data Spreadsheet</summary>
             {% if applications_csv_builder_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                     <p style="font-style: italic">
