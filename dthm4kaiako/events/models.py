@@ -274,18 +274,6 @@ class Event(models.Model):
         help_text="The ticket types that will be available for event participants to choose from."
     )
 
-    def is_free(self):
-        """Determine whether the event is free or not.
-
-        This is based on the prices of the event's tickets.
-        If these are all free tickets then the event is considered to be free.
-        """
-        free = True
-        for ticket_type in self.ticket_types.all():
-            if ticket_type.price != 0.0:
-                free = False
-        return free
-
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
 
@@ -540,6 +528,20 @@ class Event(models.Model):
         """Meta options for class."""
 
         ordering = ['start', 'end']
+
+    
+    @property
+    def is_free(self):
+        """Determine whether the event is free or not.
+
+        This is based on the prices of the event's tickets.
+        If these are all free tickets then the event is considered to be free.
+        """
+        free = True
+        for ticket_type in self.ticket_types.all():
+            if ticket_type.price != 0.0:
+                free = False
+        return free
 
 
 class Session(models.Model):
