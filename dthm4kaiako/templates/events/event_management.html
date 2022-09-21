@@ -19,43 +19,45 @@
 {% block content %}
     <div>
 
-        <div style="padding-bottom: 40px;">
-            <div class="float-left">
+        <div style="padding-bottom: 20px;">
+            <div class="float-left" style="margin-right: 20px;">
                 {% if event.is_cancelled == True %} 
-                    <label style="background-color:rgb(140, 0, 0); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        Cancelled
+                    <label style="background-color:rgb(255, 198, 198); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
+                        <b>Cancelled</b>
                     </label>
                 {% elif event.published == False %} 
-                    <label style="background-color:rgb(255, 123, 0); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px; color: white;">
-                        Not Published
+                    <label style="background-color:rgb(253, 197, 145); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
+                        <b>Not Published</b>
                     </label>
                 {% elif event.published == True %} 
-                    <label style="background-color:green; font-size: medium; color:white; border-radius: 6px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
-                        Published
+                    <label style="background-color:rgb(180, 255, 177); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
+                        <b>Published</b>
                     </label>
                 {% endif %}
             </div>
-            <div class="float-left">
+            <div >
                 {% if event.has_ended %}
-                    <label style="margin-left: 20px; background-color:rgb(88, 88, 88); color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
+                    <label style="margin-left: 20px; background-color:rgb(177, 177, 177); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
                         Ended
                     </label>
                 {% endif %}
             </div>
 
-            <div id="event-published-status-btn" class="float-right">
+            <div id="event-published-status-btn" style="padding-left: 20px">
                 {% if event.published == False %} 
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-publish-modal" role="button">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-publish-modal" role="button" style="color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
                         Publish event
                     </a>
                 {% elif event.published == True and event.is_cancelled == False %}
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-cancel-modal" role="button">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#event-cancel-modal" role="button" style="color:white; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 10px; padding-bottom: 10px;">
                         Cancel event
                     </a>                
                 {% endif %}
             </div>
             <br>
         </div>
+
+        <br>
 
         <!-- TODO: add breakpoint for these two columns to stack when mobile phone used -->
         <!-- Key Data Counts -->
@@ -210,7 +212,7 @@
         {% if event.published == False %}
             <!-- Event Tickets -->         
             <details>
-                <summary>Create New Event Ticket</summary>
+                <summary>Create New Ticket Type</summary>
                 {% if new_ticket_form %}
                     <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                         <p style="font-style: italic">
@@ -238,12 +240,12 @@
                                 </div>
                                 <div class="column">
                                     <a class="btn btn-primary" style="margin-left: 10px; margin-right: 30px; margin-bottom: 20px;" data-toggle="modal" data-target="#event-update-ticket-modal" role="button" data-url="{% url 'events:update_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                        Update Ticket
+                                        Update ticket type
                                     </a>     
                                 </div>
                                 <div class="column">
                                     <a class="btn btn-danger" style="margin-left: 30px; margin-right: 30px; margin-bottom: 20px;" data-toggle="modal" data-target="#event-delete-ticket-modal" role="button" data-url="{% url 'events:delete_ticket' event.pk participant_type.pk %}" data-ticket="{{participant_type}}">
-                                        Delete Ticket
+                                        Delete ticket type
                                     </a>     
                                 </div>
                             </div>
@@ -265,7 +267,7 @@
                     <form method="post" action="{% url 'events:generate_event_applications_csv' event_pk %}">
                         {% csrf_token %}
                         {% crispy applications_csv_builder_form %}
-                        <input class="btn btn-primary" type="submit" value="Generate csv">
+                        <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
                     </form>
                     <br>
                 </div>
@@ -289,8 +291,8 @@
         </details>
 
         <div>
-            <a class="btn btn-success btn-block btn-lg" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
-                Dietary Requirements Counts CSV
+            <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
+                Generate dietary requirements spreadsheet
             </a>
         </div>
 
