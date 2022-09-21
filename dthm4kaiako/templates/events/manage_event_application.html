@@ -63,24 +63,28 @@
                     <b>Region: </b> {{event_application.user.get_user_region_display}}
                 </div>
                 <div>
-                    <b>Email address: </b> {{event_application.user.email_address}}
+                    <b>Email address: </b> {{event_application.user.email_address|default:"None"}}
                 </div>
                 <div>
                     <b>Mobile phone number: </b> {{event_application.user.mobile_phone_number}}
                 </div>
                 <div>
-                    <b>Medical notes: </b> {{event_application.user.medical_notes|default:"none"}}
+                    <b>Medical notes: </b> {{event_application.user.medical_notes|default:"None"}}
                 </div>
                 <br>
                 <div>
                     <b>Educational entities they belong to: </b>
-                    <ul>
-                        {% for entity in educational_entities %}
-                            <div>
-                                <li>{{entity}}</li>
-                            </div>
-                        {% endfor %}
-                    </ul>
+                    {% if educational_entities.count == 0 %} 
+                        None
+                    {% else %}
+                        <ul>
+                            {% for entity in educational_entities %}
+                                <div>
+                                    <li>{{entity}}</li>
+                                </div>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
                 <div>
                     <b>Dietary requirements: </b>
@@ -118,38 +122,44 @@
             </div>
 
             <br>
-            
-            <div id="emergency-contact-info">
-                <h3>Emergency Contact</h3>
 
-                <div>
-                    <b>Name: </b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
-                </div>    
-                <div>
-                    <b>Relationship: </b> {{event_application.emergency_contact_relationship}} 
-                </div>    
-                <div>
-                    <b>Phone number: </b> {{event_application.emergency_contact_phone_number}}
-                </div>
-            </div>
+            {% if not event.is_free %}
 
-            <br>
+                <div id="emergency-contact-info">
+                    <details>
+                        <summary>Emergency Contact</summary>
+                        <div style="margin: 20px;">
+                            <div>
+                                <b>Name: </b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
+                            </div>    
+                            <div>
+                                <b>Relationship: </b> {{event_application.emergency_contact_relationship}} 
+                            </div>    
+                            <div>
+                                <b>Phone number: </b> {{event_application.emergency_contact_phone_number}}
+                            </div>  
+                        </div>
+                    </details>
+                </div>
 
-            <div id="billing-info">
-                <h3>Billing Details</h3>
-                <div>
-                    <b>Bill to: </b> {{event_application.bill_to}}
+                <br>
+
+                <div id="billing-info">
+                    <h3>Billing Details</h3>
+                    <div>
+                        <b>Bill to: </b> {{event_application.bill_to}}
+                    </div>
+                    <div>
+                        <b>Physical address: </b> {{event_application.billing_physical_address}}
+                    </div>
+                    <div>
+                        <b>Billing email address: </b> {{event_application.billing_email_address}}
+                    </div>
+                    <div>
+                        <b>Comments: </b> {{event_application.admin_billing_comments}}
+                    </div>
                 </div>
-                <div>
-                    <b>Physical address: </b> {{event_application.billing_physical_address}}
-                </div>
-                <div>
-                    <b>Billing email address: </b> {{event_application.billing_email_address}}
-                </div>
-                <div>
-                    <b>Comments: </b> {{event_application.admin_billing_comments}}
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 
