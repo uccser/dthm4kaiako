@@ -7,10 +7,14 @@
 {% block page_heading %}
 
     <div>
-        <h2 style="padding-top: 20px">                    
-            <a href="{{ event.get_absolute_url }}" style="text-decoration: none;">
+        <h2 style="padding-top: 20px">
+            {% if event.is_published %}              
+                <a href="{{ event.get_absolute_url }}" style="text-decoration: none;">
+                    {{ event.name }}
+                </a>
+            {% else %}
                 {{ event.name }}
-            </a>
+            {% endif %}
         </h2>
     </div>
 

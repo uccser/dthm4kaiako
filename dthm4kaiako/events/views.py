@@ -727,12 +727,13 @@ def manage_event_application(request, pk_event, pk_application):
             messages.warning(
                 request,
                 "Please resolve the invalid fields to update " +
-                "{event_application.user.first_name} {event_application.user.last_name}\'s event application."
+                f"{event_application.user.first_name} {event_application.user.last_name}\'s event application."
             )
 
     context['manage_application_form'] = manage_application_form
     context['dietary_requirements'] = dietary_requirements
     context['educational_entities'] = educational_entities
+    context['is_event_staff'] = can_view_event_management_content(request, event)
 
     return render(request, 'events/manage_event_application.html', context)
 
