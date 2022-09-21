@@ -162,6 +162,16 @@
 
         <br>
 
+        <!-- TODO: add options for external and invite only -->
+        {% if event.registration_type == 1 %}
+            <i>This event's registration type is "register" which means that participants' event registrations are <b>automatically approved</b>.</i>
+        {% elif event.registration_type == 2 %}              
+            <i>This event's registration type is "apply" which means that you have to <b>manually approve</b> each event participant <b>before</b> they can attend.</i>
+        {% endif %}
+
+        <br>
+        <br>
+
         <!-- Event Details -->
         <details>
             <summary>Event Details</summary>
