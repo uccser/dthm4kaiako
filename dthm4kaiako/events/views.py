@@ -700,14 +700,20 @@ def manage_event_application(request, pk_event, pk_application):
         if is_in_past_or_cancelled(event):
             manage_application_form = ManageEventApplicationReadOnlyForm(instance=event_application)
         else:
-            manage_application_form = ManageEventApplicationForm(instance=event_application)
+            manage_application_form = ManageEventApplicationForm(
+                event,
+                initial={'participant_type': event_application.participant_type.pk}
+            )
 
     elif request.method == 'POST':
 
         if is_in_past_or_cancelled(event):
             manage_application_form = ManageEventApplicationReadOnlyForm(request.POST, instance=event_application)
         else:
-            manage_application_form = ManageEventApplicationForm(request.POST, instance=event_application)
+            manage_application_form = ManageEventApplicationForm(
+                event,
+                request.POST,
+            )
 
         if manage_application_form.is_valid():
 

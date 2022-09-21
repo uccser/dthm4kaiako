@@ -23,6 +23,7 @@ from captcha.widgets import ReCaptchaV3
 User = get_user_model()
 
 
+# TODO: move into main form?
 class ParticipantTypeForm(forms.Form):
     """Simple form to allow a user to select their ticket/participant type that is specific to the event."""
 
@@ -146,18 +147,33 @@ class WithdrawEventApplicationForm(ModelForm):
 class ManageEventApplicationForm(ModelForm):
     """Simple form to allow a user to submit an application to attend an event."""
 
-    def __init__(self, *args, **kwargs):
+    participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
+
+    def __init__(self, event, *args, **kwargs):
         """Add crispyform helper to form."""
-        super().__init__(*args, **kwargs)
+        super(ManageEventApplicationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+
+        choices = [(0, "Select participant type")]
+        for ticket in event.ticket_types.all():
+            choices += [(ticket.pk, str(ticket))]
+        self.fields['participant_type'].choices = choices
+
+    def clean(self):
+        """Clean participant type so that ones is selected."""
+        cleaned_data = super(ManageEventApplicationForm, self).clean()
+        participant_type = cleaned_data.get('participant_type')
+
+        if participant_type == "0":
+            self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
     class Meta:
         """Metadata for EventApplicationForm class."""
 
         model = EventApplication
-        fields = ['status', 'paid', 'participant_type', 'staff_comments', 'admin_billing_comments']
+        fields = ['status', 'paid', 'staff_comments', 'admin_billing_comments']
 
 
 class ManageEventDetailsForm(ModelForm):
