@@ -221,27 +221,42 @@
                     {% endif %}
 
                     <b>Pending event applications</b>
-                    {% for application in pending_event_applications %}
-                    <div>
-                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
-                    </div>
-                    {% endfor %}
+                    {% if pending_event_applications.count > 0 %}
+                        {% for application in pending_event_applications %}
+                        <div>
+                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <br>
+                        None
+                    {% endif %}
 
                     <br>
                     <b>Approved event applications</b>
-                    {% for application in approved_event_applications %}
-                    <div>
-                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
-                    </div>
-                    {% endfor %}
+                    {% if approved_event_applications.count > 0 %}
+                        {% for application in approved_event_applications %}
+                        <div>
+                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <br>
+                        None
+                    {% endif %}
 
                     <br>
                     <b>Rejected event applications</b>
-                    {% for application in rejected_event_applications %}
-                    <div>
-                        <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
-                    </div>
-                    {% endfor %}
+                    {% if approved_event_applications.count > 0 %}
+                        {% for application in rejected_event_applications %}
+                        <div>
+                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <br>
+                        None
+                    {% endif %}
 
                 {% else %}
                     <p>No event applications</p>
