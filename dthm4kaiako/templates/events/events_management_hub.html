@@ -53,7 +53,9 @@
                     {% include 'events/event_card_event_staff.html' %}
                 {% endfor %}
             {% else %}
-                You have no past events
+                <p class="text-center">
+                    There are no past events that you were event staff for
+                </p>            
             {% endif %}
         </div>
         
@@ -63,7 +65,9 @@
                     {% include 'events/event_card_event_staff.html' %}
                 {% endfor %}
             {% else %}
-                You have no upcoming events
+                <p class="text-center">
+                    There are no upcoming events you are event staff for
+                </p>                 
             {% endif %}
         </div>
 

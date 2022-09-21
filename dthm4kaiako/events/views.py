@@ -573,11 +573,11 @@ class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
                 context['events_user_is_staff_for_future'] = Event.objects.filter(
                     event_staff__pk=user.pk,
                     start__gte=today
-                ).order_by('name')
+                ).order_by('start')
                 context['events_user_is_staff_for_past'] = Event.objects.filter(
                     event_staff__pk=user.pk,
                     start__lte=today
-                ).order_by('name')
+                ).order_by('-start')
                 event_csv_builder_form = BuilderFormForEventsCSV()
                 context['event_csv_builder_form'] = event_csv_builder_form
         return context
