@@ -53,6 +53,9 @@ from datetime import datetime
 from django.core.mail import send_mail
 
 
+NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
+
+
 class HomeView(generic.TemplateView):
     """View for event homepage."""
 
@@ -242,7 +245,7 @@ def delete_application_via_application_page(request, pk):
         create_deleted_event_application(event, request)
         event_application.delete()
         user.save()
-        messages.success(request, 'Event application successfully withdrawn')
+        messages.success(request, f'Your event application for \"{event.name}\" has been withdrawn')
         return HttpResponseRedirect(reverse("events:event_applications"))
 
     return render(request, 'events/event_applications.html')
@@ -257,13 +260,9 @@ def delete_application_via_event_page(request, pk):
 
     if request.method == 'POST':
         create_deleted_event_application(event, request)
-        # delete event application from user
-        # user.event_applications.filter(event_application=event_application).delete
         event_application.delete()
         user.save()
-        messages.success(request, user.event_applications)
-
-        messages.success(request, 'Event application successfully withdrawn')
+        messages.success(request, f'Your event application for \"{event.name}\" has been withdrawn')
         return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
 
     return render(request, 'event_details.html')
@@ -511,29 +510,28 @@ def apply_for_event(request, pk):
 
             if application_exists:
                 # Update existing event application
-                messages.success(request, "Updated event application successfully")
+                messages.success(request, f"Your event application for \"{event.name}\" has been updated")
                 # Return to event detail page
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
 
             else:
                 # Create new event application
-                messages.success(request, 'New event application created successfully')
+
+                if event.registration_type == 1:
+                    messages.success(
+                        request,
+                        f"Thank you for for registering for \"{event.name}\", {user.first_name}. " +
+                        "We look forward to seeing you then!"
+                    )
+                elif event.registration_type == 2:
+                    messages.success(
+                        request,
+                        f"Thank you for appling for \"{event.name}\", {user.first_name}. " +
+                        "You application will reviewed shortly by our event staff!"
+                    )
                 # Return to event detail page
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
 
-        # else:
-        #     messages.warning(request, 'Could not submit event application due it have invalid field(s)')
-        #     context = {
-        #         'event': event,
-        #         'event_application_form': event_application_form,
-        #         'user_form': user_update_details_form,
-        #         'billing_details_form': billing_details_form,
-        #         'billing_required': billing_required,
-        #         'terms_and_conditions_form': terms_and_conditions_form,
-        #         'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
-        #         'participant_type_form': participant_type_form
-        #     }
-        #     return render(request, 'events/apply.html', context)
     context = {
         'event': event,
         'event_application_form': event_application_form,
@@ -614,8 +612,7 @@ def manage_event(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of \"" + event.name + "\". " +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -678,8 +675,7 @@ def manage_event_application(request, pk_event, pk_application):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -723,13 +719,21 @@ def manage_event_application(request, pk_event, pk_application):
                 participant_type=updated_participant_type,
             )
             event_application.save()
-            messages.success(request, 'Event application updated successfully')
+            messages.success(
+                request,
+                f"You have updated {event_application.user.first_name} {event_application.user.last_name}\'s " +
+                "event application"
+            )
             return HttpResponseRedirect(reverse(
                 "events:manage_event_application",
                 kwargs={'pk_event': pk_event, 'pk_application': pk_application}
                 ))
         else:
-            messages.warning(request, 'Event application could not be updated. Please resolve invalid fields.')
+            messages.warning(
+                request,
+                "Please resolve the invalid fields to update " +
+                "{event_application.user.first_name} {event_application.user.last_name}\'s event application."
+            )
 
     context['manage_application_form'] = manage_application_form
     context['dietary_requirements'] = dietary_requirements
@@ -747,8 +751,7 @@ def manage_event_details(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -808,14 +811,17 @@ def manage_event_details(request, pk):
                 series=update_series,
             )
             event.save()
-            messages.success(request, 'Event details updated successfully')
+            messages.success(request, f'You have updated the event details of {event.name}')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
         else:
-            messages.warning(request, 'Event details could not be updated. Please resolve invalid fields.')
-
+            messages.warning(
+                request,
+                f'Please resolve the invalid fields to update the details of \"{event.name}\".'
+            )
     elif request.method == 'DELETE':
+        event_name = event.name
         event.delete()
-        messages.success(request, 'Event deleted successfully')
+        messages.success(request, f'You have removed \"{event_name}\"')
         return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
     context['manage_event_details_form'] = manage_event_details_form
@@ -839,8 +845,7 @@ def manage_event_registration_form_details(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -866,10 +871,13 @@ def manage_event_registration_form_details(request, pk):
                 terms_and_conditions=updated_terms_and_conditions,
             )
             registration_form.save()
-            messages.success(request, 'Event registration form details updated successfully')
+            messages.success(request, f'You have updated the event registration form details of {event.name}')
             return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
         else:
-            messages.warning(request, 'Registration form details could not be updated. Please resolve invalid fields.')
+            messages.warning(
+                request,
+                f'Please resolve the invalid fields to update the registration form details of \"{event.name}\".'
+            )
 
     context['manage_registration_form_details_form'] = manage_registration_form_details_form
     context['event'] = event
@@ -909,8 +917,7 @@ def generate_event_csv(request):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1066,8 +1073,7 @@ def generate_event_applications_csv(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1221,8 +1227,7 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1277,8 +1282,7 @@ def mark_all_participants_as_paid(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1289,7 +1293,10 @@ def mark_all_participants_as_paid(request, pk):
         application_to_update = EventApplication.objects.get(id=event_application.id)
         application_to_update.save()
 
-    messages.success(request, 'All event participants successfully marked as paid')
+    messages.success(
+        request,
+        f'You have marked all event applications for \"{event.name}\" who have been approved as paid'
+    )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
@@ -1307,8 +1314,7 @@ def publish_event(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1316,12 +1322,12 @@ def publish_event(request, pk):
         (event.published is False and event.start is None)
         or (event.published is False and event.end is None)
     ):
-        messages.error(request, 'Event must have a start and end datetime to be published.')
+        messages.error(request, 'Your event must have a start and end datetime to be published.')
     else:
         event_query_set.update(published=True)
         updated_event = Event.objects.get(id=event_id)
         updated_event.save()
-        messages.success(request, 'Event successfully published')
+        messages.success(request, 'Your event has been published!')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
@@ -1336,15 +1342,14 @@ def cancel_event(request, pk):
     if not can_view_event_management_content(request, event_obj):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
     event.update(is_cancelled=True)
     updated_event = Event.objects.get(id=event_id)
     updated_event.save()
-    messages.success(request, 'Event successfully cancelled')
+    messages.success(request, 'Your event has been cancelled')
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
@@ -1357,8 +1362,7 @@ def create_new_ticket(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1373,7 +1377,7 @@ def create_new_ticket(request, pk):
             # ticket already exists for this event
             messages.warning(
                 request,
-                f"Ticket with the name of {name}, with a price of ${price} already exists for this event."
+                f"The ticket type with the name of {name} and a price of ${price} already exists for this event."
             )
         else:
             # ticket does exist but is not associated with this event yet
@@ -1383,7 +1387,7 @@ def create_new_ticket(request, pk):
             existing_ticket.save()
             messages.success(
                 request,
-                f"Ticket with the name of {name}, with a price of ${price} has been successfully created."
+                f"The ticket type with the name of {name} and a price of ${price} has been created."
             )
     else:
         # ticket doesn't exist yet in general
@@ -1393,7 +1397,7 @@ def create_new_ticket(request, pk):
         new_ticket.save()
         messages.success(
             request,
-            f"Ticket with the name of {name}, with a price of ${price} has been successfully created."
+            f"The ticket type with the name of {name} and a price of ${price} has been created."
         )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
@@ -1411,8 +1415,7 @@ def update_ticket(request, event_pk, ticket_pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1436,7 +1439,11 @@ def update_ticket(request, event_pk, ticket_pk):
         new_ticket.events.add(event)
         new_ticket.save()
 
-    messages.success(request, 'Event ticket type updated')
+    messages.success(
+        request,
+        f"You have updated the ticket type of {old_ticket.name} (${old_ticket.price}) " +
+        f"to {new_ticket.name} (${new_ticket.price})."
+    )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
@@ -1451,11 +1458,13 @@ def delete_ticket(request, event_pk, ticket_pk):
     event = Event.objects.get(pk=event_pk)
     ticket = get_object_or_404(TicketType, id=ticket_pk)
 
+    ticket_name = ticket.name
+    ticket_price = ticket.price
+
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1468,7 +1477,7 @@ def delete_ticket(request, event_pk, ticket_pk):
         event.save()
         ticket.save()
 
-    messages.success(request, 'Event ticket type successfully deleted')
+    messages.success(request, f'You have deleted the ticket type of {ticket_name} (${ticket_price})')
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
 
@@ -1483,8 +1492,7 @@ def email_participants(request, event_pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            "You are not a staff member of that event." +
-            "Only event staff members can view information about their events."
+            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
@@ -1537,20 +1545,20 @@ def email_participants(request, event_pk):
                 if total_participants > 1:
                     messages.success(
                         request,
-                        f"Email successfully sent to all {total_participants} {custom_message}s"
+                        f"You have sent an email to all {total_participants} {custom_message}s"
                     )
                 else:
                     messages.success(
                         request,
-                        f"Email successfully sent to the {total_participants} {custom_message}"
+                        f"You have sent an email to {total_participants} {custom_message}"
                     )
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
             else:
-                messages.success(request, "No event participants to email yet")
+                messages.success(request, "There are no event participants to email yet for this event.")
         else:
             messages.warning(
                 request,
-                'Email could not be sent. Must choose to send email to either or both groups of participants.'
+                'Email could not be sent. You must choose to send your email to either or both groups of participants.'
                 )
 
     event = Event.objects.get(pk=event_pk)
