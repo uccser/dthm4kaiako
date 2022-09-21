@@ -8,7 +8,7 @@
 
     <div>
         <h2 style="padding-top: 20px">
-            {% if event.is_published %}              
+            {% if event.published %}              
                 <a href="{{ event.get_absolute_url }}" style="text-decoration: none;">
                     {{ event.name }}
                 </a>
@@ -347,9 +347,11 @@
         </details>
 
         <div>
-            <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
-                Generate dietary requirements spreadsheet
-            </a>
+            {% if event.published %}
+                <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
+                    Generate dietary requirements spreadsheet
+                </a>
+            {% endif %}
         </div>
 
     </div>
