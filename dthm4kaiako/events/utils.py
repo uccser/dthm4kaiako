@@ -144,4 +144,3 @@ def can_view_event_management_content(request, event):
     """Return True if the user is event staff for the event management page."""
     user = request.user
     return user in event.event_staff.all()
-    
