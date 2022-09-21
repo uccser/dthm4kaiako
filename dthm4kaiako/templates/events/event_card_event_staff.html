@@ -36,11 +36,13 @@
                             Manage 
                         </a>
                     </div>
-                    <div>
-                        <a href="{{ event.get_absolute_url }}" class="btn btn-primary float-left">
-                            View Public Page 
-                        </a>
-                    </div>
+                    {% if event.published%}
+                        <div>
+                            <a href="{{ event.get_absolute_url }}" class="btn btn-primary float-left">
+                                View Public Page 
+                            </a>
+                        </div>
+                    {% endif %}
                 </h4>
             </div>
             <div class="col text-left text-lg-right align-self-center">
