@@ -56,7 +56,7 @@ from events.utils import can_view_event_management_content
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
 
 PRIVACY_STATEMENT = (
-    "We care about your privacy. Only the necessary information " +
+    "PRIVACY STATEMENT: We care about your privacy. Only the necessary information " +
     "is collected for event organisers to run this event."
 )
 
