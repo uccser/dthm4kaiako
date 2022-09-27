@@ -10,7 +10,7 @@ from events.models import (
     Session,
     # ParticipantType,
     Address,
-    EventApplication,
+    EventRegistration,
     RegistrationForm,
 )
 from django.contrib.gis.geos import Point
@@ -489,34 +489,34 @@ def generate_sessions():
 # TODO: update to tickets
 # def generate_participant_types():
 #     """Generate participant types for use in dthm4kaiako tests."""
-#     application_type_event_staff = ParticipantType.objects.create(
+#     registration_type_event_staff = ParticipantType.objects.create(
 #         id=1,
 #         name="Event staff"
 #         )
-#     application_type_event_staff.save()
+#     registration_type_event_staff.save()
 
-#     application_type_teacher = ParticipantType.objects.create(
+#     registration_type_teacher = ParticipantType.objects.create(
 #         id=2,
 #         name="Teacher"
 #         )
-#     application_type_teacher.save()
+#     registration_type_teacher.save()
 
-#     application_type_student = ParticipantType.objects.create(
+#     registration_type_student = ParticipantType.objects.create(
 #         id=3,
 #         name="Student"
 #         )
-#     application_type_student.save()
+#     registration_type_student.save()
 
-#     application_type_student = ParticipantType.objects.create(
+#     registration_type_student = ParticipantType.objects.create(
 #         id=4,
 #         name="Facilitator"
 #         )
-#     application_type_student.save()
+#     registration_type_student.save()
 
 
-def generate_event_applications():
-    """Generate event applications for use in dthm4kaiako tests."""
-    event_application_1_pending = EventApplication.objects.create(
+def generate_event_registrations():
+    """Generate event registrations for use in dthm4kaiako tests."""
+    event_registration_1_pending = EventRegistration.objects.create(
         id=1,
         # participant_type=ParticipantType.objects.get(name="Teacher"),
         user=User.objects.get(id=1),
@@ -524,10 +524,10 @@ def generate_event_applications():
         billing_physical_address=Address.objects.get(id=1),
         billing_email_address="test@test.co.nz"
     )
-    event_application_1_pending.status = 1
-    event_application_1_pending.save()
+    event_registration_1_pending.status = 1
+    event_registration_1_pending.save()
 
-    event_application_2_approved = EventApplication.objects.create(
+    event_registration_2_approved = EventRegistration.objects.create(
         id=2,
         # participant_type=ParticipantType.objects.get(name="Teacher"),
         user=User.objects.get(id=2),
@@ -535,10 +535,10 @@ def generate_event_applications():
         billing_physical_address=Address.objects.get(id=1),
         billing_email_address="test@test.co.nz"
     )
-    event_application_2_approved.status = 2
-    event_application_2_approved.save()
+    event_registration_2_approved.status = 2
+    event_registration_2_approved.save()
 
-    event_application_3_rejected = EventApplication.objects.create(
+    event_registration_3_rejected = EventRegistration.objects.create(
         id=3,
         # participant_type=ParticipantType.objects.get(name="Teacher"),
         user=User.objects.get(id=3),
@@ -546,8 +546,8 @@ def generate_event_applications():
         billing_physical_address=Address.objects.get(id=1),
         billing_email_address="test@test.co.nz"
     )
-    event_application_3_rejected.status = 3
-    event_application_3_rejected.save()
+    event_registration_3_rejected.status = 3
+    event_registration_3_rejected.save()
 
 
 def generate_event_registration_forms():

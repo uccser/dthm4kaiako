@@ -6,7 +6,7 @@ from events.models import (
     Event,
     # ParticipantType,
     Address,
-    EventApplication,
+    EventRegistration,
     Series,
     Session,
     Location,
@@ -18,7 +18,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_events,
     # generate_participant_types,
     generate_addresses,
-    generate_event_applications,
+    generate_event_registrations,
     generate_serieses,
     generate_sessions
 )
@@ -293,7 +293,7 @@ class EventModelTests(TestCase):
             mock_date.today.return_value = current_date
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
-    # --------------------------- tests for application_status_counts ------------
+    # --------------------------- tests for registration_status_counts ------------
 
     # TODO: WRITE UNIT TESTS!
 
@@ -313,8 +313,8 @@ class EventModelTests(TestCase):
     # TODO: update
     # def test_str_representation__register(self):
     #     test_name = "Event staff"
-    #     application_type = ParticipantType.objects.get(name=test_name)
-    #     self.assertEqual(str(application_type), application_type.name)
+    #     registration_type = ParticipantType.objects.get(name=test_name)
+    #     self.assertEqual(str(registration_type), registration_type.name)
 
 
 class AddressTests(TestCase):
@@ -327,11 +327,11 @@ class AddressTests(TestCase):
         generate_locations()
         generate_events()
         # generate_participant_types()
-        generate_event_applications()
+        generate_event_registrations()
 
     @classmethod
     def tearDownTestData(cls):
-        EventApplication.objects.all().delete()
+        EventRegistration.objects.all().delete()
         # ParticipantType.objects.all().delete()
         Series.objects.all().delete()
         Event.objects.all().delete()
@@ -342,8 +342,8 @@ class AddressTests(TestCase):
     # ------------------------------- tests for __str__ ----------------------------
 
     def test_str_representation(self):
-        application = EventApplication.objects.get(id=1)
-        billing_address = application.billing_physical_address
+        registration = EventRegistration.objects.get(id=1)
+        billing_address = registration.billing_physical_address
         self.assertEqual(
             str(billing_address),
             '{} {},\n{},\n{},\n{}'.format(
@@ -358,8 +358,8 @@ class AddressTests(TestCase):
     # ---------------------------- tests for get_full_address ----------------------
 
     def test_get_full_address(self):
-        application = EventApplication.objects.get(id=1)
-        billing_address = application.billing_physical_address
+        registration = EventRegistration.objects.get(id=1)
+        billing_address = registration.billing_physical_address
         self.assertEqual(
             str(billing_address.get_full_address()),
             '{} {},\n{},\n{},\n{}'.format(
@@ -372,7 +372,7 @@ class AddressTests(TestCase):
         )
 
 
-class EventApplicationTests(TestCase):
+class EventRegistrationTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -382,7 +382,7 @@ class EventApplicationTests(TestCase):
         generate_events()
         generate_users()
         # generate_participant_types()
-        generate_event_applications()
+        generate_event_registrations()
 
     @classmethod
     def tearDownTestData(cls):
@@ -392,21 +392,21 @@ class EventApplicationTests(TestCase):
         Event.objects.all().delete()
         User.objects.all().delete()
         # ParticipantType.objects.all().delete()
-        EventApplication.objects.all().delete()
+        EventRegistration.objects.all().delete()
 
     # ------------------------------- tests for status_string_for_user ----------------------------
 
     def test_status_string_for_user__pending(self):
-        event_application = EventApplication.objects.get(id=1)
-        self.assertEqual(event_application.status_string_for_user, "Pending")
+        event_registration = EventRegistration.objects.get(id=1)
+        self.assertEqual(event_registration.status_string_for_user, "Pending")
 
     def test_status_string_for_user__approved(self):
-        event_application = EventApplication.objects.get(id=2)
-        self.assertEqual(event_application.status_string_for_user, "Approved")
+        event_registration = EventRegistration.objects.get(id=2)
+        self.assertEqual(event_registration.status_string_for_user, "Approved")
 
     def test_status_string_for_user__rejected(self):
-        event_application = EventApplication.objects.get(id=3)
-        self.assertEqual(event_application.status_string_for_user, "Rejected")
+        event_registration = EventRegistration.objects.get(id=3)
+        self.assertEqual(event_registration.status_string_for_user, "Rejected")
 
 
 class RegistrationFormTests(TestCase):
@@ -419,7 +419,7 @@ class RegistrationFormTests(TestCase):
         generate_events()
         generate_users()
         # generate_participant_types()
-        generate_event_applications()
+        generate_event_registrations()
 
     @classmethod
     def tearDownTestData(cls):
@@ -429,7 +429,7 @@ class RegistrationFormTests(TestCase):
         Event.objects.all().delete()
         User.objects.all().delete()
         # ParticipantType.objects.all().delete()
-        EventApplication.objects.all().delete()
+        EventRegistration.objects.all().delete()
 
     # ------------------------------- tests for get_absolute_url ------------------------------
 

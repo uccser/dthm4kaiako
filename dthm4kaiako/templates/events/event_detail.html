@@ -138,7 +138,7 @@
 
                 {% if has_user_applied %}
                     <hr>
-                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
                         Update my details
                     </a>
                     <hr>
@@ -158,8 +158,8 @@
                         </div>
                     {% else %}
                         <hr>
-                        <a class="btn btn-success btn-block btn-lg" href="{% url 'events:apply' event.pk %}" role="button">
-                            {{ event.get_registration_type_display }}
+                        <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                            {{ event.get_registration_button_text }}
                         </a>
                     {% endif %}
 

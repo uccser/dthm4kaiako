@@ -34,15 +34,15 @@ class EventURLTest(TestCase):
     #     url = reverse("events:location", kwargs=kwargs)
     #     self.assertEqual(url, "/events/location/1/")
 
-    def test_applications__reverse_provides_correct_url(self):
-        self.assertEqual(reverse("events:event_applications"), "/events/applications/")
+    def test_registrations__reverse_provides_correct_url(self):
+        self.assertEqual(reverse("events:event_registrations"), "/events/registrations/")
 
-    def test_applications__resolve_provides_correct_view_name(self):
-        self.assertEqual(resolve("/events/applications/").view_name, "events:event_applications")
+    def test_registrations__resolve_provides_correct_view_name(self):
+        self.assertEqual(resolve("/events/registrations/").view_name, "events:event_registrations")
 
     def test_register__reverse_provides_correct_url(self):
         kwargs = {'pk': 1}
-        url = reverse("events:apply", kwargs=kwargs)
+        url = reverse("events:register", kwargs=kwargs)
         self.assertEqual(url, "/events/register/1/")
 
     # def test_register__resolve_provides_correct_view_name(self):

@@ -1,16 +1,16 @@
-"""Module for admin configuration for the events application."""
+"""Module for admin configuration for the events registration."""
 import logging
 from django.contrib import admin
 from django.utils.timezone import now
 from django.contrib.gis.db import models as geomodels
 from django.utils.translation import gettext_lazy as _
 from events.models import (
-    DeletedEventApplication,
+    DeletedEventRegistration,
     Event,
     Session,
     Location,
     Series,
-    EventApplication,
+    EventRegistration,
     RegistrationForm,
     TicketType,
 )
@@ -186,10 +186,10 @@ class EventAdmin(ClonableModelAdmin):
         }
 
 
-class EventApplicationAdmin(admin.ModelAdmin):
-    """Admin view for an event application."""
+class EventRegistrationAdmin(admin.ModelAdmin):
+    """Admin view for an event registration."""
 
-    model = EventApplication
+    model = EventRegistration
     readonly_fields = [
         'user',
         'user_education_entities',
@@ -236,7 +236,7 @@ class EventApplicationAdmin(admin.ModelAdmin):
             },
         ),
         (
-            'Application',
+            'Registration',
             {
                 'fields': (
                     'submitted',
@@ -267,94 +267,94 @@ class EventApplicationAdmin(admin.ModelAdmin):
     )
 
     @admin.display(description="Educational entities participant belongs to")
-    def user_education_entities(self, application):
+    def user_education_entities(self, registration):
         """Return the education entities that the user is associated with."""
         return format_html_join(
             '\n',
             '<li>{}</li>',
-            application.user.educational_entities.values_list('name'),
+            registration.user.educational_entities.values_list('name'),
         )
 
     @admin.display(description="User's region")
-    def user_region(self, application):
+    def user_region(self, registration):
         """Return the user's region."""
-        return application.user.region
+        return registration.user.region
 
     @admin.display(description="User's dietary requirements")
-    def user_dietary_requirements(self, application):
+    def user_dietary_requirements(self, registration):
         """Return the user's dietary requirements as a bullet point list."""
         return format_html_join(
             '\n',
             '<li>{}</li>',
-            application.user.dietary_requirements.values_list('name'),
+            registration.user.dietary_requirements.values_list('name'),
         )
 
     # TODO: fix display!
     @admin.display
-    def event_start_end(self, application):
+    def event_start_end(self, registration):
         """Return the event's start and end dates."""
-        # formatted_start = datetime.datetime.strptime(str(application.event.start), old_format).strftime(new_format)
-        # formatted_end = datetime.datetime.strptime(str(application.event.end), old_format).strftime(new_format)
+        # formatted_start = datetime.datetime.strptime(str(registration.event.start), old_format).strftime(new_format)
+        # formatted_end = datetime.datetime.strptime(str(registration.event.end), old_format).strftime(new_format)
         # return f'{formatted_start} to {formatted_end}'
 
-        return f'{application.event.start} to {application.event.end}'
+        return f'{registration.event.start} to {registration.event.end}'
 
     @admin.display
-    def event_location(self, application):
+    def event_location(self, registration):
         """Return the event's location."""
-        return application.event.location_summary()
+        return registration.event.location_summary()
 
     @admin.display
-    def mobile_phone_number(self, application):
+    def mobile_phone_number(self, registration):
         """Return the event participant's mobile number."""
-        return application.user.mobile_phone_number
+        return registration.user.mobile_phone_number
 
     @admin.display
-    def medical_notes(self, application):
+    def medical_notes(self, registration):
         """Return the event participant's medical notes."""
-        return application.user.medical_notes
+        return registration.user.medical_notes
 
     @admin.display
-    def participant_email_address(self, application):
+    def participant_email_address(self, registration):
         """Return participant's email address."""
-        return application.event_application.participant_email_address
+        return registration.event_registration.participant_email_address
 
     @admin.display
-    def emergency_contact_first_name(self, application):
+    def emergency_contact_first_name(self, registration):
         """Return the event participant's emergency contact's first name."""
-        return application.event_application.emergency_contact_first_name
+        return registration.event_registration.emergency_contact_first_name
 
     @admin.display
-    def emergency_contact_last_name(self, application):
+    def emergency_contact_last_name(self, registration):
         """Return the event participant's emergency contact's last name."""
-        return application.event_application.emergency_contact_last_name
+        return registration.event_registration.emergency_contact_last_name
 
     @admin.display
-    def emergency_contact_relationship(self, application):
+    def emergency_contact_relationship(self, registration):
         """Return the emergency contact's relationship with the event participant."""
-        return application.event_application.emergency_contact_relationship
+        return registration.event_registration.emergency_contact_relationship
 
     @admin.display
-    def emergency_contact_phone_number(self, application):
+    def emergency_contact_phone_number(self, registration):
         """Return the emergency contact's phone number of the event participant."""
-        return application.event_application.emergency_contact_phone_number
+        return registration.event_registration.emergency_contact_phone_number
 
     @admin.display
-    def bill_to(self, application):
+    def bill_to(self, registration):
         """Return the name of the entity who will pay for the event participant to attend."""
-        return application.event_application.bill_to
+        return registration.event_registration.bill_to
 
     @admin.display
-    def email_address(self, application):
+    def email_address(self, registration):
         """Return user's email address."""
-        return application.user.email_address
+        return registration.user.email_address
 
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin),
 admin.site.register(Series),
 admin.site.register(Session),
-admin.site.register(EventApplication, EventApplicationAdmin),
+admin.site.register(EventRegistration, EventRegistrationAdmin),
 admin.site.register(RegistrationForm),
-admin.site.register(DeletedEventApplication)
+admin.site.register(DeletedEventRegistration)
 admin.site.register(TicketType)

@@ -1,12 +1,12 @@
-"""Forms for events application."""
+"""Forms for events registration."""
 
 from django import forms
 from events.models import (
     Address,
-    DeletedEventApplication,
+    DeletedEventRegistration,
     Event,
-    EventApplication,
-    EventApplicationsCSV,
+    EventRegistration,
+    EventRegistrationsCSV,
     EventCSV,
     Location,
     RegistrationForm,
@@ -50,8 +50,8 @@ class ParticipantTypeForm(forms.Form):
             self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
 
-class EventApplicationForm(ModelForm):
-    """Simple form to allow a user to submit an application to attend an event."""
+class EventRegistrationForm(ModelForm):
+    """Simple form to allow a user to submit an registration to attend an event."""
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -72,9 +72,9 @@ class EventApplicationForm(ModelForm):
         #             del self.fields['emergency_contact_phone_number']
 
     class Meta:
-        """Metadata for EventApplicationForm class."""
+        """Metadata for EventRegistrationForm class."""
 
-        model = EventApplication
+        model = EventRegistration
         fields = [
             'representing',
             'emergency_contact_first_name',
@@ -125,8 +125,8 @@ class BillingDetailsForm(ModelForm):
         fields = ['street_number', 'street_name', 'suburb', 'city', 'region', 'post_code', 'country', ]
 
 
-class WithdrawEventApplicationForm(ModelForm):
-    """Simple form for obtaining the reason for a participant withdrawing from their event application."""
+class WithdrawEventRegistrationForm(ModelForm):
+    """Simple form for obtaining the reason for a participant withdrawing from their event registration."""
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -136,22 +136,22 @@ class WithdrawEventApplicationForm(ModelForm):
         self.helper.disable_csrf = True
 
     class Meta:
-        """Metadata for WithdrawEventApplicationForm class."""
+        """Metadata for WithdrawEventRegistrationForm class."""
 
-        model = DeletedEventApplication
+        model = DeletedEventRegistration
         fields = ['withdraw_reason', 'other_reason_for_deletion']
 
 
 # ---------------------------- Forms for event management ----------------------------------
 
-class ManageEventApplicationForm(ModelForm):
-    """Simple form to allow a user to submit an application to attend an event."""
+class ManageEventRegistrationForm(ModelForm):
+    """Simple form to allow a user to submit an registration to attend an event."""
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
     def __init__(self, event, *args, **kwargs):
         """Add crispyform helper to form."""
-        super(ManageEventApplicationForm, self).__init__(*args, **kwargs)
+        super(ManageEventRegistrationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
@@ -163,16 +163,16 @@ class ManageEventApplicationForm(ModelForm):
 
     def clean(self):
         """Clean participant type so that ones is selected."""
-        cleaned_data = super(ManageEventApplicationForm, self).clean()
+        cleaned_data = super(ManageEventRegistrationForm, self).clean()
         participant_type = cleaned_data.get('participant_type')
 
         if participant_type == "0":
             self._errors['participant_type'] = self.error_class(['Must select participant type.'])
 
     class Meta:
-        """Metadata for EventApplicationForm class."""
+        """Metadata for EventRegistrationForm class."""
 
-        model = EventApplication
+        model = EventRegistration
         fields = ['status', 'paid', 'staff_comments', 'admin_billing_comments']
 
 
@@ -250,20 +250,20 @@ class BuilderFormForEventsCSV(ModelForm):
 
 
 # TODO: allow for selecting all boxes at once
-# TODO: add multi select for choosing subset of event applications OR based on type e.g. approved
-class BuilderFormForEventApplicationsCSV(ModelForm):
-    """Simple form for selecting which Event Application model fields will be included the generated CSV."""
+# TODO: add multi select for choosing subset of event registrations OR based on type e.g. approved
+class BuilderFormForEventRegistrationsCSV(ModelForm):
+    """Simple form for selecting which Event Registration model fields will be included the generated CSV."""
 
     class Meta:
-        """Metadata for BuilderFormForEventApplicationsCSV class."""
+        """Metadata for BuilderFormForEventRegistrationsCSV class."""
 
-        model = EventApplicationsCSV
+        model = EventRegistrationsCSV
         fields = '__all__'
         exclude = ['event']
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
-        super(BuilderFormForEventApplicationsCSV, self).__init__(*args, **kwargs)
+        super(BuilderFormForEventRegistrationsCSV, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
@@ -347,8 +347,8 @@ APPLICATION_STATUSES = (
 )
 
 
-class ManageEventApplicationReadOnlyForm(ModelForm):
-    """Simple form to allow a user to submit an application to attend an event."""
+class ManageEventRegistrationReadOnlyForm(ModelForm):
+    """Simple form to allow a user to submit an registration to attend an event."""
 
     status = forms.ChoiceField(disabled=True, choices=APPLICATION_STATUSES, required=False)
     paid = forms.BooleanField(disabled=True, required=False)
@@ -372,9 +372,9 @@ class ManageEventApplicationReadOnlyForm(ModelForm):
             self.fields['admin_billing_comments'].widget.attrs['disabled'] = True
 
     class Meta:
-        """Metadata for EventApplicationForm class."""
+        """Metadata for EventRegistrationForm class."""
 
-        model = EventApplication
+        model = EventRegistration
         fields = ['status', 'paid', 'staff_comments', 'admin_billing_comments']
 
 

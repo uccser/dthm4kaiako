@@ -5,7 +5,7 @@
 {% load humanize %}
 
 {% block page_heading %}
-    <h1>My event applications</h1>
+    <h1>My event registrations</h1>
 {% endblock page_heading %}
 
 {% block content %}
@@ -20,9 +20,9 @@
     </div>
 
     <div id="Past" class="time" style="display:none">
-        {% if event_applications_past %}
-            {% for event_application in event_applications_past %}
-                {% include 'events/application_card.html' %}
+        {% if event_registrations_past %}
+            {% for event_registration in event_registrations_past %}
+                {% include 'events/registration_card.html' %}
             {% endfor %}
         {% else %}
             <p class="text-center">
@@ -32,9 +32,9 @@
     </div>
 
     <div id="Future" class="time">
-        {% if event_applications_upcoming %}
-            {% for event_application in event_applications_upcoming %}
-                {% include 'events/application_card.html' %}
+        {% if event_registrations_upcoming %}
+            {% for event_registration in event_registrations_upcoming %}
+                {% include 'events/registration_card.html' %}
             {% endfor %}
         {% else %}
             <p class="text-center">

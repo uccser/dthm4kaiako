@@ -42,7 +42,7 @@
                 {% if event_application.event.is_cancelled or event_application.event.has_ended %}
 
                 {% else %}
-                    <a class="btn btn-success m-2" href="{% url 'events:apply' event_application.event.pk %}" role="button">
+                    <a class="btn btn-success m-2" href="{% url 'events:register' event_application.event.pk %}" role="button">
                         Update my details
                     </a>
 

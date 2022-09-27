@@ -13,5 +13,5 @@ class EventDetailViewTest(BaseTestWithDB):
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_event_detail_view_success_response(self):
         kwargs = {'pk': 1}
-        response = self.client.get(reverse("events:apply", kwargs=kwargs))
+        response = self.client.get(reverse("events:register", kwargs=kwargs))
         self.assertEqual(HTTPStatus.FOUND, response.status_code)

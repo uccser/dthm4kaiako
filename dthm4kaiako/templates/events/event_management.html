@@ -75,34 +75,34 @@
         <div class="row" style="display: grid; grid-template-columns: 50% 50%; padding-left: 15px;">
 
             <div class="column">
-                <!-- Event Application Status Counts -->
-                <div id="event-applications-status-counts">
+                <!-- Event Registration Status Counts -->
+                <div id="event-registrations-status-counts">
                     <h4>
-                        Event Application Status Counts                
+                        Registration Statuses                
                     </h4>
                     <div>
-                        <b>Approved:</b> {{event.application_status_counts.approved}}
+                        <b>Approved:</b> {{event.registration_status_counts.approved}}
                     </div>
                     <div>
-                        <b>Pending:</b> {{event.application_status_counts.pending}}
+                        <b>Pending:</b> {{event.registration_status_counts.pending}}
                     </div>
                     <div>
-                        <b>Rejected:</b> {{event.application_status_counts.rejected}}
+                        <b>Rejected:</b> {{event.registration_status_counts.rejected}}
                     </div>
                     <div>
-                        <b>Withdrawn:</b> {{event.application_status_counts.withdrawn}}
+                        <b>Withdrawn:</b> {{event.registration_status_counts.withdrawn}}
                     </div>
                 </div>
 
                 <br>
 
-                <!-- Event Application Status Counts -->
-                <div id="event-applications-status-counts">
+                <!-- Participant Types -->
+                <div id="event-participant-types">
                     <h4>
                         Participant Types           
                     </h4>
                     {% if participant_types %}
-                        {% for key, value in event.ticket_type_counts.items %}
+                        {% for key, value in event.participant_type_counts.items %}
                             <div>
                                 <b>{{key}}:</b> {{value}}
                             </div>
@@ -116,7 +116,7 @@
 
             <div class="column">
                 <!-- Reasons for Withdrawing -->
-                <div id="event-applications-status-counts">
+                <div id="event-withdraw_reasons">
                     <h4>
                         Reasons for Withdrawing            
                     </h4>
@@ -214,12 +214,12 @@
             {% endif %}        
         </details>
 
-        <!-- Event Applications -->
+        <!-- Registrations -->
         <details>
-            <summary>Event Applications</summary>
+            <summary>Registrations</summary>
             <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
-                {% if event_applications %}
+                {% if event_registrations %}
 
                     {% if not is_free %}
                     <!-- Bulk mark all participants as paid -->
@@ -230,11 +230,11 @@
                         <br>
                     {% endif %}
 
-                    <b>Pending event applications</b>
-                    {% if pending_event_applications.count > 0 %}
-                        {% for application in pending_event_applications %}
+                    <b>Pending registrations</b>
+                    {% if pending_event_registrations.count > 0 %}
+                        {% for registration in pending_event_registrations %}
                         <div>
-                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
                         </div>
                         {% endfor %}
                     {% else %}
@@ -243,11 +243,11 @@
                     {% endif %}
 
                     <br>
-                    <b>Approved event applications</b>
-                    {% if approved_event_applications.count > 0 %}
-                        {% for application in approved_event_applications %}
+                    <b>Approved registrations</b>
+                    {% if approved_event_registrations.count > 0 %}
+                        {% for registration in approved_event_registrations %}
                         <div>
-                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
                         </div>
                         {% endfor %}
                     {% else %}
@@ -256,11 +256,11 @@
                     {% endif %}
 
                     <br>
-                    <b>Rejected event applications</b>
-                    {% if approved_event_applications.count > 0 %}
-                        {% for application in rejected_event_applications %}
+                    <b>Rejected event registrations</b>
+                    {% if approved_event_registrations.count > 0 %}
+                        {% for registration in rejected_event_registrations %}
                         <div>
-                            <a href="{% url 'events:manage_event_application' application.event.pk application.pk %}" role="button">{{application}}</a>
+                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
                         </div>
                         {% endfor %}
                     {% else %}
@@ -269,7 +269,7 @@
                     {% endif %}
 
                 {% else %}
-                    <p>No event applications</p>
+                    <p>No registrations</p>
                 {% endif %}    
             </div>
         </details>
@@ -322,17 +322,17 @@
             </details>
         {% endif %}
 
-        <!-- Generate Event Applications CSVs -->         
+        <!-- Generate Registrations Spreadsheets -->         
         <details>
-            <summary>Generate Custom Event Applications Data Spreadsheet</summary>
-            {% if applications_csv_builder_form %}
+            <summary>Generate Custom Registrations Spreadsheet</summary>
+            {% if registrations_csv_builder_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                     <p style="font-style: italic">
                         Select the fields you wish to include in the CSV
                     </p>
-                    <form method="post" action="{% url 'events:generate_event_applications_csv' event_pk %}">
+                    <form method="post" action="{% url 'events:generate_event_registrations_csv' event_pk %}">
                         {% csrf_token %}
-                        {% crispy applications_csv_builder_form %}
+                        {% crispy registrations_csv_builder_form %}
                         <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
                     </form>
                     <br>

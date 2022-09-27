@@ -11,6 +11,6 @@
 #         self.language = "en"
 
 #     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-#     def test_event_applications_view_success_response(self):
-#         response = self.client.get(reverse("events:event_applications"))
+#     def test_event_registrations_view_success_response(self):
+#         response = self.client.get(reverse("events:event_registrations"))
 #         self.assertEqual(HTTPStatus.OK, response.status_code)

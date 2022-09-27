@@ -11,7 +11,7 @@ class ApplyForEventViewTest(BaseTestWithDB):
         self.language = "en"
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_apply_for_event_view_redirect_response(self):
+    def test_register_for_event_view_redirect_response(self):
         kwargs = {'pk': 1}
-        response = self.client.get(reverse("events:apply", kwargs=kwargs))
+        response = self.client.get(reverse("events:register", kwargs=kwargs))
         self.assertEqual(HTTPStatus.FOUND, response.status_code)  # Redirection code 302 expected
