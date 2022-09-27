@@ -456,7 +456,9 @@ class Event(models.Model):
             'change_of_plans': 0,
             'too_expensive': 0,
             'inconvenient_location': 0,
-            'other': 0
+            'other': 0,
+            'wrong_event': 0,
+            'clash_of_personal_development': 0
         }
         deleted_event_applications = DeletedEventApplication.objects.filter(event=self)
 
@@ -476,7 +478,10 @@ class Event(models.Model):
                 reason_string = 'inconvenient_location'
             elif deleted_application.deletion_reason == 7:
                 reason_string = 'other'
-
+            elif deleted_application.deletion_reason == 8:
+                reason_string = 'wrong_event'
+            elif deleted_application.deletion_reason == 9:
+                reason_string = 'clash_of_personal_development'
             reason_counts[reason_string] += 1
 
         return reason_counts
@@ -816,13 +821,17 @@ class DeletedEventApplication(models.Model):
     TOO_EXPENSIVE = 5
     INCONVENIENT_LOCATION = 6
     OTHER = 7
+    WRONG_EVENT = 8,
+    CLASH_OF_PERSONAL_DEVELOPMENT = 9
     WITHDRAW_REASONS = (
-        (PREFER_NOT_TO_SAY, _('Prefer not to say')),
-        (ILLNESS, _('Illness')),
-        (NOT_INTERESTED, _('Not interested')),
+        (NOT_INTERESTED, _('No longer interested')),
         (CHANGE_OF_PLANS, _('Change of plans')),
-        (TOO_EXPENSIVE, _('Too expensive / No funding')),
+        (TOO_EXPENSIVE, _('No funding')),
         (INCONVENIENT_LOCATION, _('Inconvient location')),
+        (WRONG_EVENT, _('Wrong event')),
+        (CLASH_OF_PERSONAL_DEVELOPMENT, _('Clash of personal development')),
+        (ILLNESS, _('Illness')),
+        (PREFER_NOT_TO_SAY, _('Prefer not to say')),
         (OTHER, _('Other')),
     )
     date_deleted = models.DateTimeField(

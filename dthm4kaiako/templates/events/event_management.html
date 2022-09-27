@@ -121,29 +121,39 @@
                         Reasons for Withdrawing            
                     </h4>
                     <div>
-                        <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
-                    </div>
-                    <div>
-                        <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
-                    </div>
-                    <div>
                         <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
                     </div>
                     <div>
                         <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
                     </div>
                     <div>
-                        <b>Too expensive:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
+                        <b>No funding:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
                     </div>
                     <div>
                         <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
                     </div>
                     <div>
+                        <b>Wrong event:</b> {{event.reasons_for_withdrawing_counts.wrong_event}}
+                    </div>
+                    <div>
+                        <b>Clash of personal development:</b> {{event.reasons_for_withdrawing_counts.clash_of_personal_development}}
+                    </div>
+                    <div>
+                        <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
+                    </div>
+                    <div>
+                        <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
+                    </div>
+                    <div>
+                        <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                    </div>
+
+                    <div>
                         
                         <!-- Other Reasons for Withdrawing -->
 
                         <details style="margin-right: 20px; margin-top: 10px;">
-                            <summary>Other ({{event.reasons_for_withdrawing_counts.other}})</summary>
+                            <summary>Details</summary>
                             {% if manage_event_details_form %}
                                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                                     {% for reason in event.other_reasons_for_withdrawing %}
