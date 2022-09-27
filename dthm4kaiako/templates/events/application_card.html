@@ -68,7 +68,7 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                Are you sure you no longer want to attend <b>{{event.name}}</b>?
+                                    Are you sure you no longer want to attend <b>{{event_application.event.name}}</b>?
                                 </div>
                                 <div class="modal-footer" style="justify-content:center">
                                     <form action="{% url 'events:delete_application_via_application_page' event_application.pk %}" method="post">
