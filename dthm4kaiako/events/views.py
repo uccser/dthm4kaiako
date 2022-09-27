@@ -373,7 +373,11 @@ def apply_for_event(request, pk):
             instance=user,
             initial={
                 'show_dietary_requirements': event.is_catered,
-                'show_medical_notes': not event.accessible_online
+                'show_medical_notes': not event.accessible_online,
+                'email_address': user.email_address,
+                'email_address_confirm': user.email_address,
+                'mobile_phone_number': user.mobile_phone_number,
+                'mobile_phone_number_confirm': user.mobile_phone_number
             })  # autoload existing event application's user data
 
         if billing_required:
@@ -407,7 +411,11 @@ def apply_for_event(request, pk):
             instance=user,
             initial={
                 'show_dietary_requirements': event.is_catered,
-                'show_medical_notes': not event.accessible_online
+                'show_medical_notes': not event.accessible_online,
+                'email_address': user.email_address,
+                'email_address_confirm': user.email_address,
+                'mobile_phone_number': user.mobile_phone_number,
+                'mobile_phone_number_confirm': user.mobile_phone_number
             }
         )
 
