@@ -277,19 +277,12 @@ def delete_application_via_event_page(request, pk):
 def create_deleted_event_application(event, request):
     """Create DeletedEventApplication based on the retrieved deletion reason and/or other reason for deletion."""
     reason = request.POST['deletion_reason']
+    other_reason = request.POST['other_reason_for_deletion']
     deleted_event_application = DeletedEventApplication.objects.create(
         deletion_reason=reason,
-        event=event
+        event=event,
+        other_reason_for_deletion=other_reason
     )
-
-    if reason == '7':
-        # Other reason
-        other_reason = request.POST['other_reason_for_deletion']
-        deleted_event_application = DeletedEventApplication.objects.create(
-            deletion_reason=reason,
-            event=event,
-            other_reason_for_deletion=other_reason
-        )
     deleted_event_application.save()
 
 

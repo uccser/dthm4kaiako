@@ -489,7 +489,7 @@ class Event(models.Model):
     @property
     def other_reasons_for_withdrawing(self):
         """Return a list of reasons for why event applications were withdrawn for the given event."""
-        deleted_event_applications = DeletedEventApplication.objects.filter(event=self, deletion_reason=7)
+        deleted_event_applications = DeletedEventApplication.objects.filter(event=self)
         other_reasons = []
         for deleted_event_application in deleted_event_applications:
             other_reasons.append(deleted_event_application.other_reason_for_deletion)
