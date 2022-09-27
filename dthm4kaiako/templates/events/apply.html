@@ -68,9 +68,6 @@
         {% endfor %}
         {% endif %}
 
-
-        
-
         <h5>
             <b>Personal Information</b>
         </h5>
@@ -80,6 +77,10 @@
             <br>
             Please ensure that it is correct.
         </div>
+        <div class="pt-md-2 pb-md-2" style="font-style:italic; font-size: medium; color: grey;" >
+            {{privacy_statement}}
+        </div>
+        <br>
 
         {% crispy user_form %}
 

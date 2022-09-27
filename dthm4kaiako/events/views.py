@@ -55,6 +55,11 @@ from events.utils import can_view_event_management_content
 
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
 
+PRIVACY_STATEMENT = (
+    "We care about your privacy. Only the necessary information " +
+    "is collected for event organisers to run this event."
+)
+
 
 class HomeView(generic.TemplateView):
     """View for event homepage."""
@@ -552,7 +557,8 @@ def apply_for_event(request, pk):
         'terms_and_conditions_form': terms_and_conditions_form,
         'withdraw_event_application_form': WithdrawEventApplicationForm(request.POST),
         'participant_type_form': participant_type_form,
-        'application_exists': application_exists
+        'application_exists': application_exists,
+        'privacy_statement': PRIVACY_STATEMENT
     }
 
     return render(request, 'events/apply.html', context)
