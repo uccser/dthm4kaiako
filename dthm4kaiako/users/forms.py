@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from users.models import Entity, DietaryRequirement
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField, ChoiceField, Select
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField, ChoiceField, Select, Textarea
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from utils.new_zealand_regions import REGION_CHOICES
@@ -57,6 +57,12 @@ class UserCreationForm(forms.UserCreationForm):
 class UserUpdateDetailsForm(ModelForm):
     """Form class for updating the user's details."""
 
+    user_region = ChoiceField(
+        required=True,
+        choices=REGION_CHOICES,
+        label="Region",
+        widget=Select()
+    )
     email_address = EmailField(max_length=150, required=True)
     email_address_confirm = EmailField(max_length=150, label="Confirm email address", required=True)
     mobile_phone_number = CharField(max_length=30, required=True)
@@ -67,16 +73,16 @@ class UserUpdateDetailsForm(ModelForm):
         widget=CheckboxSelectMultiple,
         label="What school(s) and/or educational organisation or association do you belong to?"
     )
+
     dietary_requirements = ModelMultipleChoiceField(
         queryset=DietaryRequirement.objects.filter(~Q(name='None')),
         required=False,
         widget=CheckboxSelectMultiple
     )
-    user_region = ChoiceField(
-        required=True,
-        choices=REGION_CHOICES,
-        label="region",
-        widget=Select()
+
+    how_we_can_best_look_after_you = CharField(
+        widget=Textarea(),
+        help_text="e.g. accessibility, allergies",
     )
 
     # TODO: add in for requirmement U38 (ability to add custom dietary requirements)
@@ -92,8 +98,6 @@ class UserUpdateDetailsForm(ModelForm):
             'last_name',
             'user_region',
             'educational_entities',
-            'medical_notes',
-            'dietary_requirements'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -106,6 +110,8 @@ class UserUpdateDetailsForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+    
+        self.fields['how_we_can_best_look_after_you'].widget.attrs['rows'] = 5
 
         if 'initial' in kwargs:
             initial_data_dict = kwargs.get('initial')
@@ -117,7 +123,7 @@ class UserUpdateDetailsForm(ModelForm):
             if 'show_medical_notes' in initial_data_dict:
                 self.show_medical_notes = initial_data_dict.get('show_medical_notes')
                 if not self.show_medical_notes:
-                    del self.fields['medical_notes']
+                    del self.fields['how_we_can_best_look_after_you']
 
     def clean(self):
         """Clean the form to check the mobile phone numbers and email addresses match.

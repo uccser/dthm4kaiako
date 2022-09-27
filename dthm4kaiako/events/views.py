@@ -377,7 +377,8 @@ def apply_for_event(request, pk):
                 'email_address': user.email_address,
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
-                'mobile_phone_number_confirm': user.mobile_phone_number
+                'mobile_phone_number_confirm': user.mobile_phone_number,
+                'how_we_can_best_look_after_you': user.medical_notes
             })  # autoload existing event application's user data
 
         if billing_required:
@@ -415,7 +416,8 @@ def apply_for_event(request, pk):
                 'email_address': user.email_address,
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
-                'mobile_phone_number_confirm': user.mobile_phone_number
+                'mobile_phone_number_confirm': user.mobile_phone_number,
+                'how_we_can_best_look_after_you': user.medical_notes
             }
         )
 

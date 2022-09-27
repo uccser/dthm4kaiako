@@ -698,7 +698,7 @@ class EventApplication(models.Model):
         blank=False,
         null=False,
         default='',
-        help_text='e.g. school, organisation, association, myself'
+        help_text='Who will you be repesenting at this event? e.g. school, organisation, association, myself'
         )
     event = models.ForeignKey(
         Event,
