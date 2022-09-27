@@ -125,7 +125,7 @@ class User(AbstractUser):
                 {
                     'mobile_phone_number':
                     _(
-                        'Phone number can include the area code, follow by any number of '
+                        'Invalid phone number. Phone number can include the area code, follow by any number of '
                         'numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
                     )
                 }
