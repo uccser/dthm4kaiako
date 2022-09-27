@@ -12,7 +12,7 @@ from events.models import (
     Series,
     EventRegistration,
     RegistrationForm,
-    TicketType,
+    ParticipantType,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
@@ -133,7 +133,7 @@ class EventAdmin(ClonableModelAdmin):
                     'series',
                     'organisers',
                     'sponsors',
-                    'ticket_types',
+                    'participant_types',
                     'is_catered',
                     'contact_email_address',
                 )
@@ -164,7 +164,7 @@ class EventAdmin(ClonableModelAdmin):
     filter_horizontal = (
         'organisers',
         'sponsors',
-        'ticket_types'
+        'participant_types'
     )
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'published', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
@@ -357,4 +357,4 @@ admin.site.register(Session),
 admin.site.register(EventRegistration, EventRegistrationAdmin),
 admin.site.register(RegistrationForm),
 admin.site.register(DeletedEventRegistration)
-admin.site.register(TicketType)
+admin.site.register(ParticipantType)

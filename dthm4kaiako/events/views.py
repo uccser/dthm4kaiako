@@ -13,7 +13,7 @@ from events.models import (
     Address,
     RegistrationForm,
     Series,
-    TicketType
+    ParticipantType
 )
 from users.models import (
     DietaryRequirement,
@@ -33,7 +33,7 @@ from .forms import (
     BuilderFormForEventsCSV,
     BuilderFormForEventRegistrationsCSV,
     ParticipantTypeForm,
-    TicketTypeForm,
+    ParticipantTypeCreationForm,
     ContactParticipantsForm,
     ManageEventDetailsReadOnlyForm,
     ManageEventRegistrationFormDetailsReadOnlyForm,
@@ -459,7 +459,7 @@ def register_for_event(request, pk):
             user.save()
 
             new_participant_type_id = participant_type_form.cleaned_data['participant_type']
-            new_participant_type = TicketType.objects.get(pk=int(new_participant_type_id))
+            new_participant_type = ParticipantType.objects.get(pk=int(new_participant_type_id))
             new_representing = event_registration_form.cleaned_data['representing']
             new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
             new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
@@ -649,9 +649,9 @@ def manage_event(request, pk):
             context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
             context['registration_form_pk'] = registration_form.pk
             context['is_free'] = event.is_free
-            context['participant_types'] = TicketType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_ticket_form'] = TicketTypeForm()
-            context['update_ticket_form'] = TicketTypeForm()
+            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+            context['new_participant_form'] = ParticipantTypeCreationForm()
+            context['update_participant_form'] = ParticipantTypeCreationForm()
             context['contact_participants_form'] = ContactParticipantsForm()
         else:
             context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
@@ -662,9 +662,9 @@ def manage_event(request, pk):
             context['event_registrations'] = event_registrations
             context['registration_form_pk'] = registration_form.pk
             context['is_free'] = event.is_free
-            context['participant_types'] = TicketType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_ticket_form'] = TicketTypeForm()
-            context['update_ticket_form'] = TicketTypeForm()
+            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+            context['new_participant_form'] = ParticipantTypeCreationForm()
+            context['update_participant_form'] = ParticipantTypeCreationForm()
             context['contact_participants_form'] = ContactParticipantsForm()
         return render(request, 'events/event_management.html', context)
 
@@ -700,7 +700,7 @@ def manage_event_registration(request, pk_event, pk_registration):
         'pk_registration': pk_registration,
         'event_registration': event_registration
     }
-    context['update_ticket_form'] = TicketTypeForm()
+    context['update_participant_form'] = ParticipantTypeForm()
 
     user = User.objects.get(id=event_registration.user.pk)
 
@@ -780,7 +780,7 @@ def manage_event_details(request, pk):
     context = {
         'event': event,
     }
-    context['update_ticket_form'] = TicketTypeForm()
+    context['update_participant_form'] = ParticipantTypeForm()
 
     if request.method == 'POST':
         manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
@@ -874,7 +874,7 @@ def manage_event_registration_form_details(request, pk):
     context = {
         'registration_form': registration_form,
     }
-    context['update_ticket_form'] = TicketTypeForm()
+    context['update_participant_form'] = ParticipantTypeForm()
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
@@ -1374,7 +1374,7 @@ def cancel_event(request, pk):
 
 
 @login_required
-def create_new_ticket(request, pk):
+def create_new_participant_type(request, pk):
     """Cancel event as event staff."""
     event = Event.objects.get(pk=pk)
 
@@ -1390,45 +1390,45 @@ def create_new_ticket(request, pk):
     name = request.POST['name']
     price = request.POST['price']
 
-    if TicketType.objects.filter(name=name, price=price).exists():
-        # ticket exists in general
-        if TicketType.objects.filter(name=name, price=price, events=event).exists():
-            # ticket already exists for this event
+    if ParticipantType.objects.filter(name=name, price=price).exists():
+        # participant type exists in general
+        if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
+            # participant type already exists for this event
             messages.warning(
                 request,
-                f"The ticket type with the name of {name} and a price of ${price} already exists for this event."
+                f"The participant type with the name of {name} and a price of ${price} already exists for this event."
             )
         else:
-            # ticket does exist but is not associated with this event yet
-            existing_ticket = TicketType.objects.get(name=name, price=price)
-            event.ticket_types.add(existing_ticket)
+            # participant type does exist but is not associated with this event yet
+            existing_participant_type = ParticipantType.objects.get(name=name, price=price)
+            event.participant_types.add(existing_participant_type)
             event.save()
-            existing_ticket.save()
+            existing_participant_type.save()
             messages.success(
                 request,
-                f"The ticket type with the name of {name} and a price of ${price} has been created."
+                f"The participant type with the name of {name} and a price of ${price} has been created."
             )
     else:
-        # ticket doesn't exist yet in general
-        new_ticket = TicketType.objects.create(name=name, price=price)
-        event.ticket_types.add(new_ticket)
+        # participant doesn't exist yet in general
+        new_participant_type = ParticipantType.objects.create(name=name, price=price)
+        event.participant_types.add(new_participant_type)
         event.save()
-        new_ticket.save()
+        new_participant_type.save()
         messages.success(
             request,
-            f"The ticket type with the name of {name} and a price of ${price} has been created."
+            f"The participant type with the name of {name} and a price of ${price} has been created."
         )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
 @login_required
-def update_ticket(request, event_pk, ticket_pk):
-    """Update event ticket type.
+def update_participant_type(request, event_pk, participant_type_pk):
+    """Update event participant type.
 
-    Note that we cannot immediately update this specific ticket as it may be being used for other events as well.
+    Note that we cannot immediately update this specific participant as it may be being used for other events as well.
     """
     event = Event.objects.get(pk=event_pk)
-    old_ticket = TicketType.objects.get(pk=ticket_pk)
+    old_participant_type = ParticipantType.objects.get(pk=participant_type_pk)
 
     if not can_view_event_management_content(request, event):
         messages.warning(
@@ -1437,46 +1437,46 @@ def update_ticket(request, event_pk, ticket_pk):
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
-    # check if ticket used by other events
-    if Event.objects.filter(ticket_types=ticket_pk).count() > 1:
-        # ticket used by other events so just remove this event from the list
-        old_ticket.events.remove(event)
-        old_ticket.save()
+    # check if participant used by other events
+    if Event.objects.filter(participant_types=participant_type_pk).count() > 1:
+        # participant used by other events so just remove this event from the list
+        old_participant_type.events.remove(event)
+        old_participant_type.save()
     else:
-        old_ticket.delete()
+        old_participant_type.delete()
 
-    # check if new ticket already exists
-    if TicketType.objects.filter(name=request.POST['name'], price=request.POST['price']).exists():
-        # add the event to the list of events that use the existing "new" ticket
-        new_ticket = TicketType.objects.get(name=request.POST['name'], price=request.POST['price'])
-        new_ticket.events.add(event)
-        new_ticket.save()
+    # check if new participant type already exists
+    if ParticipantType.objects.filter(name=request.POST['name'], price=request.POST['price']).exists():
+        # add the event to the list of events that use the existing "new" participant type
+        new_participant_type = ParticipantType.objects.get(name=request.POST['name'], price=request.POST['price'])
+        new_participant_type.events.add(event)
+        new_participant_type.save()
     else:
-        # "update" ticket by creating new ticket
-        new_ticket = TicketType.objects.create(name=request.POST['name'], price=request.POST['price'])
-        new_ticket.events.add(event)
-        new_ticket.save()
+        # "update" participant by creating new participant type
+        new_participant_type = ParticipantType.objects.create(name=request.POST['name'], price=request.POST['price'])
+        new_participant_type.events.add(event)
+        new_participant_type.save()
 
     messages.success(
         request,
-        f"You have updated the ticket type of {old_ticket.name} (${old_ticket.price}) " +
-        f"to {new_ticket.name} (${new_ticket.price})."
+        f"You have updated the participant type of {old_participant_type.name} (${old_participant_type.price}) " +
+        f"to {new_participant_type.name} (${new_participant_type.price})."
     )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
 
 @login_required
-def delete_ticket(request, event_pk, ticket_pk):
-    """Delete event ticket type.
+def delete_participant_type(request, event_pk, participant_type_pk):
+    """Delete event participant type.
 
-    We cannot immediately delete this specific ticket as it may be being used for other events as well.
+    We cannot immediately delete this specific participant as it may be being used for other events as well.
     """
     event = Event.objects.get(pk=event_pk)
-    ticket = get_object_or_404(TicketType, id=ticket_pk)
+    participant_type = get_object_or_404(ParticipantType, id=participant_type_pk)
 
-    ticket_name = ticket.name
-    ticket_price = ticket.price
+    participant_type_name = participant_type.name
+    participant_type_price = participant_type.price
 
     if not can_view_event_management_content(request, event):
         messages.warning(
@@ -1485,16 +1485,19 @@ def delete_ticket(request, event_pk, ticket_pk):
         )
         return HttpResponseRedirect(reverse("events:events_management_hub"))
 
-    if Event.objects.filter(ticket_types=ticket_pk).count() == 1:
-        ticket.delete()
+    if Event.objects.filter(participant_types=participant_type_pk).count() == 1:
+        participant_type.delete()
         event.save()
     else:
-        # ticket used by other events so just remove this event from the list
-        event.ticket_types.remove(ticket)
+        # participant used by other events so just remove this event from the list
+        event.participant_types.remove(participant_type)
         event.save()
-        ticket.save()
+        participant_type.save()
 
-    messages.success(request, f'You have deleted the ticket type of {ticket_name} (${ticket_price})')
+    messages.success(
+        request,
+        f'You have deleted the participant type of {participant_type_name} (${participant_type_price})'
+    )
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
 
@@ -1595,9 +1598,9 @@ def email_participants(request, event_pk):
     context['event_registrations'] = event_registrations
     context['registration_form_pk'] = registration_form.pk
     context['is_free'] = event.is_free
-    context['participant_types'] = TicketType.objects.filter(events=event).order_by('-price', 'name')
-    context['new_ticket_form'] = TicketTypeForm()
-    context['update_ticket_form'] = TicketTypeForm()
+    context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+    context['new_participant_form'] = ParticipantTypeCreationForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
     context['contact_participants_form'] = contact_participants_form
     # use the existing form in order to load the valid inputs in the form whilst showing errors
 

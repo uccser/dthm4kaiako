@@ -25,12 +25,12 @@ from users.models import (
 )
 # Events
 from events.models import (
-    DeletedEventApplication,
-    EventApplication,
+    DeletedEventRegistration,
+    EventRegistration,
     Location,
     RegistrationForm,
     # Series,
-    TicketType,
+    ParticipantType,
     Event,
 )
 # from tests.events.factories import (
@@ -83,16 +83,16 @@ class Command(management.base.BaseCommand):
         dietary_requirement_coffee = DietaryRequirement.objects.create(name="Give me coffee and no-one gets hurt")
         print('Dietary requirements created.')
 
-        # Create standard ticket types
-        ticket_free_event_staff = TicketType.objects.create(name="Event Staff", price=0.0)
-        ticket_free_teacher = TicketType.objects.create(name="Teacher", price=0.0)
-        # ticket_free_student = TicketType.objects.create(name="Student", price=0.0)
-        ticket_free_facilitator = TicketType.objects.create(name="Facilitator", price=0.0)
-        ticket_paid_event_staff = TicketType.objects.create(name="Event Staff", price=3.0)
-        ticket_paid_teacher = TicketType.objects.create(name="Teacher", price=50.0)
-        ticket_paid_student = TicketType.objects.create(name="Student", price=20.0)
-        ticket_paid_facilitator = TicketType.objects.create(name="Facilitator", price=25.0)
-        print('Common tickets created.')
+        # Create standard participant type types
+        participant_type_free_event_staff = ParticipantType.objects.create(name="Event Staff", price=0.0)
+        participant_type_free_teacher = ParticipantType.objects.create(name="Teacher", price=0.0)
+        # participant_type_free_student = ParticipantType.objects.create(name="Student", price=0.0)
+        participant_type_free_facilitator = ParticipantType.objects.create(name="Facilitator", price=0.0)
+        participant_type_paid_event_staff = ParticipantType.objects.create(name="Event Staff", price=3.0)
+        participant_type_paid_teacher = ParticipantType.objects.create(name="Teacher", price=50.0)
+        participant_type_paid_student = ParticipantType.objects.create(name="Student", price=20.0)
+        participant_type_paid_facilitator = ParticipantType.objects.create(name="Facilitator", price=25.0)
+        print('Common participant types created.')
 
         # Create a selection of entities
 
@@ -459,11 +459,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_1_apply_online_free_future.ticket_types.set(
+        event_1_apply_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_1_apply_online_free_future.save()
@@ -486,11 +486,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_2_register_online_free_future.ticket_types.set(
+        event_2_register_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_2_register_online_free_future.save()
@@ -516,11 +516,11 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
         )
         event_3_register_physical_costs_future.locations.set([sample_location_2])
-        event_3_register_physical_costs_future.ticket_types.set(
+        event_3_register_physical_costs_future.participant_types.set(
             [
-                ticket_paid_event_staff,
-                ticket_paid_facilitator,
-                ticket_paid_teacher
+                participant_type_paid_event_staff,
+                participant_type_paid_facilitator,
+                participant_type_paid_teacher
             ]
         )
         event_3_register_physical_costs_future.save()
@@ -546,11 +546,11 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
             )
         event_4_invite_physical_free_future.locations.set([sample_location_3])
-        event_4_invite_physical_free_future.ticket_types.set(
+        event_4_invite_physical_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_4_invite_physical_free_future.save()
@@ -580,11 +580,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_5_external_online_free_future.ticket_types.set(
+        event_5_external_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_5_external_online_free_future.save()
@@ -621,11 +621,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_6_apply_online_free_past.ticket_types.set(
+        event_6_apply_online_free_past.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_6_apply_online_free_past.save()
@@ -656,11 +656,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_7_apply_online_free_past.ticket_types.set(
+        event_7_apply_online_free_past.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_7_apply_online_free_past.save()
@@ -685,11 +685,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_8_register_online_free_future.ticket_types.set(
+        event_8_register_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_8_register_online_free_future.save()
@@ -719,11 +719,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_9_apply_online_free_past_cancelled.ticket_types.set(
+        event_9_apply_online_free_past_cancelled.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_9_apply_online_free_past_cancelled.save()
@@ -755,11 +755,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_10_apply_online_free_past_cancelled.ticket_types.set(
+        event_10_apply_online_free_past_cancelled.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_10_apply_online_free_past_cancelled.save()
@@ -793,11 +793,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_11_register_online_free_future_cancelled.ticket_types.set(
+        event_11_register_online_free_future_cancelled.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_11_register_online_free_future_cancelled.save()
@@ -823,11 +823,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_12_register_online_free_future.ticket_types.set(
+        event_12_register_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_12_register_online_free_future.save()
@@ -854,11 +854,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
             )
-        event_13_register_online_free_future.ticket_types.set(
+        event_13_register_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_13_register_online_free_future.save()
@@ -890,12 +890,12 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
             )
         event_14_register_physical_costs_future.locations.set([sample_location_1])
-        event_14_register_physical_costs_future.ticket_types.set(
+        event_14_register_physical_costs_future.participant_types.set(
             [
-                ticket_paid_event_staff,
-                ticket_paid_facilitator,
-                ticket_paid_student,
-                ticket_paid_teacher
+                participant_type_paid_event_staff,
+                participant_type_paid_facilitator,
+                participant_type_paid_student,
+                participant_type_paid_teacher
             ]
         )
         event_14_register_physical_costs_future.save()
@@ -924,12 +924,12 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
             )
         event_15_register_physical_costs_past.locations.set([sample_location_1])
-        event_15_register_physical_costs_past.ticket_types.set(
+        event_15_register_physical_costs_past.participant_types.set(
             [
-                ticket_paid_event_staff,
-                ticket_paid_facilitator,
-                ticket_paid_student,
-                ticket_paid_teacher
+                participant_type_paid_event_staff,
+                participant_type_paid_facilitator,
+                participant_type_paid_student,
+                participant_type_paid_teacher
             ]
         )
         event_15_register_physical_costs_past.save()
@@ -976,12 +976,12 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
             )
         event_16_register_physical_costs_future.locations.set([sample_location_2])
-        event_16_register_physical_costs_future.ticket_types.set(
+        event_16_register_physical_costs_future.participant_types.set(
             [
-                ticket_paid_event_staff,
-                ticket_paid_facilitator,
-                ticket_paid_student,
-                ticket_paid_teacher
+                participant_type_paid_event_staff,
+                participant_type_paid_facilitator,
+                participant_type_paid_student,
+                participant_type_paid_teacher
             ]
         )
         event_16_register_physical_costs_future.save()
@@ -989,80 +989,80 @@ class Command(management.base.BaseCommand):
         # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event applications - 10 for apply event
         # event_application_apply_1
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_1,
             representing="Myself",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_2
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_2,
             representing="University of Canterbury",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_3
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_3,
             representing="DTTA",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_4
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_4,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_5
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_5,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_6
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_6,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_7
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_7,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_8
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_8,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_9
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_9,
             representing="My school",
             event=event_1_apply_online_free_future,
         )
 
         # event_application_apply_10
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_10,
             representing="My school",
             event=event_1_apply_online_free_future,
@@ -1077,48 +1077,48 @@ class Command(management.base.BaseCommand):
         REJECTED = 3
 
         # event_application_register_1_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_1,
             representing="Myself",
             event=event_2_register_online_free_future,
         )
 
         # event_application_register_2_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_2,
             representing="University of Canterbury",
             event=event_2_register_online_free_future,
         )
 
         # event_application_register_3_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_3,
             representing="DTTA",
             event=event_2_register_online_free_future,
         )
 
         # event_application_register_4_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_4,
             representing="My school",
             event=event_2_register_online_free_future,
         )
 
         # event_application_register_5_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_5,
             representing="My school",
             event=event_2_register_online_free_future,
         )
 
         # event_application_register_6_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_6,
             representing="My school",
             event=event_2_register_online_free_future,
@@ -1126,8 +1126,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_7_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_7,
             representing="My school",
             event=event_2_register_online_free_future,
@@ -1135,8 +1135,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_8_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_8,
             representing="My school",
             event=event_2_register_online_free_future,
@@ -1144,8 +1144,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_9_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_9,
             representing="My school",
             event=event_2_register_online_free_future,
@@ -1153,8 +1153,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_10_online_free
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_10,
             representing="My school",
             event=event_2_register_online_free_future,
@@ -1170,32 +1170,32 @@ class Command(management.base.BaseCommand):
         OTHER = 7
 
         # event_application_register_online_free_withdrawn_1
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free__withdrawn_2
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=NOT_INTERESTED,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free_withdrawn_3
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=TOO_EXPENSIVE,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free_withdrawn_4
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
         # event_application_register_online_free_withdrawn_4
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
             other_reason_for_deletion="Didn't realise the event was online."
@@ -1206,8 +1206,8 @@ class Command(management.base.BaseCommand):
         # --> mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
 
         # event_application_register_1_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_event_staff,
             user=user_1,
             representing="Myself",
             event=event_3_register_physical_costs_future,
@@ -1218,8 +1218,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_2_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_2,
             representing="University of Canterbury",
             event=event_3_register_physical_costs_future,
@@ -1230,8 +1230,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_3_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_free_facilitator,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_facilitator,
             user=user_3,
             representing="DTTA",
             event=event_3_register_physical_costs_future,
@@ -1242,8 +1242,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_4_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_event_staff,
             user=user_4,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1254,8 +1254,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_5_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_student,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_student,
             user=user_5,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1266,8 +1266,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_6_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_6,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1279,8 +1279,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_7_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_7,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1292,8 +1292,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_8_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_8,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1305,8 +1305,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_9_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_9,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1318,8 +1318,8 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_register_10_physical_and_costs
-        EventApplication.objects.create(
-            participant_type=ticket_paid_teacher,
+        EventRegistration.objects.create(
+            participant_type=participant_type_paid_teacher,
             user=user_10,
             representing="My school",
             event=event_3_register_physical_costs_future,
@@ -1331,32 +1331,32 @@ class Command(management.base.BaseCommand):
         )
 
         # event_application_apply_withdrawn_1
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_2
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=NOT_INTERESTED,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_3
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=TOO_EXPENSIVE,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_4
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
         # event_application_apply_withdrawn_4
-        DeletedEventApplication.objects.create(
+        DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
             other_reason_for_deletion="Didn't realise the event was online."
@@ -1410,24 +1410,24 @@ class Command(management.base.BaseCommand):
         # 4 event applications - so 4 different non-staff events
         # 1) 3 that are free and online and in future - so can withdraw 2 (diff pages) and can update one
         # study_user_event_application_1
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_8_register_online_free_future,
             status=APPROVED
         )
         # study_user_event_application_2
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_12_register_online_free_future,
             status=APPROVED
         )
         # study_user_event_application_3
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_13_register_online_free_future,
@@ -1436,8 +1436,8 @@ class Command(management.base.BaseCommand):
 
         # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
         # study_user_event_application_4
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_14_register_physical_costs_future,
@@ -1446,16 +1446,16 @@ class Command(management.base.BaseCommand):
 
         # 3) 2 that are in past (one cancelled)
         # study_user_event_application_5
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_9_apply_online_free_past_cancelled,
             status=APPROVED
         )
         # study_user_event_application_6
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_6_apply_online_free_past,
@@ -1464,8 +1464,8 @@ class Command(management.base.BaseCommand):
 
         # 4) 1 that is rejected and in the past
         # study_user_event_application_7
-        EventApplication.objects.create(
-            participant_type=ticket_free_event_staff,
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_15_register_physical_costs_past,
@@ -1493,11 +1493,11 @@ class Command(management.base.BaseCommand):
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
-        event_17_apply_online_free_future.ticket_types.set(
+        event_17_apply_online_free_future.participant_types.set(
             [
-                ticket_free_event_staff,
-                ticket_free_facilitator,
-                ticket_free_teacher
+                participant_type_free_event_staff,
+                participant_type_free_facilitator,
+                participant_type_free_teacher
             ]
         )
         event_17_apply_online_free_future.save()
@@ -1524,11 +1524,11 @@ class Command(management.base.BaseCommand):
             contact_email_address="eventstaff@event.co.nz",
         )
         event_18_register_physical_costs_future.locations.set([sample_location_2])
-        event_18_register_physical_costs_future.ticket_types.set(
+        event_18_register_physical_costs_future.participant_types.set(
             [
-                ticket_paid_event_staff,
-                ticket_paid_facilitator,
-                ticket_paid_teacher
+                participant_type_paid_event_staff,
+                participant_type_paid_facilitator,
+                participant_type_paid_teacher
             ]
         )
         event_18_register_physical_costs_future.save()
@@ -1841,16 +1841,16 @@ class Command(management.base.BaseCommand):
         # print('Admin account set as event staff for all events')
 
         # # Create common participant types
-        # staff_ticket=TicketType.objects.create(name="Event Staff", price=0.0)
-        # staff_ticket.save()
-        # teacher_ticket=TicketType.objects.create(name="Teacher", price=0.0)
-        # teacher_ticket.save()
-        # student_ticket=TicketType.objects.create(name="Student", price=0.0)
-        # student_ticket.save()
-        # facilitator_ticket=TicketType.objects.create(name="Facilitator", price=0.0)
-        # facilitator_ticket.save()
+        # staff_participant_type=ParticipantType.objects.create(name="Event Staff", price=0.0)
+        # staff_participant_type.save()
+        # teacher_participant_type=ParticipantType.objects.create(name="Teacher", price=0.0)
+        # teacher_participant_type.save()
+        # student_participant_type=ParticipantType.objects.create(name="Student", price=0.0)
+        # student_participant_type.save()
+        # facilitator_participant_type=ParticipantType.objects.create(name="Facilitator", price=0.0)
+        # facilitator_participant_type.save()
 
-        # # Tickets
+        # # Participants
         # for event in events:
-        #     event.ticket_types.add(staff_ticket)
+        #     event.participant_types.add(staff_participant_type)
         #     event.save()

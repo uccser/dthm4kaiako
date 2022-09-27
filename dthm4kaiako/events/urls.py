@@ -112,19 +112,19 @@ urlpatterns = [
         name='generate_event_dietary_requirement_counts_csv'
     ),
     path(
-        'manage/create_new_ticket/<int:pk>/',
-        views.create_new_ticket,
-        name='create_new_ticket'
+        'manage/create_new_participant_type/<int:pk>/',
+        views.create_new_participant_type,
+        name='create_new_participant_type'
     ),
     path(
-        'manage/<int:event_pk>/update_ticket/<int:ticket_pk>/',
-        views.update_ticket,
-        name='update_ticket'
+        'manage/<int:event_pk>/update_participant_type/<int:participant_type_pk>/',
+        views.update_participant_type,
+        name='update_participant_type'
     ),
     path(
-        'manage/<int:event_pk>/delete_ticket/<int:ticket_pk>/',
-        views.delete_ticket,
-        name='delete_ticket'
+        'manage/<int:event_pk>/delete_participant_type/<int:participant_type_pk>/',
+        views.delete_participant_type,
+        name='delete_participant_type'
     ),
     path(
         'manage/<int:event_pk>/email_participants/',

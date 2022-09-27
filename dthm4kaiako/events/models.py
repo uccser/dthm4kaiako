@@ -125,8 +125,8 @@ class Series(models.Model):
         verbose_name_plural = "series"
 
 
-class TicketType(models.Model):
-    """Model for event ticket.
+class ParticipantType(models.Model):
+    """Model for event participant type.
 
     For example: event staff, facilitator, teacher, student, with
     costs e.g. $0 for free or say $40 to attend.
@@ -135,26 +135,26 @@ class TicketType(models.Model):
     """
 
     name = models.CharField(max_length=200, help_text="Participant type e.g. teacher, event staff")
-    price = models.FloatField(help_text="Cost for participant to attend in NZD")
+    price = models.FloatField(help_text="Cost for participant type to attend in NZD")
 
     class Meta:
         """Meta options for class."""
 
         unique_together = ('name', 'price',)
         ordering = ['name', ]
-        verbose_name_plural = 'ticket type'
+        verbose_name_plural = 'participant type'
 
     def __str__(self):
-        """Text representation of a participant type with their ticket price."""
+        """Text representation of a participant type with their participant price."""
         if self.is_free():
             return f"{self.name} (free)"
         else:
             return f"{self.name} (${'{0:.2f}'.format(self.price)})"
 
     def is_free(self):
-        """Determine whether the event ticket is free or not.
+        """Determine whether the event participant type is free or not.
 
-        Returns True if ticket is free.
+        Returns True if participant type is free.
         """
         return self.price == 0.0
 
@@ -267,11 +267,11 @@ class Event(models.Model):
         help_text='This event has been cancelled'
     )
     # TODO: add defaults that are free upon creation
-    ticket_types = models.ManyToManyField(
-        TicketType,
+    participant_types = models.ManyToManyField(
+        ParticipantType,
         related_name='events',
         blank=True,
-        help_text="The ticket types that will be available for event participants to choose from."
+        help_text="The participant types that will be available for event participants to choose from."
     )
 
     # TODO: Add validation that if no locations, then accessible_online must be True
@@ -439,21 +439,21 @@ class Event(models.Model):
         return status_counts
 
     @property
-    def ticket_type_counts(self):
-        """Count the number of event tickets per type."""
-        ticket_type_counts = {}
+    def participant_type_counts(self):
+        """Count the number of event participants per type."""
+        participant_type_counts = {}
         registrations = EventRegistration.objects.filter(event=self.pk)
 
-        for ticket in self.ticket_types.all():
-            key_string = str(ticket)
-            ticket_type_counts[key_string] = 0
+        for participant_type in self.participant_types.all():
+            key_string = str(participant_type)
+            participant_type_counts[key_string] = 0
 
         for registration in registrations:
             key_string = str(registration.participant_type)
-            if key_string in ticket_type_counts:
-                ticket_type_counts[key_string] += 1
+            if key_string in participant_type_counts:
+                participant_type_counts[key_string] += 1
 
-        return ticket_type_counts
+        return participant_type_counts
 
     @property
     def reasons_for_withdrawing_counts(self):
@@ -550,12 +550,12 @@ class Event(models.Model):
     def is_free(self):
         """Determine whether the event is free or not.
 
-        This is based on the prices of the event's tickets.
-        If these are all free tickets then the event is considered to be free.
+        This is based on the prices of the event's participants.
+        If these are all free participants then the event is considered to be free.
         """
         free = True
-        for ticket_type in self.ticket_types.all():
-            if ticket_type.price != 0.0:
+        for participant_type in self.participant_types.all():
+            if participant_type.price != 0.0:
                 free = False
         return free
 
@@ -698,7 +698,7 @@ class EventRegistration(models.Model):
         default=PENDING,
     )
     participant_type = models.ForeignKey(
-        TicketType,
+        ParticipantType,
         on_delete=models.CASCADE,
         related_name='event_registrations',
         null=True,
@@ -967,11 +967,11 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.open_datetime is not None and self.event.ticket_types.count() == 0:
+        if self.open_datetime is not None and self.event.participant_types.count() == 0:
             raise ValidationError(
                 {
                     'open_datetime':
-                    _('At least one ticket/participant type is required for registrations to open.')
+                    _('At least one participant type is required for registrations to open.')
                 }
             )
 

@@ -10,7 +10,7 @@ from events.models import (
     EventCSV,
     Location,
     RegistrationForm,
-    TicketType,
+    ParticipantType,
 )
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
@@ -25,7 +25,7 @@ User = get_user_model()
 
 # TODO: move into main form?
 class ParticipantTypeForm(forms.Form):
-    """Simple form to allow a user to select their ticket/participant type that is specific to the event."""
+    """Simple form to allow a user to select their participant type that is specific to the event."""
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
@@ -37,8 +37,8 @@ class ParticipantTypeForm(forms.Form):
         self.helper.disable_csrf = True
 
         choices = [(0, "Select participant type")]
-        for ticket in event.ticket_types.all():
-            choices += [(ticket.pk, str(ticket))]
+        for participant_type in event.participant_types.all():
+            choices += [(participant_type.pk, str(participant_type))]
         self.fields['participant_type'].choices = choices
 
     def clean(self):
@@ -157,8 +157,8 @@ class ManageEventRegistrationForm(ModelForm):
         self.helper.disable_csrf = True
 
         choices = [(0, "Select participant type")]
-        for ticket in event.ticket_types.all():
-            choices += [(ticket.pk, str(ticket))]
+        for participant_type in event.participant_types.all():
+            choices += [(participant_type.pk, str(participant_type))]
         self.fields['participant_type'].choices = choices
 
     def clean(self):
@@ -183,7 +183,7 @@ class ManageEventDetailsForm(ModelForm):
         """Metadata for ManageEventDetailsForm class."""
 
         model = Event
-        exclude = ('published', 'is_cancelled', 'ticket_types')
+        exclude = ('published', 'is_cancelled', 'participant_types')
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -269,18 +269,18 @@ class BuilderFormForEventRegistrationsCSV(ModelForm):
         self.helper.disable_csrf = True
 
 
-class TicketTypeForm(ModelForm):
-    """Simple form for creating new ticket/participant type for an event."""
+class ParticipantTypeCreationForm(ModelForm):
+    """Simple form for creating new participant type for an event."""
 
     class Meta:
-        """Metadata for NewTicketType class."""
+        """Metadata for NewParticipantType class."""
 
-        model = TicketType
+        model = ParticipantType
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
-        super(TicketTypeForm, self).__init__(*args, **kwargs)
+        super(ParticipantTypeCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
@@ -385,7 +385,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
         """Metadata for ManageEventDetailsForm class."""
 
         model = Event
-        exclude = ('published', 'is_cancelled', 'ticket_types')
+        exclude = ('published', 'is_cancelled', 'participant_types')
 
     def __init__(self, *args, **kwargs):
         """Initialise for ManageEventRegistrationFormDetailsForm class.
