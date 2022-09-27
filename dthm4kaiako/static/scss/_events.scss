@@ -128,3 +128,33 @@ details {
  width: 100px;
  border: gray;
 }
+
+// Approved registration badges
+$approved-light: rgb(180, 255, 177);
+$approved-dark: #14863a;
+.approved-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $approved-light;
+  color: $approved-dark;
+}
+
+// Pending registration badges
+$pending-light: #ffd4ac;
+$pending-dark: rgb(255, 123, 0);
+.pending-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $pending-light;
+  color: $pending-dark;
+}
+
+// Declined registration badges
+$declined-light: rgb(255, 198, 198);
+$declined-dark: rgb(255, 67, 67);
+.declined-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $declined-light;
+  color: $declined-dark;
+}

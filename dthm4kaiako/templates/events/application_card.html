@@ -21,7 +21,14 @@
                     <b>Ends:</b> {{event_application.event.end|date:"g:i a l j F, Y" }}
                 </h6>
                 <h6>
-                    <b>Status:</b> {{ event_application.status_string_for_user }}
+                    <b>Status:</b>
+                    {% if event_application.status_string_for_user == "Pending" %}
+                        {% include "events/badges/pending.html" %}
+                    {% elif event_application.status_string_for_user == "Approved" %}
+                        {% include "events/badges/approved.html" %}
+                    {% elif event_application.status_string_for_user == "Rejected" %}
+                        {% include "events/badges/declined.html" %}
+                    {% endif %}
                 </h6>
                 <br>
                 {% if event_application.event.is_cancelled %}
