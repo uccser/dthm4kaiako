@@ -821,7 +821,7 @@ class DeletedEventApplication(models.Model):
     TOO_EXPENSIVE = 5
     INCONVENIENT_LOCATION = 6
     OTHER = 7
-    WRONG_EVENT = 8,
+    WRONG_EVENT = 8
     CLASH_OF_PERSONAL_DEVELOPMENT = 9
     WITHDRAW_REASONS = (
         (NOT_INTERESTED, _('No longer interested')),
@@ -832,7 +832,7 @@ class DeletedEventApplication(models.Model):
         (CLASH_OF_PERSONAL_DEVELOPMENT, _('Clash of personal development')),
         (ILLNESS, _('Illness')),
         (PREFER_NOT_TO_SAY, _('Prefer not to say')),
-        (OTHER, _('Other')),
+        (OTHER, _('Other'))
     )
     date_deleted = models.DateTimeField(
         auto_now_add=True,
