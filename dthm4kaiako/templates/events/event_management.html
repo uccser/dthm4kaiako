@@ -386,7 +386,7 @@
                         <b>Are you sure you want to publish this event?</b>
                         <br>
                         <br>
-                        All event details will be made available to individuals who are logged in and who are not logged in.
+                        All event details will be made publlic.
                     </div>
                     <div class="modal-footer" style="justify-content:center">
                         <form action="{% url 'events:publish_event' event.id %}" method="post">
@@ -396,7 +396,7 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                                 </div>
                                 <div class="column" style="padding-left: 50px; padding-right: 50px;">
-                                    <input class="btn btn-warning" type="submit" value="Yes">
+                                    <input class="btn btn-warning" type="submit" value="Publish">
                                 </div>
                             </div>
                         </form>

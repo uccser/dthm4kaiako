@@ -139,7 +139,7 @@ class WithdrawEventApplicationForm(ModelForm):
         """Metadata for WithdrawEventApplicationForm class."""
 
         model = DeletedEventApplication
-        fields = ['deletion_reason', 'other_reason_for_deletion']
+        fields = ['withdraw_reason', 'other_reason_for_deletion']
 
 
 # ---------------------------- Forms for event management ----------------------------------

@@ -1171,32 +1171,32 @@ class Command(management.base.BaseCommand):
 
         # event_application_register_online_free_withdrawn_1
         DeletedEventApplication.objects.create(
-            deletion_reason=PREFER_NOT_TO_SAY,
+            withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free__withdrawn_2
         DeletedEventApplication.objects.create(
-            deletion_reason=NOT_INTERESTED,
+            withdraw_reason=NOT_INTERESTED,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free_withdrawn_3
         DeletedEventApplication.objects.create(
-            deletion_reason=TOO_EXPENSIVE,
+            withdraw_reason=TOO_EXPENSIVE,
             event=event_2_register_online_free_future
         )
 
         # event_application_register_online_free_withdrawn_4
         DeletedEventApplication.objects.create(
-            deletion_reason=OTHER,
+            withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
         # event_application_register_online_free_withdrawn_4
         DeletedEventApplication.objects.create(
-            deletion_reason=OTHER,
+            withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
             other_reason_for_deletion="Didn't realise the event was online."
         )
@@ -1332,32 +1332,32 @@ class Command(management.base.BaseCommand):
 
         # event_application_apply_withdrawn_1
         DeletedEventApplication.objects.create(
-            deletion_reason=PREFER_NOT_TO_SAY,
+            withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_2
         DeletedEventApplication.objects.create(
-            deletion_reason=NOT_INTERESTED,
+            withdraw_reason=NOT_INTERESTED,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_3
         DeletedEventApplication.objects.create(
-            deletion_reason=TOO_EXPENSIVE,
+            withdraw_reason=TOO_EXPENSIVE,
             event=event_3_register_physical_costs_future
         )
 
         # event_application_apply_withdrawn_4
         DeletedEventApplication.objects.create(
-            deletion_reason=OTHER,
+            withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
         # event_application_apply_withdrawn_4
         DeletedEventApplication.objects.create(
-            deletion_reason=OTHER,
+            withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
             other_reason_for_deletion="Didn't realise the event was online."
         )

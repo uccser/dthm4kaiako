@@ -464,23 +464,23 @@ class Event(models.Model):
 
         for deleted_application in deleted_event_applications:
 
-            if deleted_application.deletion_reason == 1:
+            if deleted_application.withdraw_reason == 1:
                 reason_string = 'prefer_not_to_say'
-            elif deleted_application.deletion_reason == 2:
+            elif deleted_application.withdraw_reason == 2:
                 reason_string = 'illness'
-            elif deleted_application.deletion_reason == 3:
+            elif deleted_application.withdraw_reason == 3:
                 reason_string = 'not_interested'
-            elif deleted_application.deletion_reason == 4:
+            elif deleted_application.withdraw_reason == 4:
                 reason_string = 'change_of_plans'
-            elif deleted_application.deletion_reason == 5:
+            elif deleted_application.withdraw_reason == 5:
                 reason_string = 'too_expensive'
-            elif deleted_application.deletion_reason == 6:
+            elif deleted_application.withdraw_reason == 6:
                 reason_string = 'inconvenient_location'
-            elif deleted_application.deletion_reason == 7:
+            elif deleted_application.withdraw_reason == 7:
                 reason_string = 'other'
-            elif deleted_application.deletion_reason == 8:
+            elif deleted_application.withdraw_reason == 8:
                 reason_string = 'wrong_event'
-            elif deleted_application.deletion_reason == 9:
+            elif deleted_application.withdraw_reason == 9:
                 reason_string = 'clash_of_personal_development'
             reason_counts[reason_string] += 1
 
@@ -838,7 +838,7 @@ class DeletedEventApplication(models.Model):
         auto_now_add=True,
         help_text="Date the original event application was deleted"
     )
-    deletion_reason = models.PositiveSmallIntegerField(
+    withdraw_reason = models.PositiveSmallIntegerField(
         choices=WITHDRAW_REASONS,
         default=PREFER_NOT_TO_SAY,
         help_text="Reason the participant has chosen to withdraw their application."
@@ -862,8 +862,8 @@ class DeletedEventApplication(models.Model):
         that there is a related reason for this (not an empty string),
         otherwise, we change the reason from 'other' to 'prefer not to say'.
         """
-        if self.deletion_reason == 7 and not self.other_reason_for_deletion:
-            self.deletion_reason = 1
+        if self.withdraw_reason == 7 and not self.other_reason_for_deletion:
+            self.withdraw_reason = 1
         super(DeletedEventApplication, self).save(*args, **kwargs)
 
 
