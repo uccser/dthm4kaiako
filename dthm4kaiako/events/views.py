@@ -1314,7 +1314,6 @@ def mark_all_participants_as_paid(request, pk):
 # TODO: consider - add logic for checking if has close datetime for registrations
 # make sure closing date for application is on details page
 # TODO: add logic for event detail page saying event registrations opening soon!
-# TODO: add staff permission for this
 @login_required
 def publish_event(request, pk):
     """Publish event as event staff."""
@@ -1342,7 +1341,6 @@ def publish_event(request, pk):
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
-# TODO: add staff permission for this
 @login_required
 def cancel_event(request, pk):
     """Cancel event as event staff."""
@@ -1364,7 +1362,6 @@ def cancel_event(request, pk):
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
-# TODO: add staff permission for this
 @login_required
 def create_new_ticket(request, pk):
     """Cancel event as event staff."""
@@ -1413,7 +1410,6 @@ def create_new_ticket(request, pk):
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
-# TODO: add staff permission for this
 @login_required
 def update_ticket(request, event_pk, ticket_pk):
     """Update event ticket type.
@@ -1459,7 +1455,6 @@ def update_ticket(request, event_pk, ticket_pk):
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
 
-# TODO: add staff permission for this
 @login_required
 def delete_ticket(request, event_pk, ticket_pk):
     """Delete event ticket type.
@@ -1495,7 +1490,6 @@ def delete_ticket(request, event_pk, ticket_pk):
 MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
 
-# TODO: add staff permission for this
 @login_required
 def email_participants(request, event_pk):
     """Send bulk email to all event participants as event staff."""
@@ -1510,7 +1504,6 @@ def email_participants(request, event_pk):
     if request.method == 'POST':
         contact_participants_form = ContactParticipantsForm(request.POST)
         if contact_participants_form.is_valid():
-
             subject = contact_participants_form.cleaned_data['subject']
             from_email = contact_participants_form.cleaned_data['from_email']
             message = MESSAGE_TEMPLATE.format(
@@ -1521,10 +1514,13 @@ def email_participants(request, event_pk):
 
             send_to_emails = []
 
+            if contact_participants_form.cleaned_data['cc_sender'] is True:
+                send_to_emails += [from_email]
+
             approved_status = 2
             pending_status = 1
 
-            custom_message = "event applicant"
+            custom_message = "event participant"
 
             if (contact_participants_form.cleaned_data['send_to_approved_participants'] is True):
                 applications = EventApplication.objects.filter(event=event, status=approved_status)
@@ -1535,12 +1531,12 @@ def email_participants(request, event_pk):
                 applications = EventApplication.objects.filter(event=event, status=pending_status)
                 participants = [application.user for application in applications]
                 send_to_emails += [participant.email for participant in participants]
-                custom_message = "pending event applicant"
+                custom_message = "pending event participant"
             if (
                 contact_participants_form.cleaned_data['send_to_approved_participants'] is True and
                 contact_participants_form.cleaned_data['send_to_pending_applicants'] is True
                ):
-                custom_message = "event applicant"
+                custom_message = "event participant"
 
             total_participants = len(send_to_emails)
 
@@ -1564,6 +1560,7 @@ def email_participants(request, event_pk):
                         f"You have sent an email to {total_participants} {custom_message}"
                     )
                 return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event_pk}))
+
             else:
                 messages.success(request, "There are no event participants to email yet for this event.")
         else:

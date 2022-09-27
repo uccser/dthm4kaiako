@@ -1,5 +1,6 @@
 """Forms for events application."""
 
+from unittest import defaultTestLoader
 from django import forms
 from events.models import (
     Address,
@@ -293,9 +294,10 @@ class ContactParticipantsForm(forms.Form):
     """Form for contacting event participants owners."""
 
     name = forms.CharField(required=True, label='Your name', max_length=100)
-    from_email = forms.EmailField(required=True, label='Email to contact event participants')
+    from_email = forms.EmailField(required=True, label='Email to contact you')
+    cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself', initial=True)
     subject = forms.CharField(required=True)
-    message = forms.CharField(widget=forms.Textarea, required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)    
 
     # TODO: figure out how to get validation for this to work - currently wipes form when invalid
     send_to_approved_participants = forms.BooleanField(
@@ -323,10 +325,13 @@ class ContactParticipantsForm(forms.Form):
         User must select one or both otherwise error messages shows.
         """
         cleaned_data = super(ContactParticipantsForm, self).clean()
-        send_to_approved_participants = cleaned_data.get('send_to_approved_participants')
-        send_to_pending_applicants = cleaned_data.get('send_to_pending_applicants')
+        send_to_approved_participants = cleaned_data['send_to_approved_participants']
+        send_to_pending_applicants = cleaned_data['send_to_pending_applicants']
         if not send_to_approved_participants and not send_to_pending_applicants:
             self._errors['send_to_approved_participants'] = self.error_class(
+                ['Must choose to send email to either or both groups of participants.']
+            )
+            self._errors['send_to_pending_applicants'] = self.error_class(
                 ['Must choose to send email to either or both groups of participants.']
             )
 
