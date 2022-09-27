@@ -1,6 +1,5 @@
 """Forms for events application."""
 
-from unittest import defaultTestLoader
 from django import forms
 from events.models import (
     Address,
@@ -297,7 +296,7 @@ class ContactParticipantsForm(forms.Form):
     from_email = forms.EmailField(required=True, label='Email to contact you')
     cc_sender = forms.BooleanField(required=False, label='Send a copy to yourself', initial=True)
     subject = forms.CharField(required=True)
-    message = forms.CharField(widget=forms.Textarea, required=True)    
+    message = forms.CharField(widget=forms.Textarea, required=True)
 
     # TODO: figure out how to get validation for this to work - currently wipes form when invalid
     send_to_approved_participants = forms.BooleanField(
