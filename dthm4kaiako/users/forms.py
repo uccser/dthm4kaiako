@@ -5,7 +5,15 @@ from django.contrib.auth import get_user_model, forms
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from users.models import Entity, DietaryRequirement
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple, CharField, EmailField, ChoiceField, Select, Textarea
+from django.forms import (
+    ModelMultipleChoiceField,
+    CheckboxSelectMultiple,
+    CharField,
+    EmailField,
+    ChoiceField,
+    Select,
+    Textarea
+)
 from django.db.models import Q
 from crispy_forms.helper import FormHelper
 from utils.new_zealand_regions import REGION_CHOICES
@@ -110,7 +118,6 @@ class UserUpdateDetailsForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-    
         self.fields['how_we_can_best_look_after_you'].widget.attrs['rows'] = 5
 
         if 'initial' in kwargs:
