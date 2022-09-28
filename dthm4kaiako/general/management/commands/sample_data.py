@@ -765,7 +765,7 @@ class Command(management.base.BaseCommand):
         event_10_apply_online_free_past_cancelled.save()
 
         # MORE EVENTS FOR USER STUDY PARTICIPANT TO HAVE APPLIED FOR
-        # Addtional events for user study participant to see on their event applications page
+        # Addtional events for user study participant to see on their event registrations page
         event_11_register_online_free_future_cancelled = Event.objects.create(
             name="How binary digits rule the world",
             description=(
@@ -987,8 +987,8 @@ class Command(management.base.BaseCommand):
         event_16_register_physical_costs_future.save()
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
-        # Event applications - 10 for apply event
-        # event_application_apply_1
+        # Event registrations - 10 for apply event
+        # event_registration_apply_1
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_1,
@@ -996,7 +996,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_2
+        # event_registration_apply_2
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_2,
@@ -1004,7 +1004,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_3
+        # event_registration_apply_3
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_3,
@@ -1012,7 +1012,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_4
+        # event_registration_apply_4
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_4,
@@ -1020,7 +1020,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_5
+        # event_registration_apply_5
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_5,
@@ -1028,7 +1028,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_6
+        # event_registration_apply_6
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_6,
@@ -1036,7 +1036,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_7
+        # event_registration_apply_7
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_7,
@@ -1044,7 +1044,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_8
+        # event_registration_apply_8
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_8,
@@ -1052,7 +1052,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_9
+        # event_registration_apply_9
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_9,
@@ -1060,7 +1060,7 @@ class Command(management.base.BaseCommand):
             event=event_1_apply_online_free_future,
         )
 
-        # event_application_apply_10
+        # event_registration_apply_10
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_10,
@@ -1069,14 +1069,14 @@ class Command(management.base.BaseCommand):
         )
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
-        # Event applications - 10 for register event (online and free)
+        # Event registrations - 10 for register event (online and free)
         # --> mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
 
         # PENDING=1
         APPROVED = 2
         REJECTED = 3
 
-        # event_application_register_1_online_free
+        # event_registration_register_1_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_1,
@@ -1084,7 +1084,7 @@ class Command(management.base.BaseCommand):
             event=event_2_register_online_free_future,
         )
 
-        # event_application_register_2_online_free
+        # event_registration_register_2_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_2,
@@ -1092,7 +1092,7 @@ class Command(management.base.BaseCommand):
             event=event_2_register_online_free_future,
         )
 
-        # event_application_register_3_online_free
+        # event_registration_register_3_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_3,
@@ -1100,7 +1100,7 @@ class Command(management.base.BaseCommand):
             event=event_2_register_online_free_future,
         )
 
-        # event_application_register_4_online_free
+        # event_registration_register_4_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_4,
@@ -1108,7 +1108,7 @@ class Command(management.base.BaseCommand):
             event=event_2_register_online_free_future,
         )
 
-        # event_application_register_5_online_free
+        # event_registration_register_5_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_5,
@@ -1116,7 +1116,7 @@ class Command(management.base.BaseCommand):
             event=event_2_register_online_free_future,
         )
 
-        # event_application_register_6_online_free
+        # event_registration_register_6_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_6,
@@ -1125,7 +1125,7 @@ class Command(management.base.BaseCommand):
             status=APPROVED
         )
 
-        # event_application_register_7_online_free
+        # event_registration_register_7_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_7,
@@ -1134,7 +1134,7 @@ class Command(management.base.BaseCommand):
             status=APPROVED
         )
 
-        # event_application_register_8_online_free
+        # event_registration_register_8_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_8,
@@ -1143,7 +1143,7 @@ class Command(management.base.BaseCommand):
             status=APPROVED
         )
 
-        # event_application_register_9_online_free
+        # event_registration_register_9_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_9,
@@ -1152,7 +1152,7 @@ class Command(management.base.BaseCommand):
             status=REJECTED
         )
 
-        # event_application_register_10_online_free
+        # event_registration_register_10_online_free
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_10,
@@ -1169,32 +1169,32 @@ class Command(management.base.BaseCommand):
         # INCONVENIENT_LOCATION=6
         OTHER = 7
 
-        # event_application_register_online_free_withdrawn_1
+        # event_registration_register_online_free_withdrawn_1
         DeletedEventRegistration.objects.create(
             withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_2_register_online_free_future
         )
 
-        # event_application_register_online_free__withdrawn_2
+        # event_registration_register_online_free__withdrawn_2
         DeletedEventRegistration.objects.create(
             withdraw_reason=NOT_INTERESTED,
             event=event_2_register_online_free_future
         )
 
-        # event_application_register_online_free_withdrawn_3
+        # event_registration_register_online_free_withdrawn_3
         DeletedEventRegistration.objects.create(
             withdraw_reason=TOO_EXPENSIVE,
             event=event_2_register_online_free_future
         )
 
-        # event_application_register_online_free_withdrawn_4
+        # event_registration_register_online_free_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
-        # event_application_register_online_free_withdrawn_4
+        # event_registration_register_online_free_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
@@ -1202,10 +1202,10 @@ class Command(management.base.BaseCommand):
         )
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
-        # Event applications - 10 for register event (in person and costs and catered)
+        # Event registrations - 10 for register event (in person and costs and catered)
         # --> mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
 
-        # event_application_register_1_physical_and_costs
+        # event_registration_register_1_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_event_staff,
             user=user_1,
@@ -1217,7 +1217,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 21 126 0764"
         )
 
-        # event_application_register_2_physical_and_costs
+        # event_registration_register_2_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_2,
@@ -1229,7 +1229,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 29 370 1241"
         )
 
-        # event_application_register_3_physical_and_costs
+        # event_registration_register_3_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_free_facilitator,
             user=user_3,
@@ -1241,7 +1241,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 21 805 437"
         )
 
-        # event_application_register_4_physical_and_costs
+        # event_registration_register_4_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_event_staff,
             user=user_4,
@@ -1253,7 +1253,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 22 1382 0407"
         )
 
-        # event_application_register_5_physical_and_costs
+        # event_registration_register_5_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_student,
             user=user_5,
@@ -1265,7 +1265,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 20 9484 4821"
         )
 
-        # event_application_register_6_physical_and_costs
+        # event_registration_register_6_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_6,
@@ -1278,7 +1278,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 21 514 286"
         )
 
-        # event_application_register_7_physical_and_costs
+        # event_registration_register_7_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_7,
@@ -1291,7 +1291,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 20 617 6478"
         )
 
-        # event_application_register_8_physical_and_costs
+        # event_registration_register_8_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_8,
@@ -1304,7 +1304,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 22 614 5719"
         )
 
-        # event_application_register_9_physical_and_costs
+        # event_registration_register_9_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_9,
@@ -1317,7 +1317,7 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 21 485 802"
         )
 
-        # event_application_register_10_physical_and_costs
+        # event_registration_register_10_physical_and_costs
         EventRegistration.objects.create(
             participant_type=participant_type_paid_teacher,
             user=user_10,
@@ -1330,32 +1330,32 @@ class Command(management.base.BaseCommand):
             emergency_contact_phone_number="+64 27 827 89384"
         )
 
-        # event_application_apply_withdrawn_1
+        # event_registration_apply_withdrawn_1
         DeletedEventRegistration.objects.create(
             withdraw_reason=PREFER_NOT_TO_SAY,
             event=event_3_register_physical_costs_future
         )
 
-        # event_application_apply_withdrawn_2
+        # event_registration_apply_withdrawn_2
         DeletedEventRegistration.objects.create(
             withdraw_reason=NOT_INTERESTED,
             event=event_3_register_physical_costs_future
         )
 
-        # event_application_apply_withdrawn_3
+        # event_registration_apply_withdrawn_3
         DeletedEventRegistration.objects.create(
             withdraw_reason=TOO_EXPENSIVE,
             event=event_3_register_physical_costs_future
         )
 
-        # event_application_apply_withdrawn_4
+        # event_registration_apply_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
             other_reason_for_deletion="Clashes with another event I would like to attend."
         )
 
-        # event_application_apply_withdrawn_4
+        # event_registration_apply_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
@@ -1370,7 +1370,7 @@ class Command(management.base.BaseCommand):
         admin.save()
         print('Admin account set as event staff for all events')
 
-        # ADD EVENT STAFF TO THESE THREE EVENTS THAT HAVE EVENT APPLICATION
+        # ADD EVENT STAFF TO THESE THREE EVENTS THAT HAVE EVENT registration
         event_1_apply_online_free_future.event_staff.set([admin, user_study_participant])
         event_1_apply_online_free_future.save()
         event_2_register_online_free_future.event_staff.set([admin, user_study_participant])
@@ -1407,9 +1407,9 @@ class Command(management.base.BaseCommand):
         event_3_register_physical_costs_future.save()
 
         # STUDY PARTICPANT'S
-        # 4 event applications - so 4 different non-staff events
+        # 4 event registrations - so 4 different non-staff events
         # 1) 3 that are free and online and in future - so can withdraw 2 (diff pages) and can update one
-        # study_user_event_application_1
+        # study_user_event_registration_1
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1417,7 +1417,7 @@ class Command(management.base.BaseCommand):
             event=event_8_register_online_free_future,
             status=APPROVED
         )
-        # study_user_event_application_2
+        # study_user_event_registration_2
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1425,7 +1425,7 @@ class Command(management.base.BaseCommand):
             event=event_12_register_online_free_future,
             status=APPROVED
         )
-        # study_user_event_application_3
+        # study_user_event_registration_3
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1435,7 +1435,7 @@ class Command(management.base.BaseCommand):
         )
 
         # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
-        # study_user_event_application_4
+        # study_user_event_registration_4
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1445,7 +1445,7 @@ class Command(management.base.BaseCommand):
         )
 
         # 3) 2 that are in past (one cancelled)
-        # study_user_event_application_5
+        # study_user_event_registration_5
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1453,7 +1453,7 @@ class Command(management.base.BaseCommand):
             event=event_9_apply_online_free_past_cancelled,
             status=APPROVED
         )
-        # study_user_event_application_6
+        # study_user_event_registration_6
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
@@ -1463,7 +1463,7 @@ class Command(management.base.BaseCommand):
         )
 
         # 4) 1 that is rejected and in the past
-        # study_user_event_application_7
+        # study_user_event_registration_7
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,

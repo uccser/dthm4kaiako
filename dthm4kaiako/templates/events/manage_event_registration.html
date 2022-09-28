@@ -5,26 +5,26 @@
 {% load crispy_forms_tags %}
 
 {% block page_heading %}
-    <h1>Application for {{ event.name }}</h1>
+    <h1>Registration for {{ event.name }}</h1>
 {% endblock page_heading %}
 
 {% block content %}
 
     <div class="row" style="padding-left: 15px;">
-        <div id="application-status" style="margin-right: 20px;">
-            {% if event_application.status == 1 %} 
+        <div id="registration-status" style="margin-right: 20px;">
+            {% if event_registration.status == 1 %} 
                 <div>
                     <label style="background-color:rgb(253, 197, 145); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
                         <b style="color:black;">Pending</b>
                     </label>
                 </div>
-            {% elif event_application.status == 2 %} 
+            {% elif event_registration.status == 2 %} 
                 <div>
                     <label style="background-color:rgb(180, 255, 177); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
                         <b style="color:black;">Approved</b>
                     </label>
                 </div>
-            {% elif event_application.status == 3 %} 
+            {% elif event_registration.status == 3 %} 
                 <div>
                     <label style="background-color:rgb(255, 198, 198); font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
                         <b style="color:black">Rejected</b>
@@ -51,25 +51,25 @@
             <div id="participant-info">
                 <h3>Participant Info</h3>
                 <div>
-                    <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+                    <b>Participant: </b> {{event_registration.user.first_name}} {{event_registration.user.last_name}}
                 </div>
                 <div>
-                    <b>Representing: </b> {{event_application.representing}}
+                    <b>Representing: </b> {{event_registration.representing}}
                 </div>  
                 <div>
-                    <b>Participant type: </b> {{event_application.participant_type}}
+                    <b>Participant type: </b> {{event_registration.participant_type}}
                 </div>
                 <div>
-                    <b>Region: </b> {{event_application.user.get_user_region_display}}
+                    <b>Region: </b> {{event_registration.user.get_user_region_display}}
                 </div>
                 <div>
-                    <b>Email address: </b> {{event_application.user.email_address|default:"None"}}
+                    <b>Email address: </b> {{event_registration.user.email_address|default:"None"}}
                 </div>
                 <div>
-                    <b>Mobile phone number: </b> {{event_application.user.mobile_phone_number}}
+                    <b>Mobile phone number: </b> {{event_registration.user.mobile_phone_number}}
                 </div>
                 <div>
-                    <b>How we can best be accommodate for them: </b> {{event_application.user.medical_notes|default:"None"}}
+                    <b>How we can best be accommodate for them: </b> {{event_registration.user.medical_notes|default:"N/A"}}
                 </div>
                 <br>
                 <div>
@@ -105,19 +105,24 @@
 
         <div class="column">
 
-            <div id="application-info">
-                <h3>Application Info</h3>
+            <div id="registration-info">
+                <h3>Registration Info</h3>
                 <div>
-                    <b>Participant: </b> {{event_application.user.first_name}} {{event_application.user.last_name}}
+                    <b>Participant: </b> {{event_registration.user.first_name}} {{event_registration.user.last_name}}
                 </div>
                 <div>
-                    <b>Submitted: </b> {{event_application.submitted}}
+                    <b>Submitted: </b> {{event_registration.submitted}}
                 </div>    
                 <div>
-                    <b>Last updated: </b> {{event_application.updated}}
+                    <b>Last updated: </b> {{event_registration.updated}}
                 </div>
                 <div>
-                    <b>Paid: </b> {{event_application.paid}}
+                    <b>Paid: </b>
+                    {% if event_registration.paid == True %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}                    
                 </div>
             </div>
 
@@ -130,14 +135,17 @@
                         <summary>Emergency Contact</summary>
                         <div style="margin: 20px;">
                             <div>
-                                <b>Name: </b>{{event_application.emergency_contact_first_name}} {{event_application.emergency_contact_last_name}}
-                            </div>    
-                            <div>
-                                <b>Relationship: </b> {{event_application.emergency_contact_relationship}} 
-                            </div>    
-                            <div>
-                                <b>Phone number: </b> {{event_application.emergency_contact_phone_number}}
+                                <b>Participant's name: </b> {{event_registration.name}}
                             </div>  
+                            <div>
+                                <b>Emergency Contact's Name: </b>{{event_registration.emergency_contact_first_name}} {{event_registration.emergency_contact_last_name}}
+                            </div>
+                            <div>
+                                <b>Emergency Contact's phone number: </b> {{event_registration.emergency_contact_phone_number}}
+                            </div>
+                            <div>
+                                <b>Relationship: </b> {{event_registration.emergency_contact_relationship}} 
+                            </div>
                         </div>
                     </details>
                 </div>
@@ -147,16 +155,16 @@
                 <div id="billing-info">
                     <h3>Billing Details</h3>
                     <div>
-                        <b>Bill to: </b> {{event_application.bill_to}}
+                        <b>Bill to: </b> {{event_registration.bill_to}}
                     </div>
                     <div>
-                        <b>Physical address: </b> {{event_application.billing_physical_address}}
+                        <b>Physical address: </b> {{event_registration.billing_physical_address}}
                     </div>
                     <div>
-                        <b>Billing email address: </b> {{event_application.billing_email_address}}
+                        <b>Billing email address: </b> {{event_registration.billing_email_address}}
                     </div>
                     <div>
-                        <b>Comments: </b> {{event_application.admin_billing_comments}}
+                        <b>Comments: </b> {{event_registration.admin_billing_comments}}
                     </div>
                 </div>
             {% endif %}
@@ -165,35 +173,27 @@
 
     <br>
 
-    <div id="update-application-form">
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" href="#application-update">
-                        {% if not event.has_ended and not event.is_cancelled %}
-                            Update Details
-                        {% else %}
-                            Details
-                        {% endif %}
-                    </a>
-                </h3>
-                </div>
-                <div id="application-update" class="panel-collapse collapse">
-                <div class="panel-body">
-                    {% if manage_application_form %}
-                    <form method="post" action="{% url 'events:manage_event_application' pk_event pk_application %}">
+    <details>
+        <summary>
+            {% if not event.has_ended and not event.is_cancelled %}
+                Update Details
+            {% else %}
+                Details
+            {% endif %}
+        </summary>
+            <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                {% if manage_registration_form %}
+                    <form method="post" action="{% url 'events:manage_event_registration' pk_event pk_registration %}">
                         {% csrf_token %}
-                        {% crispy manage_application_form %}
+                        {% crispy manage_registration_form %}
                         {% if not event.has_ended and not event.is_cancelled %}
-                            <input class="btn btn-primary" type="submit" value="Update event application">
+                            <input class="btn btn-primary" type="submit" value="Update event registration">
                         {% endif %}
                     </form>
                     <br>
                 {% endif %}
-                </div>
+                <br>
             </div>
-        </div>
-    </div>
+    </details>
 
 {% endblock content %}

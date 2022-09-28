@@ -7,31 +7,31 @@
         <div class="row">
             <div class="col-sm-8">
                 <h4 class="mb-2">
-                    <a href="{{ event_application.event.get_absolute_url }}" style="text-decoration: none;">
-                        {{ event_application.event.name }}
+                    <a href="{{ event_registration.event.get_absolute_url }}" style="text-decoration: none;">
+                        {{ event_registration.event.name }}
                     </a>
                 </h4>
                 <h6>
-                    <b>Contact email:</b> {{ event_application.event.contact_email_address }}
+                    <b>Contact email:</b> {{ event_registration.event.contact_email_address }}
                 </h6>
                 <h6>
-                    <b>Starts:</b> {{event_application.event.start|date:"g:i a l j F, Y" }}
+                    <b>Starts:</b> {{event_registration.event.start|date:"g:i a l j F, Y" }}
                 </h6>
                 <h6>
-                    <b>Ends:</b> {{event_application.event.end|date:"g:i a l j F, Y" }}
+                    <b>Ends:</b> {{event_registration.event.end|date:"g:i a l j F, Y" }}
                 </h6>
                 <h6>
                     <b>Status:</b>
-                    {% if event_application.status_string_for_user == "Pending" %}
+                    {% if event_registration.status_string_for_user == "Pending" %}
                         {% include "events/badges/pending.html" %}
-                    {% elif event_application.status_string_for_user == "Approved" %}
+                    {% elif event_registration.status_string_for_user == "Approved" %}
                         {% include "events/badges/approved.html" %}
-                    {% elif event_application.status_string_for_user == "Rejected" %}
+                    {% elif event_registration.status_string_for_user == "Rejected" %}
                         {% include "events/badges/declined.html" %}
                     {% endif %}
                 </h6>
                 <br>
-                {% if event_application.event.is_cancelled %}
+                {% if event_registration.event.is_cancelled %}
                 <label style="background-color:rgb(255, 198, 198); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
                     <b>Cancelled</b>
                 </label>
@@ -39,15 +39,15 @@
             </div>
             <div class="col-sm-4">
 
-                {% if event_application.event.is_cancelled or event_application.event.has_ended %}
+                {% if event_registration.event.is_cancelled or event_registration.event.has_ended %}
 
                 {% else %}
-                    <a class="btn btn-success m-2" href="{% url 'events:register' event_application.event.pk %}" role="button">
+                    <a class="btn btn-success m-2" href="{% url 'events:register' event_registration.event.pk %}" role="button">
                         Update my details
                     </a>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-applications-withdraw-modal-{{event_application.pk}}">
+                    <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-registrations-withdraw-modal-{{event_registration.pk}}">
                         Withdraw
                     </button>
                 {% endif %}
@@ -57,8 +57,8 @@
                     <!-- TODO: show dynamically (e.g. Javascript) when "other" selected -->
                 
                     <!-- Modal -->
-                    {% if withdraw_event_application_form %}
-                        <div class="modal fade" id="event-applications-withdraw-modal-{{event_application.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-application-withdraw-confirmation" aria-hidden="true">
+                    {% if withdraw_event_registration_form %}
+                        <div class="modal fade" id="event-registrations-withdraw-modal-{{event_registration.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-registration-withdraw-confirmation" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                             <div class="modal-content">
                             <div class="modal-header">
@@ -68,12 +68,12 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you no longer want to attend <b>{{event_application.event.name}}</b>?
+                                    Are you sure you no longer want to attend <b>{{event_registration.event.name}}</b>?
                                 </div>
                                 <div class="modal-footer" style="justify-content:center">
-                                    <form action="{% url 'events:delete_application_via_application_page' event_application.pk %}" method="post">
+                                    <form action="{% url 'events:delete_registration_via_registration_page' event_registration.pk %}" method="post">
                                         {% csrf_token %}
-                                        {% crispy withdraw_event_application_form %}
+                                        {% crispy withdraw_event_registration_form %}
                                         <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
                                             <div class="column">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

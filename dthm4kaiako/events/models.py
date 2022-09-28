@@ -783,7 +783,7 @@ class EventRegistration(models.Model):
 
     def __str__(self):
         """Return string representation of an event registration."""
-        return f'{self.event.name} - {self.user} - {self.status_string_for_user}'
+        return f'{self.user} - {self.user.email_address}'
 
     def clean(self):
         """Validate event registration model attributes.

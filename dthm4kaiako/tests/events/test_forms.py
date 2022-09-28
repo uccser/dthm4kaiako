@@ -1,14 +1,14 @@
 # from django.test import TestCase
 # # from events.models import ParticipantType
 # # from tests.dthm4kaiako_test_data_generator import generate_participant_types
-# from events.forms import EventApplicationForm
+# from events.forms import EventregistrationForm
 # from http import HTTPStatus
 # from django.contrib.auth import get_user_model
 # from allauth.account.models import EmailAddress
 # from unittest import mock
 
 
-# class EventApplicationFormTests(TestCase):
+# class EventregistrationFormTests(TestCase):
 #     @classmethod
 #     def setUpTestData(cls):
 #         User = get_user_model()
@@ -32,7 +32,7 @@
 #     # TODO: figure out how to do integration tests for forms in views and mocking the existing event and checking
 #     # the data coming through is as expected and results in the right response status code
 #     @mock.patch('events.views.requests')
-#     def test_successful_event_application_form(self, mock_requests):
+#     def test_successful_event_registration_form(self, mock_requests):
 #         event_id = 1
 #         self.client.login(id=1, password='password')
 #         mock_requests.get.return_value.status_code = 200
@@ -45,7 +45,7 @@
 
 #     def test_validating_valid_form(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -53,11 +53,11 @@
 #             "emergency_contact_phone_number": "123456789"
 #             }
 #         )
-#         self.assertEqual(event_application_form.errors, {})
+#         self.assertEqual(event_registration_form.errors, {})
 
 #     def test_invalid_participant_type_integer_gives_error(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             "participant_type": 16,
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -66,13 +66,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors['participant_type'],
+#             event_registration_form.errors['participant_type'],
 #             ['Select a valid choice. That choice is not one of the available choices.']
 #         )
 
 #     def test_invalid_participant_type_string_gives_error(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             "participant_type": "20",
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -81,13 +81,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors['participant_type'],
+#             event_registration_form.errors['participant_type'],
 #             ['Select a valid choice. That choice is not one of the available choices.']
 #         )
 
 #     def test_invalid_participant_type_string_type_gives_error(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             "participant_type": "Teacher",
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -96,13 +96,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors['participant_type'],
+#             event_registration_form.errors['participant_type'],
 #             ['Select a valid choice. That choice is not one of the available choices.']
 #         )
 
 #     def test_invalid_emergency_contact_first_name__too_long(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'Johnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',
 #             "emergency_contact_last_name": "Jones",
@@ -111,13 +111,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_first_name"],
+#             event_registration_form.errors["emergency_contact_first_name"],
 #             ["Ensure this value has at most 50 characters (it has 51)."]
 #         )
 
 #     def test_invalid_emergency_contact_last_name__too_long(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jonesssssssssssssssssssssssssssssssssssssssssssssss",
@@ -126,13 +126,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_last_name"],
+#             event_registration_form.errors["emergency_contact_last_name"],
 #             ["Ensure this value has at most 50 characters (it has 51)."]
 #         )
 
 #     def test_invalid_emergency_contact_relationship__too_long(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -145,13 +145,13 @@
 #                 }
 #             )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_relationship"],
+#             event_registration_form.errors["emergency_contact_relationship"],
 #             ["Ensure this value has at most 150 characters (it has 170)."]
 #         )
 
 #     def test_invalid_emergency_contact_phone_number__invalid_symbols(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -160,7 +160,7 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             [
 #                 'Phone number can include the area code, follow by any number of numbers, '
 #                 '- and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
@@ -169,7 +169,7 @@
 
 #     def test_invalid_emergency_contact_phone_number__plus_integers_and_spaces(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -178,13 +178,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             {}
 #         )
 
 #     def test_invalid_emergency_contact_phone_number__plus_brackets_integers_and_spaces(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -193,13 +193,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             {}
 #         )
 
 #     def test_invalid_emergency_contact_phone_number__plus_brackets_integers_dashes_and_spaces(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -208,13 +208,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             {}
 #         )
 
 #     def test_invalid_emergency_contact_phone_number__plus_brackets_and_integers(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -223,13 +223,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             {}
 #         )
 
 #     def test_invalid_emergency_contact_phone_number__plus_brackets_and_integers_no_spaces(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_first_name": 'John',
 #             "emergency_contact_last_name": "Jones",
@@ -238,13 +238,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             {}
 #         )
 
 #     def test_missing_emergency_contact_first_name(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #             # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #             "emergency_contact_last_name": "Jones",
 #             "emergency_contact_relationship": "Friend",
@@ -252,13 +252,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_first_name"],
+#             event_registration_form.errors["emergency_contact_first_name"],
 #             ['This field is required.']
 #         )
 
 #     def test_missing_emergency_contact_relationship(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #                 # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #                 "emergency_contact_first_name": 'John',
 #                 "emergency_contact_last_name": "Jones",
@@ -266,13 +266,13 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_relationship"],
+#             event_registration_form.errors["emergency_contact_relationship"],
 #             ['This field is required.']
 #         )
 
 #     def test_missing_emergency_contact_phone_number(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #                 # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #                 "emergency_contact_first_name": 'John',
 #                 "emergency_contact_last_name": "Jones",
@@ -280,7 +280,7 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_phone_number"],
+#             event_registration_form.errors["emergency_contact_phone_number"],
 #             [
 #                 'This field is required.',
 #                 (
@@ -292,7 +292,7 @@
 
 #     def test_missing_emergency_contact_last_name(self):
 #         # generate_participant_types()
-#         event_application_form = EventApplicationForm(data={
+#         event_registration_form = EventregistrationForm(data={
 #                 # "participant_type": ParticipantType.objects.get(name="Teacher"),
 #                 "emergency_contact_first_name": 'John',
 #                 "emergency_contact_relationship": "Friend",
@@ -300,6 +300,6 @@
 #             }
 #         )
 #         self.assertEqual(
-#             event_application_form.errors["emergency_contact_last_name"],
+#             event_registration_form.errors["emergency_contact_last_name"],
 #             ['This field is required.']
 #         )

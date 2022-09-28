@@ -700,7 +700,7 @@ def manage_event_registration(request, pk_event, pk_registration):
         'pk_registration': pk_registration,
         'event_registration': event_registration
     }
-    context['update_participant_form'] = ParticipantTypeForm()
+    context['update_participant_form'] = ParticipantTypeForm(event, request.POST)
 
     user = User.objects.get(id=event_registration.user.pk)
 

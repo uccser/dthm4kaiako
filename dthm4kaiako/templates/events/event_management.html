@@ -69,6 +69,13 @@
 
         </div>
 
+        {% if event.registration_type == 1 %}
+            <i>Event participants must be <b>manually approved</b> to attend this event.</i>
+        {% elif event.registration_type == 2 %}              
+            <i>Event participants are <b>automatically approved</b> to attend this event.</i>
+        {% endif %}
+
+        <br>
         <br>
 
         <!-- Key Data Counts -->
@@ -91,6 +98,9 @@
                     </div>
                     <div>
                         <b>Withdrawn:</b> {{event.registration_status_counts.withdrawn}}
+                    </div>
+                    <div>
+                        <b><i>Total attending:</i></b> {{event.registration_status_counts.approved}}
                     </div>
                 </div>
 
@@ -120,32 +130,39 @@
                     <h4>
                         Reasons for Withdrawing            
                     </h4>
-                    <div>
-                        <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
-                    </div>
-                    <div>
-                        <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
-                    </div>
-                    <div>
-                        <b>No funding:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
-                    </div>
-                    <div>
-                        <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
-                    </div>
-                    <div>
-                        <b>Wrong event:</b> {{event.reasons_for_withdrawing_counts.wrong_event}}
-                    </div>
-                    <div>
-                        <b>Clash of personal development:</b> {{event.reasons_for_withdrawing_counts.clash_of_personal_development}}
-                    </div>
-                    <div>
-                        <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
-                    </div>
-                    <div>
-                        <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
-                    </div>
-                    <div>
-                        <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
+                            </div>
+                            <div>
+                                <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
+                            </div>
+                            <div>
+                                <b>No funding:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
+                            </div>
+                            <div>
+                                <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
+                            </div>
+                            <div>
+                                <b>Wrong event:</b> {{event.reasons_for_withdrawing_counts.wrong_event}}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <b>Personal development clash:</b> {{event.reasons_for_withdrawing_counts.clash_of_personal_development}}
+                            </div>
+                            <div>
+                                <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
+                            </div>
+                            <div>
+                                <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
+                            </div>
+                            <div>
+                                <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                            </div>
+        
+                        </div>
                     </div>
 
                     <div>
@@ -169,15 +186,6 @@
                 </div>
             </div>
         </div>
-
-        <br>
-
-        <!-- TODO: add options for external and invite only -->
-        {% if event.registration_type == 1 %}
-            <i>Event participants must be <b>manually approved</b> to attend this event.</i>
-        {% elif event.registration_type == 2 %}              
-            <i>Event participants are <b>automatically approved</b> to attend this event.</i>
-        {% endif %}
 
         <br>
         <br>
@@ -327,8 +335,19 @@
             <summary>Generate Custom Registrations Spreadsheet</summary>
             {% if registrations_csv_builder_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+
+                    <div>
+                        {% if event.published %}
+                            <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
+                                Generate catering order
+                            </a>
+                        {% endif %}
+                    </div>
+        
+                    <br>
+
                     <p style="font-style: italic">
-                        Select the fields you wish to include in the spreadsheet
+                        <b>Select the fields you wish to include in the spreadsheet</b>
                     </p>
                     <p style="font-style: italic">
                         Examples of spreadsheets to generate are:
@@ -347,9 +366,7 @@
                 </div>
             {% endif %}        
         </details>
-
-        <!-- TODO: implement ability to send email to all participants that are attenting i.e. approved -->
-        <!-- Send Email -->        
+     
         <details>
             <summary>Contact Event Participants</summary>
             {% if contact_participants_form %}
@@ -357,21 +374,12 @@
                     <form method="post" action="{% url 'events:email_participants' event.pk %}">
                         {% csrf_token %}
                         {% crispy contact_participants_form %}
-                        <input class="btn btn-primary" type="submit" value="Send email">
+                        <input class="btn btn-primary" type="submit" value="Send emails">
                     </form>
                     <br>
                 </div>
             {% endif %}        
         </details>
-
-        <div>
-            {% if event.published %}
-                <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
-                    Generate dietary requirements spreadsheet
-                </a>
-            {% endif %}
-        </div>
-
     </div>
 
 {% endblock content %}
