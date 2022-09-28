@@ -1062,7 +1062,10 @@ class EventRegistrationsCSV(models.Model):
     participant_last_name = models.BooleanField(default=False)
 
     dietary_requirements = models.BooleanField(default=False)
-    educational_entities = models.BooleanField(default=False)  # TODO: check user facing name
+    educational_entities = models.BooleanField(
+        default=False,
+        help_text="School and/or educational organisations participants belongs to"
+    )
     region = models.BooleanField(default=False)
     mobile_phone_number = models.BooleanField(default=False)
     email_address = models.BooleanField(default=False)
@@ -1070,12 +1073,12 @@ class EventRegistrationsCSV(models.Model):
     # this is a user-facing string
     how_we_can_best_accommodate_them = models.BooleanField(default=False)
 
-    representing = models.BooleanField(default=False)
+    representing = models.BooleanField(default=False, help_text="Who the participant is representing at this event")
     emergency_contact_first_name = models.BooleanField(default=False)
     emergency_contact_last_name = models.BooleanField(default=False)
     emergency_contact_relationship = models.BooleanField(default=False)
     emergency_contact_phone_number = models.BooleanField(default=False)
-    paid = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False, help_text="Has the participant paid?")
     bill_to = models.BooleanField(default=False)
     billing_physical_address = models.BooleanField(default=False)
     billing_email_address = models.BooleanField(default=False)
