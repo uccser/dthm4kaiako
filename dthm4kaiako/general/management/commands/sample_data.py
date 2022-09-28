@@ -576,7 +576,7 @@ class Command(management.base.BaseCommand):
             accessible_online=True,
             published=True,
             featured=False,
-            registration_link='www.google.com',
+            external_event_registration_link='www.google.com',
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
         )
@@ -1638,7 +1638,7 @@ class Command(management.base.BaseCommand):
         #         price=0,
         #         published=True,
         #         featured=True,
-        #         registration_link='www.google.com'
+        #         external_event_registration_link='www.google.com'
         #     )
         # # event_physical_url_1.locations.set(sample_location_3)
         # event_physical_url_1.save()

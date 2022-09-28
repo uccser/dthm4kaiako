@@ -145,7 +145,7 @@ class EventAdmin(ClonableModelAdmin):
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
             'fields': (
-                'registration_link',
+                'external_event_registration_link',
                 'registration_type',
             ),
         }),

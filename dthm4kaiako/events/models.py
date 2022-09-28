@@ -190,7 +190,7 @@ class Event(models.Model):
         "Apply type events require you to approve event " +
         "registrations in order for a participant to be attending this event."
     )
-    registration_link = models.URLField(
+    external_event_registration_link = models.URLField(
         blank=True,
         null=True,
         help_text=(
@@ -517,10 +517,10 @@ class Event(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        if self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and self.registration_link:
+        if self.registration_type == self.REGISTRATION_TYPE_INVITE_ONLY and self.external_event_registration_link:
             raise ValidationError(
                 {
-                    'registration_link':
+                    'external_event_registration_link':
                     _('Registration link must be empty when event is set to invite only.')
                 }
             )
@@ -1005,7 +1005,7 @@ class EventCSV(models.Model):
     show_schedule = models.BooleanField(default=False)
     featured_status = models.BooleanField(default=False)
     registration_type = models.BooleanField(default=False)
-    registration_link = models.BooleanField(default=False)
+    external_event_registration_link = models.BooleanField(default=False)
     start_datetime = models.BooleanField(default=False)
     end_datetime = models.BooleanField(default=False)
     accessible_online = models.BooleanField(default=False)

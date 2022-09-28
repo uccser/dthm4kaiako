@@ -129,9 +129,9 @@
                 </label>
             </div>
         {% else %}
-            {% if event.registration_link and not event.has_ended %}
+            {% if event.external_event_registration_link and not event.has_ended %}
                 <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
+                <a class="btn btn-success btn-block btn-lg" href="{{ event.external_event_registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
                 </a>                
             {% elif not event.has_ended and event.is_register_or_apply %}

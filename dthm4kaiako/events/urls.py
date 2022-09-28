@@ -48,8 +48,8 @@ urlpatterns = [
     ),
     path(
         'manage/',
-        views.EventsManagementHubView.as_view(),
-        name='events_management_hub'
+        views.EventsManagementView.as_view(),
+        name='events_management'
     ),
     path(
         'manage/<int:pk>/',

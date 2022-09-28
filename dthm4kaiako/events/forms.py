@@ -402,7 +402,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
             self.fields['show_schedule'].widget.attrs['disabled'] = True
             self.fields['featured'].widget.attrs['disabled'] = True
             self.fields['registration_type'].widget.attrs['disabled'] = True
-            self.fields['registration_link'].widget.attrs['disabled'] = True
+            self.fields['external_event_registration_link'].widget.attrs['disabled'] = True
             self.fields['start'].widget.attrs['disabled'] = True
             self.fields['end'].widget.attrs['disabled'] = True
             self.fields['accessible_online'].widget.attrs['disabled'] = True

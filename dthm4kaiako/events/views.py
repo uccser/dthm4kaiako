@@ -560,10 +560,10 @@ def register_for_event(request, pk):
 
 
 # TODO: add filter
-class EventsManagementHubView(LoginRequiredMixin, generic.ListView):
+class EventsManagementView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
 
-    template_name = 'events/events_management_hub.html'
+    template_name = 'events/events_management.html'
 
     def get_context_data(self, **kwargs):
         """Provide the context data for the events management view.
@@ -620,7 +620,7 @@ def manage_event(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     event_registrations = EventRegistration.objects.filter(event=event)
 
@@ -692,7 +692,7 @@ def manage_event_registration(request, pk_event, pk_registration):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     context = {
         'event': event,
@@ -775,7 +775,7 @@ def manage_event_details(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     context = {
         'event': event,
@@ -791,7 +791,7 @@ def manage_event_details(request, pk):
             updated_show_schedule = manage_event_details_form.cleaned_data['show_schedule']
             updated_featured = manage_event_details_form.cleaned_data['featured']
             updated_registration_type = manage_event_details_form.cleaned_data['registration_type']
-            updated_registration_link = manage_event_details_form.cleaned_data['registration_link']
+            updated_registration_link = manage_event_details_form.cleaned_data['external_event_registration_link']
             updated_start = manage_event_details_form.cleaned_data['start']
             updated_end = manage_event_details_form.cleaned_data['end']
             updated_accessible_online = manage_event_details_form.cleaned_data['accessible_online']
@@ -824,7 +824,7 @@ def manage_event_details(request, pk):
                 show_schedule=updated_show_schedule,
                 featured=updated_featured,
                 registration_type=updated_registration_type,
-                registration_link=updated_registration_link,
+                external_event_registration_link=updated_registration_link,
                 start=updated_start,
                 end=updated_end,
                 accessible_online=updated_accessible_online,
@@ -869,7 +869,7 @@ def manage_event_registration_form_details(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     context = {
         'registration_form': registration_form,
@@ -941,7 +941,7 @@ def generate_event_csv(request):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
@@ -963,8 +963,8 @@ def generate_event_csv(request):
                 first_wrote_titles.append('featured_status')
             if builderFormForEventsCSV.cleaned_data['registration_type']:
                 first_wrote_titles.append('registration_type')
-            if builderFormForEventsCSV.cleaned_data['registration_link']:
-                first_wrote_titles.append('registration_link')
+            if builderFormForEventsCSV.cleaned_data['external_event_registration_link']:
+                first_wrote_titles.append('external_event_registration_link')
             if builderFormForEventsCSV.cleaned_data['start_datetime']:
                 first_wrote_titles.append('start_datetime')
             if builderFormForEventsCSV.cleaned_data['end_datetime']:
@@ -1025,8 +1025,8 @@ def generate_event_csv(request):
                     row.append(event.featured)
                 if builderFormForEventsCSV.cleaned_data['registration_type']:
                     row.append(event.get_event_type_short)
-                if builderFormForEventsCSV.cleaned_data['registration_link']:
-                    row.append(event.registration_link)
+                if builderFormForEventsCSV.cleaned_data['external_event_registration_link']:
+                    row.append(event.external_event_registration_link)
                 if builderFormForEventsCSV.cleaned_data['start_datetime']:
                     row.append(event.start)
                 if builderFormForEventsCSV.cleaned_data['end_datetime']:
@@ -1082,7 +1082,7 @@ def generate_event_csv(request):
         'events_user_is_staff_for': Event.objects.filter(event_staff__pk=request.user.pk)
     }
 
-    return render(request, 'events/events_management_hub.html', context)
+    return render(request, 'events/events_management.html', context)
 
 
 # TODO: fix UI bug where the validation error message only disappears if go back out and back to event management page
@@ -1097,7 +1097,7 @@ def generate_event_registrations_csv(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     if request.method == 'POST':
         builderFormForEventRegistrationsCSV = BuilderFormForEventRegistrationsCSV(request.POST)
@@ -1251,7 +1251,7 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     heading_row = ["event name", "dietary requirements", "counts"]
 
@@ -1306,7 +1306,7 @@ def mark_all_participants_as_paid(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     for event_registration in event_registrations:
 
@@ -1337,7 +1337,7 @@ def publish_event(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     if (
         (event.published is False and event.start is None)
@@ -1364,7 +1364,7 @@ def cancel_event(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     event.update(is_cancelled=True)
     updated_event = Event.objects.get(id=event_id)
@@ -1383,7 +1383,7 @@ def create_new_participant_type(request, pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     # TODO: validate name and price!
 
@@ -1435,7 +1435,7 @@ def update_participant_type(request, event_pk, participant_type_pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     # check if participant used by other events
     if Event.objects.filter(participant_types=participant_type_pk).count() > 1:
@@ -1483,7 +1483,7 @@ def delete_participant_type(request, event_pk, participant_type_pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     if Event.objects.filter(participant_types=participant_type_pk).count() == 1:
         participant_type.delete()
@@ -1513,7 +1513,7 @@ def email_participants(request, event_pk):
             request,
             NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
         )
-        return HttpResponseRedirect(reverse("events:events_management_hub"))
+        return HttpResponseRedirect(reverse("events:events_management"))
 
     if request.method == 'POST':
         contact_participants_form = ContactParticipantsForm(request.POST)
