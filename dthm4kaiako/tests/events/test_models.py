@@ -404,9 +404,9 @@ class EventRegistrationTests(TestCase):
         event_registration = EventRegistration.objects.get(id=2)
         self.assertEqual(event_registration.status_string_for_user, "Approved")
 
-    def test_status_string_for_user__rejected(self):
+    def test_status_string_for_user__declined(self):
         event_registration = EventRegistration.objects.get(id=3)
-        self.assertEqual(event_registration.status_string_for_user, "Rejected")
+        self.assertEqual(event_registration.status_string_for_user, "Declined")
 
 
 class RegistrationFormTests(TestCase):

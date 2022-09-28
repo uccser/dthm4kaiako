@@ -538,7 +538,7 @@ def generate_event_registrations():
     event_registration_2_approved.status = 2
     event_registration_2_approved.save()
 
-    event_registration_3_rejected = EventRegistration.objects.create(
+    event_registration_3_declined = EventRegistration.objects.create(
         id=3,
         # participant_type=ParticipantType.objects.get(name="Teacher"),
         user=User.objects.get(id=3),
@@ -546,8 +546,8 @@ def generate_event_registrations():
         billing_physical_address=Address.objects.get(id=1),
         billing_email_address="test@test.co.nz"
     )
-    event_registration_3_rejected.status = 3
-    event_registration_3_rejected.save()
+    event_registration_3_declined.status = 3
+    event_registration_3_declined.save()
 
 
 def generate_event_registration_forms():

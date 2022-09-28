@@ -1070,11 +1070,11 @@ class Command(management.base.BaseCommand):
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event registrations - 10 for register event (online and free)
-        # --> mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
+        # --> mixture of 5 pending, 1 approved, 1 declined, 3 withdraw (2 set reasons, 1 other reason)
 
         # PENDING=1
         APPROVED = 2
-        REJECTED = 3
+        declined = 3
 
         # event_registration_register_1_online_free
         EventRegistration.objects.create(
@@ -1149,7 +1149,7 @@ class Command(management.base.BaseCommand):
             user=user_9,
             representing="My school",
             event=event_2_register_online_free_future,
-            status=REJECTED
+            status=declined
         )
 
         # event_registration_register_10_online_free
@@ -1158,7 +1158,7 @@ class Command(management.base.BaseCommand):
             user=user_10,
             representing="My school",
             event=event_2_register_online_free_future,
-            status=REJECTED
+            status=declined
         )
 
         PREFER_NOT_TO_SAY = 1
@@ -1203,7 +1203,7 @@ class Command(management.base.BaseCommand):
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
         # Event registrations - 10 for register event (in person and costs and catered)
-        # --> mixture of 5 pending, 1 approved, 1 rejected, 3 withdraw (2 set reasons, 1 other reason)
+        # --> mixture of 5 pending, 1 approved, 1 declined, 3 withdraw (2 set reasons, 1 other reason)
 
         # event_registration_register_1_physical_and_costs
         EventRegistration.objects.create(
@@ -1310,7 +1310,7 @@ class Command(management.base.BaseCommand):
             user=user_9,
             representing="My school",
             event=event_3_register_physical_costs_future,
-            status=REJECTED,
+            status=declined,
             emergency_contact_first_name="Maryam",
             emergency_contact_last_name="Jensen",
             emergency_contact_relationship="Partner",
@@ -1323,7 +1323,7 @@ class Command(management.base.BaseCommand):
             user=user_10,
             representing="My school",
             event=event_3_register_physical_costs_future,
-            status=REJECTED,
+            status=declined,
             emergency_contact_first_name="Maison",
             emergency_contact_last_name="Fernandez",
             emergency_contact_relationship="Partner",
@@ -1462,14 +1462,14 @@ class Command(management.base.BaseCommand):
             status=APPROVED
         )
 
-        # 4) 1 that is rejected and in the past
+        # 4) 1 that is declined and in the past
         # study_user_event_registration_7
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
             user=user_study_participant,
             representing="My school",
             event=event_15_register_physical_costs_past,
-            status=REJECTED
+            status=declined
         )
 
         # FOR PARTICIPANT TO APPLY FOR

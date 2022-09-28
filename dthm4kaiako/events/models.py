@@ -410,7 +410,7 @@ class Event(models.Model):
         Includes:
             - "Pending" (1)
             - "Approved" (2)
-            - "Rejected" (3)
+            - "Declined" (3)
             - "Withdrawn" (4)
 
         Returns a dictionary of the counts.
@@ -418,7 +418,7 @@ class Event(models.Model):
         status_counts = {
             'pending': 0,
             'approved': 0,
-            'rejected': 0,
+            'declined': 0,
             'withdrawn': 0
         }
         event_registrations = EventRegistration.objects.filter(event=self)
@@ -430,7 +430,7 @@ class Event(models.Model):
             elif registration.status == 2:
                 status_string = 'approved'
             elif registration.status == 3:
-                status_string = 'rejected'
+                status_string = 'declined'
 
             status_counts[status_string] += 1
 
@@ -684,11 +684,11 @@ class EventRegistration(models.Model):
 
     PENDING = 1
     APPROVED = 2
-    REJECTED = 3
+    DECLINED = 3
     APPLICATION_STATUSES = (
         (PENDING, _('Pending')),
         (APPROVED, _('Approved')),
-        (REJECTED, _('Rejected')),
+        (DECLINED, _('Declined')),
     )
 
     submitted = models.DateTimeField(auto_now_add=True)  # user does not edit
@@ -816,7 +816,7 @@ class EventRegistration(models.Model):
         elif self.status == 2:
             string_form = "Approved"
         elif self.status == 3:
-            string_form = "Rejected"
+            string_form = "Declined"
         return string_form
 
 
@@ -1020,7 +1020,7 @@ class EventCSV(models.Model):
     is_cancelled = models.BooleanField(default=False)
     approved_registrations_count = models.BooleanField(default=False)
     pending_registrations_count = models.BooleanField(default=False)
-    rejected_registrations_count = models.BooleanField(default=False)
+    declined_registrations_count = models.BooleanField(default=False)
     withdrawn_registrations_count = models.BooleanField(default=False)
 
     def clean(self):

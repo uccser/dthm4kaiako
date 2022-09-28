@@ -94,7 +94,7 @@
                         <b>Pending:</b> {{event.registration_status_counts.pending}}
                     </div>
                     <div>
-                        <b>Rejected:</b> {{event.registration_status_counts.rejected}}
+                        <b>Declined:</b> {{event.registration_status_counts.declined}}
                     </div>
                     <div>
                         <b>Withdrawn:</b> {{event.registration_status_counts.withdrawn}}
@@ -207,7 +207,7 @@
 
         <!-- Event Registration Form Details -->
         <details>
-            <summary>Event Registration Form Details</summary>
+            <summary>Publification Details</summary>
             {% if manage_registration_form_details_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                     <form method="post" action="{% url 'events:manage_event_registration_form_details' registration_form_pk %}">
@@ -264,9 +264,9 @@
                     {% endif %}
 
                     <br>
-                    <b>Rejected event registrations</b>
+                    <b>Declined event registrations</b>
                     {% if approved_event_registrations.count > 0 %}
-                        {% for registration in rejected_event_registrations %}
+                        {% for registration in declined_event_registrations %}
                         <div>
                             <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
                         </div>

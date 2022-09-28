@@ -339,11 +339,11 @@ class ContactParticipantsForm(forms.Form):
 
 PENDING = 1
 APPROVED = 2
-REJECTED = 3
+DECLINED = 3
 APPLICATION_STATUSES = (
     (PENDING, _('Pending')),
     (APPROVED, _('Approved')),
-    (REJECTED, _('Rejected')),
+    (DECLINED, _('Declined')),
 )
 
 

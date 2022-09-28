@@ -626,7 +626,7 @@ def manage_event(request, pk):
 
     pending_event_registrations = EventRegistration.objects.filter(event=event, status=1)
     approved_event_registrations = EventRegistration.objects.filter(event=event, status=2)
-    rejected_event_registrations = EventRegistration.objects.filter(event=event, status=3)
+    declined_event_registrations = EventRegistration.objects.filter(event=event, status=3)
 
     registration_form = event.registration_form
     context = {
@@ -639,7 +639,7 @@ def manage_event(request, pk):
         context['event_registrations'] = event_registrations
         context['pending_event_registrations'] = pending_event_registrations
         context['approved_event_registrations'] = approved_event_registrations
-        context['rejected_event_registrations'] = rejected_event_registrations
+        context['declined_event_registrations'] = declined_event_registrations
 
         if is_in_past_or_cancelled(event):
             context['manage_event_details_form'] = ManageEventDetailsReadOnlyForm(instance=event)
@@ -733,7 +733,7 @@ def manage_event_registration(request, pk_event, pk_registration):
             update_paid = manage_registration_form.cleaned_data['paid']
             updated_participant_type = manage_registration_form.cleaned_data['participant_type']
 
-            EventRegistration.objects.filter(event_id=event_registration.pk).update(
+            EventRegistration.objects.filter(pk=pk_registration).update(
                 staff_comments=updated_staff_comments,
                 admin_billing_comments=updated_admin_billing_comments,
                 paid=update_paid,
@@ -993,8 +993,8 @@ def generate_event_csv(request):
                 first_wrote_titles.append('approved_registrations_count')
             if builderFormForEventsCSV.cleaned_data['pending_registrations_count']:
                 first_wrote_titles.append('pending_registrations_count')
-            if builderFormForEventsCSV.cleaned_data['rejected_registrations_count']:
-                first_wrote_titles.append('rejected_registrations_count')
+            if builderFormForEventsCSV.cleaned_data['declined_registrations_count']:
+                first_wrote_titles.append('declined_registrations_count')
             if builderFormForEventsCSV.cleaned_data['withdrawn_registrations_count']:
                 first_wrote_titles.append('withdrawn_registrations_count')
 
@@ -1065,8 +1065,8 @@ def generate_event_csv(request):
                     row.append(event.registration_status_counts['approved'])
                 if builderFormForEventsCSV.cleaned_data['pending_registrations_count']:
                     row.append(event.registration_status_counts['pending'])
-                if builderFormForEventsCSV.cleaned_data['rejected_registrations_count']:
-                    row.append(event.registration_status_counts['rejected'])
+                if builderFormForEventsCSV.cleaned_data['declined_registrations_count']:
+                    row.append(event.registration_status_counts['declined'])
                 if builderFormForEventsCSV.cleaned_data['withdrawn_registrations_count']:
                     row.append(event.registration_status_counts['withdrawn'])
 

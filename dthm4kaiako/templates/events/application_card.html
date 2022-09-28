@@ -26,7 +26,7 @@
                         {% include "events/badges/pending.html" %}
                     {% elif event_registration.status_string_for_user == "Approved" %}
                         {% include "events/badges/approved.html" %}
-                    {% elif event_registration.status_string_for_user == "Rejected" %}
+                    {% elif event_registration.status_string_for_user == "Declined" %}
                         {% include "events/badges/declined.html" %}
                     {% endif %}
                 </h6>
