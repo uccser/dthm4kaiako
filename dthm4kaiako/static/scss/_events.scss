@@ -158,3 +158,13 @@ $declined-dark: rgb(255, 67, 67);
   background-color: $declined-light;
   color: $declined-dark;
 }
+
+// Catered event badge
+$pending-light: #e1acff;
+$pending-dark: rgb(119, 0, 255);
+.pending-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $pending-light;
+  color: $pending-dark;
+}
