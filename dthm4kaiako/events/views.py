@@ -1394,9 +1394,10 @@ def create_new_participant_type(request, pk):
         # participant type exists in general
         if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
             # participant type already exists for this event
+            participant_type = ParticipantType.objects.create(name=name, price=price)
             messages.warning(
                 request,
-                f"The participant type with the name of {name} and a price of ${price} already exists for this event."
+                f"The participant type {participant_type} already exists for this event."
             )
         else:
             # participant type does exist but is not associated with this event yet
@@ -1406,7 +1407,7 @@ def create_new_participant_type(request, pk):
             existing_participant_type.save()
             messages.success(
                 request,
-                f"The participant type with the name of {name} and a price of ${price} has been created."
+                f"The participant type {existing_participant_type} has been created."
             )
     else:
         # participant doesn't exist yet in general
@@ -1416,7 +1417,7 @@ def create_new_participant_type(request, pk):
         new_participant_type.save()
         messages.success(
             request,
-            f"The participant type with the name of {name} and a price of ${price} has been created."
+            f"The participant type {new_participant_type} has been created."
         )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
@@ -1459,8 +1460,8 @@ def update_participant_type(request, event_pk, participant_type_pk):
 
     messages.success(
         request,
-        f"You have updated the participant type of {old_participant_type.name} (${old_participant_type.price}) " +
-        f"to {new_participant_type.name} (${new_participant_type.price})."
+        f"You have updated the participant type of {old_participant_type.name} (${'{0:.2f}'.format(old_participant_type.price)}) " +
+        f"to {new_participant_type.name} (${'{0:.2f}'.format(new_participant_type.price)})."
     )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
