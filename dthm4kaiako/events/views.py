@@ -1417,7 +1417,7 @@ def create_new_participant_type(request, pk):
         new_participant_type.save()
         messages.success(
             request,
-            f"The participant type {new_participant_type} has been created."
+            "The participant type " + str(new_participant_type) + " has been created."
         )
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
