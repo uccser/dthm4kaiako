@@ -68,9 +68,6 @@
                 <div>
                     <b>Mobile phone number: </b> {{event_registration.user.mobile_phone_number}}
                 </div>
-                <div>
-                    <b>How we can best be accommodate for them: </b> {{event_registration.user.medical_notes|default:"N/A"}}
-                </div>
                 <br>
                 <div>
                     <b>Educational entities they belong to: </b>
@@ -105,7 +102,7 @@
 
         <div class="column">
 
-            <div id="registration-info">
+            <div id="registration-info" style="margin-right: 20px;">
                 <h3>Registration Info</h3>
                 <div>
                     <b>Participant: </b> {{event_registration.user.first_name}} {{event_registration.user.last_name}}
@@ -128,14 +125,13 @@
 
             <br>
 
-            {% if not event.is_free %}
-
-                <div id="emergency-contact-info">
+            {% if not event.accessible_online %}
+                <div id="emergency-contact-info" style="margin-right: 20px;">
                     <details>
                         <summary>Emergency Contact</summary>
                         <div style="margin: 20px;">
                             <div>
-                                <b>Participant's name: </b> {{event_registration.name}}
+                                <b>Participant's name: </b> {{event_registration.user.first_name}} {{event_registration.user.last_name}}
                             </div>  
                             <div>
                                 <b>Emergency Contact's Name: </b>{{event_registration.emergency_contact_first_name}} {{event_registration.emergency_contact_last_name}}
@@ -149,25 +145,41 @@
                         </div>
                     </details>
                 </div>
+            {% endif %}
 
-                <br>
-
-                <div id="billing-info">
-                    <h3>Billing Details</h3>
-                    <div>
-                        <b>Bill to: </b> {{event_registration.bill_to}}
-                    </div>
-                    <div>
-                        <b>Physical address: </b> {{event_registration.billing_physical_address}}
-                    </div>
-                    <div>
-                        <b>Billing email address: </b> {{event_registration.billing_email_address}}
-                    </div>
-                    <div>
-                        <b>Comments: </b> {{event_registration.admin_billing_comments}}
-                    </div>
+            {% if not event.is_free %}
+                <div id="bill-info" style="margin-right: 20px;">
+                    <details>
+                        <summary>Billing Details</summary>
+                        <div style="margin: 20px;">
+                            <div>
+                                <b>Bill to: </b> {{event_registration.bill_to}}
+                            </div>
+                            <div>
+                                <b>Physical address: </b> {{event_registration.billing_physical_address}}
+                            </div>
+                            <div>
+                                <b>Billing email address: </b> {{event_registration.billing_email_address}}
+                            </div>
+                            <div>
+                                <b>Comments: </b> {{event_registration.admin_billing_comments}}
+                            </div>
+                        </div>
+                    </details>
                 </div>
             {% endif %}
+
+            <div id="accommodation-info" style="margin-right: 20px;">
+                <details>
+                    <summary>How We Can Best Accommodate for Them</summary>
+                    <div style="margin: 20px;">
+                        <div>
+                            {{event_registration.user.medical_notes|default:"N/A"}}
+                        </div>
+                    </div>
+                </details>
+            </div>
+
         </div>
     </div>
 
