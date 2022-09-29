@@ -451,7 +451,7 @@ def register_for_event(request, pk):
             user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
 
             if event.accessible_online is False:
-                user.medical_notes = user_update_details_form.cleaned_data['medical_notes']
+                user.medical_notes = user_update_details_form.cleaned_data['how_we_can_best_look_after_you']
 
             if display_catering_info:
                 all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
@@ -780,7 +780,7 @@ def manage_event_details(request, pk):
     context = {
         'event': event,
     }
-    context['update_participant_form'] = ParticipantTypeForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
@@ -874,7 +874,7 @@ def manage_event_registration_form_details(request, pk):
     context = {
         'registration_form': registration_form,
     }
-    context['update_participant_form'] = ParticipantTypeForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
