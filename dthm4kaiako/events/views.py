@@ -1460,8 +1460,8 @@ def update_participant_type(request, event_pk, participant_type_pk):
 
     messages.success(
         request,
-        f"You have updated the participant type of {old_participant_type.name} (${'{0:.2f}'.format(old_participant_type.price)}) " +
-        f"to {new_participant_type.name} (${'{0:.2f}'.format(new_participant_type.price)})."
+        f"You have updated the participant type of {old_participant_type} " +
+        f"to {new_participant_type}."
     )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
