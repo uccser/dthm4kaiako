@@ -48,6 +48,9 @@
             </div>
             <br>
         {% endif %}
+        {% if event.is_catered %}
+            {% include "events/badges/catered.html" %}
+        {% endif %}
         {% if event.accessible_online %}
             {% include "events/badges/online.html" %}
         {% endif %}

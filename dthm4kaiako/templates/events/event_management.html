@@ -47,14 +47,6 @@
 
         </div>
 
-        <div>
-            {% if event.registration_type == 1 %}
-                <i>Event participants must be <b>manually approved</b> to attend this event.</i>
-            {% elif event.registration_type == 2 %}              
-                <i>Event participants are <b>automatically approved</b> to attend this event.</i>
-            {% endif %}
-        </div>
-
         <br>
 
         <!-- Key Data Counts -->
@@ -65,7 +57,7 @@
                 <!-- Event Registration Status Counts -->
                 <div id="event-registrations-status-counts">
                     <h4>
-                        Key Dates               
+                        Key Info               
                     </h4>
 
                     <div style="margin-bottom:70px">
@@ -214,6 +206,16 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            {% if event.registration_type == 1 %}
+                <i>Event participants must be <b>manually approved</b> to attend this event.</i>
+            {% elif event.registration_type == 2 %}              
+                <i>Event participants are <b>automatically approved</b> to attend this event.</i>
+            {% endif %}
+        </div>
+
+        <br>
 
         <!-- Event Details -->
         <details>

@@ -11,6 +11,18 @@
                         {{ event_registration.event.name }}
                     </a>
                 </h4>
+                <div>
+                    {% if event_registration.event.accessible_online %}
+                        {% include "events/badges/online.html" %}
+                    {% endif %}
+                    {% for location in event_registration.event.locations.all %}
+                        {% include "events/badges/location.html" %}
+                    {% endfor %}
+                    {% if event_registration.event.is_catered %}
+                        {% include "events/badges/catered.html" %}
+                    {% endif %}
+                </div>
+                <br>
                 <h6>
                     <b>Contact email:</b> {{ event_registration.event.contact_email_address }}
                 </h6>

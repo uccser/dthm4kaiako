@@ -58,5 +58,8 @@
         {% for location in event.locations.all %}
             {% include "events/badges/location.html" %}
         {% endfor %}
+        {% if event.is_catered %}
+            {% include "events/badges/catered.html" %}
+        {% endif %}
     </div>
 </div>
