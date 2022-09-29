@@ -51,8 +51,8 @@
         {% if event.accessible_online %}
             {% include "events/badges/online.html" %}
         {% endif %}
-        <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
-        <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
+        <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"l j F, Y, g:i a" }}</p>
+        <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"l j F, Y, g:i a" }}</p>
         <p class="mb-0">
             <strong>Cost: </strong>
                 {% if event.is_free %}
