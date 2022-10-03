@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from tests.BaseTestWithDB import BaseTestWithDB

@@ -1,13 +1,11 @@
 from django.urls import reverse, resolve
 from http import HTTPStatus
-from django.test.utils import override_settings
 from events.models import Event
 from tests.dthm4kaiako_test_data_generator import (
     generate_locations,
     generate_users,
     generate_events,
     generate_addresses,
-    generate_event_registrations,
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB

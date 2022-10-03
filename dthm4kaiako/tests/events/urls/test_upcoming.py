@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from django.test.utils import override_settings

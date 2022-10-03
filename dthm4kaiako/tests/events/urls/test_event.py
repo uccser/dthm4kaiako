@@ -62,4 +62,3 @@ class EventURLTest(BaseTestWithDB):
         url = reverse('events:event', kwargs=kwargs)
         response = self.client.get(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        
