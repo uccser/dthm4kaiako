@@ -4,27 +4,23 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from events.models import (
     Event,
-    # ParticipantType,
-    Address,
-    EventRegistration,
     Series,
     Session,
     Location,
-    RegistrationForm
     )
 from tests.dthm4kaiako_test_data_generator import (
+    generate_addresses,
     generate_locations,
     generate_users,
     generate_events,
-    # generate_participant_types,
-    generate_addresses,
-    generate_event_registrations,
     generate_serieses,
-    generate_sessions
+    generate_sessions,
+    generate_event_registrations
 )
 from unittest import mock
 import datetime
 import pytz
+from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -154,6 +150,20 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=3)
         self.assertEqual(event.is_register_or_apply, False)
 
+    # ----------------------- tests for get_registration_button_text -----------------------
+
+    def test_get_registration_button_text__event_is_register(self):
+        event = Event.objects.get(id=1)
+        self.assertEqual(event.get_registration_button_text, "Register to attend event")
+
+    def test_get_registration_button_text__event_is_apply(self):
+        event = Event.objects.get(id=2)
+        self.assertEqual(event.get_registration_button_text, "Apply to attend event")
+
+    def get_registration_button_text__event_is_neither(self):
+        event = Event.objects.get(id=3)
+        self.assertEqual(event.get_registration_button_text, "")
+
     # ---------------------------- tests for has_ended ----------------------------
 
     def test_has_ended__event_ended(self):
@@ -174,23 +184,31 @@ class EventModelTests(TestCase):
         event = Event.objects.get(id=1)
         self.assertEqual(event.get_event_type_short, "Register")
 
-    # ------------------------ tests for has_attendance_fee -----------------------
+    def test_get_event_type_short__invite_only(self):
+        event = Event.objects.get(id=3)
+        self.assertEqual(event.get_event_type_short, "Invite only")
+    
+    def test_get_event_type_short__external_link(self):
+        event = Event.objects.get(id=9)
+        self.assertEqual(event.get_event_type_short, "External")
 
-    # TODO: update these tests since has_attendance_fee is no longer present
+    # ------------------------ tests for get_event_type_short_updating -----------------------
 
-    # def test_has_attendance_fee__event_has_fee(self):
-    #     event = Event.objects.get(id=1)
-    #     self.assertEqual(event.has_attendance_fee, True)
+    def test_get_event_type_short_updating__apply(self):
+        event = Event.objects.get(id=2)
+        self.assertEqual(event.get_event_type_short_updating, "Update registration form")
 
-    # def test_has_attendance_fee__event_is_free(self):
-    #     event = Event.objects.get(id=3)
-    #     self.assertEqual(event.has_attendance_fee, False)
-
-    # ----------------------------- tests for __str__ ------------------------------
-
-    def test_str_representation(self):
+    def test_get_event_type_short_updating__register(self):
         event = Event.objects.get(id=1)
-        self.assertEqual(str(event), event.name)
+        self.assertEqual(event.get_event_type_short_updating, "Update registration form")
+
+    def test_get_event_type_short_updating__invite_only(self):
+        event = Event.objects.get(id=3)
+        self.assertEqual(event.get_event_type_short_updating, "")
+    
+    def test_get_event_type_short_updating__external_link(self):
+        event = Event.objects.get(id=9)
+        self.assertEqual(event.get_event_type_short_updating, "")
 
     # ----------------------------- tests for start_weekday_name -------------------
 
@@ -293,149 +311,49 @@ class EventModelTests(TestCase):
             mock_date.today.return_value = current_date
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
+
+    # ----------------------------- tests for registration_status_counts ------------------------------
+
+    def test_registration_status_counts__one_of_each(self):
+        generate_users()
+        generate_addresses()
+        generate_event_registrations()
+        expected_status_counts = {
+            'pending': 1,
+            'approved': 1,
+            'declined': 1,
+            'withdrawn': 0
+        }
+        event = Event.objects.get(pk=1)
+        self.assertEqual(expected_status_counts, event.registration_status_counts)
+    
+    
+    def test_registration_status_counts__no_registrations(self):
+        generate_users()
+        generate_addresses()
+        generate_event_registrations()
+        expected_status_counts = {
+            'pending': 0,
+            'approved': 0,
+            'declined': 0,
+            'withdrawn': 0
+        }
+        event = Event.objects.get(pk=9)
+        self.assertEqual(expected_status_counts, event.registration_status_counts)
+    
+    # ----------------------------- tests for participant_type_counts ------------------------------
+    
+    # ----------------------------- tests for reasons_for_withdrawing_counts ------------------------------
+    
+    # ----------------------------- tests for other_reasons_for_withdrawing ------------------------------
+
+    # ----------------------------- tests for __str__ ------------------------------
+
+    def test_str_representation(self):
+        event = Event.objects.get(id=1)
+        self.assertEqual(str(event), event.name)
+
     # --------------------------- tests for registration_status_counts ------------
 
     # TODO: WRITE UNIT TESTS!
 
-# TODO: update
-# class ParticipantTypeTests(TestCase):
-
-    # @classmethod
-    # def setUpTestData(cls):
-    #     generate_participant_types()
-
-    # @classmethod
-    # def tearDownTestData(cls):
-    #     ParticipantType.objects.all().delete()
-
-    # ----------------------------- tests for __str__ ------------------------------
-
-    # TODO: update
-    # def test_str_representation__register(self):
-    #     test_name = "Event staff"
-    #     registration_type = ParticipantType.objects.get(name=test_name)
-    #     self.assertEqual(str(registration_type), registration_type.name)
-
-
-class AddressTests(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        generate_addresses()
-        generate_users()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        # generate_participant_types()
-        generate_event_registrations()
-
-    @classmethod
-    def tearDownTestData(cls):
-        EventRegistration.objects.all().delete()
-        # ParticipantType.objects.all().delete()
-        Series.objects.all().delete()
-        Event.objects.all().delete()
-        Location.objects.all().delete()
-        User.objects.all().delete()
-        Address.objects.all().delete()
-
-    # ------------------------------- tests for __str__ ----------------------------
-
-    def test_str_representation(self):
-        registration = EventRegistration.objects.get(id=1)
-        billing_address = registration.billing_physical_address
-        self.assertEqual(
-            str(billing_address),
-            '{} {},\n{},\n{},\n{}'.format(
-                billing_address.street_number,
-                billing_address.street_name,
-                billing_address.suburb,
-                billing_address.city,
-                billing_address.post_code
-            )
-        )
-
-    # ---------------------------- tests for get_full_address ----------------------
-
-    def test_get_full_address(self):
-        registration = EventRegistration.objects.get(id=1)
-        billing_address = registration.billing_physical_address
-        self.assertEqual(
-            str(billing_address.get_full_address()),
-            '{} {},\n{},\n{},\n{}'.format(
-                billing_address.street_number,
-                billing_address.street_name,
-                billing_address.suburb,
-                billing_address.city,
-                billing_address.post_code
-            )
-        )
-
-
-class EventRegistrationTests(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        # generate_participant_types()
-        generate_event_registrations()
-
-    @classmethod
-    def tearDownTestData(cls):
-        Address.objects.all().delete()
-        Series.objects.all().delete()
-        Location.objects.all().delete()
-        Event.objects.all().delete()
-        User.objects.all().delete()
-        # ParticipantType.objects.all().delete()
-        EventRegistration.objects.all().delete()
-
-    # ------------------------------- tests for status_string_for_user ----------------------------
-
-    def test_status_string_for_user__pending(self):
-        event_registration = EventRegistration.objects.get(id=1)
-        self.assertEqual(event_registration.status_string_for_user, "Pending")
-
-    def test_status_string_for_user__approved(self):
-        event_registration = EventRegistration.objects.get(id=2)
-        self.assertEqual(event_registration.status_string_for_user, "Approved")
-
-    def test_status_string_for_user__declined(self):
-        event_registration = EventRegistration.objects.get(id=3)
-        self.assertEqual(event_registration.status_string_for_user, "Declined")
-
-
-class RegistrationFormTests(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        # generate_participant_types()
-        generate_event_registrations()
-
-    @classmethod
-    def tearDownTestData(cls):
-        Address.objects.all().delete()
-        Series.objects.all().delete()
-        Location.objects.all().delete()
-        Event.objects.all().delete()
-        User.objects.all().delete()
-        # ParticipantType.objects.all().delete()
-        EventRegistration.objects.all().delete()
-
-    # ------------------------------- tests for get_absolute_url ------------------------------
-
-    def test_get_absolute_url__returns_url_of_registration_form_on_website(self):
-        reg_form = RegistrationForm.objects.get(event_id=1)
-        event = reg_form.event
-        event_pk = event.pk
-        expected_url = '/events/register/{}/'.format(event_pk)
-        self.assertEqual(str(reg_form.get_absolute_url()), expected_url)

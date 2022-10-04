@@ -293,6 +293,18 @@ def generate_events():
     )
     event_online_register_1.save()
 
+    event_extneral_link_1 = Event.objects.create(
+        id=9,
+        name="Intro to logic gates - part 2",
+        description="description",
+        registration_type=3,
+        start=datetime.date(2023, 1, 24),
+        end=datetime.date(2023, 1, 26),
+        accessible_online=False,
+        published=True
+    )
+    event_extneral_link_1.save()
+
 
 def generate_sessions():
     """Generate sessions for use in dthm4kaiako tests."""

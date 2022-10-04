@@ -343,6 +343,8 @@ class Event(models.Model):
             return "Apply to attend event"
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Register to attend event"
+        else:
+            return ""
 
     @property
     def has_ended(self):
@@ -382,6 +384,8 @@ class Event(models.Model):
             return "Update registration form"
         elif self.registration_type == self.REGISTRATION_TYPE_REGISTER:
             return "Update registration form"
+        else:
+            return ""
 
     @property
     def start_weekday_name(self):
