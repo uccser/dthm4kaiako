@@ -11,6 +11,7 @@ from events.models import (
     Address,
     EventRegistration,
     RegistrationForm,
+    ParticipantType,
 )
 from django.contrib.gis.geos import Point
 
@@ -493,32 +494,36 @@ def generate_sessions():
         event=Event.objects.get(id=7),
     )
 
-# TODO: update to tickets
-# def generate_participant_types():
-#     """Generate participant types for use in dthm4kaiako tests."""
-#     registration_type_event_staff = ParticipantType.objects.create(
-#         id=1,
-#         name="Event staff"
-#         )
-#     registration_type_event_staff.save()
 
-#     registration_type_teacher = ParticipantType.objects.create(
-#         id=2,
-#         name="Teacher"
-#         )
-#     registration_type_teacher.save()
+def generate_participant_types():
+    """Generate participant types for use in dthm4kaiako tests."""
+    registration_type_event_staff = ParticipantType.objects.create(
+        id=1,
+        name="Event staff",
+        price=10.00
+        )
+    registration_type_event_staff.save()
 
-#     registration_type_student = ParticipantType.objects.create(
-#         id=3,
-#         name="Student"
-#         )
-#     registration_type_student.save()
+    registration_type_teacher = ParticipantType.objects.create(
+        id=2,
+        name="Teacher",
+        price=10.00
+        )
+    registration_type_teacher.save()
 
-#     registration_type_student = ParticipantType.objects.create(
-#         id=4,
-#         name="Facilitator"
-#         )
-#     registration_type_student.save()
+    registration_type_student = ParticipantType.objects.create(
+        id=3,
+        name="Student",
+        price=10.00
+        )
+    registration_type_student.save()
+
+    registration_type_student = ParticipantType.objects.create(
+        id=4,
+        name="Facilitator",
+        price=10.00
+        )
+    registration_type_student.save()
 
 
 def generate_event_registrations():
