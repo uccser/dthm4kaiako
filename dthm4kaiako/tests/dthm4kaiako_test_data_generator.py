@@ -8,7 +8,6 @@ from events.models import (
     Series,
     Event,
     Session,
-    # ParticipantType,
     Address,
     EventRegistration,
     RegistrationForm,
@@ -199,6 +198,7 @@ def generate_events():
         start=datetime.date(2023, 6, 24),
         end=datetime.date(2023, 6, 26),
         accessible_online=False,
+        published=True
     )
     event_physical_register_1.locations.set([location_1])
     event_physical_register_1.save()
@@ -211,6 +211,7 @@ def generate_events():
         start=datetime.date(2023, 2, 13),
         end=datetime.date(2023, 2, 14),
         accessible_online=False,
+        published=True
     )
     event_physical_apply_1.locations.set([location_2, location_3])
     event_physical_apply_1.save()
@@ -225,6 +226,7 @@ def generate_events():
         accessible_online=False,
         # locations = location_3,
         series=Series.objects.get(name='Artificial Intelligence series'),
+        published=True
     )
     event_physical_invite_1.save()
 
@@ -238,6 +240,7 @@ def generate_events():
         accessible_online=False,
         # locations = location_3,
         series=Series.objects.get(name='Artificial Intelligence series'),
+        published=True
     )
     event_ended_1.save()
 
@@ -249,6 +252,7 @@ def generate_events():
         start=datetime.date(2023, 1, 24),
         end=datetime.date(2023, 1, 26),
         accessible_online=False,
+        published=True
     )
     event_physical_register_2.save()
 
@@ -260,6 +264,7 @@ def generate_events():
         start=datetime.date(2023, 4, 3),
         end=datetime.date(2023, 4, 10),
         accessible_online=False,
+        published=True
     )
     event_physical_register_3.save()
 
@@ -271,6 +276,7 @@ def generate_events():
         start=datetime.date(2023, 2, 28),
         end=datetime.date(2023, 3, 3),
         accessible_online=False,
+        published=True
     )
     event_physical_register_4.save()
 
@@ -282,6 +288,7 @@ def generate_events():
         start=datetime.date(2023, 2, 14),
         end=datetime.date(2023, 3, 14),
         accessible_online=True,
+        published=True
     )
     event_online_register_1.save()
 
