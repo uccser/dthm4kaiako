@@ -798,6 +798,7 @@ def manage_event_details(request, pk):
             update_is_catered = manage_event_details_form.cleaned_data['is_catered']
             update_contact_email_address = manage_event_details_form.cleaned_data['contact_email_address']
             update_series = manage_event_details_form.cleaned_data['series']
+            update_capacity = manage_event_details_form.cleaned_data['capacity']
 
             all_locations = manage_event_details_form.cleaned_data['locations']
             all_location_ids = [location.id for location in all_locations]
@@ -816,7 +817,7 @@ def manage_event_details(request, pk):
             event.event_staff.set(all_event_staff_ids)
 
             # TODO: update otherside of M2M relationships for locations, sponsors,
-            # organisers, serieses and event staff!
+            # organisers, serieses and event staff
 
             Event.objects.filter(id=event.pk).update(
                 name=updated_name,
@@ -831,6 +832,7 @@ def manage_event_details(request, pk):
                 is_catered=update_is_catered,
                 contact_email_address=update_contact_email_address,
                 series=update_series,
+                capacity=update_capacity,
             )
             event.save()
             messages.success(request, f'You have updated the event details of {event.name}')

@@ -136,6 +136,7 @@ class EventAdmin(ClonableModelAdmin):
                     'participant_types',
                     'is_catered',
                     'contact_email_address',
+                    'capacity'
                 )
             }
         ),

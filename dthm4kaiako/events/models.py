@@ -274,6 +274,11 @@ class Event(models.Model):
         blank=True,
         help_text="The participant types that will be available for event participants to choose from."
     )
+    capacity = models.IntegerField(
+        default=1,
+        null=True, # allow for online events to not specify this
+        help_text="What is the maximum number of people who can attend this event?"
+    )
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -539,6 +544,14 @@ class Event(models.Model):
                 {
                     'end':
                     _('End datetime is required when the event is published.')
+                }
+            )
+
+        if self.capacity <= 0:
+            raise ValidationError(
+                {
+                    'capacity':
+                    _('Capacity must be a positive number.')
                 }
             )
 
