@@ -15,4 +15,4 @@ class ApplyForEventViewTest(BaseTestWithDB):
     def test_register_for_event_view_redirect_response(self):
         kwargs = {'pk': 1}
         response = self.client.get(reverse("events:register", kwargs=kwargs))
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page

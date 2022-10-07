@@ -53,7 +53,7 @@ from datetime import datetime
 from django.core.mail import send_mail
 from events.utils import can_view_event_management_content
 
-NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
+NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, you are not a staff member of that event."
 
 PRIVACY_STATEMENT = (
     "PRIVACY STATEMENT: We care about your privacy. Only the necessary information " +
@@ -618,7 +618,7 @@ def manage_event(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -690,7 +690,7 @@ def manage_event_registration(request, pk_event, pk_registration):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -773,7 +773,7 @@ def manage_event_details(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -867,7 +867,7 @@ def manage_event_registration_form_details(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -939,7 +939,7 @@ def generate_event_csv(request):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1095,7 +1095,7 @@ def generate_event_registrations_csv(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1249,7 +1249,7 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1299,20 +1299,20 @@ def mark_all_participants_as_paid(request, pk):
     """Bulk mark all event registrations as being paid for for a given event."""
     event_id = pk
     event = Event.objects.get(id=event_id)
-    event_registrations = [EventRegistration.objects.filter(event=event)]
+    event_registrations = EventRegistration.objects.filter(event=event)
 
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
     for event_registration in event_registrations:
 
-        registration_to_update = EventRegistration.objects.filter(id=event_registration.id)
+        registration_to_update = EventRegistration.objects.filter(pk=event_registration.pk)
         registration_to_update.update(paid=True)
-        registration_to_update = EventRegistration.objects.get(id=event_registration.id)
+        registration_to_update = EventRegistration.objects.get(pk=event_registration.pk)
         registration_to_update.save()
 
     messages.success(
@@ -1335,7 +1335,7 @@ def publish_event(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1362,7 +1362,7 @@ def cancel_event(request, pk):
     if not can_view_event_management_content(request, event_obj):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1381,7 +1381,7 @@ def create_new_participant_type(request, pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1434,7 +1434,7 @@ def update_participant_type(request, event_pk, participant_type_pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1447,7 +1447,7 @@ def update_participant_type(request, event_pk, participant_type_pk):
         old_participant_type.delete()
 
     # check if new participant type already exists
-    if ParticipantType.objects.filter(name=request.POST['name'], price=request.POST['price']).exists():
+    if ParticipantType.objects.filter(name=request.POST.get('name'), price=request.POST.get('price').exists()):
         # add the event to the list of events that use the existing "new" participant type
         new_participant_type = ParticipantType.objects.get(name=request.POST['name'], price=request.POST['price'])
         new_participant_type.events.add(event)
@@ -1482,7 +1482,7 @@ def delete_participant_type(request, event_pk, participant_type_pk):
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
@@ -1509,10 +1509,11 @@ MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 def email_participants(request, event_pk):
     """Send bulk email to all event participants as event staff."""
     event = Event.objects.get(pk=event_pk)
+
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE.format(request.user.first_name, event.name)
+            NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 

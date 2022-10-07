@@ -10,6 +10,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_participant_types,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
 
 
 class UpdateParticipantTypeURLTest(BaseTestWithDB):
@@ -57,11 +58,15 @@ class UpdateParticipantTypeURLTest(BaseTestWithDB):
         generate_users()
         generate_participant_types()
         event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
+        self.client.force_login(user)
         participant_type = ParticipantType.objects.get(pk=1)
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk
             }
         url = reverse('events:update_participant_type', kwargs=kwargs)
-        response = self.client.get(url)
+        response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

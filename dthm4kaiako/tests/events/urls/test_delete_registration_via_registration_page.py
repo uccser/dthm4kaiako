@@ -10,6 +10,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
 
 
 class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
@@ -53,10 +54,11 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
         generate_events()
         generate_users()
         generate_event_registrations()
+        self.client.force_login(User.objects.get(id=1))
         registration = EventRegistration.objects.get(pk=1)
         kwargs = {
             'pk': registration.pk,
             }
         url = reverse('events:delete_registration_via_registration_page', kwargs=kwargs)
-        response = self.client.get(url)
+        response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

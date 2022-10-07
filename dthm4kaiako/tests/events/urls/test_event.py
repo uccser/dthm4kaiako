@@ -11,6 +11,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
 
 
 class EventURLTest(BaseTestWithDB):
@@ -54,6 +55,7 @@ class EventURLTest(BaseTestWithDB):
         generate_events()
         generate_users()
         generate_event_registrations()
+        self.client.force_login(User.objects.get(id=1))
         event = Event.objects.get(pk=1)
         kwargs = {
             'pk': event.pk,

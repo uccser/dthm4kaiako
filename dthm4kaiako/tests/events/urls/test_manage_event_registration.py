@@ -11,6 +11,8 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
+from django.test.utils import override_settings
 
 
 class ManageEventRegistrationURLTest(BaseTestWithDB):
@@ -49,7 +51,7 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
             "events:manage_event_registration"
         )
 
-    # TODO: fix - giving 302 instead of 200
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_manage_event_registration_url_returns_200_when_event_exists(self):
         generate_addresses()
         generate_serieses()
@@ -58,6 +60,10 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
         generate_users()
         generate_event_registrations()
         event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
+        self.client.force_login(user)
         registration = EventRegistration.objects.get(pk=1)
         kwargs = {
             'pk_event': event.pk,
@@ -67,5 +73,5 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
         event.event_staff.set([user])
         event.save()
         url = reverse('events:manage_event_registration', kwargs=kwargs)
-        response = self.client.get(url)
+        response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

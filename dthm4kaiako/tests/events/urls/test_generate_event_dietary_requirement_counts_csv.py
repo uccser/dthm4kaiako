@@ -10,7 +10,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
-
+from users.models import User
 
 class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
 
@@ -54,9 +54,13 @@ class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
         generate_users()
         generate_event_registrations()
         event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
+        self.client.force_login(user)
         kwargs = {
             'pk': event.pk,
             }
         url = reverse('events:generate_event_dietary_requirement_counts_csv', kwargs=kwargs)
-        response = self.client.get(url)
+        response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

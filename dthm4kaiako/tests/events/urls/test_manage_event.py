@@ -9,6 +9,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_serieses,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
 
 
 class ManageEventURLTest(BaseTestWithDB):
@@ -47,11 +48,15 @@ class ManageEventURLTest(BaseTestWithDB):
         generate_locations()
         generate_events()
         generate_users()
-        self.client.login(id=1, password='password')
+        event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
+        self.client.force_login(user)
         event = Event.objects.get(pk=1)
         kwargs = {
             'pk': event.pk,
             }
         url = reverse('events:event_management', kwargs=kwargs)
-        response = self.client.get(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+        response = self.client.post(url)
+        self.assertEqual(None, response.status_code)

@@ -10,6 +10,7 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_participant_types,
 )
 from tests.BaseTestWithDB import BaseTestWithDB
+from users.models import User
 
 
 class DeleteParticipantTypeURLTest(BaseTestWithDB):
@@ -56,12 +57,16 @@ class DeleteParticipantTypeURLTest(BaseTestWithDB):
         generate_events()
         generate_users()
         generate_participant_types()
+        self.client.force_login(User.objects.get(id=1))
         event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
         participant_type = ParticipantType.objects.get(pk=1)
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk
             }
         url = reverse('events:delete_participant_type', kwargs=kwargs)
-        response = self.client.get(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+        response = self.client.post(url)
+        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page

@@ -57,14 +57,15 @@ class CancelEventURLTest(BaseTestWithDB):
         generate_users()
         generate_event_registrations()
         event = Event.objects.get(pk=1)
+        user = User.objects.get(pk=1)
+        event.event_staff.set([user])
+        event.save()
+        self.client.force_login(user)
         updated_event = Event.objects.filter(pk=1)
         updated_event.update(published=True)
         kwargs = {
             'pk': event.pk,
             }
-        user = User.objects.get(pk=1)
-        event.event_staff.set([user])
-        event.save()
         url = reverse('events:cancel_event', kwargs=kwargs)
-        response = self.client.get(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+        response = self.client.post(url)
+        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirects to event management page
