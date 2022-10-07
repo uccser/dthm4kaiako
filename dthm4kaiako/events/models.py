@@ -274,6 +274,10 @@ class Event(models.Model):
         blank=True,
         help_text="The participant types that will be available for event participants to choose from."
     )
+    capacity = models.IntegerField(
+        default=1,
+        help_text="What is the maximum number of people who can attend this event?"
+    )
 
     # TODO: Add validation that if no locations, then accessible_online must be True
     # See: https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.m2m_changed
@@ -321,6 +325,15 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         """Save the event."""
         return super().save(*args, **kwargs)
+
+    @property
+    def capacity_percentage(self):
+        """Return ercentage of capacity that the event is at e.g. at 60% capacity."""
+        if self.capacity is not None:
+            registration_counts = self.registration_status_counts
+            return registration_counts['approved'] // self.capacity * 100
+        else:
+            return None
 
     # TODO: use this function instead of including logic in template to improve tidiness
     @property
@@ -543,6 +556,14 @@ class Event(models.Model):
                 {
                     'end':
                     _('End datetime is required when the event is published.')
+                }
+            )
+
+        if self.capacity <= 0:
+            raise ValidationError(
+                {
+                    'capacity':
+                    _('Capacity must be a positive number.')
                 }
             )
 
