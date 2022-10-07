@@ -327,6 +327,13 @@ class Event(models.Model):
         """Save the event."""
         return super().save(*args, **kwargs)
 
+    @property
+    def capacity_percentage(self):
+        """The percentage of capacity that the event is at e.g. at 60% capacity."""
+        registration_counts = self.registration_status_counts
+        return registration_counts['approved'] // self.capacity * 100
+
+
     # TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):

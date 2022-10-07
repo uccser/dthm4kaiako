@@ -96,6 +96,10 @@
                     <div>
                         <b>Registrations open:</b> {{event.registration_form.close_datetime|date:"l j F, Y, g:i a"|default:"TBC"}}
                     </div>
+
+                    <div>
+                        <b>Capacity:</b> at {{event.capacity_percentage}}%  ({{event.registration_status_counts.approved}} of {{event.capacity}})
+                    </div>
                 </div>
 
                 <br>
