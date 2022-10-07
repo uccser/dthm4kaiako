@@ -1266,17 +1266,19 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
     writer = csv.writer(response)
 
     # Designate the model
-    event_registrations = EventRegistration.objects.filter(event=event)
+    APPROVED = 2
+    event_registrations = EventRegistration.objects.filter(event=event, status=APPROVED)
 
     # Add column headings to the csv file
     writer.writerow(heading_row)
 
     dietary_reqs_dict = dict()
 
-    event_registrations = EventRegistration.objects.filter(event=event)
-
     for registration in event_registrations:
         dietary_requirements = [dR.name for dR in registration.user.dietary_requirements.all()]
+        if "Give me coffee and no-one gets hurt" in dietary_requirements:
+            dietary_requirements.remove("Give me coffee and no-one gets hurt")
+
         if frozenset(dietary_requirements) in dietary_reqs_dict:
             dietary_reqs_dict[frozenset(dietary_requirements)] += 1
         else:

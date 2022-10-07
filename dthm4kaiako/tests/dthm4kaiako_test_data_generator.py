@@ -67,7 +67,7 @@ def generate_dietary_requirements():
         )
     dietary_requirement_coffee = DietaryRequirement.objects.create(
         id=12,
-        name="As long as there's coffee, I'm happy!"
+        name="Give me coffee and no-one gets hurt"
         )
 
     dietary_requirement_none.save()
