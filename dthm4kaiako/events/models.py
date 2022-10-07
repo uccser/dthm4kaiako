@@ -159,6 +159,23 @@ class ParticipantType(models.Model):
         """
         return self.price == 0.00
 
+    def clean(self):
+        """Validate participant type model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+
+        price_pattern = re.compile("^[0-9]*\.[0-9]{2}$")
+
+        if not price_pattern.match('{0:.2f}'.format(float(self.price))):
+            raise ValidationError(
+                {
+                    'price':
+                    _('Price must be be in the form of $1.23.')
+                }
+            )
+
 
 class Event(models.Model):
     """Model for an event."""
