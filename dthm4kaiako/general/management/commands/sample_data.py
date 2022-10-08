@@ -382,7 +382,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True,
         )
-        user_12.dietary_requirements.set([dietary_requirement_FODMAP])
+        user_12.dietary_requirements.set([dietary_requirement_dairy_free])
         user_12.educational_entities.set([entity_12, entity_13, entity_14])
         user_12.save()
         print('User 12 created.')
@@ -1189,14 +1189,14 @@ class Command(management.base.BaseCommand):
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
-            other_reason_for_deletion="Clashes with another event I would like to attend."
+            other_reason_for_withdrawing="Clashes with another event I would like to attend."
         )
 
         # event_registration_register_online_free_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
-            other_reason_for_deletion="Didn't realise the event was online."
+            other_reason_for_withdrawing="Didn't realise the event was online."
         )
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
@@ -1350,14 +1350,14 @@ class Command(management.base.BaseCommand):
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
-            other_reason_for_deletion="Clashes with another event I would like to attend."
+            other_reason_for_withdrawing="Clashes with another event I would like to attend."
         )
 
         # event_registration_apply_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
-            other_reason_for_deletion="Didn't realise the event was online."
+            other_reason_for_withdrawing="Didn't realise the event was online."
         )
 
         # Add admin account to all events

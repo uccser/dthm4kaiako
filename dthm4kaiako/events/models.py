@@ -553,8 +553,8 @@ class Event(models.Model):
         deleted_event_registrations = DeletedEventRegistration.objects.filter(event=self)
         other_reasons = []
         for deleted_event_registration in deleted_event_registrations:
-            if deleted_event_registration.other_reason_for_deletion != "":
-                other_reasons.append(deleted_event_registration.other_reason_for_deletion)
+            if deleted_event_registration.other_reason_for_withdrawing != "":
+                other_reasons.append(deleted_event_registration.other_reason_for_withdrawing)
         return other_reasons
 
     def __str__(self):
@@ -913,7 +913,7 @@ class DeletedEventRegistration(models.Model):
         default=PREFER_NOT_TO_SAY,
         help_text="Reason the participant has chosen to withdraw their registration."
     )
-    other_reason_for_deletion = models.CharField(
+    other_reason_for_withdrawing = models.CharField(
         max_length=300,
         null=True,
         blank=True,
@@ -932,7 +932,7 @@ class DeletedEventRegistration(models.Model):
         that there is a related reason for this (not an empty string),
         otherwise, we change the reason from 'other' to 'prefer not to say'.
         """
-        if self.withdraw_reason == 7 and not self.other_reason_for_deletion:
+        if self.withdraw_reason == 7 and not self.other_reason_for_withdrawing:
             self.withdraw_reason = 1
         super(DeletedEventRegistration, self).save(*args, **kwargs)
 
@@ -1033,7 +1033,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.close_datetime >= self.event.start:
+        if self.close_datetime and self.close_datetime >= self.event.start:
             raise ValidationError(
                 {
                     'close_datetime':
