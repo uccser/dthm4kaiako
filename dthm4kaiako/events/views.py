@@ -1464,7 +1464,7 @@ def create_new_participant_type(request, pk):
         else:
             messages.error(
                 request,
-                f"The participant type could be created due to the price not being in the format of $1.23."
+                f"The participant type was unable to be created since the price was not in the format of $1.23."
             )
 
         context = {

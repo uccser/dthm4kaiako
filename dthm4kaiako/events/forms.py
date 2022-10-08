@@ -61,15 +61,15 @@ class EventRegistrationForm(ModelForm):
         self.helper.disable_csrf = True
 
         # TODO: figure out how to make emergency details not visible nor mandatory in online event registration forms
-        # if 'initial' in kwargs:
-        #     initial_data_dict = kwargs.get('initial')
-        #     if 'show_emergency_contact_fields' in initial_data_dict:
-        #         self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
-        #         if not self.show_emergency_contact_fields:
-        #             del self.fields['emergency_contact_first_name']
-        #             del self.fields['emergency_contact_last_name']
-        #             del self.fields['emergency_contact_relationship']
-        #             del self.fields['emergency_contact_phone_number']
+        if 'initial' in kwargs:
+            initial_data_dict = kwargs.get('initial')
+            if 'show_emergency_contact_fields' in initial_data_dict:
+                self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
+                if not self.show_emergency_contact_fields:
+                    del self.fields['emergency_contact_first_name']
+                    del self.fields['emergency_contact_last_name']
+                    del self.fields['emergency_contact_relationship']
+                    del self.fields['emergency_contact_phone_number']
 
     class Meta:
         """Metadata for EventRegistrationForm class."""

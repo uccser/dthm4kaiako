@@ -782,29 +782,29 @@ class EventRegistration(models.Model):
     emergency_contact_first_name = models.CharField(
         max_length=200,
         verbose_name='emergency contact\'s first name',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_last_name = models.CharField(
         max_length=200,
         verbose_name='emergency contact\'s last name',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_relationship = models.CharField(
         max_length=150,
         verbose_name='relationship with emergency contact',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_phone_number = models.CharField(
         max_length=40,
         verbose_name='emergency contact\'s phone number',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     paid = models.BooleanField(
@@ -848,8 +848,70 @@ class EventRegistration(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
+        try:
+            event = self.event
+        except EventRegistration._meta.model.event.RelatedObjectDoesNotExist as e:
+            event = None
+
+        if (
+            event != None
+            and self.event.accessible_online == False 
+            and self.emergency_contact_first_name is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_first_name':
+                    _(
+                        'Emergency contact first name is required for in person event.'
+                    )
+                }
+            )
+
+        if (
+            event != None
+            and self.event.accessible_online == False
+            and self.emergency_contact_last_name is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_last_name':
+                    _(
+                        'Emergency contact last name is required for in person event.'
+                    )
+                }
+            )
+
+        if (event != None
+            and self.event.accessible_online == False
+            and self.emergency_contact_relationship is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_relationship':
+                    _(
+                        'Emergency contact relationship is required for in person event.'
+                    )
+                }
+            )
+
+        if (event != None
+            and self.event.accessible_online == False
+            and self.emergency_contact_phone_number is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_phone_number':
+                    _(
+                        'Emergency contact phone number is required for in person event.'
+                    )
+                }
+            )
+
         phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
-        if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
+        if (event != None
+            and self.event.accessible_online == False
+            and not phone_number_pattern.match(str(self.emergency_contact_phone_number))
+        ):
             raise ValidationError(
                 {
                     'emergency_contact_phone_number':
