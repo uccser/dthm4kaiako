@@ -157,7 +157,7 @@ class ParticipantType(models.Model):
 
         Returns True if participant type is free.
         """
-        return self.price == 0.00
+        return '{0:.2f}'.format(float(self.price)) == "0.00"
 
     def clean(self):
         """Validate participant type model attributes.

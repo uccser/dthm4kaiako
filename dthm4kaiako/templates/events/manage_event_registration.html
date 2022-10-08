@@ -114,12 +114,14 @@
                     <b>Last updated: </b> {{event_registration.updated}}
                 </div>
                 <div>
-                    <b>Paid: </b>
-                    {% if event_registration.paid == True %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}                    
+                    {% if not event_registration.participant_type.is_free %}
+                        <b>Paid: </b>
+                        {% if event_registration.paid == True %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    {% endif %}            
                 </div>
             </div>
 
