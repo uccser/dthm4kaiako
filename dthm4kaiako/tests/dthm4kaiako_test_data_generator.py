@@ -41,32 +41,16 @@ def generate_dietary_requirements():
         id=5,
         name="Vegan"
         )
-    dietary_requirement_paleo = DietaryRequirement.objects.create(
-        id=6,
-        name="Paleo"
-        )
     dietary_requirement_fodmap = DietaryRequirement.objects.create(
-        id=7,
+        id=6,
         name="FODMAP"
         )
-    dietary_requirement_nut_allergies = DietaryRequirement.objects.create(
-        id=8,
-        name="Nut allergies"
-        )
-    dietary_requirement_seafood_allergies = DietaryRequirement.objects.create(
-        id=9,
-        name="Fish and shellfish allergies"
-        )
-    dietary_requirement_keto = DietaryRequirement.objects.create(
-        id=10,
-        name="Keto"
-        )
     dietary_requirement_halal = DietaryRequirement.objects.create(
-        id=11,
+        id=7,
         name="Halal"
         )
     dietary_requirement_coffee = DietaryRequirement.objects.create(
-        id=12,
+        id=8,
         name="Give me coffee and no-one gets hurt"
         )
 
@@ -75,14 +59,9 @@ def generate_dietary_requirements():
     dietary_requirement_gluten_free.save()
     dietary_requirement_vegetarian.save()
     dietary_requirement_vegan.save()
-    dietary_requirement_paleo.save()
     dietary_requirement_fodmap.save()
-    dietary_requirement_nut_allergies.save()
-    dietary_requirement_seafood_allergies.save()
-    dietary_requirement_keto.save()
     dietary_requirement_halal.save()
     dietary_requirement_coffee.save()
-
 
 def generate_addresses():
     """Generate billing addresses for use in dthm4kaiako tests."""

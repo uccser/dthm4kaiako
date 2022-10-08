@@ -149,7 +149,7 @@
                 </div>
             {% endif %}
 
-            {% if not event.is_free %}
+            {% if not event_registration.participant_type.is_free %}
                 <div id="bill-info" style="margin-right: 20px;">
                     <details>
                         <summary>Billing Details</summary>
@@ -164,7 +164,7 @@
                                 <b>Billing email address: </b> {{event_registration.billing_email_address}}
                             </div>
                             <div>
-                                <b>Comments: </b> {{event_registration.admin_billing_comments}}
+                                <b>Comments: </b> {{event_registration.admin_billing_comments|default:"N/A"}}
                             </div>
                         </div>
                     </details>
