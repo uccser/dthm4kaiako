@@ -1015,6 +1015,14 @@ class RegistrationForm(models.Model):
                 }
             )
 
+        if self.close_datetime >= self.event.start:
+            raise ValidationError(
+                {
+                    'close_datetime':
+                    _('Close datetime must be before the event\'s start time')
+                }
+            )
+
     def save(self, *args, **kwargs):
         """Do a full clean prior to saving the registration form."""
         self.full_clean()

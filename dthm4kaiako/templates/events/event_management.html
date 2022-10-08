@@ -85,18 +85,17 @@
                         </div>
                     </div>
                     <div>
+                        <b>Registrations open:</b> {{event.registration_form.open_datetime|date:"l j F, Y, g:i a"|default:"TBC"}}
+                    </div>
+                    <div>
+                        <b>Registrations close:</b> {{event.registration_form.close_datetime|date:"l j F, Y, g:i a"|default:"TBC"}}
+                    </div>
+                    <div>
                         <b>Event start date:</b> {{event.start|date:"l j F, Y, g:i a"|default:"TBC"}}
                     </div>
                     <div>
                         <b>Event end date:</b> {{event.end|date:"l j F, Y, g:i a"|default:"TBC"}}
                     </div>
-                    <div>
-                        <b>Registrations open:</b> {{event.registration_form.open_datetime|date:"l j F, Y, g:i a"|default:"TBC"}}
-                    </div>
-                    <div>
-                        <b>Registrations open:</b> {{event.registration_form.close_datetime|date:"l j F, Y, g:i a"|default:"TBC"}}
-                    </div>
-
                     <div>
                         <b>Capacity:</b> {{event.capacity_percentage}}%  ({{event.registration_status_counts.approved}} of {{event.capacity}})
                     </div>
