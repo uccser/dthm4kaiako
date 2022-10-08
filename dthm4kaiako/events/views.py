@@ -249,6 +249,12 @@ def delete_registration_via_registration_page(request, pk):
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
 
+    if event == None:
+        return HttpResponseRedirect(reverse("events:home"))
+
+    if event_registration == None or request.user != event_registration.user:
+        return HttpResponseRedirect(reverse("events:event_registrations"))
+
     if request.method == 'POST':
         create_deleted_event_registration(event, request)
         event_registration.delete()
@@ -265,6 +271,12 @@ def delete_registration_via_event_page(request, pk):
     event_registration = get_object_or_404(EventRegistration, pk=pk)
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
+
+    if event == None:
+        return HttpResponseRedirect(reverse("events:home"))
+
+    if event_registration == None or request.user != event_registration.user:
+        return HttpResponseRedirect(reverse("events:home"))
 
     if request.method == 'POST':
         create_deleted_event_registration(event, request)
