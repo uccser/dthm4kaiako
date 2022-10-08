@@ -85,7 +85,8 @@ class UserUpdateDetailsForm(ModelForm):
     dietary_requirements = ModelMultipleChoiceField(
         queryset=DietaryRequirement.objects.filter(~Q(name='None')),
         required=False,
-        widget=CheckboxSelectMultiple
+        widget=CheckboxSelectMultiple,
+        
     )
 
     how_we_can_best_look_after_you = CharField(
@@ -119,6 +120,7 @@ class UserUpdateDetailsForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
         self.fields['how_we_can_best_look_after_you'].widget.attrs['rows'] = 5
+        self.fields['dietary_requirements'].help_text = 'We will try out best to cater for you.'
 
         if 'initial' in kwargs:
             initial_data_dict = kwargs.get('initial')
