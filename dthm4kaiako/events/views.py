@@ -754,18 +754,7 @@ def manage_event_registration(request, pk_event, pk_registration):
             update_paid = manage_registration_form.cleaned_data['paid']
             updated_participant_type_pk = manage_registration_form.cleaned_data['participant_type']
 
-            messages.success(
-                request,
-                updated_participant_type_pk
-            )
-
             updated_participant_type = ParticipantType.objects.get(pk=updated_participant_type_pk)
-
-            messages.success(
-                request,
-                updated_participant_type
-            )
-
             registration = EventRegistration.objects.filter(pk=pk_registration)
             registration.update(
                 status=updated_status,
@@ -776,11 +765,6 @@ def manage_event_registration(request, pk_event, pk_registration):
             )
             updated_event_registration = EventRegistration.objects.get(pk=pk_registration)
             updated_event_registration.save()
-
-            messages.success(
-                request,
-                updated_event_registration.participant_type
-            )
 
             messages.success(
                 request,
