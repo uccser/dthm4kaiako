@@ -398,6 +398,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
             self.fields['name'].widget.attrs['disabled'] = True
+            self.fields['description'].widget.attrs['disabled'] = True
             self.fields['show_schedule'].widget.attrs['disabled'] = True
             self.fields['featured'].widget.attrs['disabled'] = True
             self.fields['registration_type'].widget.attrs['disabled'] = True
@@ -412,6 +413,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
             self.fields['is_catered'].widget.attrs['disabled'] = True
             self.fields['contact_email_address'].widget.attrs['disabled'] = True
             self.fields['event_staff'].widget.attrs['disabled'] = True
+            self.fields['capacity'].widget.attrs['disabled'] = True
 
 
 class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):

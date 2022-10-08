@@ -231,7 +231,9 @@
                     <form method="post" action="{% url 'events:manage_event_details' event_pk %}">
                         {% csrf_token %}
                         {% crispy manage_event_details_form %}
-                        <input class="btn btn-primary" type="submit" value="Update event details">
+                        {% if not event.has_ended and not event.is_cancelled %}
+                            <input class="btn btn-primary" type="submit" value="Update event details">
+                        {% endif %}
                     </form>
                     <br>
                 </div>
