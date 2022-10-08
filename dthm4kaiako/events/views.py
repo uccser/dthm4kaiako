@@ -1353,6 +1353,11 @@ def publish_event(request, pk):
         or (event.published is False and event.end is None)
     ):
         messages.error(request, 'Your event must have a start and end datetime to be published.')
+    elif (
+        (event.published is False and event.registration_form.open_datetime is None)
+        or (event.published is False and event.registration_form.close_datetime is None)
+    ):
+        messages.error(request, 'Your event must have datetimes for when its registrations open and close before it is published.')
     else:
         event_query_set.update(published=True)
         updated_event = Event.objects.get(id=event_id)
