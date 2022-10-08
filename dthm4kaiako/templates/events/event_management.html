@@ -239,7 +239,7 @@
 
         <!-- Event Registration Form Details -->
         <details>
-            <summary>Publification Details</summary>
+            <summary>Registration Details</summary>
             {% if manage_registration_form_details_form %}
                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                     <form method="post" action="{% url 'events:manage_event_registration_form_details' registration_form_pk %}">
@@ -256,7 +256,7 @@
 
         <!-- Registrations -->
         <details>
-            <summary>Registrations</summary>
+            <summary>View Registrations</summary>
             <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
                 {% if event_registrations %}
