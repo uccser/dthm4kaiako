@@ -298,7 +298,6 @@ class ContactParticipantsForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
 
-    # TODO: figure out how to get validation for this to work - currently wipes form when invalid
     send_to_approved_participants = forms.BooleanField(
         required=False,
         label='Send to event participants who have been approved'
@@ -313,7 +312,7 @@ class ContactParticipantsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
-        super().__init__(*args, **kwargs)
+        super(ContactParticipantsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True

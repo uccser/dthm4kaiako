@@ -629,7 +629,6 @@ def manage_event(request, pk):
         return HttpResponseRedirect(reverse("events:events_management"))
 
     event_registrations = EventRegistration.objects.filter(event=event)
-
     pending_event_registrations = EventRegistration.objects.filter(event=event, status=1)
     approved_event_registrations = EventRegistration.objects.filter(event=event, status=2)
     declined_event_registrations = EventRegistration.objects.filter(event=event, status=3)
@@ -637,8 +636,9 @@ def manage_event(request, pk):
     registration_form = event.registration_form
     context = {
         'event': event,
+        'event_pk': event.pk
     }
-    context['event_pk'] = event.pk
+    user = request.user
 
     if request.method == 'GET':
 
@@ -646,32 +646,31 @@ def manage_event(request, pk):
         context['pending_event_registrations'] = pending_event_registrations
         context['approved_event_registrations'] = approved_event_registrations
         context['declined_event_registrations'] = declined_event_registrations
+        context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
+        context['event_registrations'] = event_registrations
+        context['registration_form_pk'] = registration_form.pk
+        context['is_free'] = event.is_free
+        context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+        context['new_participant_form'] = ParticipantTypeCreationForm()
+        context['update_participant_form'] = ParticipantTypeCreationForm()
+        context['contact_participants_form'] = ContactParticipantsForm(
+            initial={
+                'from_email': user.email,
+                'name': user
+                }
+            )
 
         if is_in_past_or_cancelled(event):
             context['manage_event_details_form'] = ManageEventDetailsReadOnlyForm(instance=event)
             context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsReadOnlyForm(
                 instance=registration_form
             )
-            context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
-            context['registration_form_pk'] = registration_form.pk
-            context['is_free'] = event.is_free
-            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_participant_form'] = ParticipantTypeCreationForm()
-            context['update_participant_form'] = ParticipantTypeCreationForm()
-            context['contact_participants_form'] = ContactParticipantsForm()
         else:
             context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
             context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(
                 instance=registration_form
             )
-            context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
-            context['event_registrations'] = event_registrations
-            context['registration_form_pk'] = registration_form.pk
-            context['is_free'] = event.is_free
-            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_participant_form'] = ParticipantTypeCreationForm()
-            context['update_participant_form'] = ParticipantTypeCreationForm()
-            context['contact_participants_form'] = ContactParticipantsForm()
+
         return render(request, 'events/event_management.html', context)
 
 
@@ -1526,8 +1525,16 @@ def email_participants(request, event_pk):
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
+    user = request.user
+
     if request.method == 'POST':
-        contact_participants_form = ContactParticipantsForm(request.POST)
+        contact_participants_form = ContactParticipantsForm(
+            request.POST,
+            initial={
+                'from_email': user.email,
+                'name': user,
+                }
+            )
         if contact_participants_form.is_valid():
             subject = contact_participants_form.cleaned_data['subject']
             from_email = contact_participants_form.cleaned_data['from_email']
