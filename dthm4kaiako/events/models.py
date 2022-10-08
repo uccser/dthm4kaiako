@@ -487,6 +487,24 @@ class Event(models.Model):
         return participant_type_counts
 
     @property
+    def participant_type_counts_approved(self):
+        """Count the number of event participants per type."""
+        participant_type_counts = {}
+        APPROVED = 2
+        registrations = EventRegistration.objects.filter(event=self.pk, status=APPROVED)
+
+        for participant_type in self.participant_types.all():
+            key_string = str(participant_type)
+            participant_type_counts[key_string] = 0
+
+        for registration in registrations:
+            key_string = str(registration.participant_type)
+            if key_string in participant_type_counts:
+                participant_type_counts[key_string] += 1
+
+        return participant_type_counts
+
+    @property
     def reasons_for_withdrawing_counts(self):
         """Count the number of each reason for an event registration to be withdrawn.
 

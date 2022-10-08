@@ -136,7 +136,8 @@
                         Participant Types           
                     </h4>
                     {% if participant_types %}
-                        {% for key, value in event.participant_type_counts.items %}
+                    <i>Approved participants</i>
+                        {% for key, value in event.participant_type_counts_approved.items %}
                             <div>
                                 <b>{{key}}:</b> {{value}}
                             </div>
