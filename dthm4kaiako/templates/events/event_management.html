@@ -198,9 +198,11 @@
                             {% if manage_event_details_form %}
                                 <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
                                     {% for reason in event.other_reasons_for_withdrawing %}
-                                        <div>
-                                            <li>{{reason}}</li>
-                                        </div>
+                                        {% if reason != None %}
+                                            <div>
+                                                <li>{{reason}}</li>
+                                            </div>
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             {% endif %}        

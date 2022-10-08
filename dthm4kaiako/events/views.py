@@ -280,11 +280,17 @@ def create_deleted_event_registration(event, request):
     """Create DeletedEventRegistration based on the retrieved deletion reason and/or other reason for deletion."""
     reason = request.POST['withdraw_reason']
     other_reason = request.POST['other_reason_for_deletion']
-    deleted_event_registration = DeletedEventRegistration.objects.create(
-        withdraw_reason=reason,
-        event=event,
-        other_reason_for_deletion=other_reason
-    )
+    if other_reason != "":
+        deleted_event_registration = DeletedEventRegistration.objects.create(
+            withdraw_reason=reason,
+            event=event,
+            other_reason_for_deletion=other_reason
+        )
+    else:
+        deleted_event_registration = DeletedEventRegistration.objects.create(
+            withdraw_reason=reason,
+            event=event,
+        )    
     deleted_event_registration.save()
 
 

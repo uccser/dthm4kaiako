@@ -535,7 +535,8 @@ class Event(models.Model):
         deleted_event_registrations = DeletedEventRegistration.objects.filter(event=self)
         other_reasons = []
         for deleted_event_registration in deleted_event_registrations:
-            other_reasons.append(deleted_event_registration.other_reason_for_deletion)
+            if deleted_event_registration.other_reason_for_deletion != "":
+                other_reasons.append(deleted_event_registration.other_reason_for_deletion)
         return other_reasons
 
     def __str__(self):
