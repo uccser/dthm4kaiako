@@ -503,8 +503,6 @@ def register_for_event(request, pk):
             is_physical_event
            ):
 
-            # if is_physical_event and emergency_details_valid(event_registration_form):
-
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
@@ -605,13 +603,6 @@ def register_for_event(request, pk):
                     )
                 # Return to event detail page
                 return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
-            # else:
-            #     messages.warning(
-            #         request,
-            #         (
-            #             'Please provide emergency contact details.'
-            #         )
-            #     )
 
     context = {
         'event': event,
