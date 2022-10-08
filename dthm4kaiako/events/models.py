@@ -165,7 +165,7 @@ class ParticipantType(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        price_pattern = re.compile("^([0-9]+)([\.]{1})([0-9]{2})$")
+        price_pattern = re.compile("^([0-9]+)([.]{1})([0-9]{2})$")
 
         if not price_pattern.match('{0:.2f}'.format(float(self.price))):
             raise ValidationError(
@@ -850,12 +850,12 @@ class EventRegistration(models.Model):
         """
         try:
             event = self.event
-        except EventRegistration._meta.model.event.RelatedObjectDoesNotExist as e:
+        except EventRegistration._meta.model.event.RelatedObjectDoesNotExist:
             event = None
 
         if (
-            event != None
-            and self.event.accessible_online == False 
+            event is not None
+            and self.event.accessible_online is False
             and self.emergency_contact_first_name is None
         ):
             raise ValidationError(
@@ -868,8 +868,8 @@ class EventRegistration(models.Model):
             )
 
         if (
-            event != None
-            and self.event.accessible_online == False
+            event is not None
+            and self.event.accessible_online is False
             and self.emergency_contact_last_name is None
         ):
             raise ValidationError(
@@ -881,8 +881,9 @@ class EventRegistration(models.Model):
                 }
             )
 
-        if (event != None
-            and self.event.accessible_online == False
+        if (
+            event is not None
+            and self.event.accessible_online is False
             and self.emergency_contact_relationship is None
         ):
             raise ValidationError(
@@ -894,8 +895,9 @@ class EventRegistration(models.Model):
                 }
             )
 
-        if (event != None
-            and self.event.accessible_online == False
+        if (
+            event is not None
+            and self.event.accessible_online is False
             and self.emergency_contact_phone_number is None
         ):
             raise ValidationError(
@@ -908,8 +910,9 @@ class EventRegistration(models.Model):
             )
 
         phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
-        if (event != None
-            and self.event.accessible_online == False
+        if (
+            event is not None
+            and self.event.accessible_online is False
             and not phone_number_pattern.match(str(self.emergency_contact_phone_number))
         ):
             raise ValidationError(

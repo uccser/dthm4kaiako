@@ -340,7 +340,9 @@ def validate_event_registration_form(
                     'Please provide emergency contact details.'
                 )
             )
-        elif is_physical_event and not phone_number_pattern.match(event_registration_form.cleaned_data['emergency_contact_phone_number']):
+        elif is_physical_event and not phone_number_pattern.match(
+            event_registration_form.cleaned_data['emergency_contact_phone_number']
+        ):
             messages.error(
                 request,
                 (
@@ -355,13 +357,13 @@ def validate_event_registration_form(
 
 
 def emergency_details_valid(event_registration_form):
-    """Returns True is emergency contact details are valid, else False."""
+    """Return True is emergency contact details are valid, else False."""
     if event_registration_form.is_valid():
         if (
-            event_registration_form.cleaned_data['emergency_contact_first_name'] == None
-            or event_registration_form.cleaned_data['emergency_contact_last_name'] == None
-            or event_registration_form.cleaned_data['emergency_contact_phone_number'] == None
-            or event_registration_form.cleaned_data['emergency_contact_relationship'] == None
+            event_registration_form.cleaned_data['emergency_contact_first_name'] is None
+            or event_registration_form.cleaned_data['emergency_contact_last_name'] is None
+            or event_registration_form.cleaned_data['emergency_contact_phone_number'] is None
+            or event_registration_form.cleaned_data['emergency_contact_relationship'] is None
         ):
             return False
         else:
@@ -502,7 +504,6 @@ def register_for_event(request, pk):
            ):
 
             # if is_physical_event and emergency_details_valid(event_registration_form):
-
 
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
@@ -1510,11 +1511,11 @@ def create_new_participant_type(request, pk):
                     request,
                     "The participant type " + str(new_participant_type) + " has been created."
                 )
-            
+
         else:
             messages.error(
                 request,
-                f"The participant type was unable to be created since the price was not in the format of $1.23."
+                "The participant type was unable to be created since the price was not in the format of $1.23."
             )
 
         context = {
@@ -1578,9 +1579,6 @@ def delete_participant_type(request, event_pk, participant_type_pk):
     """
     event = Event.objects.get(pk=event_pk)
     participant_type = get_object_or_404(ParticipantType, id=participant_type_pk)
-
-    participant_type_name = participant_type.name
-    participant_type_price = participant_type.price
 
     if not can_view_event_management_content(request, event):
         messages.warning(
