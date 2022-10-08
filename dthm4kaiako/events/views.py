@@ -1,6 +1,7 @@
 """Views for events registration."""
 
 # from turtle import heading
+# from multiprocessing import context
 from django.views import generic
 from django.utils.timezone import now
 from django_filters.views import FilterView
@@ -806,7 +807,7 @@ def manage_event_details(request, pk):
     context = {
         'event': event,
     }
-    context['update_participant_form'] = ParticipantTypeCreationForm()
+    # context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
@@ -902,7 +903,7 @@ def manage_event_registration_form_details(request, pk):
     context = {
         'registration_form': registration_form,
     }
-    context['update_participant_form'] = ParticipantTypeCreationForm()
+    # context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
@@ -1423,41 +1424,55 @@ def create_new_participant_type(request, pk):
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
-    # TODO: validate name and price!
+    if request.method == 'POST':
+        participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
 
-    name = request.POST['name']
-    price = request.POST['price']
+        if participant_type_creation_form.is_valid():
+            name = participant_type_creation_form.cleaned_data['name']
+            price = participant_type_creation_form.cleaned_data['price']
 
-    if ParticipantType.objects.filter(name=name, price=price).exists():
-        # participant type exists in general
-        if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
-            # participant type already exists for this event
-            participant_type = ParticipantType.objects.create(name=name, price=price)
-            messages.warning(
-                request,
-                f"The participant type {participant_type} already exists for this event."
-            )
+            if ParticipantType.objects.filter(name=name, price=price).exists():
+                # participant type exists in general
+                if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
+                    # participant type already exists for this event
+                    participant_type = ParticipantType.objects.create(name=name, price=price)
+                    messages.warning(
+                        request,
+                        f"The participant type {participant_type} already exists for this event."
+                    )
+                else:
+                    # participant type does exist but is not associated with this event yet
+                    existing_participant_type = ParticipantType.objects.get(name=name, price=price)
+                    event.participant_types.add(existing_participant_type)
+                    event.save()
+                    existing_participant_type.save()
+                    messages.success(
+                        request,
+                        f"The participant type {existing_participant_type} has been created."
+                    )
+            else:
+                # participant doesn't exist yet in general
+                new_participant_type = ParticipantType.objects.create(name=name, price=price)
+                event.participant_types.add(new_participant_type)
+                event.save()
+                new_participant_type.save()
+                messages.success(
+                    request,
+                    "The participant type " + str(new_participant_type) + " has been created."
+                )
+            
         else:
-            # participant type does exist but is not associated with this event yet
-            existing_participant_type = ParticipantType.objects.get(name=name, price=price)
-            event.participant_types.add(existing_participant_type)
-            event.save()
-            existing_participant_type.save()
-            messages.success(
+            messages.error(
                 request,
-                f"The participant type {existing_participant_type} has been created."
+                f"The participant type could be created due to the price not being in the format of $1.23."
             )
-    else:
-        # participant doesn't exist yet in general
-        new_participant_type = ParticipantType.objects.create(name=name, price=price)
-        event.participant_types.add(new_participant_type)
-        event.save()
-        new_participant_type.save()
-        messages.success(
-            request,
-            "The participant type " + str(new_participant_type) + " has been created."
-        )
-    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+
+        context = {
+            'new_participant_form': participant_type_creation_form
+            }
+        # return render(request, 'events/event_management.html', context)
+
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}), context)
 
 
 @login_required
@@ -1535,7 +1550,7 @@ def delete_participant_type(request, event_pk, participant_type_pk):
 
     messages.success(
         request,
-        f'You have deleted the participant type of {participant_type_name} (${participant_type_price})'
+        f'You have deleted the participant type of {participant_type})'
     )
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
@@ -1646,8 +1661,8 @@ def email_participants(request, event_pk):
     context['registration_form_pk'] = registration_form.pk
     context['is_free'] = event.is_free
     context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-    context['new_participant_form'] = ParticipantTypeCreationForm()
-    context['update_participant_form'] = ParticipantTypeCreationForm()
+    # context['new_participant_form'] = ParticipantTypeCreationForm()
+    # context['update_participant_form'] = ParticipantTypeCreationForm()
     context['contact_participants_form'] = contact_participants_form
     # use the existing form in order to load the valid inputs in the form whilst showing errors
 
