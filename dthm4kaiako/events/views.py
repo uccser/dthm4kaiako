@@ -249,10 +249,10 @@ def delete_registration_via_registration_page(request, pk):
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
 
-    if event == None:
+    if event is None:
         return HttpResponseRedirect(reverse("events:home"))
 
-    if event_registration == None or request.user != event_registration.user:
+    if event_registration is None or request.user != event_registration.user:
         return HttpResponseRedirect(reverse("events:event_registrations"))
 
     if request.method == 'POST':
@@ -272,10 +272,10 @@ def delete_registration_via_event_page(request, pk):
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
 
-    if event == None:
+    if event is None:
         return HttpResponseRedirect(reverse("events:home"))
 
-    if event_registration == None or request.user != event_registration.user:
+    if event_registration is None or request.user != event_registration.user:
         return HttpResponseRedirect(reverse("events:home"))
 
     if request.method == 'POST':
@@ -302,7 +302,7 @@ def create_deleted_event_registration(event, request):
         deleted_event_registration = DeletedEventRegistration.objects.create(
             withdraw_reason=reason,
             event=event,
-        )    
+        )
     deleted_event_registration.save()
 
 
@@ -1378,7 +1378,10 @@ def publish_event(request, pk):
         (event.published is False and event.registration_form.open_datetime is None)
         or (event.published is False and event.registration_form.close_datetime is None)
     ):
-        messages.error(request, 'Your event must have datetimes for when its registrations open and close before it is published.')
+        messages.error(
+            request,
+            'Your event must have datetimes for when its registrations open and close before it is published.'
+        )
     else:
         event_query_set.update(published=True)
         updated_event = Event.objects.get(id=event_id)

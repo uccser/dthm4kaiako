@@ -58,6 +58,7 @@ def generate_dietary_requirements():
     dietary_requirement_halal.save()
     dietary_requirement_coffee.save()
 
+
 def generate_addresses():
     """Generate billing addresses for use in dthm4kaiako tests."""
     billing_address_1 = Address.objects.create(

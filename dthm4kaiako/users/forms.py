@@ -86,7 +86,6 @@ class UserUpdateDetailsForm(ModelForm):
         queryset=DietaryRequirement.objects.filter(~Q(name='None')),
         required=False,
         widget=CheckboxSelectMultiple,
-        
     )
 
     how_we_can_best_look_after_you = CharField(
