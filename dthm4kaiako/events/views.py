@@ -53,6 +53,7 @@ from django.utils.html import format_html_join
 from datetime import datetime
 from django.core.mail import send_mail
 from events.utils import can_view_event_management_content
+import re
 
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, {1}, you are not a staff member of \"{2}\"."
 
@@ -330,24 +331,25 @@ def validate_event_registration_form(
         participant_type_form.is_valid()
     ):
 
-        # messages.warning(
-        #     request,
-        #     (
-        #         event_registration_form['emergency_contact_first_name'] == None
-        #     )
-        # )
+        phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
 
-
-        # if is_physical_event and emergency_details_valid(event_registration_form):
-        #     return True
-        # else:
-        #     messages.warning(
-        #         request,
-        #         (
-        #             'Please provide emergency contact details.'
-        #         )
-        #     )
-        return True
+        if is_physical_event and not emergency_details_valid(event_registration_form):
+            messages.error(
+                request,
+                (
+                    'Please provide emergency contact details.'
+                )
+            )
+        elif is_physical_event and not phone_number_pattern.match(event_registration_form.cleaned_data['emergency_contact_phone_number']):
+            messages.error(
+                request,
+                (
+                    'Invalid phone number. Phone number can include the area code, follow by any '
+                    'number of numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
+                )
+            )
+        else:
+            return True
     else:
         return False
 
@@ -499,120 +501,116 @@ def register_for_event(request, pk):
             is_physical_event
            ):
 
-            if is_physical_event and emergency_details_valid(event_registration_form):
-
-                messages.warning(request, event_registration_form.cleaned_data['emergency_contact_first_name'])
-
-                user.first_name = user_update_details_form.cleaned_data['first_name']
-                user.last_name = user_update_details_form.cleaned_data['last_name']
-                all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
-                user.educational_entities.set(all_educational_entities)
-                user.user_region = user_update_details_form.cleaned_data['user_region']
-                user.email_address = user_update_details_form.cleaned_data['email_address']
-                user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
-
-                if event.accessible_online is False:
-                    user.medical_notes = user_update_details_form.cleaned_data['how_we_can_best_look_after_you']
-
-                if display_catering_info:
-                    all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
-                    user.dietary_requirements.set(all_dietary_reqs)
-                user.save()
-
-                new_participant_type_id = participant_type_form.cleaned_data['participant_type']
-                new_participant_type = ParticipantType.objects.get(pk=int(new_participant_type_id))
-                new_representing = event_registration_form.cleaned_data['representing']
-                new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
-                new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
-                new_emergency_contact_relationship = event_registration_form.cleaned_data['emergency_contact_relationship']
-                new_emergency_contact_phone_number = event_registration_form.cleaned_data['emergency_contact_phone_number']
-
-                if billing_required:
-                    new_bill_to = billing_details_form.cleaned_data['bill_to']
-                    new_street_number = billing_details_form.cleaned_data['street_number']
-                    new_street_name = billing_details_form.cleaned_data['street_name']
-                    new_suburb = billing_details_form.cleaned_data['suburb']
-                    new_city = billing_details_form.cleaned_data['city']
-                    new_region = billing_details_form.cleaned_data['region']
-                    new_post_code = billing_details_form.cleaned_data['post_code']
-                    new_country = billing_details_form.cleaned_data['country']
-                    new_billing_email = billing_details_form.cleaned_data['billing_email_address']
-
-                    new_billing_address = Address.objects.create(
-                        street_number=new_street_number,
-                        street_name=new_street_name,
-                        suburb=new_suburb,
-                        city=new_city,
-                        region=new_region,
-                        post_code=new_post_code,
-                        country=new_country,
-                    )
-                    new_billing_address.save()
-
-                    event_registration, created = EventRegistration.objects.update_or_create(
-                        user=user, event=event,
-                        defaults={
-                            'participant_type': new_participant_type,
-                            'representing': new_representing,
-                            'billing_physical_address': new_billing_address,
-                            'billing_email_address': new_billing_email,
-                            'bill_to': new_bill_to,
-                            'emergency_contact_first_name': new_emergency_contact_first_name,
-                            'emergency_contact_last_name': new_emergency_contact_last_name,
-                            'emergency_contact_relationship': new_emergency_contact_relationship,
-                            'emergency_contact_phone_number': new_emergency_contact_phone_number,
-                        }
-                    )
-                    event_registration.save()
-
-                else:
-                    event_registration, created = EventRegistration.objects.update_or_create(
-                        user=user,
-                        event=event,
-                        defaults={
-                            'participant_type': new_participant_type,
-                            'representing': new_representing,
-                            'emergency_contact_first_name': new_emergency_contact_first_name,
-                            'emergency_contact_last_name': new_emergency_contact_last_name,
-                            'emergency_contact_relationship': new_emergency_contact_relationship,
-                            'emergency_contact_phone_number': new_emergency_contact_phone_number,
-                        }
-                    )
-                    event_registration.save()
-
-                if registration_exists:
-                    # Update existing event registration
-                    messages.success(request, f"Your event registration for \"{event.name}\" has been updated")
-                    # Return to event detail page
-                    return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
-
-                else:
-                    # Create new event registration
-                    blah = event_registration_form.cleaned_data['emergency_contact_first_name']
-                    messages.warning(request, f"{blah}")
+            # if is_physical_event and emergency_details_valid(event_registration_form):
 
 
-                    if event.registration_type == 1:
-                        messages.success(
-                            request,
-                            f"Thank you for for registering for \"{event.name}\", {user.first_name}. " +
-                            "We look forward to seeing you then!"
-                        )
-                    elif event.registration_type == 2:
-                        messages.success(
-                            request,
-                            f"Thank you for appling for \"{event.name}\", {user.first_name}. " +
-                            "You registration will reviewed shortly by our event staff!"
-                        )
-                    # Return to event detail page
-                    return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
-            else:
-                messages.warning(
-                    request,
-                    (
-                        'Please provide emergency contact details.'
-                    )
+            user.first_name = user_update_details_form.cleaned_data['first_name']
+            user.last_name = user_update_details_form.cleaned_data['last_name']
+            all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
+            user.educational_entities.set(all_educational_entities)
+            user.user_region = user_update_details_form.cleaned_data['user_region']
+            user.email_address = user_update_details_form.cleaned_data['email_address']
+            user.mobile_phone_number = user_update_details_form.cleaned_data['mobile_phone_number']
+
+            if event.accessible_online is False:
+                user.medical_notes = user_update_details_form.cleaned_data['how_we_can_best_look_after_you']
+
+            if display_catering_info:
+                all_dietary_reqs = user_update_details_form.cleaned_data['dietary_requirements']
+                user.dietary_requirements.set(all_dietary_reqs)
+            user.save()
+
+            new_participant_type_id = participant_type_form.cleaned_data['participant_type']
+            new_participant_type = ParticipantType.objects.get(pk=int(new_participant_type_id))
+            new_representing = event_registration_form.cleaned_data['representing']
+            new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
+            new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
+            new_emergency_contact_relationship = event_registration_form.cleaned_data['emergency_contact_relationship']
+            new_emergency_contact_phone_number = event_registration_form.cleaned_data['emergency_contact_phone_number']
+
+            if billing_required:
+                new_bill_to = billing_details_form.cleaned_data['bill_to']
+                new_street_number = billing_details_form.cleaned_data['street_number']
+                new_street_name = billing_details_form.cleaned_data['street_name']
+                new_suburb = billing_details_form.cleaned_data['suburb']
+                new_city = billing_details_form.cleaned_data['city']
+                new_region = billing_details_form.cleaned_data['region']
+                new_post_code = billing_details_form.cleaned_data['post_code']
+                new_country = billing_details_form.cleaned_data['country']
+                new_billing_email = billing_details_form.cleaned_data['billing_email_address']
+
+                new_billing_address = Address.objects.create(
+                    street_number=new_street_number,
+                    street_name=new_street_name,
+                    suburb=new_suburb,
+                    city=new_city,
+                    region=new_region,
+                    post_code=new_post_code,
+                    country=new_country,
                 )
+                new_billing_address.save()
+
+                event_registration, created = EventRegistration.objects.update_or_create(
+                    user=user, event=event,
+                    defaults={
+                        'participant_type': new_participant_type,
+                        'representing': new_representing,
+                        'billing_physical_address': new_billing_address,
+                        'billing_email_address': new_billing_email,
+                        'bill_to': new_bill_to,
+                        'emergency_contact_first_name': new_emergency_contact_first_name,
+                        'emergency_contact_last_name': new_emergency_contact_last_name,
+                        'emergency_contact_relationship': new_emergency_contact_relationship,
+                        'emergency_contact_phone_number': new_emergency_contact_phone_number,
+                    }
+                )
+                event_registration.save()
+
+            else:
+                event_registration, created = EventRegistration.objects.update_or_create(
+                    user=user,
+                    event=event,
+                    defaults={
+                        'participant_type': new_participant_type,
+                        'representing': new_representing,
+                        'emergency_contact_first_name': new_emergency_contact_first_name,
+                        'emergency_contact_last_name': new_emergency_contact_last_name,
+                        'emergency_contact_relationship': new_emergency_contact_relationship,
+                        'emergency_contact_phone_number': new_emergency_contact_phone_number,
+                    }
+                )
+                event_registration.save()
+
+            if registration_exists:
+                # Update existing event registration
+                messages.success(request, f"Your event registration for \"{event.name}\" has been updated")
+                # Return to event detail page
+                return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
+
+            else:
+                # Create new event registration
+
+                if event.registration_type == 1:
+                    messages.success(
+                        request,
+                        f"Thank you for for registering for \"{event.name}\", {user.first_name}. " +
+                        "We look forward to seeing you then!"
+                    )
+                elif event.registration_type == 2:
+                    messages.success(
+                        request,
+                        f"Thank you for appling for \"{event.name}\", {user.first_name}. " +
+                        "You registration will reviewed shortly by our event staff!"
+                    )
+                # Return to event detail page
+                return HttpResponseRedirect(reverse("events:event", kwargs={'pk': event.pk, 'slug': event.slug}))
+            # else:
+            #     messages.warning(
+            #         request,
+            #         (
+            #             'Please provide emergency contact details.'
+            #         )
+            #     )
 
     context = {
         'event': event,
