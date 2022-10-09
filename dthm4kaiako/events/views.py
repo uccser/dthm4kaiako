@@ -710,7 +710,7 @@ def manage_event(request, pk):
         context['update_participant_form'] = ParticipantTypeCreationForm()
         context['contact_participants_form'] = ContactParticipantsForm(
             initial={
-                'from_email': user.email,
+                'from_email': event.contact_email_address,
                 'name': user
                 }
             )
@@ -1614,7 +1614,7 @@ def email_participants(request, event_pk):
         contact_participants_form = ContactParticipantsForm(
             request.POST,
             initial={
-                'from_email': user.email,
+                'from_email': event.contact_email_address,
                 'name': user,
                 }
             )

@@ -347,7 +347,7 @@ class Event(models.Model):
         """Return ercentage of capacity that the event is at e.g. at 60% capacity."""
         if self.capacity is not None:
             registration_counts = self.registration_status_counts
-            return registration_counts['approved'] // self.capacity * 100
+            return float(registration_counts['approved']) / self.capacity * 100
         else:
             return None
 
@@ -840,7 +840,7 @@ class EventRegistration(models.Model):
 
     def __str__(self):
         """Return string representation of an event registration."""
-        return f'{self.user} - {self.user.email_address}'
+        return f'{self.user}'
 
     def clean(self):
         """Validate event registration model attributes.

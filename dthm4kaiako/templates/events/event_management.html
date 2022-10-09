@@ -96,120 +96,146 @@
                     <div>
                         <b>Event end date:</b> {{event.end|date:"l j F, Y, g:i a"|default:"TBC"}}
                     </div>
-                    <div>
-                        <b>Capacity:</b> {{event.capacity_percentage}}%  ({{event.registration_status_counts.approved}} of {{event.capacity}})
-                    </div>
-                </div>
-
-                <br>
-
-                <!-- Event Registration Status Counts -->
-                <div id="event-registrations-status-counts">
-                    <h4>
-                        Registration Statuses                
-                    </h4>
-                    <div>
-                        <b>Approved:</b> {{event.registration_status_counts.approved}}
-                    </div>
-                    <div>
-                        <b>Pending:</b> {{event.registration_status_counts.pending}}
-                    </div>
-                    <div>
-                        <b>Declined:</b> {{event.registration_status_counts.declined}}
-                    </div>
-                    <div>
-                        <b>Withdrawn:</b> {{event.registration_status_counts.withdrawn}}
-                    </div>
-                    <div>
-                        <b><i>Total attending:</i></b> {{event.registration_status_counts.approved}}
-                    </div>
-                </div>
-
-                <br>
-
-            </div>
-
-            <div class="column">
-                <!-- Participant Types -->
-                <div id="event-participant-types">
-                    <h4>
-                        Participant Types           
-                    </h4>
-                    {% if participant_types %}
-                    <i>Approved participants</i>
-                        {% for key, value in event.participant_type_counts_approved.items %}
-                            <div>
-                                <b>{{key}}:</b> {{value}}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No participant types yet</p>         
+                    {% if event.published %}
+                        <div>
+                            <b>Capacity:</b> {{event.capacity_percentage}}%  ({{event.registration_status_counts.approved}} of {{event.capacity}})
+                        </div>
                     {% endif %}
                 </div>
 
                 <br>
 
-                <!-- Reasons for Withdrawing -->
-                <div id="event-withdraw_reasons">
-                    <h4>
-                        Reasons for Withdrawing            
-                    </h4>
-                    <div class="row">
-                        <div class="col">
-                            <div>
-                                <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
-                            </div>
-                            <div>
-                                <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
-                            </div>
-                            <div>
-                                <b>No funding:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
-                            </div>
-                            <div>
-                                <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
-                            </div>
-                            <div>
-                                <b>Wrong event:</b> {{event.reasons_for_withdrawing_counts.wrong_event}}
-                            </div>
+                {% if event.published %}
+                    <!-- Event Registration Status Counts -->
+                    <div id="event-registrations-status-counts">
+                        <h4>
+                            Registration Statuses                
+                        </h4>
+                        <div>
+                            <b>Approved:</b> {{event.registration_status_counts.approved}}
                         </div>
-                        <div class="col">
-                            <div>
-                                <b>Personal development clash:</b> {{event.reasons_for_withdrawing_counts.clash_of_personal_development}}
-                            </div>
-                            <div>
-                                <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
-                            </div>
-                            <div>
-                                <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
-                            </div>
-                            <div>
-                                <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
-                            </div>
-        
+                        <div>
+                            <b>Pending:</b> {{event.registration_status_counts.pending}}
+                        </div>
+                        <div>
+                            <b>Declined:</b> {{event.registration_status_counts.declined}}
+                        </div>
+                        <div>
+                            <b>Withdrawn:</b> {{event.registration_status_counts.withdrawn}}
+                        </div>
+                        <div>
+                            <b><i>Total attending:</i></b> {{event.registration_status_counts.approved}}
                         </div>
                     </div>
+                <br>
+                {% endif %}
 
-                    <div>
-                        
-                        <!-- Other Reasons for Withdrawing -->
+            </div>
 
-                        <details style="margin-right: 20px; margin-top: 10px;">
-                            <summary>Details</summary>
-                            {% if manage_event_details_form %}
-                                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
-                                    {% for reason in event.other_reasons_for_withdrawing %}
-                                        {% if reason != None %}
-                                            <div>
-                                                <li>{{reason}}</li>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+            <div class="column">
+
+                {% if event.published %}
+                    <!-- Participant Types -->
+                    <div id="event-participant-types">
+                        <h4>
+                            Participant Types           
+                        </h4>
+                        {% if participant_types %}
+                            <i>Approved participants</i>
+                            {% for key, value in event.participant_type_counts_approved.items %}
+                                <div>
+                                    <b>{{key}}:</b> {{value}}
                                 </div>
-                            {% endif %}        
-                        </details>
-
+                            {% endfor %}
+                        {% else %}
+                            <p>No participant types yet</p>         
+                        {% endif %}
                     </div>
-                </div>
+
+                    <br>
+
+                    <!-- Reasons for Withdrawing -->
+                    <div id="event-withdraw_reasons">
+                        <h4>
+                            Reasons for Withdrawing            
+                        </h4>
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <b>No longer interested:</b> {{event.reasons_for_withdrawing_counts.not_interested}}
+                                </div>
+                                <div>
+                                    <b>Change of plans:</b> {{event.reasons_for_withdrawing_counts.change_of_plans}}
+                                </div>
+                                <div>
+                                    <b>No funding:</b> {{event.reasons_for_withdrawing_counts.too_expensive}}
+                                </div>
+                                <div>
+                                    <b>Inconvenient location:</b> {{event.reasons_for_withdrawing_counts.inconvenient_location}}
+                                </div>
+                                <div>
+                                    <b>Wrong event:</b> {{event.reasons_for_withdrawing_counts.wrong_event}}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div>
+                                    <b>Personal development clash:</b> {{event.reasons_for_withdrawing_counts.clash_of_personal_development}}
+                                </div>
+                                <div>
+                                    <b>Illness:</b> {{event.reasons_for_withdrawing_counts.illness}}
+                                </div>
+                                <div>
+                                    <b>Prefer not to say:</b> {{event.reasons_for_withdrawing_counts.prefer_not_to_say}}
+                                </div>
+                                <div>
+                                    <b>Other:</b> {{event.reasons_for_withdrawing_counts.other}}
+                                </div>
+            
+                            </div>
+                        </div>
+
+                        <div>
+                            
+                            <!-- Other Reasons for Withdrawing -->
+
+                            <details style="margin-right: 20px; margin-top: 10px;">
+                                <summary>Details</summary>
+                                {% if manage_event_details_form %}
+                                    <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                                        {% for reason in event.other_reasons_for_withdrawing %}
+                                            {% if reason != None %}
+                                                <div>
+                                                    <li>{{reason}}</li>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}        
+                            </details>
+
+                        </div>
+                    </div>
+                {% else %}
+                    <div>
+                        <!-- Participant Types -->
+                        <div id="event-participant-types">
+                            <h4>
+                                Participant Types           
+                            </h4>
+                            {% if participant_types %}
+                                {% for key, value in event.participant_type_counts_approved.items %}
+                                    <div>
+                                        <b>{{key}}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No participant types yet</p>         
+                            {% endif %}
+                        </div>
+
+                        <br>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -258,65 +284,67 @@
         </details>
 
         <!-- Registrations -->
-        <details>
-            <summary>View Registrations</summary>
-            <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+        {% if event.published %}
+            <details>
+                <summary>View Registrations</summary>
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
-                {% if event_registrations %}
+                    {% if event_registrations %}
 
-                    {% if not is_free %}
-                    <!-- Bulk mark all participants as paid -->
-                        <a class="btn btn-primary" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
-                            Mark all participants as paid
-                        </a>
+                        {% if not is_free %}
+                        <!-- Bulk mark all participants as paid -->
+                            <a class="btn btn-primary" href="{% url 'events:mark_all_participants_as_paid' event_pk %}" role="button">
+                                Mark all participants as paid
+                            </a>
+                            <br>
+                            <br>
+                        {% endif %}
+                        
+
+                        <b>Pending registrations</b>
+                        {% if pending_event_registrations.count > 0 %}
+                            {% for registration in pending_event_registrations %}
+                            <div>
+                                <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <br>
+                            None
+                        {% endif %}
+
                         <br>
-                        <br>
-                    {% endif %}
-                    
+                        <b>Approved registrations</b>
+                        {% if approved_event_registrations.count > 0 %}
+                            {% for registration in approved_event_registrations %}
+                            <div>
+                                <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <br>
+                            None
+                        {% endif %}
 
-                    <b>Pending registrations</b>
-                    {% if pending_event_registrations.count > 0 %}
-                        {% for registration in pending_event_registrations %}
-                        <div>
-                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
-                        </div>
-                        {% endfor %}
+                        <br>
+                        <b>Declined event registrations</b>
+                        {% if approved_event_registrations.count > 0 %}
+                            {% for registration in declined_event_registrations %}
+                            <div>
+                                <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <br>
+                            None
+                        {% endif %}
+
                     {% else %}
-                        <br>
-                        None
-                    {% endif %}
-
-                    <br>
-                    <b>Approved registrations</b>
-                    {% if approved_event_registrations.count > 0 %}
-                        {% for registration in approved_event_registrations %}
-                        <div>
-                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <br>
-                        None
-                    {% endif %}
-
-                    <br>
-                    <b>Declined event registrations</b>
-                    {% if approved_event_registrations.count > 0 %}
-                        {% for registration in declined_event_registrations %}
-                        <div>
-                            <a href="{% url 'events:manage_event_registration' registration.event.pk registration.pk %}" role="button">{{registration}}</a>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <br>
-                        None
-                    {% endif %}
-
-                {% else %}
-                    <p>No registrations</p>
-                {% endif %}    
-            </div>
-        </details>
+                        <p>No registrations</p>
+                    {% endif %}    
+                </div>
+            </details>
+        {% endif %}    
 
 
         {% if event.published == False %}
@@ -366,56 +394,57 @@
             </details>
         {% endif %}
 
-        <!-- Generate Registrations Spreadsheets -->         
-        <details>
-            <summary>Generate Custom Registrations Spreadsheet</summary>
-            {% if registrations_csv_builder_form %}
-                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+        <!-- Generate Registrations Spreadsheets -->     
+        {% if event.published %}
+            <details>
+                <summary>Generate Custom Registrations Spreadsheet</summary>
+                {% if registrations_csv_builder_form %}
+                    <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
 
-                    <div>
-                        {% if event.published %}
-                            <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
-                                Generate catering order
-                            </a>
-                        {% endif %}
+                        <div>
+                            {% if event.published %}
+                                <a class="btn btn-primary" href="{% url 'events:generate_event_dietary_requirement_counts_csv' event.pk %}" role="button">
+                                    Generate catering order
+                                </a>
+                            {% endif %}
+                        </div>
+            
+                        <br>
+
+                        <p style="font-style: italic">
+                            <b>Select the fields you wish to include in the spreadsheet</b>
+                        </p>
+                        <p style="font-style: italic">
+                            Examples of spreadsheets to generate are:
+                            <ul>
+                                <li>Names of attendees for name badges</li>
+                                <li>Billing details</li>
+                                <li>Dietary requirements of attendees</li>
+                            </ul>
+                        </p>
+                        <form method="post" action="{% url 'events:generate_event_registrations_csv' event_pk %}">
+                            {% csrf_token %}
+                            {% crispy registrations_csv_builder_form %}
+                            <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
+                        </form>
+                        <br>
                     </div>
-        
-                    <br>
-
-                    <p style="font-style: italic">
-                        <b>Select the fields you wish to include in the spreadsheet</b>
-                    </p>
-                    <p style="font-style: italic">
-                        Examples of spreadsheets to generate are:
-                        <ul>
-                            <li>Names of attendees for name badges</li>
-                            <li>Billing details</li>
-                            <li>Dietary requirements of attendees</li>
-                          </ul>
-                    </p>
-                    <form method="post" action="{% url 'events:generate_event_registrations_csv' event_pk %}">
-                        {% csrf_token %}
-                        {% crispy registrations_csv_builder_form %}
-                        <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
-                    </form>
-                    <br>
-                </div>
-            {% endif %}        
-        </details>
-     
-        <details>
-            <summary>Contact Event Participants</summary>
-            {% if contact_participants_form %}
-                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
-                    <form method="post" action="{% url 'events:email_participants' event.pk %}">
-                        {% csrf_token %}
-                        {% crispy contact_participants_form %}
-                        <input class="btn btn-primary" type="submit" value="Send emails">
-                    </form>
-                    <br>
-                </div>
-            {% endif %}        
-        </details>
+                {% endif %}        
+            </details>
+            <details>
+                <summary>Contact Event Participants</summary>
+                {% if contact_participants_form %}
+                    <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                        <form method="post" action="{% url 'events:email_participants' event.pk %}">
+                            {% csrf_token %}
+                            {% crispy contact_participants_form %}
+                            <input class="btn btn-primary" type="submit" value="Send emails">
+                        </form>
+                        <br>
+                    </div>
+                {% endif %}        
+            </details>
+        {% endif %}
     </div>
 
 {% endblock content %}
