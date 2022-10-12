@@ -164,13 +164,13 @@ class ParticipantType(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        price_pattern = re.compile("^([0-9]+)([.]{1})([0-9]{2})$")
+        price_pattern_with_decimal_places = re.compile("^([0-9]+)([.]{1})([0-9]{2})$")
 
-        if not price_pattern.match('{0:.2f}'.format(float(self.price))):
+        if price_pattern_with_decimal_places.match('{0:.2f}'.format(self.price)):
             raise ValidationError(
                 {
                     'price':
-                    _('Price must be be in the form of $1.23.')
+                    _('Price must be be in the form of $1.23 or $1.' )
                 }
             )
 
