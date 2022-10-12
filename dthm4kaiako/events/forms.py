@@ -60,7 +60,6 @@ class EventRegistrationForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        # TODO: figure out how to make emergency details not visible nor mandatory in online event registration forms
         if 'initial' in kwargs:
             initial_data_dict = kwargs.get('initial')
             if 'show_emergency_contact_fields' in initial_data_dict:
@@ -145,11 +144,11 @@ class WithdrawEventRegistrationForm(ModelForm):
 # ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventRegistrationForm(ModelForm):
-    """Simple form to allow a user to submit an registration to attend an event."""
+    """Simple form to allow an event organiser to manage the registration form that the event participant submitted to attend an event."""
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
-    def __init__(self, event, *args, **kwargs):
+    def __init__(self, event, show_paid, *args, **kwargs):
         """Add crispyform helper to form."""
         super(ManageEventRegistrationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -160,6 +159,9 @@ class ManageEventRegistrationForm(ModelForm):
         for participant_type in event.participant_types.all():
             choices += [(participant_type.pk, str(participant_type))]
         self.fields['participant_type'].choices = choices
+
+        if not show_paid: 
+            del self.fields['paid']
 
     def clean(self):
         """Clean participant type so that ones is selected."""
@@ -177,7 +179,7 @@ class ManageEventRegistrationForm(ModelForm):
 
 
 class ManageEventDetailsForm(ModelForm):
-    """Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Simple form for managing (e.g. deleting, updating) the information of an event as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -194,7 +196,7 @@ class ManageEventDetailsForm(ModelForm):
 
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
-    """Simple form for updating the event registration form information as an event staff member."""
+    """Simple form for updating the event registration form information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""
@@ -212,7 +214,7 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
 
 
 class ManageEventLocationForm(ModelForm):
-    """Simple form for updating the event location information as an event staff member."""
+    """Simple form for updating the event location information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventLocationForm class."""
@@ -378,7 +380,7 @@ class ManageEventRegistrationReadOnlyForm(ModelForm):
 
 
 class ManageEventDetailsReadOnlyForm(ModelForm):
-    """Form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Form for managing (e.g. deleting, updating) the information of an event as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -417,7 +419,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
 
 
 class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
-    """Form for updating the event registration form information as an event staff member."""
+    """Form for updating the event registration form information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""

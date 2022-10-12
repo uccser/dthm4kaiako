@@ -151,7 +151,6 @@ class ParticipantType(models.Model):
         else:
             return f"{self.name} (${'{0:.2f}'.format(float(self.price))})"
 
-    # TODO: fix me!
     def is_free(self):
         """Determine whether the event participant type is free or not.
 

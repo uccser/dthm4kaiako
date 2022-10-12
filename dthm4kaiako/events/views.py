@@ -772,6 +772,8 @@ def manage_event_registration(request, pk_event, pk_registration):
 
     dietary_requirements = DietaryRequirement.objects.filter(users=user)
     educational_entities = Entity.objects.filter(users=user)
+    participant_type_object = ParticipantType.objects.get(event_registrations=event_registration.pk)
+    show_paid = not participant_type_object.is_free()
 
     if request.method == 'GET':
         if is_in_past_or_cancelled(event):
@@ -779,6 +781,7 @@ def manage_event_registration(request, pk_event, pk_registration):
         else:
             manage_registration_form = ManageEventRegistrationForm(
                 event,
+                show_paid,
                 initial={'participant_type': event_registration.participant_type.pk},
                 instance=event_registration
             )
@@ -790,6 +793,7 @@ def manage_event_registration(request, pk_event, pk_registration):
         else:
             manage_registration_form = ManageEventRegistrationForm(
                 event,
+                show_paid,
                 request.POST,
                 instance=event_registration,
                 initial={'participant_type': event_registration.participant_type.pk},
@@ -800,18 +804,28 @@ def manage_event_registration(request, pk_event, pk_registration):
             updated_status = manage_registration_form.cleaned_data['status']
             updated_staff_comments = manage_registration_form.cleaned_data['staff_comments']
             updated_admin_billing_comments = manage_registration_form.cleaned_data['admin_billing_comments']
-            update_paid = manage_registration_form.cleaned_data['paid']
             updated_participant_type_pk = manage_registration_form.cleaned_data['participant_type']
 
             updated_participant_type = ParticipantType.objects.get(pk=updated_participant_type_pk)
             registration = EventRegistration.objects.filter(pk=pk_registration)
+            
             registration.update(
                 status=updated_status,
                 staff_comments=updated_staff_comments,
                 admin_billing_comments=updated_admin_billing_comments,
-                paid=update_paid,
                 participant_type=updated_participant_type,
             )
+
+            if (show_paid):
+                update_paid = manage_registration_form.cleaned_data['paid']
+                registration.update(
+                    status=updated_status,
+                    staff_comments=updated_staff_comments,
+                    admin_billing_comments=updated_admin_billing_comments,
+                    paid=update_paid,
+                    participant_type=updated_participant_type,
+                )
+
             updated_event_registration = EventRegistration.objects.get(pk=pk_registration)
             updated_event_registration.save()
 

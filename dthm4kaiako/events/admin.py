@@ -130,13 +130,15 @@ class EventAdmin(ClonableModelAdmin):
                 'fields': (
                     'name',
                     'description',
+                    'start',
+                    'end',
                     'series',
                     'organisers',
                     'sponsors',
                     'participant_types',
                     'is_catered',
                     'contact_email_address',
-                    'capacity'
+                    'capacity',
                 )
             }
         ),
