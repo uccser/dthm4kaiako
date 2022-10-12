@@ -93,10 +93,6 @@ class UserUpdateDetailsForm(ModelForm):
         help_text="e.g. accessibility, allergies",
     )
 
-    # TODO: add in for requirmement U38 (ability to add custom dietary requirements)
-    # other = CharField(max_length=200, help_text="Any additional dietary requirements", required=False)
-    # TODO: change the label for the user_region field to just be "label"
-
     class Meta:
         """Metadata for UserUpdateDetailsForm class."""
 
@@ -107,6 +103,7 @@ class UserUpdateDetailsForm(ModelForm):
             'user_region',
             'educational_entities',
         ]
+
 
     def __init__(self, *args, **kwargs):
         """Initialise method for user update details form.

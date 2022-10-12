@@ -427,6 +427,8 @@ def register_for_event(request, pk):
             )
             participant_type_form = ParticipantTypeForm(event)
 
+        dietary_requirements = DietaryRequirement.objects.filter(users=user.pk)
+
         user_update_details_form = UserUpdateDetailsForm(
             instance=user,
             initial={
@@ -436,7 +438,8 @@ def register_for_event(request, pk):
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
                 'mobile_phone_number_confirm': user.mobile_phone_number,
-                'how_we_can_best_look_after_you': user.medical_notes
+                'how_we_can_best_look_after_you': user.medical_notes,
+                'dietary_requirements': dietary_requirements
             })  # autoload existing event registration's user data
 
         if billing_required:
@@ -465,6 +468,8 @@ def register_for_event(request, pk):
     elif request.method == 'POST':
         # If creating a new registration or updating existing registration (as Django forms don't support PUT)
 
+        dietary_requirements = DietaryRequirement.objects.filter(users=user.pk)
+
         user_update_details_form = UserUpdateDetailsForm(
             request.POST,
             instance=user,
@@ -475,7 +480,8 @@ def register_for_event(request, pk):
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
                 'mobile_phone_number_confirm': user.mobile_phone_number,
-                'how_we_can_best_look_after_you': user.medical_notes
+                'how_we_can_best_look_after_you': user.medical_notes,
+                'dietary_requirements': dietary_requirements
             }
         )
 
