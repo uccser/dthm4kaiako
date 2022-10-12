@@ -855,7 +855,7 @@ def manage_event_details(request, pk):
     context = {
         'event': event,
     }
-    # context['update_participant_form'] = ParticipantTypeCreationForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_event_details_form = ManageEventDetailsForm(request.POST, instance=event)
@@ -951,7 +951,7 @@ def manage_event_registration_form_details(request, pk):
     context = {
         'registration_form': registration_form,
     }
-    # context['update_participant_form'] = ParticipantTypeCreationForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(

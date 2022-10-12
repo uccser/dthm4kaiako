@@ -1073,7 +1073,9 @@ class RegistrationForm(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        if self.open_datetime is not None and now() > self.open_datetime:
+        if self.open_datetime is not None and self.open_datetime < now() and self.event.published is False:
+            # Prior publishing, organiser must ensure the open date is in the future.
+            # After publishing, open date can be in the past as the organiser will possibly update the close date time.
             raise ValidationError(
                 {
                     'open_datetime':
