@@ -517,7 +517,6 @@ def generate_event_registrations():
     """Generate event registrations for use in dthm4kaiako tests."""
     event_registration_1_pending = EventRegistration.objects.create(
         id=1,
-        # participant_type=ParticipantType.objects.get(name="Teacher"),
         user=User.objects.get(id=1),
         event=Event.objects.get(id=1),
         billing_physical_address=Address.objects.get(id=1),

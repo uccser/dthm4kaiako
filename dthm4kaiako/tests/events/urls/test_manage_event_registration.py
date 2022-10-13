@@ -1,6 +1,11 @@
 from django.urls import reverse, resolve
 from http import HTTPStatus
-from events.models import Event, EventRegistration
+from events.models import (
+    Event,
+    EventRegistration,
+    ParticipantType,
+    Address,
+)
 from users.models import User
 from tests.dthm4kaiako_test_data_generator import (
     generate_locations,
@@ -58,7 +63,20 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
         generate_locations()
         generate_events()
         generate_users()
-        generate_event_registrations()
+
+        participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
+
+        event_registration_1_pending = EventRegistration.objects.create(
+            id=1,
+            participant_type= participant_type,
+            user=User.objects.get(id=1),
+            event=Event.objects.get(id=1),
+            billing_physical_address=Address.objects.get(id=1),
+            billing_email_address="test@test.co.nz"
+        )
+        event_registration_1_pending.status = 1
+        event_registration_1_pending.save()
+
         event = Event.objects.get(pk=1)
         user = User.objects.get(pk=1)
         event.event_staff.set([user])
