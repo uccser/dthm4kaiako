@@ -76,8 +76,6 @@ class Command(management.base.BaseCommand):
         dietary_requirement_gluten_free = DietaryRequirement.objects.create(name="Gluten free")
         dietary_requirement_vegetarian = DietaryRequirement.objects.create(name="Vegetarian")
         dietary_requirement_vegan = DietaryRequirement.objects.create(name="Vegan")
-        dietary_requirement_keto = DietaryRequirement.objects.create(name="Keto")
-        dietary_requirement_FODMAP = DietaryRequirement.objects.create(name="Paleo")
         dietary_requirement_dairy_free = DietaryRequirement.objects.create(name="FODMAP")
         dietary_requirement_halal = DietaryRequirement.objects.create(name="Halal")
         dietary_requirement_coffee = DietaryRequirement.objects.create(name="Give me coffee and no-one gets hurt")
@@ -258,7 +256,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_6.dietary_requirements.set([dietary_requirement_keto])
+        user_6.dietary_requirements.set([dietary_requirement_halal])
         user_6.educational_entities.set([entity_6])
         user_6.save()
         print('User 6 created.')
@@ -279,7 +277,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_7.dietary_requirements.set([dietary_requirement_keto])
+        user_7.dietary_requirements.set([dietary_requirement_dairy_free])
         user_7.educational_entities.set([entity_7])
         user_7.save()
         print('User 7 created.')
@@ -300,7 +298,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_8.dietary_requirements.set([dietary_requirement_keto])
+        user_8.dietary_requirements.set([dietary_requirement_gluten_free])
         user_8.educational_entities.set([entity_8])
         user_8.save()
         print('User 8 created.')
@@ -321,7 +319,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        user_9.dietary_requirements.set([dietary_requirement_keto])
+        user_9.dietary_requirements.set([dietary_requirement_dairy_free])
         user_9.educational_entities.set([entity_9])
         user_9.save()
         print('User 9 created.')
@@ -384,7 +382,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True,
         )
-        user_12.dietary_requirements.set([dietary_requirement_FODMAP])
+        user_12.dietary_requirements.set([dietary_requirement_dairy_free])
         user_12.educational_entities.set([entity_12, entity_13, entity_14])
         user_12.save()
         print('User 12 created.')
@@ -1191,14 +1189,14 @@ class Command(management.base.BaseCommand):
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
-            other_reason_for_deletion="Clashes with another event I would like to attend."
+            other_reason_for_withdrawing="Clashes with another event I would like to attend."
         )
 
         # event_registration_register_online_free_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_2_register_online_free_future,
-            other_reason_for_deletion="Didn't realise the event was online."
+            other_reason_for_withdrawing="Didn't realise the event was online."
         )
 
         # EVENT IS STAFFED BY STUDY PARTICIPANT
@@ -1352,14 +1350,14 @@ class Command(management.base.BaseCommand):
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
-            other_reason_for_deletion="Clashes with another event I would like to attend."
+            other_reason_for_withdrawing="Clashes with another event I would like to attend."
         )
 
         # event_registration_apply_withdrawn_4
         DeletedEventRegistration.objects.create(
             withdraw_reason=OTHER,
             event=event_3_register_physical_costs_future,
-            other_reason_for_deletion="Didn't realise the event was online."
+            other_reason_for_withdrawing="Didn't realise the event was online."
         )
 
         # Add admin account to all events

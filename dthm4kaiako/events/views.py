@@ -1,6 +1,7 @@
 """Views for events registration."""
 
 # from turtle import heading
+# from multiprocessing import context
 from django.views import generic
 from django.utils.timezone import now
 from django_filters.views import FilterView
@@ -52,6 +53,7 @@ from django.utils.html import format_html_join
 from datetime import datetime
 from django.core.mail import send_mail
 from events.utils import can_view_event_management_content
+import re
 
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, you are not a staff member of that event."
 
@@ -249,6 +251,12 @@ def delete_registration_via_registration_page(request, pk):
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
 
+    if event is None:
+        return HttpResponseRedirect(reverse("events:home"))
+
+    if event_registration is None or request.user != event_registration.user:
+        return HttpResponseRedirect(reverse("events:event_registrations"))
+
     if request.method == 'POST':
         create_deleted_event_registration(event, request)
         event_registration.delete()
@@ -266,6 +274,12 @@ def delete_registration_via_event_page(request, pk):
     event = Event.objects.get(pk=event_registration.event.pk)
     user = event_registration.user
 
+    if event is None:
+        return HttpResponseRedirect(reverse("events:home"))
+
+    if event_registration is None or request.user != event_registration.user:
+        return HttpResponseRedirect(reverse("events:home"))
+
     if request.method == 'POST':
         create_deleted_event_registration(event, request)
         event_registration.delete()
@@ -279,12 +293,18 @@ def delete_registration_via_event_page(request, pk):
 def create_deleted_event_registration(event, request):
     """Create DeletedEventRegistration based on the retrieved deletion reason and/or other reason for deletion."""
     reason = request.POST['withdraw_reason']
-    other_reason = request.POST['other_reason_for_deletion']
-    deleted_event_registration = DeletedEventRegistration.objects.create(
-        withdraw_reason=reason,
-        event=event,
-        other_reason_for_deletion=other_reason
-    )
+    other_reason = request.POST['other_reason_for_withdrawing']
+    if other_reason != "":
+        deleted_event_registration = DeletedEventRegistration.objects.create(
+            withdraw_reason=reason,
+            event=event,
+            other_reason_for_withdrawing=other_reason
+        )
+    else:
+        deleted_event_registration = DeletedEventRegistration.objects.create(
+            withdraw_reason=reason,
+            event=event,
+        )
     deleted_event_registration.save()
 
 
@@ -294,7 +314,9 @@ def validate_event_registration_form(
             terms_and_conditions_form,
             billing_required,
             billing_details_form,
-            participant_type_form
+            participant_type_form,
+            request,
+            is_physical_event
         ):
     """Validate that the event registration is valid.
 
@@ -302,15 +324,50 @@ def validate_event_registration_form(
     to be only validated if they are needed i.e. are rended.
     """
     if (
-            event_registration_form.is_valid() and
-            user_update_details_form.is_valid() and
-            terms_and_conditions_form.is_valid() and
-            (not billing_required or billing_details_form.is_valid()) and
-            participant_type_form.is_valid()
-       ):
-        return True
+        event_registration_form.is_valid() and
+        user_update_details_form.is_valid() and
+        terms_and_conditions_form.is_valid() and
+        (not billing_required or billing_details_form.is_valid()) and
+        participant_type_form.is_valid()
+    ):
+
+        phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
+
+        if is_physical_event and not emergency_details_valid(event_registration_form):
+            messages.error(
+                request,
+                (
+                    'Please provide emergency contact details.'
+                )
+            )
+        elif is_physical_event and not phone_number_pattern.match(
+            event_registration_form.cleaned_data['emergency_contact_phone_number']
+        ):
+            messages.error(
+                request,
+                (
+                    'Invalid phone number. Phone number can include the area code, follow by any '
+                    'number of numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
+                )
+            )
+        else:
+            return True
     else:
         return False
+
+
+def emergency_details_valid(event_registration_form):
+    """Return True is emergency contact details are valid, else False."""
+    if event_registration_form.is_valid():
+        if (
+            event_registration_form.cleaned_data['emergency_contact_first_name'] is None
+            or event_registration_form.cleaned_data['emergency_contact_last_name'] is None
+            or event_registration_form.cleaned_data['emergency_contact_phone_number'] is None
+            or event_registration_form.cleaned_data['emergency_contact_relationship'] is None
+        ):
+            return False
+        else:
+            return True
 
 
 def does_registration_exist(user, event):
@@ -344,6 +401,7 @@ def register_for_event(request, pk):
     bill_to = ""
     participant_type_form = None
     new_participant_type = ""
+    is_physical_event = not event.accessible_online
 
     registration_exists = does_registration_exist(user, event)
 
@@ -369,6 +427,8 @@ def register_for_event(request, pk):
             )
             participant_type_form = ParticipantTypeForm(event)
 
+        dietary_requirements = DietaryRequirement.objects.filter(users=user.pk)
+
         user_update_details_form = UserUpdateDetailsForm(
             instance=user,
             initial={
@@ -378,7 +438,8 @@ def register_for_event(request, pk):
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
                 'mobile_phone_number_confirm': user.mobile_phone_number,
-                'how_we_can_best_look_after_you': user.medical_notes
+                'how_we_can_best_look_after_you': user.medical_notes,
+                'dietary_requirements': dietary_requirements
             })  # autoload existing event registration's user data
 
         if billing_required:
@@ -407,6 +468,8 @@ def register_for_event(request, pk):
     elif request.method == 'POST':
         # If creating a new registration or updating existing registration (as Django forms don't support PUT)
 
+        dietary_requirements = DietaryRequirement.objects.filter(users=user.pk)
+
         user_update_details_form = UserUpdateDetailsForm(
             request.POST,
             instance=user,
@@ -417,7 +480,8 @@ def register_for_event(request, pk):
                 'email_address_confirm': user.email_address,
                 'mobile_phone_number': user.mobile_phone_number,
                 'mobile_phone_number_confirm': user.mobile_phone_number,
-                'how_we_can_best_look_after_you': user.medical_notes
+                'how_we_can_best_look_after_you': user.medical_notes,
+                'dietary_requirements': dietary_requirements
             }
         )
 
@@ -440,8 +504,11 @@ def register_for_event(request, pk):
             terms_and_conditions_form,
             billing_required,
             billing_details_form,
-            participant_type_form
+            participant_type_form,
+            request,
+            is_physical_event
            ):
+
             user.first_name = user_update_details_form.cleaned_data['first_name']
             user.last_name = user_update_details_form.cleaned_data['last_name']
             all_educational_entities = user_update_details_form.cleaned_data['educational_entities']
@@ -623,7 +690,6 @@ def manage_event(request, pk):
         return HttpResponseRedirect(reverse("events:events_management"))
 
     event_registrations = EventRegistration.objects.filter(event=event)
-
     pending_event_registrations = EventRegistration.objects.filter(event=event, status=1)
     approved_event_registrations = EventRegistration.objects.filter(event=event, status=2)
     declined_event_registrations = EventRegistration.objects.filter(event=event, status=3)
@@ -631,8 +697,9 @@ def manage_event(request, pk):
     registration_form = event.registration_form
     context = {
         'event': event,
+        'event_pk': event.pk
     }
-    context['event_pk'] = event.pk
+    user = request.user
 
     if request.method == 'GET':
 
@@ -640,32 +707,31 @@ def manage_event(request, pk):
         context['pending_event_registrations'] = pending_event_registrations
         context['approved_event_registrations'] = approved_event_registrations
         context['declined_event_registrations'] = declined_event_registrations
+        context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
+        context['event_registrations'] = event_registrations
+        context['registration_form_pk'] = registration_form.pk
+        context['is_free'] = event.is_free
+        context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+        context['new_participant_form'] = ParticipantTypeCreationForm()
+        context['update_participant_form'] = ParticipantTypeCreationForm()
+        context['contact_participants_form'] = ContactParticipantsForm(
+            initial={
+                'from_email': event.contact_email_address,
+                'name': user
+                }
+            )
 
         if is_in_past_or_cancelled(event):
             context['manage_event_details_form'] = ManageEventDetailsReadOnlyForm(instance=event)
             context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsReadOnlyForm(
                 instance=registration_form
             )
-            context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
-            context['registration_form_pk'] = registration_form.pk
-            context['is_free'] = event.is_free
-            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_participant_form'] = ParticipantTypeCreationForm()
-            context['update_participant_form'] = ParticipantTypeCreationForm()
-            context['contact_participants_form'] = ContactParticipantsForm()
         else:
             context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
             context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(
                 instance=registration_form
             )
-            context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
-            context['event_registrations'] = event_registrations
-            context['registration_form_pk'] = registration_form.pk
-            context['is_free'] = event.is_free
-            context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-            context['new_participant_form'] = ParticipantTypeCreationForm()
-            context['update_participant_form'] = ParticipantTypeCreationForm()
-            context['contact_participants_form'] = ContactParticipantsForm()
+
         return render(request, 'events/event_management.html', context)
 
 
@@ -706,6 +772,8 @@ def manage_event_registration(request, pk_event, pk_registration):
 
     dietary_requirements = DietaryRequirement.objects.filter(users=user)
     educational_entities = Entity.objects.filter(users=user)
+    participant_type_object = ParticipantType.objects.get(event_registrations=event_registration.pk)
+    show_paid = not participant_type_object.is_free()
 
     if request.method == 'GET':
         if is_in_past_or_cancelled(event):
@@ -713,7 +781,9 @@ def manage_event_registration(request, pk_event, pk_registration):
         else:
             manage_registration_form = ManageEventRegistrationForm(
                 event,
-                initial={'participant_type': event_registration.participant_type.pk}
+                show_paid,
+                initial={'participant_type': event_registration.participant_type.pk},
+                instance=event_registration
             )
 
     elif request.method == 'POST':
@@ -723,23 +793,42 @@ def manage_event_registration(request, pk_event, pk_registration):
         else:
             manage_registration_form = ManageEventRegistrationForm(
                 event,
+                show_paid,
                 request.POST,
+                instance=event_registration,
+                initial={'participant_type': event_registration.participant_type.pk},
             )
 
         if manage_registration_form.is_valid():
 
+            updated_status = manage_registration_form.cleaned_data['status']
             updated_staff_comments = manage_registration_form.cleaned_data['staff_comments']
             updated_admin_billing_comments = manage_registration_form.cleaned_data['admin_billing_comments']
-            update_paid = manage_registration_form.cleaned_data['paid']
-            updated_participant_type = manage_registration_form.cleaned_data['participant_type']
+            updated_participant_type_pk = manage_registration_form.cleaned_data['participant_type']
 
-            EventRegistration.objects.filter(pk=pk_registration).update(
+            updated_participant_type = ParticipantType.objects.get(pk=updated_participant_type_pk)
+            registration = EventRegistration.objects.filter(pk=pk_registration)
+            
+            registration.update(
+                status=updated_status,
                 staff_comments=updated_staff_comments,
                 admin_billing_comments=updated_admin_billing_comments,
-                paid=update_paid,
                 participant_type=updated_participant_type,
             )
-            event_registration.save()
+
+            if (show_paid):
+                update_paid = manage_registration_form.cleaned_data['paid']
+                registration.update(
+                    status=updated_status,
+                    staff_comments=updated_staff_comments,
+                    admin_billing_comments=updated_admin_billing_comments,
+                    paid=update_paid,
+                    participant_type=updated_participant_type,
+                )
+
+            updated_event_registration = EventRegistration.objects.get(pk=pk_registration)
+            updated_event_registration.save()
+
             messages.success(
                 request,
                 f"You have updated {event_registration.user.first_name} {event_registration.user.last_name}\'s " +
@@ -1266,17 +1355,19 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
     writer = csv.writer(response)
 
     # Designate the model
-    event_registrations = EventRegistration.objects.filter(event=event)
+    APPROVED = 2
+    event_registrations = EventRegistration.objects.filter(event=event, status=APPROVED)
 
     # Add column headings to the csv file
     writer.writerow(heading_row)
 
     dietary_reqs_dict = dict()
 
-    event_registrations = EventRegistration.objects.filter(event=event)
-
     for registration in event_registrations:
         dietary_requirements = [dR.name for dR in registration.user.dietary_requirements.all()]
+        if "Give me coffee and no-one gets hurt" in dietary_requirements:
+            dietary_requirements.remove("Give me coffee and no-one gets hurt")
+
         if frozenset(dietary_requirements) in dietary_reqs_dict:
             dietary_reqs_dict[frozenset(dietary_requirements)] += 1
         else:
@@ -1346,6 +1437,14 @@ def publish_event(request, pk):
         or (event.published is False and event.end is None)
     ):
         messages.error(request, 'Your event must have a start and end datetime to be published.')
+    elif (
+        (event.published is False and event.registration_form.open_datetime is None)
+        or (event.published is False and event.registration_form.close_datetime is None)
+    ):
+        messages.error(
+            request,
+            'Your event must have datetimes for when its registrations open and close before it is published.'
+        )
     else:
         event_query_set.update(published=True)
         updated_event = Event.objects.get(id=event_id)
@@ -1387,41 +1486,55 @@ def create_new_participant_type(request, pk):
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
-    # TODO: validate name and price!
+    if request.method == 'POST':
+        participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
 
-    name = request.POST['name']
-    price = request.POST['price']
+        if participant_type_creation_form.is_valid():
+            name = participant_type_creation_form.cleaned_data['name']
+            price = participant_type_creation_form.cleaned_data['price']
 
-    if ParticipantType.objects.filter(name=name, price=price).exists():
-        # participant type exists in general
-        if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
-            # participant type already exists for this event
-            participant_type = ParticipantType.objects.create(name=name, price=price)
-            messages.warning(
-                request,
-                f"The participant type {participant_type} already exists for this event."
-            )
+            if ParticipantType.objects.filter(name=name, price=price).exists():
+                # participant type exists in general
+                if ParticipantType.objects.filter(name=name, price=price, events=event).exists():
+                    # participant type already exists for this event
+                    participant_type = ParticipantType.objects.create(name=name, price=price)
+                    messages.warning(
+                        request,
+                        f"The participant type {participant_type} already exists for this event."
+                    )
+                else:
+                    # participant type does exist but is not associated with this event yet
+                    existing_participant_type = ParticipantType.objects.get(name=name, price=price)
+                    event.participant_types.add(existing_participant_type)
+                    event.save()
+                    existing_participant_type.save()
+                    messages.success(
+                        request,
+                        f"The participant type {existing_participant_type} has been created."
+                    )
+            else:
+                # participant doesn't exist yet in general
+                new_participant_type = ParticipantType.objects.create(name=name, price=price)
+                event.participant_types.add(new_participant_type)
+                event.save()
+                new_participant_type.save()
+                messages.success(
+                    request,
+                    "The participant type " + str(new_participant_type) + " has been created."
+                )
+
         else:
-            # participant type does exist but is not associated with this event yet
-            existing_participant_type = ParticipantType.objects.get(name=name, price=price)
-            event.participant_types.add(existing_participant_type)
-            event.save()
-            existing_participant_type.save()
-            messages.success(
+            messages.error(
                 request,
-                f"The participant type {existing_participant_type} has been created."
+                "The participant type was unable to be created since the price was not in the format of $1.23."
             )
-    else:
-        # participant doesn't exist yet in general
-        new_participant_type = ParticipantType.objects.create(name=name, price=price)
-        event.participant_types.add(new_participant_type)
-        event.save()
-        new_participant_type.save()
-        messages.success(
-            request,
-            "The participant type " + str(new_participant_type) + " has been created."
-        )
-    return redirect(reverse('events:event_management', kwargs={'pk': pk}))
+
+        context = {
+            'new_participant_form': participant_type_creation_form
+            }
+        # return render(request, 'events/event_management.html', context)
+
+    return redirect(reverse('events:event_management', kwargs={'pk': pk}), context)
 
 
 @login_required
@@ -1478,9 +1591,6 @@ def delete_participant_type(request, event_pk, participant_type_pk):
     event = Event.objects.get(pk=event_pk)
     participant_type = get_object_or_404(ParticipantType, id=participant_type_pk)
 
-    participant_type_name = participant_type.name
-    participant_type_price = participant_type.price
-
     if not can_view_event_management_content(request, event):
         messages.warning(
             request,
@@ -1499,7 +1609,7 @@ def delete_participant_type(request, event_pk, participant_type_pk):
 
     messages.success(
         request,
-        f'You have deleted the participant type of {participant_type_name} (${participant_type_price})'
+        f'You have deleted the participant type of {participant_type})'
     )
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
@@ -1519,8 +1629,16 @@ def email_participants(request, event_pk):
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
+    user = request.user
+
     if request.method == 'POST':
-        contact_participants_form = ContactParticipantsForm(request.POST)
+        contact_participants_form = ContactParticipantsForm(
+            request.POST,
+            initial={
+                'from_email': event.contact_email_address,
+                'name': user,
+                }
+            )
         if contact_participants_form.is_valid():
             subject = contact_participants_form.cleaned_data['subject']
             from_email = contact_participants_form.cleaned_data['from_email']
@@ -1603,8 +1721,8 @@ def email_participants(request, event_pk):
     context['registration_form_pk'] = registration_form.pk
     context['is_free'] = event.is_free
     context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-    context['new_participant_form'] = ParticipantTypeCreationForm()
-    context['update_participant_form'] = ParticipantTypeCreationForm()
+    # context['new_participant_form'] = ParticipantTypeCreationForm()
+    # context['update_participant_form'] = ParticipantTypeCreationForm()
     context['contact_participants_form'] = contact_participants_form
     # use the existing form in order to load the valid inputs in the form whilst showing errors
 

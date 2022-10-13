@@ -1,4 +1,4 @@
-from django.urls import reverse, resolve
+from django.urls import reverse
 from http import HTTPStatus
 from django.test.utils import override_settings
 from events.models import Location

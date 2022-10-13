@@ -151,13 +151,28 @@ class ParticipantType(models.Model):
         else:
             return f"{self.name} (${'{0:.2f}'.format(float(self.price))})"
 
-    # TODO: fix me!
     def is_free(self):
         """Determine whether the event participant type is free or not.
 
         Returns True if participant type is free.
         """
         return '{0:.2f}'.format(float(self.price)) == "0.00"
+
+    def clean(self):
+        """Validate participant type model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        price_pattern_with_decimal_places = re.compile("^\d+(\.\d{2})?$")
+
+        if price_pattern_with_decimal_places.match('{0:.2f}'.format(self.price)):
+            raise ValidationError(
+                {
+                    'price':
+                    _('Price must be be in the form of $1.23 or $1.' )
+                }
+            )
 
 
 class Event(models.Model):
@@ -331,7 +346,7 @@ class Event(models.Model):
         """Return ercentage of capacity that the event is at e.g. at 60% capacity."""
         if self.capacity is not None:
             registration_counts = self.registration_status_counts
-            return registration_counts['approved'] // self.capacity * 100
+            return float(registration_counts['approved']) / self.capacity * 100
         else:
             return None
 
@@ -474,6 +489,24 @@ class Event(models.Model):
         return participant_type_counts
 
     @property
+    def participant_type_counts_approved(self):
+        """Count the number of event participants per type."""
+        participant_type_counts = {}
+        APPROVED = 2
+        registrations = EventRegistration.objects.filter(event=self.pk, status=APPROVED)
+
+        for participant_type in self.participant_types.all():
+            key_string = str(participant_type)
+            participant_type_counts[key_string] = 0
+
+        for registration in registrations:
+            key_string = str(registration.participant_type)
+            if key_string in participant_type_counts:
+                participant_type_counts[key_string] += 1
+
+        return participant_type_counts
+
+    @property
     def reasons_for_withdrawing_counts(self):
         """Count the number of each reason for an event registration to be withdrawn.
 
@@ -522,7 +555,8 @@ class Event(models.Model):
         deleted_event_registrations = DeletedEventRegistration.objects.filter(event=self)
         other_reasons = []
         for deleted_event_registration in deleted_event_registrations:
-            other_reasons.append(deleted_event_registration.other_reason_for_deletion)
+            if deleted_event_registration.other_reason_for_withdrawing != "":
+                other_reasons.append(deleted_event_registration.other_reason_for_withdrawing)
         return other_reasons
 
     def __str__(self):
@@ -751,29 +785,29 @@ class EventRegistration(models.Model):
     emergency_contact_first_name = models.CharField(
         max_length=200,
         verbose_name='emergency contact\'s first name',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_last_name = models.CharField(
         max_length=200,
         verbose_name='emergency contact\'s last name',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_relationship = models.CharField(
         max_length=150,
         verbose_name='relationship with emergency contact',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     emergency_contact_phone_number = models.CharField(
         max_length=40,
         verbose_name='emergency contact\'s phone number',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
         )
     paid = models.BooleanField(
@@ -809,7 +843,7 @@ class EventRegistration(models.Model):
 
     def __str__(self):
         """Return string representation of an event registration."""
-        return f'{self.user} - {self.user.email_address}'
+        return f'{self.user}'
 
     def clean(self):
         """Validate event registration model attributes.
@@ -817,8 +851,73 @@ class EventRegistration(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
+        try:
+            event = self.event
+        except EventRegistration._meta.model.event.RelatedObjectDoesNotExist:
+            event = None
+
+        if (
+            event is not None
+            and self.event.accessible_online is False
+            and self.emergency_contact_first_name is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_first_name':
+                    _(
+                        'Emergency contact first name is required for in person event.'
+                    )
+                }
+            )
+
+        if (
+            event is not None
+            and self.event.accessible_online is False
+            and self.emergency_contact_last_name is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_last_name':
+                    _(
+                        'Emergency contact last name is required for in person event.'
+                    )
+                }
+            )
+
+        if (
+            event is not None
+            and self.event.accessible_online is False
+            and self.emergency_contact_relationship is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_relationship':
+                    _(
+                        'Emergency contact relationship is required for in person event.'
+                    )
+                }
+            )
+
+        if (
+            event is not None
+            and self.event.accessible_online is False
+            and self.emergency_contact_phone_number is None
+        ):
+            raise ValidationError(
+                {
+                    'emergency_contact_phone_number':
+                    _(
+                        'Emergency contact phone number is required for in person event.'
+                    )
+                }
+            )
+
         phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
-        if not phone_number_pattern.match(str(self.emergency_contact_phone_number)):
+        if (
+            event is not None
+            and self.event.accessible_online is False
+            and not phone_number_pattern.match(str(self.emergency_contact_phone_number))
+        ):
             raise ValidationError(
                 {
                     'emergency_contact_phone_number':
@@ -881,7 +980,7 @@ class DeletedEventRegistration(models.Model):
         default=PREFER_NOT_TO_SAY,
         help_text="Reason the participant has chosen to withdraw their registration."
     )
-    other_reason_for_deletion = models.CharField(
+    other_reason_for_withdrawing = models.CharField(
         max_length=300,
         null=True,
         blank=True,
@@ -900,7 +999,7 @@ class DeletedEventRegistration(models.Model):
         that there is a related reason for this (not an empty string),
         otherwise, we change the reason from 'other' to 'prefer not to say'.
         """
-        if self.withdraw_reason == 7 and not self.other_reason_for_deletion:
+        if self.withdraw_reason == 7 and not self.other_reason_for_withdrawing:
             self.withdraw_reason = 1
         super(DeletedEventRegistration, self).save(*args, **kwargs)
 
@@ -977,7 +1076,9 @@ class RegistrationForm(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        if self.open_datetime is not None and now() > self.open_datetime:
+        if self.open_datetime is not None and self.open_datetime < now() and self.event.published is False:
+            # Prior publishing, organiser must ensure the open date is in the future.
+            # After publishing, open date can be in the past as the organiser will possibly update the close date time.
             raise ValidationError(
                 {
                     'open_datetime':
@@ -998,6 +1099,14 @@ class RegistrationForm(models.Model):
                 {
                     'open_datetime':
                     _('At least one participant type is required for registrations to open.')
+                }
+            )
+
+        if self.close_datetime and self.close_datetime >= self.event.start:
+            raise ValidationError(
+                {
+                    'close_datetime':
+                    _('Close datetime must be before the event\'s start time')
                 }
             )
 

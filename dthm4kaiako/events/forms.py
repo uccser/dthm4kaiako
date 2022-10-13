@@ -60,16 +60,15 @@ class EventRegistrationForm(ModelForm):
         self.helper.form_tag = False
         self.helper.disable_csrf = True
 
-        # TODO: figure out how to make emergency details not visible nor mandatory in online event registration forms
-        # if 'initial' in kwargs:
-        #     initial_data_dict = kwargs.get('initial')
-        #     if 'show_emergency_contact_fields' in initial_data_dict:
-        #         self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
-        #         if not self.show_emergency_contact_fields:
-        #             del self.fields['emergency_contact_first_name']
-        #             del self.fields['emergency_contact_last_name']
-        #             del self.fields['emergency_contact_relationship']
-        #             del self.fields['emergency_contact_phone_number']
+        if 'initial' in kwargs:
+            initial_data_dict = kwargs.get('initial')
+            if 'show_emergency_contact_fields' in initial_data_dict:
+                self.show_emergency_contact_fields = initial_data_dict.get('show_emergency_contact_fields')
+                if not self.show_emergency_contact_fields:
+                    del self.fields['emergency_contact_first_name']
+                    del self.fields['emergency_contact_last_name']
+                    del self.fields['emergency_contact_relationship']
+                    del self.fields['emergency_contact_phone_number']
 
     class Meta:
         """Metadata for EventRegistrationForm class."""
@@ -139,17 +138,17 @@ class WithdrawEventRegistrationForm(ModelForm):
         """Metadata for WithdrawEventRegistrationForm class."""
 
         model = DeletedEventRegistration
-        fields = ['withdraw_reason', 'other_reason_for_deletion']
+        fields = ['withdraw_reason', 'other_reason_for_withdrawing']
 
 
 # ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventRegistrationForm(ModelForm):
-    """Simple form to allow a user to submit an registration to attend an event."""
+    """Simple form to allow an event organiser to manage the registration form that the event participant submitted to attend an event."""
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
-    def __init__(self, event, *args, **kwargs):
+    def __init__(self, event, show_paid, *args, **kwargs):
         """Add crispyform helper to form."""
         super(ManageEventRegistrationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -160,6 +159,9 @@ class ManageEventRegistrationForm(ModelForm):
         for participant_type in event.participant_types.all():
             choices += [(participant_type.pk, str(participant_type))]
         self.fields['participant_type'].choices = choices
+
+        if not show_paid: 
+            del self.fields['paid']
 
     def clean(self):
         """Clean participant type so that ones is selected."""
@@ -177,7 +179,7 @@ class ManageEventRegistrationForm(ModelForm):
 
 
 class ManageEventDetailsForm(ModelForm):
-    """Simple form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Simple form for managing (e.g. deleting, updating) the information of an event as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -194,7 +196,7 @@ class ManageEventDetailsForm(ModelForm):
 
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
-    """Simple form for updating the event registration form information as an event staff member."""
+    """Simple form for updating the event registration form information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""
@@ -212,7 +214,7 @@ class ManageEventRegistrationFormDetailsForm(ModelForm):
 
 
 class ManageEventLocationForm(ModelForm):
-    """Simple form for updating the event location information as an event staff member."""
+    """Simple form for updating the event location information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventLocationForm class."""
@@ -298,7 +300,6 @@ class ContactParticipantsForm(forms.Form):
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
 
-    # TODO: figure out how to get validation for this to work - currently wipes form when invalid
     send_to_approved_participants = forms.BooleanField(
         required=False,
         label='Send to event participants who have been approved'
@@ -313,7 +314,7 @@ class ContactParticipantsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
-        super().__init__(*args, **kwargs)
+        super(ContactParticipantsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
@@ -379,7 +380,7 @@ class ManageEventRegistrationReadOnlyForm(ModelForm):
 
 
 class ManageEventDetailsReadOnlyForm(ModelForm):
-    """Form for managing (e.g. deleting, updating) the information of an event as an event staff member."""
+    """Form for managing (e.g. deleting, updating) the information of an event as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventDetailsForm class."""
@@ -399,6 +400,7 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
             self.fields['name'].widget.attrs['disabled'] = True
+            self.fields['description'].widget.attrs['disabled'] = True
             self.fields['show_schedule'].widget.attrs['disabled'] = True
             self.fields['featured'].widget.attrs['disabled'] = True
             self.fields['registration_type'].widget.attrs['disabled'] = True
@@ -413,10 +415,11 @@ class ManageEventDetailsReadOnlyForm(ModelForm):
             self.fields['is_catered'].widget.attrs['disabled'] = True
             self.fields['contact_email_address'].widget.attrs['disabled'] = True
             self.fields['event_staff'].widget.attrs['disabled'] = True
+            self.fields['capacity'].widget.attrs['disabled'] = True
 
 
 class ManageEventRegistrationFormDetailsReadOnlyForm(ModelForm):
-    """Form for updating the event registration form information as an event staff member."""
+    """Form for updating the event registration form information as an event organiser."""
 
     class Meta:
         """Metadata for ManageEventRegistrationFormDetailsForm class."""
