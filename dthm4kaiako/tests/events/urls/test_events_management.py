@@ -19,7 +19,6 @@ class EventsManagementURLTest(BaseTestWithDB):
     def test_events_management_resolve_provides_correct_view_name(self):
         self.assertEqual(resolve("/events/manage/").view_name, "events:events_management")
 
-    # TODO: fix - giving 302 instead of 200
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_events_management_returns_200_when_event_exists(self):
         generate_users()

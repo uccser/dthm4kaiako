@@ -45,7 +45,6 @@ class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
             "events:generate_event_dietary_requirement_counts_csv"
             )
 
-    # TODO: fix - giving 302 instead of 200
     def test_generate_event_dietary_requirement_counts_csv_url_returns_200_when_event_exists(self):
         generate_addresses()
         generate_serieses()

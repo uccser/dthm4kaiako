@@ -17,7 +17,6 @@ from events.models import (
     Location,
     Event,
 )
-from django.test.client import RequestFactory
 
 
 class GenerateEventCSVURLTest(BaseTestWithDB):
