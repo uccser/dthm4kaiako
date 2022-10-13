@@ -1564,12 +1564,12 @@ def update_participant_type(request, event_pk, participant_type_pk):
     # check if new participant type already exists
     if ParticipantType.objects.filter(name=request.POST.get('name'), price=request.POST.get('price')).exists():
         # add the event to the list of events that use the existing "new" participant type
-        new_participant_type = ParticipantType.objects.get(name=request.POST['name'], price=request.POST['price'])
+        new_participant_type = ParticipantType.objects.get(name=request.POST.get('name'), price=request.POST.get('price'))
         new_participant_type.events.add(event)
         new_participant_type.save()
     else:
         # "update" participant by creating new participant type
-        new_participant_type = ParticipantType.objects.create(name=request.POST['name'], price=request.POST['price'])
+        new_participant_type = ParticipantType.objects.create(name=request.POST.get('name'), price=request.POST.get('price'))
         new_participant_type.events.add(event)
         new_participant_type.save()
 
