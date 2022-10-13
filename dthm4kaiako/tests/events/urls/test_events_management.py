@@ -3,6 +3,7 @@ from http import HTTPStatus
 from tests.dthm4kaiako_test_data_generator import generate_users
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
+from django.test.utils import override_settings
 
 
 class EventsManagementURLTest(BaseTestWithDB):
@@ -19,6 +20,7 @@ class EventsManagementURLTest(BaseTestWithDB):
         self.assertEqual(resolve("/events/manage/").view_name, "events:events_management")
 
     # TODO: fix - giving 302 instead of 200
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_events_management_returns_200_when_event_exists(self):
         generate_users()
         self.client.force_login(User.objects.get(id=1))
