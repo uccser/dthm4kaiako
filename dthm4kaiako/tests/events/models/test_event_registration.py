@@ -1,6 +1,5 @@
-"""Unit tests for registration"""
+"""Unit tests for event registration model"""
 
-from django.test import TestCase
 from django.contrib.auth.models import User
 from events.models import (
     Event,
@@ -17,8 +16,8 @@ from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
-#TODO: fix - not being run
-class EventRegistrationTests(TestCase):
+
+class EventRegistrationTests(BaseTestWithDB):
 
     # ------------------------------- tests for __str__ ----------------------------
     def test_event_registration_str(self):

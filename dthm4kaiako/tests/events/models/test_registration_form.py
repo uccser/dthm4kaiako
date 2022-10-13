@@ -1,6 +1,5 @@
-"""Unit tests for registration form"""
+"""Unit tests for registration form model"""
 
-from django.test import TestCase
 from django.contrib.auth.models import User
 from events.models import (
     Event,
@@ -18,15 +17,13 @@ from tests.dthm4kaiako_test_data_generator import (
     generate_event_registrations,
     generate_serieses,
 )
-from unittest import mock
-import datetime
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
-class RegistrationFormTests(TestCase):
+class RegistrationFormTests(BaseTestWithDB):
 
     @classmethod
     def setUpTestData(cls):
@@ -35,7 +32,6 @@ class RegistrationFormTests(TestCase):
         generate_locations()
         generate_events()
         generate_users()
-        # generate_participant_types()
         generate_event_registrations()
 
     @classmethod
@@ -45,7 +41,6 @@ class RegistrationFormTests(TestCase):
         Location.objects.all().delete()
         Event.objects.all().delete()
         User.objects.all().delete()
-        # ParticipantType.objects.all().delete()
         EventRegistration.objects.all().delete()
 
     # ------------------------------- tests for get_absolute_url ------------------------------

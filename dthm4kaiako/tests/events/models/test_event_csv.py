@@ -1,10 +1,7 @@
-"""Unit tests for address"""
+"""Unit tests for event CSV model"""
 
 from django.test import TestCase
-from events.models import Address, EventRegistration
-from tests.dthm4kaiako_test_data_generator import (
-    generate_addresses
-)
+from events.models import EventCSV
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
 

@@ -1,16 +1,12 @@
-"""Unit tests for address"""
+"""Unit tests for event registrations csv model"""
 
-from django.test import TestCase
-from events.models import Address, EventRegistration
-from tests.dthm4kaiako_test_data_generator import (
-    generate_addresses
-)
+from events.models import EventRegistrationCSV
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
-class AddressTests(TestCase):
+class EventRegistrationsCSVTests(BaseTestWithDB):
 
     pass

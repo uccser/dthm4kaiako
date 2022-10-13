@@ -1,4 +1,4 @@
-"""Unit tests for address"""
+"""Unit tests for location model"""
 
 from events.models import (
     Location,

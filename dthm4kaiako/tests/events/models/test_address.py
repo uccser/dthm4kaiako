@@ -1,8 +1,7 @@
-"""Unit tests for address"""
+"""Unit tests for address model"""
 
 from events.models import (
-    Location,
-    Address,
+    Address
 )
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
