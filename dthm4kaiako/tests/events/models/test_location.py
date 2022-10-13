@@ -2,7 +2,6 @@
 
 from events.models import (
     Location,
-    Address,
 )
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
