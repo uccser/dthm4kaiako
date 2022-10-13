@@ -46,7 +46,7 @@ class CreateNewParticipantTypeURLTest(BaseTestWithDB):
             "events:create_new_participant_type"
         )
 
-    # TODO: fix - giving 302 instead of 200
+    # TODO: fix - need to mock request body
     def test_create_new_participant_type_url_returns_200_when_event_exists(self):
         generate_addresses()
         generate_serieses()

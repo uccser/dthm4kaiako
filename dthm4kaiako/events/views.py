@@ -1721,8 +1721,8 @@ def email_participants(request, event_pk):
     context['registration_form_pk'] = registration_form.pk
     context['is_free'] = event.is_free
     context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
-    # context['new_participant_form'] = ParticipantTypeCreationForm()
-    # context['update_participant_form'] = ParticipantTypeCreationForm()
+    context['new_participant_form'] = ParticipantTypeCreationForm()
+    context['update_participant_form'] = ParticipantTypeCreationForm()
     context['contact_participants_form'] = contact_participants_form
     # use the existing form in order to load the valid inputs in the form whilst showing errors
 
