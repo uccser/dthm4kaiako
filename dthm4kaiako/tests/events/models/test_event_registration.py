@@ -19,6 +19,14 @@ NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 class EventRegistrationTests(BaseTestWithDB):
 
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
+        EventRegistration.objects.all().delete()
+        ParticipantType.objects.all().delete()
+        Location.objects.all().delete()
+        Address.objects.all().delete()
+
     # ------------------------------- tests for __str__ ----------------------------
     def test_event_registration_str(self):
         user_kate = User.objects.create_user(
@@ -58,18 +66,30 @@ class EventRegistrationTests(BaseTestWithDB):
 
         participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
 
+        billing_address_1 = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address_1.save()
+
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
             participant_type= participant_type,
             user=User.objects.get(id=1),
             event=Event.objects.get(id=1),
-            billing_physical_address=Address.objects.get(id=1),
+            billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
         )
         event_registration_1_pending.status = 1
         event_registration_1_pending.save()
 
-        self.assertEqual(str(event_registration_1_pending), event_registration_1_pending.user)
+        expected = event_registration_1_pending.user.first_name + " " + event_registration_1_pending.user.last_name
+
+        self.assertEqual(str(event_registration_1_pending), expected)
 
     # ------------------------------- tests for status_string_for_user ----------------------------
 
@@ -110,13 +130,24 @@ class EventRegistrationTests(BaseTestWithDB):
         event_physical_register_1.save()
 
         participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
+        participant_type.save()
+
+        billing_address_1 = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address_1.save()
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
             participant_type= participant_type,
             user=User.objects.get(id=1),
             event=Event.objects.get(id=1),
-            billing_physical_address=Address.objects.get(id=1),
+            billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
         )
         event_registration_1_pending.status = 1
@@ -162,13 +193,24 @@ class EventRegistrationTests(BaseTestWithDB):
         event_physical_register_1.save()
 
         participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
+        participant_type.save()
+
+        billing_address_1 = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address_1.save()
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
             participant_type= participant_type,
             user=User.objects.get(id=1),
             event=Event.objects.get(id=1),
-            billing_physical_address=Address.objects.get(id=1),
+            billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
         )
         event_registration_1_pending.status = 2
@@ -214,13 +256,24 @@ class EventRegistrationTests(BaseTestWithDB):
         event_physical_register_1.save()
 
         participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
+        participant_type.save()
+
+        billing_address_1 = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address_1.save()
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
             participant_type= participant_type,
             user=User.objects.get(id=1),
             event=Event.objects.get(id=1),
-            billing_physical_address=Address.objects.get(id=1),
+            billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
         )
         event_registration_1_pending.status = 3

@@ -1102,7 +1102,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.close_datetime and self.close_datetime >= self.event.start:
+        if self.close_datetime and self.close_datetime.date() >= self.event.start:
             raise ValidationError(
                 {
                     'close_datetime':
