@@ -15,7 +15,7 @@ from events.views import generate_event_csv_view
 from unittest import mock
 
 
-class EventUpcomingViewTest(BaseTestWithDB):
+class GenerateEventCSVViewTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):
