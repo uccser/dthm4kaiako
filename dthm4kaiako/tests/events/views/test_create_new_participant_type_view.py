@@ -51,7 +51,8 @@ class CreateNewParticipantTypeURLTest(BaseTestWithDB):
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
-    def test_create_new_participant_type_view_and_logged_in_then_creates_new_participant_type_successfully(self):
+    @mock.patch('events.views.ParticipantTypeCreationForm')
+    def test_create_new_participant_type_view_and_logged_in_then_creates_new_participant_type_successfully(self, mock_form_class):
         '''Redirect to manage event page.'''
         event = Event.objects.create(
             name="Security in CS",
@@ -79,10 +80,13 @@ class CreateNewParticipantTypeURLTest(BaseTestWithDB):
             }
         url = reverse('events:create_new_participant_type', kwargs=kwargs)
 
-        with mock.patch('events.views.ParticipantTypeCreationForm.is_valid') as mock_participant_type_creation_form:
-            mock_participant_type_creation_form.return_value = True
-            self.client.post(url, {'name':"Teacher", 'price': "10.0"})
-            self.assertEqual(ParticipantType.objects.last().name, "Teacher")
+        mock_form_class.is_valid = True
+        mock_form_class.return_value.cleaned_data = {
+            'name': "Teacher",
+            'price': "10.0"
+        }
+        self.client.post(url, {'name':"Teacher", 'price': "10.0"})
+        self.assertEqual(ParticipantType.objects.last().name, "Teacher")
 
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_not_logged_in(self):
