@@ -1,16 +1,8 @@
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import Event
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_serieses,
-    generate_participant_types,
-)
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
+import datetime
 
 
 class CreateNewParticipantTypeURLTest(BaseTestWithDB):
@@ -19,13 +11,16 @@ class CreateNewParticipantTypeURLTest(BaseTestWithDB):
         super().__init__(*args, **kwargs)
 
     def test_valid_create_new_participant_type_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         kwargs = {
             'pk': event.pk,
             }
@@ -34,34 +29,17 @@ class CreateNewParticipantTypeURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_create_new_participant_type_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         self.assertEqual(resolve(
             f"/events/manage/create_new_participant_type/{event.pk}/").view_name,
             "events:create_new_participant_type"
         )
-
-    # TODO: fix - need to mock request body
-    def test_create_new_participant_type_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
-        user = User.objects.get(pk=1)
-        event.event_staff.set([user])
-        event.save()
-        self.client.force_login(user)
-        kwargs = {
-            'pk': event.pk,
-            }
-        url = reverse('events:create_new_participant_type', kwargs=kwargs)
-        response = self.client.post(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)

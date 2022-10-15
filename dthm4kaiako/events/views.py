@@ -292,8 +292,12 @@ def delete_registration_via_event_page_view(request, pk):
 
 def create_deleted_event_registration(event, request):
     """Create DeletedEventRegistration based on the retrieved deletion reason and/or other reason for deletion."""
-    reason = request.POST['withdraw_reason']
-    other_reason = request.POST['other_reason_for_withdrawing']
+
+    print("TESTING")
+    print(request.body)
+
+    reason = request.POST["withdraw_reason"]
+    other_reason = request.POST["other_reason_for_withdrawing"]
     if other_reason != "":
         deleted_event_registration = DeletedEventRegistration.objects.create(
             withdraw_reason=reason,

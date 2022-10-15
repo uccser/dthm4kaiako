@@ -7,7 +7,7 @@ from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
 
-class CancelEventURLTest(BaseTestWithDB):
+class CancelEventViewTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):

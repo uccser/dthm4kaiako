@@ -7,7 +7,8 @@ from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
 import datetime
 
-class DeleteParticipantTypeURLTest(BaseTestWithDB):
+
+class DeleteParticipantTypeViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -123,7 +124,6 @@ class DeleteParticipantTypeURLTest(BaseTestWithDB):
         event_2_expected_queryset = ParticipantType.objects.filter(name="Teacher", price="10.00")
         self.assertQuerysetEqual(event_2.participant_types.all(), event_2_expected_queryset)
 
-
     def test_delete_participant_type_view_and_not_logged_in(self):
         event = Event.objects.create(
             name="Security in CS",
@@ -136,6 +136,7 @@ class DeleteParticipantTypeURLTest(BaseTestWithDB):
         )
         event.save()
         participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        event.participant_types.set([participant_type])
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk
@@ -167,6 +168,7 @@ class DeleteParticipantTypeURLTest(BaseTestWithDB):
         self.client.force_login(user)
         event.save()
         participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        event.participant_types.set([participant_type])
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk

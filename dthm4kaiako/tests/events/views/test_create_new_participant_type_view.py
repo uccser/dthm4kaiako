@@ -12,7 +12,7 @@ import datetime
 from unittest import mock
 
 
-class CreateNewParticipantTypeURLTest(BaseTestWithDB):
+class CreateNewParticipantTypeViewTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):
