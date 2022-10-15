@@ -47,25 +47,3 @@ class CancelEventURLTest(BaseTestWithDB):
         updated_event.update(published=True)
         event.save()
         self.assertEqual(resolve(f"/events/manage/cancel_event/{event.pk}/").view_name, "events:cancel_event")
-
-    # TODO: fix - giving 302 instead of 200
-    def test_cancel_event_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
-        user = User.objects.get(pk=1)
-        event.event_staff.set([user])
-        event.save()
-        self.client.force_login(user)
-        updated_event = Event.objects.filter(pk=1)
-        updated_event.update(published=True)
-        kwargs = {
-            'pk': event.pk,
-            }
-        url = reverse('events:cancel_event', kwargs=kwargs)
-        response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirects to event management page
