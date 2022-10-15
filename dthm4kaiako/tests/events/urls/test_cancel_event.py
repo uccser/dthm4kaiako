@@ -1,30 +1,31 @@
+"""Unit tests for cancel event url"""
+
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import Event
-from users.models import User
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_event_registrations,
-    generate_serieses,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
+import datetime
 
 
 class CancelEventURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def test_valid_cancel_event_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         kwargs = {
             'pk': event.pk,
             }
@@ -36,14 +37,14 @@ class CancelEventURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_cancel_event_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
-        updated_event = Event.objects.filter(pk=1)
-        updated_event.update(published=True)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
         event.save()
         self.assertEqual(resolve(f"/events/manage/cancel_event/{event.pk}/").view_name, "events:cancel_event")

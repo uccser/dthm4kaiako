@@ -166,7 +166,7 @@ class ParticipantType(models.Model):
         """
         price_pattern_with_decimal_places = re.compile("^\d+(\.\d{2})?$")
 
-        if price_pattern_with_decimal_places.match('{0:.2f}'.format(self.price)):
+        if price_pattern_with_decimal_places.match(f'{0:.2f}'.format(str(self.price))):
             raise ValidationError(
                 {
                     'price':
