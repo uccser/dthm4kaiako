@@ -9,11 +9,11 @@ import datetime
 
 class DeleteParticipantTypeURLTest(BaseTestWithDB):
 
-    
     @classmethod
     def tearDownTestData(cls):
         Event.objects.all().delete()
         ParticipantType.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

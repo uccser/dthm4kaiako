@@ -1,3 +1,5 @@
+"""Unit tests for manage_event_registration url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from events.models import (
@@ -7,87 +9,168 @@ from events.models import (
     Address,
 )
 from users.models import User
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_event_registrations,
-    generate_serieses,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
 from django.test.utils import override_settings
+import datetime
 
 
 class ManageEventRegistrationURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        EventRegistration.objects.all().delete()
+        Event.objects.all().delete()
+        ParticipantType.objects.all().delete()
+        Address.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def test_valid_manage_event_registration_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
-        registration = EventRegistration.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
+
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+
+        billing_address = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address.save()
+
+        event_registration = EventRegistration.objects.create(
+            participant_type= participant_type,
+            user=user,
+            event=event,
+            billing_physical_address=billing_address,
+            billing_email_address="test@test.co.nz"
+        )
+        event_registration.status = 1
+        event_registration.save()
         kwargs = {
             'pk_event': event.pk,
-            'pk_registration': registration.pk
+            'pk_registration': event_registration.pk
             }
         url = reverse('events:manage_event_registration', kwargs=kwargs)
-        expected_url = f"/events/event/{event.pk}/manage-event-registration/{registration.pk}/"
+        expected_url = f"/events/event/{event.pk}/manage-event-registration/{event_registration.pk}/"
         self.assertEqual(url, expected_url)
 
     def test_manage_event_registration_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
-        registration = EventRegistration.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
+
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+
+        billing_address = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address.save()
+
+        event_registration = EventRegistration.objects.create(
+            participant_type= participant_type,
+            user=user,
+            event=event,
+            billing_physical_address=billing_address,
+            billing_email_address="test@test.co.nz"
+        )
+        event_registration.status = 1
+        event_registration.save()
         self.assertEqual(
-            resolve(f"/events/event/{event.pk}/manage-event-registration/{registration.pk}/").view_name,
+            resolve(f"/events/event/{event.pk}/manage-event-registration/{event_registration.pk}/").view_name,
             "events:manage_event_registration"
         )
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_manage_event_registration_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
 
-        participant_type = ParticipantType.objects.create(name="Teacher", price=10.00)
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
 
-        event_registration_1_pending = EventRegistration.objects.create(
+        billing_address = Address.objects.create(
             id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address.save()
+
+        event_registration = EventRegistration.objects.create(
             participant_type= participant_type,
-            user=User.objects.get(id=1),
-            event=Event.objects.get(id=1),
-            billing_physical_address=Address.objects.get(id=1),
+            user=user,
+            event=event,
+            billing_physical_address=billing_address,
             billing_email_address="test@test.co.nz"
         )
-        event_registration_1_pending.status = 1
-        event_registration_1_pending.save()
-
-        event = Event.objects.get(pk=1)
-        user = User.objects.get(pk=1)
-        event.event_staff.set([user])
-        event.save()
-        self.client.force_login(user)
-        registration = EventRegistration.objects.get(pk=1)
+        event_registration.status = 1
+        event_registration.save()
         kwargs = {
             'pk_event': event.pk,
-            'pk_registration': registration.pk
+            'pk_registration': event_registration.pk
             }
-        user = User.objects.get(pk=1)
         event.event_staff.set([user])
         event.save()
         url = reverse('events:manage_event_registration', kwargs=kwargs)

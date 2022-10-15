@@ -1,7 +1,6 @@
 """Unit tests for delete_registration_via_registration_page_view url"""
 
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import (
     EventRegistration,
     Event,
@@ -21,6 +20,7 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
         Event.objects.all().delete()
         ParticipantType.objects.all().delete()
         Address.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

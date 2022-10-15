@@ -1,3 +1,5 @@
+"""Unit tests for upcoming events url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from django.test.utils import override_settings
@@ -8,7 +10,7 @@ class UpcomingEventsURLTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        
     def test_valid_upcoming_url(self):
         url = reverse("events:upcoming")
         self.assertEqual(url, "/events/upcoming/")

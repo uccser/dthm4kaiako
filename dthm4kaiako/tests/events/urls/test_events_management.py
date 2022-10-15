@@ -1,12 +1,17 @@
+"""Unit tests for events_management url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
-from tests.dthm4kaiako_test_data_generator import generate_users
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
 from django.test.utils import override_settings
 
 
 class EventsManagementURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,8 +26,15 @@ class EventsManagementURLTest(BaseTestWithDB):
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_events_management_returns_200_when_event_exists(self):
-        generate_users()
-        self.client.force_login(User.objects.get(id=1))
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
         url = reverse('events:events_management')
         response = self.client.get(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

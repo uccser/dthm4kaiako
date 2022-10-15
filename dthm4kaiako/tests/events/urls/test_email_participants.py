@@ -1,32 +1,49 @@
+"""Unit tests for email_participants url"""
+
 from django.urls import reverse, resolve
-from http import HTTPStatus
-from events.models import Event
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_event_registrations,
-    generate_serieses,
+from events.models import (
+    Event,
+    ParticipantType,
+    Address,
+    EventRegistration
 )
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
-from django.test.utils import override_settings
+import datetime
 
 
 class EmailParticipantsURLTest(BaseTestWithDB):
 
+    @classmethod
+    def tearDownTestData(cls):
+        EventRegistration.objects.all().delete()
+        Event.objects.all().delete()
+        ParticipantType.objects.all().delete()
+        Address.objects.all().delete()
+        User.objects.all().delete()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
     def test_valid_email_participants_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
         kwargs = {
             'event_pk': event.pk,
             }
@@ -35,34 +52,47 @@ class EmailParticipantsURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_email_participants_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        registration = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+
+        billing_address = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address.save()
+
+        event_registration = EventRegistration.objects.create(
+            participant_type= participant_type,
+            user=user,
+            event=event,
+            billing_physical_address=billing_address,
+            billing_email_address="test@test.co.nz"
+        )
+        event_registration.status = 1
+        event_registration.save()
         self.assertEqual(
-            resolve(f"/events/manage/{registration.pk}/email_participants/").view_name,
+            resolve(f"/events/manage/{event_registration.pk}/email_participants/").view_name,
             "events:email_participants"
         )
-
-    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_email_participants_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        user = User.objects.get(id=1)
-        self.client.force_login(user)
-        event = Event.objects.get(pk=1)
-        event.event_staff.set([user])
-        event.save()
-        kwargs = {
-            'event_pk': event.pk,
-            }
-        url = reverse('events:email_participants', kwargs=kwargs)
-        response = self.client.post(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)

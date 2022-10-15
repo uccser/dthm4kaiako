@@ -1,32 +1,38 @@
+"""Unit tests for upcoming_participant_type url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from events.models import Event, ParticipantType
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_serieses,
-    generate_participant_types,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
+import datetime
 
 
 class UpdateParticipantTypeURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
+        ParticipantType.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def test_valid_update_participant_type_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
-        participant_type = ParticipantType.objects.get(pk=1)
+
+        event = Event.objects.create(
+            id=1,
+            name="DTHM for Kaiako Conference 2023",
+            description="description",
+            registration_type=1,
+            start=datetime.date(2023, 6, 24),
+            end=datetime.date(2023, 6, 26),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        event.participant_types.set([participant_type])
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk
@@ -36,33 +42,51 @@ class UpdateParticipantTypeURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_update_participant_type_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
-        participant_type = ParticipantType.objects.get(pk=1)
+
+        event = Event.objects.create(
+            id=1,
+            name="DTHM for Kaiako Conference 2023",
+            description="description",
+            registration_type=1,
+            start=datetime.date(2023, 6, 24),
+            end=datetime.date(2023, 6, 26),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        event.participant_types.set([participant_type])
         self.assertEqual(
             resolve(f"/events/manage/{event.pk}/update_participant_type/{participant_type.pk}/").view_name,
             "events:update_participant_type"
         )
 
-    # TODO: fix - giving 302 instead of 200
     def test_update_participant_type_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_participant_types()
-        event = Event.objects.get(pk=1)
-        user = User.objects.get(pk=1)
+        user = User.objects.create_user(
+            id=1,
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        event = Event.objects.create(
+            id=1,
+            name="DTHM for Kaiako Conference 2023",
+            description="description",
+            registration_type=1,
+            start=datetime.date(2023, 6, 24),
+            end=datetime.date(2023, 6, 26),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         event.event_staff.set([user])
         event.save()
         self.client.force_login(user)
-        participant_type = ParticipantType.objects.get(pk=1)
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        event.participant_types.set([participant_type])
         kwargs = {
             'event_pk': event.pk,
             'participant_type_pk': participant_type.pk

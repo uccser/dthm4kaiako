@@ -1,33 +1,45 @@
+"""Unit tests for event url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from django.test.utils import override_settings
 from events.models import Event
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_event_registrations,
-    generate_serieses,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
+import datetime
 
 
 class EventURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        User.objects.all().delete()
+        Event.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_valid_event_details_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
         kwargs = {
             'pk': event.pk,
             'slug': event.slug
@@ -37,26 +49,50 @@ class EventURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_event_details_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
         pk = event.pk
         slug = event.slug
         self.assertEqual(resolve(f"/events/event/{pk}/{slug}/").view_name, "events:event")
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_event_details_url_returns_200_when_event_exists(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        generate_event_registrations()
-        self.client.force_login(User.objects.get(id=1))
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
         kwargs = {
             'pk': event.pk,
             'slug': event.slug

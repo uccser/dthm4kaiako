@@ -1,3 +1,5 @@
+"""Unit tests for generate_event_csv url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from tests.BaseTestWithDB import BaseTestWithDB
@@ -12,6 +14,12 @@ from events.models import (
 
 
 class GenerateEventCSVURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Location.objects.all().delete()
+        Event.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

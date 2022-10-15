@@ -1,3 +1,5 @@
+"""Unit tests for registrations url"""
+
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from tests.BaseTestWithDB import BaseTestWithDB
@@ -12,6 +14,11 @@ from django.test.utils import override_settings
 
 
 class RegistrationsURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
+        Location.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

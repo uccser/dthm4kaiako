@@ -1,3 +1,5 @@
+"""Unit tests for create_new_participant_type url"""
+
 from django.urls import reverse, resolve
 from events.models import Event
 from users.models import User
@@ -6,6 +8,11 @@ import datetime
 
 
 class CreateNewParticipantTypeURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,21 +1,34 @@
+"""Unit tests for events location url"""
+
 from django.urls import reverse
 from http import HTTPStatus
 from django.test.utils import override_settings
 from events.models import Location
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations
-)
 from tests.BaseTestWithDB import BaseTestWithDB
+from django.contrib.gis.geos import Point
 
 
 class LocationURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Location.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def test_valid_location_url(self):
-        generate_locations()
-        location = Location.objects.get(pk=1)
+        location = Location.objects.create(
+            id=1,
+            room='Room 123',
+            name='Middleton Grange School',
+            street_address='12 High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14,
+            coords=Point(-43, 172)
+        )
+        location.save()
         kwargs = {
             'pk': location.pk,
             }
@@ -29,8 +42,17 @@ class LocationURLTest(BaseTestWithDB):
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_location_url_returns_200_when_object_exists(self):
-        generate_locations()
-        location = Location.objects.get(pk=1)
+        location = Location.objects.create(
+            id=1,
+            room='Room 123',
+            name='Middleton Grange School',
+            street_address='12 High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14,
+            coords=Point(-43, 172)
+        )
+        location.save()
         kwargs = {
             'pk': location.pk,
             }

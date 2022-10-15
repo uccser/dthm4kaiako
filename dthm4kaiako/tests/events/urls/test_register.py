@@ -1,27 +1,31 @@
+"""Unit tests for register url"""
+
 from django.urls import reverse, resolve
 from events.models import Event
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_serieses,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
+import datetime
 
 
 class RegisterURLTest(BaseTestWithDB):
+
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def test_valid_register_url(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         kwargs = {
             'pk': event.pk,
             }
@@ -30,11 +34,15 @@ class RegisterURLTest(BaseTestWithDB):
         self.assertEqual(url, expected_url)
 
     def test_register_resolve_provides_correct_view_name(self):
-        generate_addresses()
-        generate_serieses()
-        generate_locations()
-        generate_events()
-        generate_users()
-        event = Event.objects.get(pk=1)
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
         pk = event.pk
         self.assertEqual(resolve(f"/events/register/{pk}/").view_name, "events:register")

@@ -14,6 +14,13 @@ import datetime
 
 class DeleteRegistrationViaEventPageURLTest(BaseTestWithDB):
 
+    @classmethod
+    def tearDownTestData(cls):
+        Event.objects.all().delete()
+        ParticipantType.objects.all().delete()
+        EventRegistration.objects.all().delete()
+        Address.objects.all().delete()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
