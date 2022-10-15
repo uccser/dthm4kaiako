@@ -593,8 +593,8 @@ class EventModelTests(BaseTestWithDB):
             name="Teaching with AI",
             description="description",
             registration_type=4,
-            start=datetime.datetime(2020, 4, 15),
-            end=datetime.datetime(2020, 4, 15),
+            start=datetime.datetime(2020, 4, 15, 0, 0, 0, 00, pytz.UTC),
+            end=datetime.datetime(2020, 4, 15, 0, 0, 0, 00, pytz.UTC),
             accessible_online=False,
             series=series_1,
             published=True
@@ -607,8 +607,8 @@ class EventModelTests(BaseTestWithDB):
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
-            start=datetime.datetime(2023, 6, 24, 10, 0, 0),
-            end=datetime.datetime(2023, 6, 26, 16, 0, 0),
+            start=datetime.datetime(2023, 6, 24, 10, 0, 0, 00, pytz.UTC),
+            end=datetime.datetime(2023, 6, 26, 16, 0, 0, 00, pytz.UTC),
             accessible_online=False,
             published=True
         )

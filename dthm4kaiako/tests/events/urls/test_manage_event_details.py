@@ -1,3 +1,4 @@
+import pytz
 from django.urls import reverse, resolve
 from http import HTTPStatus
 from events.models import Event
@@ -20,6 +21,7 @@ from events.models import (
     Location,
     Event,
 )
+NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
 class ManageEventDetailsURLTest(BaseTestWithDB):
@@ -84,8 +86,8 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
-            start=datetime.date(2023, 6, 24),
-            end=datetime.date(2023, 6, 26),
+            start=datetime.datetime(2023, 6, 24, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 6, 26, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )
