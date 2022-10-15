@@ -343,12 +343,10 @@ class Event(models.Model):
 
     @property
     def capacity_percentage(self):
-        """Return ercentage of capacity that the event is at e.g. at 60% capacity."""
+        """Return percentage of capacity that the event is at e.g. at 60% capacity."""
         if self.capacity is not None:
             registration_counts = self.registration_status_counts
             return float(registration_counts['approved']) / self.capacity * 100
-        else:
-            return None
 
     # TODO: use this function instead of including logic in template to improve tidiness
     @property
@@ -433,7 +431,6 @@ class Event(models.Model):
         today_tz = datetime.datetime.today()
         today = today_tz.replace(tzinfo=None)
         one_week_prior_event_start = self.start - datetime.timedelta(days=7)
-        one_week_prior_event_start = one_week_prior_event_start.replace(tzinfo=None)
         return today.isoformat() > one_week_prior_event_start.isoformat()
 
     @property

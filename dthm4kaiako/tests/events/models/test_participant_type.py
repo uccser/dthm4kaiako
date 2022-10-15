@@ -40,6 +40,7 @@ class ParticipantTypeTests(BaseTestWithDB):
         expected_str = "free"
         self.assertEqual(str(participant_type), expected_str)
 
+
     # ----------------------------- tests for is_free ------------------------------
 
     def test_str_representation__non_free_price(self):
