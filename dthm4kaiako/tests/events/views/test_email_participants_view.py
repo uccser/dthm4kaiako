@@ -1,6 +1,6 @@
 """Unit tests for email_participants_view"""
 
-from django.urls import reverse, resolve
+from django.urls import reverse
 from events.models import (
     Event,
     ParticipantType,

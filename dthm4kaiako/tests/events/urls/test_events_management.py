@@ -23,18 +23,3 @@ class EventsManagementURLTest(BaseTestWithDB):
 
     def test_events_management_resolve_provides_correct_view_name(self):
         self.assertEqual(resolve("/events/manage/").view_name, "events:events_management")
-
-    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_events_management_returns_200_when_event_exists(self):
-        user = User.objects.create_user(
-            username='kate',
-            first_name='Kate',
-            last_name='Bush',
-            email='kate@uclive.ac.nz',
-            password='potato',
-        )
-        user.save()
-        self.client.force_login(user)
-        url = reverse('events:events_management')
-        response = self.client.get(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)

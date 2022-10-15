@@ -2,11 +2,6 @@ from tests.BaseTestWithDB import BaseTestWithDB
 from django.urls import reverse
 from http import HTTPStatus
 from django.test.utils import override_settings
-from users.models import User
-from events.models import (
-    Event,
-)
-import datetime
 import pytz
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -14,10 +9,10 @@ class EventUpcomingViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.language = "en"
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_upoming_events_view_success_response(self):
-        response = self.client.get(reverse("events:upcoming"))
+    def test_upcoming_gives_200_status_code(self):
+        url = reverse("events:upcoming")
+        response = self.client.get(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertContains(response, "Events")

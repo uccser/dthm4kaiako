@@ -1,8 +1,6 @@
 """Unit tests for past events url"""
 
 from django.urls import reverse, resolve
-from http import HTTPStatus
-from django.test.utils import override_settings
 from tests.BaseTestWithDB import BaseTestWithDB
 
 
@@ -16,9 +14,3 @@ class PastEventsURLTest(BaseTestWithDB):
 
     def test_past_resolve_provides_correct_view_name(self):
         self.assertEqual(resolve("/events/past/").view_name, "events:past")
-
-    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_past_gives_200_status_code(self):
-        url = reverse("events:past")
-        response = self.client.get(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)

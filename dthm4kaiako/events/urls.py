@@ -98,12 +98,12 @@ urlpatterns = [
     ),
     path(
         'manage/generate_event_csv/',
-        views.manage_event_registration_form_details_view,
+        views.generate_event_csv_view,
         name='generate_event_csv'
     ),
     path(
         'manage/generate_event_registrations_csv/<int:pk>/',
-        views.manage_event_registration_form_details_view,
+        views.generate_event_registrations_csv_view,
         name='generate_event_registrations_csv'
     ),
     path(
