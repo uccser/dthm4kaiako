@@ -18,7 +18,7 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def test_valid_delete_registration_via_registration_page_url(self):
+    def test_valid_delete_registration_via_registration_page_view_url(self):
         generate_addresses()
         generate_serieses()
         generate_locations()
@@ -29,11 +29,11 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
         kwargs = {
             'pk': registration.pk,
             }
-        url = reverse('events:delete_registration_via_registration_page', kwargs=kwargs)
+        url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         expected_url = f"/events/delete-via-registrations/{registration.pk}/"
         self.assertEqual(url, expected_url)
 
-    def test_delete_registration_via_registration_page_resolve_provides_correct_view_name(self):
+    def test_delete_registration_via_registration_page_view_resolve_provides_correct_view_name(self):
         generate_addresses()
         generate_serieses()
         generate_locations()
@@ -43,7 +43,7 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
         registration = EventRegistration.objects.get(pk=1)
         self.assertEqual(
             resolve(f"/events/delete-via-registrations/{registration.pk}/").view_name,
-            "events:delete_registration_via_registration_page"
+            "events:delete_registration_via_registration_page_view"
         )
 
     # TODO: fix - giving 302 instead of 200
@@ -59,6 +59,6 @@ class DeleteRegistrationViaRegistrationsPageURLTest(BaseTestWithDB):
         kwargs = {
             'pk': registration.pk,
             }
-        url = reverse('events:delete_registration_via_registration_page', kwargs=kwargs)
+        url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)

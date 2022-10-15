@@ -43,7 +43,7 @@ urlpatterns = [
     ),
     path(
         'register/<int:pk>/',
-        views.register_for_event,
+        views.register_for_event_view,
         name='register'
     ),
     path(
@@ -53,37 +53,37 @@ urlpatterns = [
     ),
     path(
         'manage/<int:pk>/',
-        views.manage_event,
+        views.manage_event_view,
         name='event_management'
     ),
     url(
         r'^delete-via-registrations/(?P<pk>[0-9]+)/$',
-        views.delete_registration_via_registration_page,
-        name='delete_registration_via_registration_page'
+        views.delete_registration_via_registration_page_view,
+        name='delete_registration_via_registration_page_view'
     ),
     url(
         r'^delete-via-event/(?P<pk>[0-9]+)/$',
-        views.delete_registration_via_event_page,
-        name='delete_registration_via_event_page'
+        views.delete_registration_via_event_page_view,
+        name='delete_registration_via_event_page_view'
     ),
     url(
         r'^manage-event-details/(?P<pk>[0-9]+)/$',
-        views.manage_event_details,
+        views.manage_event_details_view,
         name='manage_event_details'
     ),
     url(
         r'^manage-event-registration-form-details/(?P<pk>[0-9]+)/$',
-        views.manage_event_registration_form_details,
+        views.manage_event_registration_form_details_view,
         name='manage_event_registration_form_details'
     ),
     url(
         r'^event/(?P<pk_event>[0-9]+)/manage-event-registration/(?P<pk_registration>[0-9]+)/$',
-        views.manage_event_registration,
+        views.manage_event_registration_view,
         name='manage_event_registration'
     ),
     path(
         'manage/mark_all_participants_as_paid/<int:pk>/',
-        views.mark_all_participants_as_paid,
+        views.mark_all_participants_as_paid_view,
         name='mark_all_participants_as_paid'
     ),
     path(
@@ -93,42 +93,42 @@ urlpatterns = [
     ),
     path(
         'manage/cancel_event/<int:pk>/',
-        views.cancel_event,
+        views.cancel_event_view,
         name='cancel_event'
     ),
     path(
         'manage/generate_event_csv/',
-        views.generate_event_csv,
+        views.manage_event_registration_form_details_view,
         name='generate_event_csv'
     ),
     path(
         'manage/generate_event_registrations_csv/<int:pk>/',
-        views.generate_event_registrations_csv,
+        views.manage_event_registration_form_details_view,
         name='generate_event_registrations_csv'
     ),
     path(
         'manage/generate_event_dietary_requirement_counts_csv/<int:pk>/',
-        views.generate_event_dietary_requirement_counts_csv,
+        views.generate_event_dietary_requirement_counts_csv_view,
         name='generate_event_dietary_requirement_counts_csv'
     ),
     path(
         'manage/create_new_participant_type/<int:pk>/',
-        views.create_new_participant_type,
+        views.create_new_participant_type_view,
         name='create_new_participant_type'
     ),
     path(
         'manage/<int:event_pk>/update_participant_type/<int:participant_type_pk>/',
-        views.update_participant_type,
+        views.update_participant_type_view,
         name='update_participant_type'
     ),
     path(
         'manage/<int:event_pk>/delete_participant_type/<int:participant_type_pk>/',
-        views.delete_participant_type,
+        views.delete_participant_type_view,
         name='delete_participant_type'
     ),
     path(
         'manage/<int:event_pk>/email_participants/',
-        views.email_participants,
+        views.email_participants_view,
         name='email_participants'
     ),
 

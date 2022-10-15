@@ -245,7 +245,7 @@ class EventRegistrationsView(LoginRequiredMixin, generic.ListView):
 
 
 @login_required
-def delete_registration_via_registration_page(request, pk):
+def delete_registration_via_registration_page_view(request, pk):
     """Allow a user to delete an existing event registration from their event registrations page."""
     event_registration = EventRegistration.objects.get(pk=pk)
     event = Event.objects.get(pk=event_registration.event.pk)
@@ -268,7 +268,7 @@ def delete_registration_via_registration_page(request, pk):
 
 
 @login_required
-def delete_registration_via_event_page(request, pk):
+def delete_registration_via_event_page_view(request, pk):
     """Allow a user to delete an existing event registration from their event registrations page."""
     event_registration = get_object_or_404(EventRegistration, pk=pk)
     event = Event.objects.get(pk=event_registration.event.pk)
@@ -376,7 +376,7 @@ def does_registration_exist(user, event):
 
 
 @login_required
-def register_for_event(request, pk):
+def register_for_event_view(request, pk):
     """View for event registration/registration form and saving it as an EventRegistration.
 
     request: HTTP request
@@ -626,7 +626,6 @@ def register_for_event(request, pk):
     return render(request, 'events/apply.html', context)
 
 
-# TODO: add filter
 class EventsManagementView(LoginRequiredMixin, generic.ListView):
     """View for a events management."""
 
@@ -674,7 +673,7 @@ def is_in_past_or_cancelled(event):
 
 
 @login_required
-def manage_event(request, pk):
+def manage_event_view(request, pk):
     """View for event management.
 
     Contains forms for each event related object (similar to that in Admin app).
@@ -735,20 +734,8 @@ def manage_event(request, pk):
         return render(request, 'events/event_management.html', context)
 
 
-def user_dietary_requirements(registration):
-    """Return a list of the participant's user's dietary requirements.
-
-    This is based on the event registration submitted by the participant.
-    """
-    return format_html_join(
-        '\n',
-        '<li>{}</li>',
-        registration.user.dietary_requirements.values_list('name'),
-    )
-
-
 @login_required
-def manage_event_registration(request, pk_event, pk_registration):
+def manage_event_registration_view(request, pk_event, pk_registration):
     """View for managing event registrations."""
     event_registration = EventRegistration.objects.get(pk=pk_registration)
     event = event_registration.event
@@ -853,9 +840,8 @@ def manage_event_registration(request, pk_event, pk_registration):
     return render(request, 'events/manage_event_registration.html', context)
 
 
-# TODO: add event staff access only
 @login_required
-def manage_event_details(request, pk):
+def manage_event_details_view(request, pk):
     """Allow event staff to update event details as well as deleting the event if desired."""
     event = Event.objects.get(pk=pk)
 
@@ -905,9 +891,6 @@ def manage_event_details(request, pk):
             all_event_staff_ids = [event_staff.id for event_staff in all_event_staff]
             event.event_staff.set(all_event_staff_ids)
 
-            # TODO: update otherside of M2M relationships for locations, sponsors,
-            # organisers, serieses and event staff
-
             Event.objects.filter(id=event.pk).update(
                 name=updated_name,
                 description=updated_description,
@@ -944,9 +927,8 @@ def manage_event_details(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-# TODO: add event staff access only
 @login_required
-def manage_event_registration_form_details(request, pk):
+def manage_event_registration_form_details_view(request, pk):
     """Allow event staff to update event registration form details.
 
     Note that registration_form is the RegistrationForm object (as per the model) and
@@ -1000,7 +982,7 @@ def manage_event_registration_form_details(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-def convertStringListToOneString(listToConvert):
+def convert_string_list_to_one_string(listToConvert):
     """Convert list to string.
 
     Returns:
@@ -1023,7 +1005,7 @@ def convertStringListToOneString(listToConvert):
 # if go back out and back to events management hub page
 # TODO: add staff and admin permissions
 @login_required
-def generate_event_csv(request):
+def generate_event_csv_view(request):
     """Generate a custom CSV of events' data."""
     event = Event.objects.get(pk=request.event.pk)
 
@@ -1128,19 +1110,19 @@ def generate_event_csv(request):
                     row.append(event.is_free)
                 if builderFormForEventsCSV.cleaned_data['locations']:
                     locations = [location.name for location in Location.objects.filter(events=event)]
-                    locations_string = convertStringListToOneString(locations)
+                    locations_string = convert_string_list_to_one_string(locations)
                     row.append(locations_string)
                 if builderFormForEventsCSV.cleaned_data['sponsors']:
                     sponsors = [sponsor.name for sponsor in Entity.objects.filter(sponsored_events=event)]
-                    sponsors_string = convertStringListToOneString(sponsors)
+                    sponsors_string = convert_string_list_to_one_string(sponsors)
                     row.append(sponsors_string)
                 if builderFormForEventsCSV.cleaned_data['organisers']:
                     organisers = [organiser.name for organiser in Location.objects.filter(events=event)]
-                    organisers_string = convertStringListToOneString(organisers)
+                    organisers_string = convert_string_list_to_one_string(organisers)
                     row.append(organisers_string)
                 if builderFormForEventsCSV.cleaned_data['series']:
                     series = [series.name for series in Series.objects.filter(events=event)]
-                    series_string = convertStringListToOneString(series)
+                    series_string = convert_string_list_to_one_string(series)
                     row.append(series_string)
                 if builderFormForEventsCSV.cleaned_data['is_catered']:
                     row.append(event.is_catered)
@@ -1148,7 +1130,7 @@ def generate_event_csv(request):
                     row.append(event.contact_email_address)
                 if builderFormForEventsCSV.cleaned_data['event_staff']:
                     staff = [str(user.first_name + user.last_name) for user in User.objects.filter(events=event)]
-                    staff_string = convertStringListToOneString(staff)
+                    staff_string = convert_string_list_to_one_string(staff)
                     row.append(staff_string)
                 if builderFormForEventsCSV.cleaned_data['is_cancelled']:
                     row.append(event.is_cancelled)
@@ -1179,7 +1161,7 @@ def generate_event_csv(request):
 # TODO: fix UI bug where the validation error message only disappears if go back out and back to event management page
 # TODO: add staff and admin permissions
 @login_required
-def generate_event_registrations_csv(request, pk):
+def generate_event_registrations_csv_view(request, pk):
     """Generate a custom CSV of event registrations' data."""
     event = Event.objects.get(pk=pk)
 
@@ -1280,9 +1262,9 @@ def generate_event_registrations_csv(request, pk):
                 if builderFormForEventRegistrationsCSV.cleaned_data['participant_last_name']:
                     row.append(user.last_name)
                 if builderFormForEventRegistrationsCSV.cleaned_data['dietary_requirements']:
-                    row.append(convertStringListToOneString([dR.name for dR in user.dietary_requirements.all()]))
+                    row.append(convert_string_list_to_one_string([dR.name for dR in user.dietary_requirements.all()]))
                 if builderFormForEventRegistrationsCSV.cleaned_data['educational_entities']:
-                    row.append(convertStringListToOneString(
+                    row.append(convert_string_list_to_one_string(
                         [entity.name for entity in user.educational_entities.all()]
                         )
                     )
@@ -1331,9 +1313,8 @@ def generate_event_registrations_csv(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-# TODO: add staff and admin permissions
 @login_required
-def generate_event_dietary_requirement_counts_csv(request, pk):
+def generate_event_dietary_requirement_counts_csv_view(request, pk):
     """Generate a custom CSV of event dietary requirement counts data."""
     event = Event.objects.get(pk=pk)
 
@@ -1375,7 +1356,7 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
 
     row_lists = [
         [
-            event.name, convertStringListToOneString(list(frozenset_dietary_reqs)),
+            event.name, convert_string_list_to_one_string(list(frozenset_dietary_reqs)),
             dietary_reqs_dict[frozenset_dietary_reqs]
         ] for frozenset_dietary_reqs in dietary_reqs_dict.keys()
     ]
@@ -1386,9 +1367,8 @@ def generate_event_dietary_requirement_counts_csv(request, pk):
     return response
 
 
-# TODO: add staff and admin permissions
 @login_required
-def mark_all_participants_as_paid(request, pk):
+def mark_all_participants_as_paid_view(request, pk):
     """Bulk mark all event registrations as being paid for for a given event."""
     event_id = pk
     event = Event.objects.get(id=event_id)
@@ -1454,7 +1434,7 @@ def publish_event(request, pk):
 
 
 @login_required
-def cancel_event(request, pk):
+def cancel_event_view(request, pk):
     """Cancel event as event staff."""
     event_id = pk
     event = Event.objects.filter(id=event_id)
@@ -1475,7 +1455,7 @@ def cancel_event(request, pk):
 
 
 @login_required
-def create_new_participant_type(request, pk):
+def create_new_participant_type_view(request, pk):
     """Cancel event as event staff."""
     event = Event.objects.get(pk=pk)
 
@@ -1538,7 +1518,7 @@ def create_new_participant_type(request, pk):
 
 
 @login_required
-def update_participant_type(request, event_pk, participant_type_pk):
+def update_participant_type_view(request, event_pk, participant_type_pk):
     """Update event participant type.
 
     Note that we cannot immediately update this specific participant as it may be being used for other events as well.
@@ -1583,7 +1563,7 @@ def update_participant_type(request, event_pk, participant_type_pk):
 
 
 @login_required
-def delete_participant_type(request, event_pk, participant_type_pk):
+def delete_participant_type_view(request, event_pk, participant_type_pk):
     """Delete event participant type.
 
     We cannot immediately delete this specific participant as it may be being used for other events as well.
@@ -1618,7 +1598,7 @@ MESSAGE_TEMPLATE = "{message}\n\n-----\nMessage sent from {user} ({email})"
 
 
 @login_required
-def email_participants(request, event_pk):
+def email_participants_view(request, event_pk):
     """Send bulk email to all event participants as event staff."""
     event = Event.objects.get(pk=event_pk)
 

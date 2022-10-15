@@ -17,7 +17,6 @@ import datetime
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.contrib.gis.geos import Point
-import datetime
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 

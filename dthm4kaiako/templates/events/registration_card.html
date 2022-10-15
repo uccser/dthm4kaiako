@@ -83,7 +83,7 @@
                                     Are you sure you no longer want to attend <b>{{event_registration.event.name}}</b>?
                                 </div>
                                 <div class="modal-footer" style="justify-content:center">
-                                    <form action="{% url 'events:delete_registration_via_registration_page' event_registration.pk %}" method="post">
+                                    <form action="{% url 'events:delete_registration_via_registration_page_view' event_registration.pk %}" method="post">
                                         {% csrf_token %}
                                         {% crispy withdraw_event_registration_form %}
                                         <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
