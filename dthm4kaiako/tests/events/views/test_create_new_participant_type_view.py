@@ -1,3 +1,5 @@
+"""Unit tests for create_new_participant_type_view"""
+
 from django.urls import reverse
 from http import HTTPStatus
 from events.models import (

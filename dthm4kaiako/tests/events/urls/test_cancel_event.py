@@ -1,4 +1,4 @@
-"""Unit tests for cancel event url"""
+"""Unit tests for cancel_event url"""
 
 from django.urls import reverse, resolve
 from events.models import Event

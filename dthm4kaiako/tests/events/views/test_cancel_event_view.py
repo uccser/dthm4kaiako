@@ -1,4 +1,4 @@
-"""Unit tests for cancel event view"""
+"""Unit tests for cancel_event_view"""
 
 from django.urls import reverse
 from http import HTTPStatus
