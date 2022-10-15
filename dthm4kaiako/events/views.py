@@ -1512,7 +1512,6 @@ def create_new_participant_type_view(request, pk):
         context = {
             'new_participant_form': participant_type_creation_form
             }
-        # return render(request, 'events/event_management.html', context)
 
     return redirect(reverse('events:event_management', kwargs={'pk': pk}), context)
 
