@@ -122,8 +122,24 @@ class EventModelTests(BaseTestWithDB):
             published=True
         )
         event.save()
-        expected_start_datetime = Session.objects.get(event=Event.objects.get(id=3), name="session 1").start
-        expected_end_datetime = Session.objects.get(event=Event.objects.get(id=3), name="session 2").end
+        session_1 = Session.objects.create(
+            name="session 1",
+            description="some description",
+            start=datetime.datetime(2023, 2, 13, 10, 30, 0, 00, pytz.utc),
+            end=datetime.datetime(2023, 2, 13, 12, 30, 0, 00, pytz.utc),
+            event=event,
+        )
+        session_1.save()
+        session_2 = Session.objects.create(
+            name="session 2",
+            description="some description",
+            start=datetime.datetime(2023, 2, 13, 10, 30, 0, 00, pytz.utc),
+            end=datetime.datetime(2023, 2, 14, 12, 30, 0, 00, pytz.utc),
+            event=event,
+        )
+        session_2.save()
+        expected_start_datetime = session_1.start
+        expected_end_datetime = session_2.end
         event.update_datetimes()
         self.assertEqual(event.start, expected_start_datetime)
         self.assertEqual(event.end, expected_end_datetime)
@@ -151,24 +167,24 @@ class EventModelTests(BaseTestWithDB):
         session_1 = Session.objects.create(
             name="session 1",
             description="some description",
-            start=datetime.datetime(2020, 4, 15, 10, 30, 0),
-            end=datetime.datetime(2020, 4, 15, 12, 30, 0),
+            start=datetime.datetime(2020, 4, 15, 10, 30, 0, 00, pytz.utc),
+            end=datetime.datetime(2020, 4, 15, 12, 30, 0, 00, pytz.utc),
             event=event,
         )
         session_1.save()
         session_2 = Session.objects.create(
             name="session 2",
             description="some description",
-            start=datetime.datetime(2020, 4, 16, 10, 30, 0),
-            end=datetime.datetime(2020, 4, 16, 12, 30, 0),
+            start=datetime.datetime(2020, 4, 16, 10, 30, 0, 00, pytz.utc),
+            end=datetime.datetime(2020, 4, 16, 12, 30, 0, 00, pytz.utc),
             event=event,
         )
         session_2.save()
         session_3 = Session.objects.create(
             name="session 3",
             description="some description",
-            start=datetime.datetime(2020, 4, 16, 10, 30, 0),
-            end=datetime.datetime(2020, 4, 16, 12, 30, 0),
+            start=datetime.datetime(2020, 4, 16, 10, 30, 0, 00, pytz.utc),
+            end=datetime.datetime(2020, 4, 16, 12, 30, 0, 00, pytz.utc),
             event=event,
         )
         session_3.save()
@@ -745,14 +761,14 @@ class EventModelTests(BaseTestWithDB):
     # -------------------- tests for is_less_than_one_week_prior_event -------------
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start_end_of_year(self):
-        event_start_date = datetime.datetime(2023, 1, 9, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
-        current_date = datetime.datetime(2023, 1, 1, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        event_start_date = datetime.datetime(2023, 1, 1, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2022, 12, 31, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
         event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
             start=event_start_date,
-            end=datetime.datetime(2023, 6, 26, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 1, 10, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )
@@ -763,8 +779,8 @@ class EventModelTests(BaseTestWithDB):
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start_end_of_month(self):
-        event_start_date = datetime.datetime(2023, 2, 8, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
-        current_date = datetime.datetime(2023, 2, 2, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        event_start_date = datetime.datetime(2023, 2, 28, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 2, 22, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
         event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
             description="description",
@@ -781,14 +797,14 @@ class EventModelTests(BaseTestWithDB):
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
     def test_is_less_than_one_week_prior_event__one_week_prior_start(self):
-        event_start_date = datetime.datetime(2023, 2, 17, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
-        current_date = datetime.datetime(2023, 2, 10, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        event_start_date = datetime.datetime(2023, 2, 18, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        current_date = datetime.datetime(2023, 2, 12, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
         event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
             start=event_start_date,
-            end=datetime.datetime(2023, 6, 26, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 2, 20, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )
@@ -798,7 +814,7 @@ class EventModelTests(BaseTestWithDB):
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
     def test_is_less_than_one_week_prior_event__two_weeks_prior_start(self):
-        event_start_date = datetime.datetime(2023, 2, 16, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
+        event_start_date = datetime.datetime(2023, 2, 24, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
         current_date = datetime.datetime(2023, 2, 2, 10, 0, 0, 00, NEW_ZEALAND_TIME_ZONE)
         event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
