@@ -24,6 +24,7 @@ class EmailParticipantsURLTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
     def test_valid_email_participants_url(self):
         event = Event.objects.create(
             name="Security in CS",

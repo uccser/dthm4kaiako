@@ -89,6 +89,8 @@ class ManageEventURLTest(BaseTestWithDB):
             password='potato',
         )
         user.save()
+        event.event_staff.set([user])
+        event.save()
         self.client.force_login(user)
         kwargs = {
             'pk': event.pk,

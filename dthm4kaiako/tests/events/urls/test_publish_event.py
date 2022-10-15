@@ -13,10 +13,8 @@ class PublishEventURLTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):
-        EventRegistration.objects.all().delete()
         Event.objects.all().delete()
-        ParticipantType.objects.all().delete()
-        Address.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

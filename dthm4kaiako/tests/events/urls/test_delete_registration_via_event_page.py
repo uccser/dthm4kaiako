@@ -20,6 +20,7 @@ class DeleteRegistrationViaEventPageURLTest(BaseTestWithDB):
         ParticipantType.objects.all().delete()
         EventRegistration.objects.all().delete()
         Address.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
