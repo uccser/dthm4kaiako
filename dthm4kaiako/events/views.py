@@ -401,6 +401,10 @@ def register_for_event_view(request, pk):
     participant_type_form = None
     new_participant_type = ""
     is_physical_event = not event.accessible_online
+    new_emergency_contact_first_name = None
+    new_emergency_contact_last_name = None
+    new_emergency_contact_phone_number = None
+    new_emergency_contact_relationship = None
 
     registration_exists = does_registration_exist(user, event)
 
@@ -486,9 +490,16 @@ def register_for_event_view(request, pk):
 
         if does_registration_exist(user, event):
             current_registration = user.event_registrations.get(event=event)
-            event_registration_form = EventRegistrationForm(request.POST, instance=current_registration)
+            event_registration_form = EventRegistrationForm(
+                request.POST,
+                instance=current_registration,
+                initial={'show_emergency_contact_fields': not event.accessible_online}
+            )
         else:
-            event_registration_form = EventRegistrationForm(request.POST)
+            event_registration_form = EventRegistrationForm(
+                request.POST,
+                initial={'show_emergency_contact_fields': not event.accessible_online}
+            )
 
         participant_type_form = ParticipantTypeForm(event, request.POST)
 
@@ -527,10 +538,12 @@ def register_for_event_view(request, pk):
             new_participant_type_id = participant_type_form.cleaned_data['participant_type']
             new_participant_type = ParticipantType.objects.get(pk=int(new_participant_type_id))
             new_representing = event_registration_form.cleaned_data['representing']
-            new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
-            new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
-            new_emergency_contact_relationship = event_registration_form.cleaned_data['emergency_contact_relationship']
-            new_emergency_contact_phone_number = event_registration_form.cleaned_data['emergency_contact_phone_number']
+
+            if not event.accessible_online:
+                new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
+                new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
+                new_emergency_contact_relationship = event_registration_form.cleaned_data['emergency_contact_relationship']
+                new_emergency_contact_phone_number = event_registration_form.cleaned_data['emergency_contact_phone_number']
 
             if billing_required:
                 new_bill_to = billing_details_form.cleaned_data['bill_to']
