@@ -26,7 +26,7 @@ class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @mock.patch('events.views.BuilderFormForEventRegistrationsCSV')
+    @mock.patch('events.views.ManageEventDetailsForm')
     def test_generate_event_registrations_csv_views_returns_200_when_event_exists(self, mock_form_class):
         user_kate = User.objects.create_user(
             id=1,

@@ -63,7 +63,7 @@ class EmailParticipantsURLTest(BaseTestWithDB):
         pass
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_email_participants_view_and_not_logged_in_and_staff_then_redirected(self):
+    def test_email_participants_view_and_not_logged_in_and_staff_then_stay_on_same_page(self):
         event = Event.objects.create(
             name="Security in CS",
             description="description",
@@ -90,7 +90,7 @@ class EmailParticipantsURLTest(BaseTestWithDB):
             }
         url = reverse('events:email_participants', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertEqual(response['Location'], f'/events/registrations/')
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
