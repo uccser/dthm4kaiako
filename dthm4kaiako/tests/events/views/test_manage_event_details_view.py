@@ -15,6 +15,7 @@ from events.models import (
 from events.views import manage_event_details_view
 from unittest import mock
 from django.test.client import RequestFactory
+from django.contrib import messages
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -77,6 +78,8 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         self.factory = RequestFactory()
         url = reverse('events:manage_event_details', kwargs=kwargs)
         request = self.factory.post(url)
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         request.user = user_kate
 
         mock_form_class.is_valid = True
@@ -100,8 +103,8 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
             "event_staff": event.event_staff.all(),
         }
         response = manage_event_details_view(request, event.pk)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(response['Location'], f'/manage/event/{event.pk}/')
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to mange event page
+        self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
     @mock.patch('events.views.ManageEventDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
@@ -157,6 +160,9 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         url = reverse('events:manage_event_details', kwargs=kwargs)
         request = self.factory.post(url)
         request.user = user_kate
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
+
 
         mock_form_class.is_valid = True
         mock_form_class.return_value.cleaned_data = {

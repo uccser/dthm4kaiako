@@ -48,7 +48,6 @@ class ManageEventURLTest(BaseTestWithDB):
         url = reverse('events:event_management', kwargs=kwargs)
         response = self.client.get(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(response['Location'], f'/manage/event/{event.pk}/')
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_manage_event_and_not_logged_in_and_staff_then_redirect(self):

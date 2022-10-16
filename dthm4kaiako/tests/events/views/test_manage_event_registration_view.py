@@ -8,13 +8,15 @@ from events.models import (
     ParticipantType,
     Address,
 )
-from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.test.utils import override_settings
 import datetime
 from events.views import manage_event_registration_view
 from unittest import mock
 from django.test.client import RequestFactory
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class ManageEventRegistrationViewTest(BaseTestWithDB):
@@ -23,6 +25,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
     def tearDownTestData(cls):
         EventRegistration.objects.all().delete()
         Event.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -82,6 +85,8 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         self.factory = RequestFactory()
         request = self.factory.post(url)
         request.user = user
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         updated_staff_comments = "staff comments"
 
         mock_form_class.is_valid = True
@@ -90,7 +95,6 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         }
         response = manage_event_registration_view(request, event.pk, event_registration.pk)
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(response['Location'], '/events/manage/')
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
@@ -147,6 +151,8 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         self.factory = RequestFactory()
         request = self.factory.post(url)
         request.user = user
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         updated_staff_comments = "staff comments"
 
         mock_form_class.is_valid = True
@@ -206,11 +212,14 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
             }
         event.event_staff.set([user])
         event.save()
+
         url = reverse('events:manage_event_registration', kwargs=kwargs)
 
         self.factory = RequestFactory()
         request = self.factory.post(url)
         request.user = user
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         updated_staff_comments = "staff comments"
 
         mock_form_class.is_valid = True
@@ -219,7 +228,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         }
         response = manage_event_registration_view(request, event.pk, event_registration.pk)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqualresponse(['Location'], '/manage/')
+        self.assertEqual(response['Location'], '/manage/')
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
@@ -274,6 +283,8 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
 
         self.factory = RequestFactory()
         request = self.factory.post(url)
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         request.user = user
         updated_staff_comments = "staff comments"
 

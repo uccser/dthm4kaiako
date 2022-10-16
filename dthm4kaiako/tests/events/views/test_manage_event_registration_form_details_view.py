@@ -16,6 +16,7 @@ from events.models import (
 from events.views import manage_event_details_view
 from unittest import mock
 from django.test.client import RequestFactory
+from django.contrib import messages
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -131,6 +132,8 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         url = reverse('events:manage_event_registration_form_details', kwargs=kwargs)
         request = self.factory.post(url)
         request.user = user_kate
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
         updated_terms_and_conditions = "New Ts and Cs here"
 
         mock_form_class.is_valid = True

@@ -1,6 +1,6 @@
 """Unit tests for event registration model"""
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from events.models import (
     Event,
     EventRegistration,
@@ -14,6 +14,7 @@ import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
+User = get_user_model()
 
 
 class EventRegistrationTests(BaseTestWithDB):

@@ -13,6 +13,8 @@ from events.models import (
 from django.test import RequestFactory
 from events.views import generate_event_registrations_csv_view
 from unittest import mock
+from django.contrib import messages
+from django.test.utils import override_settings
 
 
 class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
@@ -27,6 +29,7 @@ class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
         super().__init__(*args, **kwargs)
 
     @mock.patch('events.views.ManageEventDetailsForm')
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_generate_event_registrations_csv_views_returns_200_when_event_exists(self, mock_form_class):
         user_kate = User.objects.create_user(
             id=1,
@@ -72,6 +75,8 @@ class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
         url = reverse('events:generate_event_csv')
         request = self.factory.post(url)
         request.user = user_kate
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
 
         mock_form_class.is_valid = True
         mock_form_class.return_value.cleaned_data = {
