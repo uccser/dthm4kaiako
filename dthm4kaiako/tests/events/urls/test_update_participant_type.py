@@ -60,37 +60,3 @@ class UpdateParticipantTypeURLTest(BaseTestWithDB):
             resolve(f"/events/manage/{event.pk}/update_participant_type/{participant_type.pk}/").view_name,
             "events:update_participant_type"
         )
-
-    def test_update_participant_type_url_returns_200_when_event_exists(self):
-        user = User.objects.create_user(
-            id=1,
-            username='kate',
-            first_name='Kate',
-            last_name='Bush',
-            email='kate@uclive.ac.nz',
-            password='potato',
-        )
-        user.save()
-        event = Event.objects.create(
-            id=1,
-            name="DTHM for Kaiako Conference 2023",
-            description="description",
-            registration_type=1,
-            start=datetime.date(2023, 6, 24),
-            end=datetime.date(2023, 6, 26),
-            accessible_online=False,
-            published=True
-        )
-        event.save()
-        event.event_staff.set([user])
-        event.save()
-        self.client.force_login(user)
-        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
-        event.participant_types.set([participant_type])
-        kwargs = {
-            'event_pk': event.pk,
-            'participant_type_pk': participant_type.pk
-            }
-        url = reverse('events:update_participant_type', kwargs=kwargs)
-        response = self.client.post(url)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
