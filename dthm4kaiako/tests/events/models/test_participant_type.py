@@ -27,7 +27,7 @@ class ParticipantTypeTests(BaseTestWithDB):
                 name="Event staff",
                 price=0
             )
-        expected_str = "free"
+        expected_str = "Event staff (free)"
         self.assertEqual(str(participant_type), expected_str)
 
     def test_str_representation__free_one_int_two_dp(self):
@@ -36,7 +36,7 @@ class ParticipantTypeTests(BaseTestWithDB):
                 name="Event staff",
                 price=0.00
             )
-        expected_str = "free"
+        expected_str = "Event staff (free)"
         self.assertEqual(str(participant_type), expected_str)
 
     # ----------------------------- tests for is_free ------------------------------
