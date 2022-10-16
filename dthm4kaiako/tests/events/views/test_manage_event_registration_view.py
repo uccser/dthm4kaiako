@@ -147,20 +147,20 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         event.event_staff.set([user])
         event.save()
         url = reverse('events:manage_event_registration', kwargs=kwargs)
+        updated_staff_comments = "staff comments"
 
         self.factory = RequestFactory()
-        request = self.factory.post(url)
+        request = self.factory.post(url, {"staff_comments": updated_staff_comments})
         request.user = user
         # Add support  django messaging framework
         request._messages = messages.storage.default_storage(request)
-        updated_staff_comments = "staff comments"
 
         mock_form_class.is_valid = True
         mock_form_class.return_value.cleaned_data = {
-            "terms_and_conditions": updated_staff_comments
+            "staff_comments": updated_staff_comments
         }
         manage_event_registration_view(request, event.pk, event_registration.pk)
-        updated_registration = EventRegistration.objects.filter(event=event.pk)
+        updated_registration = EventRegistration.objects.get(event=event.pk)
         self.assertEqual(updated_registration.staff_comments, updated_staff_comments)
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
@@ -294,4 +294,4 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         }
         response = manage_event_registration_view(request, event.pk, event_registration.pk)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqualresponse(['Location'], '/manage/')
+        self.assertEqual(response['Location'], '/events/manage/')

@@ -1307,6 +1307,7 @@ def generate_event_registrations_csv_view(request, pk):
         'event': event,
         'event_pk': event.pk,
         'registrations_csv_builder_form': builderFormForEventRegistrationsCSV,
+        'update_participant_form': ParticipantTypeCreationForm()
     }
 
     return render(request, 'events/event_management.html', context)

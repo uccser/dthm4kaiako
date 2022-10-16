@@ -158,11 +158,10 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
 
         self.factory = RequestFactory()
         url = reverse('events:manage_event_details', kwargs=kwargs)
-        request = self.factory.post(url)
+        request = self.factory.post(url, {"description": expected_description})
         request.user = user_kate
         # Add support  django messaging framework
         request._messages = messages.storage.default_storage(request)
-
 
         mock_form_class.is_valid = True
         mock_form_class.return_value.cleaned_data = {
@@ -185,7 +184,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
             "event_staff": event.event_staff.all(),
         }
         manage_event_details_view(request, event.pk)
-        updated_event = Event.objects.filter(pk=event.pk)
+        updated_event = Event.objects.get(pk=event.pk)
         self.assertEqual(updated_event.description, expected_description)
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")

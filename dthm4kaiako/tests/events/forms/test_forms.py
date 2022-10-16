@@ -1,6 +1,4 @@
 from django.test import TestCase
-# from events.models import ParticipantType
-# from tests.dthm4kaiako_test_data_generator import generate_participant_types
 from events.forms import EventregistrationForm
 from http import HTTPStatus
 from django.contrib.auth import get_user_model

@@ -15,6 +15,7 @@ from events.models import (
 from users.models import User
 from events.views import EventDetailView
 from django.test import RequestFactory
+from unittest import mock
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
@@ -98,6 +99,7 @@ class EventDetailViewTest(BaseTestWithDB):
         factory = RequestFactory()
         request = factory.get(f'/events/event/{event.pk}/')
         view = setup_view(EventDetailView(), request)
+        view.object = event
         self.assertTrue(view.does_registration_exist(user))
 
     def test_does_registration_exist_when_exists_and_not_logged_in_returns_false(self):
@@ -145,6 +147,7 @@ class EventDetailViewTest(BaseTestWithDB):
         factory = RequestFactory()
         request = factory.get(f'/events/event/{event.pk}/')
         view = setup_view(EventDetailView(), request)
+        view.object = event
         self.assertFalse(view.does_registration_exist(user))
 
     def test_does_registration_exist_when_does_not_exist_and_logged_in_returns_false(self):
@@ -171,6 +174,7 @@ class EventDetailViewTest(BaseTestWithDB):
         factory = RequestFactory()
         request = factory.get(f'/events/event/{event.pk}/')
         view = setup_view(EventDetailView(), request)
+        view.object = event
         self.assertFalse(view.does_registration_exist(user))
 
     def test_does_registration_exist_when_does_not_exist_and_not_logged_in_returns_false(self):
@@ -196,4 +200,5 @@ class EventDetailViewTest(BaseTestWithDB):
         factory = RequestFactory()
         request = factory.get(f'/events/event/{event.pk}/')
         view = setup_view(EventDetailView(), request)
+        view.object = event
         self.assertFalse(view.does_registration_exist(user))
