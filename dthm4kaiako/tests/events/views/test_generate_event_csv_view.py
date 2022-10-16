@@ -62,7 +62,7 @@ class GenerateEventCSVViewTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -78,28 +78,28 @@ class GenerateEventCSVViewTest(BaseTestWithDB):
         mock_form_class.return_value.cleaned_data = {
             'file_name': "Some random name",
             'event_name': True,
-            'description':True,
-            'published_status':True,
-            'show_schedule':True,
-            'featured_status':True,
-            'registration_type':True,
-            'external_event_registration_link':True,
-            'start_datetime':True,
-            'end_datetime':True,
-            'accessible_online':True,
-            'is_free':True,
-            'locations':True,
-            'sponsors':True,
-            'organisers':True,
-            'series':True,
-            'is_catered':True,
-            'contact_email_address':True,
-            'event_staff':True,
-            'is_cancelled':True,
-            'approved_registrations_count':True,
-            'pending_registrations_count':True,
-            'declined_registrations_count':True,
-            'withdrawn_registrations_count':True,
+            'description': True,
+            'published_status': True,
+            'show_schedule': True,
+            'featured_status': True,
+            'registration_type': True,
+            'external_event_registration_link': True,
+            'start_datetime': True,
+            'end_datetime': True,
+            'accessible_online': True,
+            'is_free': True,
+            'locations': True,
+            'sponsors': True,
+            'organisers': True,
+            'series': True,
+            'is_catered': True,
+            'contact_email_address': True,
+            'event_staff': True,
+            'is_cancelled': True,
+            'approved_registrations_count': True,
+            'pending_registrations_count': True,
+            'declined_registrations_count': True,
+            'withdrawn_registrations_count': True,
         }
 
         response = generate_event_csv_view(request)

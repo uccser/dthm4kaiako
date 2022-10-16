@@ -54,7 +54,10 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
     @mock.patch('events.views.ParticipantTypeCreationForm')
-    def test_create_new_participant_type_view_and_logged_in_then_creates_new_participant_type_successfully(self, mock_form_class):
+    def test_create_new_participant_type_view_and_logged_in_then_creates_new_participant_type_successfully(
+        self,
+        mock_form_class
+    ):
         '''Redirect to manage event page.'''
         event = Event.objects.create(
             name="Security in CS",
@@ -87,9 +90,8 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
             'name': "Teacher",
             'price': "10.0"
         }
-        self.client.post(url, {'name':"Teacher", 'price': "10.0"})
+        self.client.post(url, {'name': "Teacher", 'price': "10.0"})
         self.assertEqual(ParticipantType.objects.last().name, "Teacher")
-
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_not_logged_in(self):
         '''Redirect to login page.'''
@@ -110,7 +112,10 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
         body = b'{"name": "Teacher", "price": "10.00"}'
         response = self.client.generic('POST', url, body)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/manage/create_new_participant_type/{event.pk}/')
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/manage/create_new_participant_type/{event.pk}/'
+        )
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_logged_in_and_not_staff(self):
         '''Redirect to all staff events page.'''
@@ -140,4 +145,4 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
         body = b'{"name": "Teacher", "price": "10.00"}'
         response = self.client.generic('POST', url, body)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/events/manage/')
+        self.assertEqual(response['Location'], '/events/manage/')

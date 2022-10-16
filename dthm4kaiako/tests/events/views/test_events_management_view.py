@@ -7,6 +7,7 @@ from users.models import User
 import pytz
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
+
 class EventRegistrationsViewTest(BaseTestWithDB):
 
     @classmethod

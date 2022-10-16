@@ -49,7 +49,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 import csv
-from django.utils.html import format_html_join
 from datetime import datetime
 from django.core.mail import send_mail
 from events.utils import can_view_event_management_content
@@ -795,7 +794,7 @@ def manage_event_registration_view(request, pk_event, pk_registration):
 
             updated_participant_type = ParticipantType.objects.get(pk=updated_participant_type_pk)
             registration = EventRegistration.objects.filter(pk=pk_registration)
-            
+
             registration.update(
                 status=updated_status,
                 staff_comments=updated_staff_comments,
@@ -1543,12 +1542,18 @@ def update_participant_type_view(request, event_pk, participant_type_pk):
     # check if new participant type already exists
     if ParticipantType.objects.filter(name=request.POST.get('name'), price=request.POST.get('price')).exists():
         # add the event to the list of events that use the existing "new" participant type
-        new_participant_type = ParticipantType.objects.get(name=request.POST.get('name'), price=request.POST.get('price'))
+        new_participant_type = ParticipantType.objects.get(
+            name=request.POST.get('name'),
+            price=request.POST.get('price')
+        )
         new_participant_type.events.add(event)
         new_participant_type.save()
     else:
         # "update" participant by creating new participant type
-        new_participant_type = ParticipantType.objects.create(name=request.POST.get('name'), price=request.POST.get('price'))
+        new_participant_type = ParticipantType.objects.create(
+            name=request.POST.get('name'),
+            price=request.POST.get('price')
+        )
         new_participant_type.events.add(event)
         new_participant_type.save()
 

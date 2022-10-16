@@ -1,7 +1,5 @@
 """Unit tests for registration form model"""
 
-from xml.dom import ValidationErr
-from django.contrib.auth.models import User
 from events.models import (
     Event,
     Location,
@@ -57,7 +55,6 @@ class RegistrationFormTests(BaseTestWithDB):
         expected_url = '/events/register/{}/'.format(event_pk)
         self.assertEqual(str(reg_form.get_absolute_url()), expected_url)
 
-
     # ------------------------------- tests for clean ------------------------------
 
     def test_clean_reg_form_exists_for_event_already_throw_validation_error(self):
@@ -95,12 +92,11 @@ class RegistrationFormTests(BaseTestWithDB):
                 open_datetime=datetime.date(2022, 1, 1),
                 close_datetime=datetime.date(2023, 6, 1),
                 terms_and_conditions="Some terms and conditions.",
-                event = event_physical_register_1,
+                event=event_physical_register_1,
             )
         except ValidationError as e:
             expected_dict = {'event': ['Registration form with this Event already exists.']}
             self.assertEqual(e.message_dict, expected_dict)
-
 
     def test_clean_need_at_least_one_participant_type_for_registrations_to_open_validation_error_thrown(self):
         location_1 = Location.objects.create(
@@ -129,8 +125,8 @@ class RegistrationFormTests(BaseTestWithDB):
         event_physical_register_1.save()
 
         try:
-            RegistrationForm.objects.filter(event = event_physical_register_1).update(
-                terms_and_conditions="Some terms and conditions."   
+            RegistrationForm.objects.filter(event=event_physical_register_1).update(
+                terms_and_conditions="Some terms and conditions."
             )
         except ValidationError as e:
             expected_dict = {

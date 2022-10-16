@@ -7,11 +7,11 @@ from events.models import (
     Event,
     Location
 )
-import datetime
 import pytz
 from django.contrib.gis.geos import Point
 import datetime
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
+
 
 class EventRegistrationsViewTest(BaseTestWithDB):
 

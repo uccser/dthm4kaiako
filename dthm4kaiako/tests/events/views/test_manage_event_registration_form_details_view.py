@@ -67,7 +67,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -81,7 +81,10 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_manage_event_registration_form_details_view_and_logged_in_and_staff_then_successfully_update(self, mock_form_class):
+    def test_manage_event_registration_form_details_view_and_logged_in_and_staff_then_successfully_update(
+        self,
+        mock_form_class
+    ):
         user_kate = User.objects.create_user(
             id=1,
             username='kate',
@@ -116,7 +119,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -175,7 +178,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -187,7 +190,10 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         url = reverse('events:manage_event_registration_form_details', kwargs=kwargs)
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/manage-event-registration-form-details/{event.pk}/')
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/manage-event-registration-form-details/{event.pk}/'
+        )
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_manage_event_registration_form_details_view_and_logged_in_and_not_staff_then_redirected(self):

@@ -3,7 +3,6 @@
 import pytz
 from django.urls import reverse
 from http import HTTPStatus
-from events.models import Event
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.test.utils import override_settings
@@ -66,7 +65,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -106,7 +105,10 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
 
     @mock.patch('events.views.ManageEventDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_manage_event_details_view_and_logged_in_and_staff_member_then_can_update_event_details(self, mock_form_class):
+    def test_manage_event_details_view_and_logged_in_and_staff_member_then_can_update_event_details(
+        self,
+        mock_form_class
+    ):
         user_kate = User.objects.create_user(
             username='kate',
             first_name='Kate',
@@ -140,7 +142,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -176,7 +178,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
             "organisers": event.organisers.all(),
             "event_staff": event.event_staff.all(),
         }
-        response = manage_event_details_view(request, event.pk)
+        manage_event_details_view(request, event.pk)
         updated_event = Event.objects.filter(pk=event.pk)
         self.assertEqual(updated_event.description, expected_description)
 

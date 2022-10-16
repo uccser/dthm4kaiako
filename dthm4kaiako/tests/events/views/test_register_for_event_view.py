@@ -87,7 +87,6 @@ class RegisterForEventViewTest(BaseTestWithDB):
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
         self.assertEqual(response['Location'], f'/accounts/login/?next=/events/register/{event.pk}/')
 
-
     # TODO: fix
     @mock.patch('events.views.ParticipantTypeForm')
     @mock.patch('events.views.EventRegistrationForm')
@@ -166,7 +165,7 @@ class RegisterForEventViewTest(BaseTestWithDB):
         mocked_terms_and_conditions_form.return_value.cleaned_data = {
         }
 
-        response = register_for_event_view(request, event.pk)
+        register_for_event_view(request, event.pk)
         self.assertEqual(EventRegistration.objects.all().count(), 1)
 
         self.assertEqual(EventRegistration.objects.filter(event=event, user=user).count(), 1)

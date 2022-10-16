@@ -5,6 +5,7 @@ from django.test.utils import override_settings
 import pytz
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
+
 class EventUpcomingViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):

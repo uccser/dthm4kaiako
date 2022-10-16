@@ -27,7 +27,7 @@ class GenerateEventDietaryRequirementCountsCSVViewTest(BaseTestWithDB):
         super().__init__(*args, **kwargs)
 
     @mock.patch('events.views.BuilderFormForEventsCSV')
-    def test_generate_event_dietary_requirement_counts_csv_view_returns_200_when_event_exists(self, mock_form_class):
+    def test_generate_event_dietary_requirement_counts_csv_view_returns_200_when_event_exists(self):
         user_kate = User.objects.create_user(
             id=1,
             username='kate',
@@ -62,7 +62,7 @@ class GenerateEventDietaryRequirementCountsCSVViewTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()

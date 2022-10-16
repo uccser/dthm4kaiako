@@ -5,6 +5,7 @@ from tests.BaseTestWithDB import BaseTestWithDB
 import pytz
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
+
 class EventPastViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):

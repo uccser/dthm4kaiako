@@ -5,11 +5,9 @@ from events.models import (
 )
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
-from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
-from tests.BaseTestWithDB import BaseTestWithDB
 
 
 class AddressTests(BaseTestWithDB):
@@ -27,15 +25,15 @@ class AddressTests(BaseTestWithDB):
         )
         billing_address.save()
         self.assertEqual(
-        str(billing_address),
-        '{} {},\n{},\n{},\n{}'.format(
-            billing_address.street_number,
-            billing_address.street_name,
-            billing_address.suburb,
-            billing_address.city,
-            billing_address.post_code
+            str(billing_address),
+            '{} {},\n{},\n{},\n{}'.format(
+                billing_address.street_number,
+                billing_address.street_name,
+                billing_address.suburb,
+                billing_address.city,
+                billing_address.post_code
+            )
         )
-    )
 
     # ---------------------------- tests for get_full_address ----------------------
 
@@ -70,7 +68,7 @@ class AddressTests(BaseTestWithDB):
             suburb='Riccarton',
             city='Chrirstchurch',
             region=14,
-            post_code = 123
+            post_code=123
         )
         try:
             address.full_clean()
@@ -88,7 +86,7 @@ class AddressTests(BaseTestWithDB):
             suburb='Riccarton',
             city='Chrirstchurch',
             region=14,
-            post_code = 12345
+            post_code=12345
         )
         try:
             address.full_clean()
@@ -97,7 +95,7 @@ class AddressTests(BaseTestWithDB):
                 'post_code': 'Post code must be four digits.'
             }
             self.assertTrue(e.message_dict, expected)
-    
+
     def test_clean_spaces_in_street_number_throws_validation_error(self):
         address = Address.objects.create(
             id=1,
@@ -106,7 +104,7 @@ class AddressTests(BaseTestWithDB):
             suburb='Riccarton',
             city='Chrirstchurch',
             region=14,
-            post_code = 12345
+            post_code=12345
         )
         try:
             address.full_clean()

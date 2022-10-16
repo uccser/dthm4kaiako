@@ -1,9 +1,6 @@
 """Unit tests for is_in_past_or_cancelled"""
 
 from tests.BaseTestWithDB import BaseTestWithDB
-from django.urls import reverse
-from http import HTTPStatus
-from django.test.utils import override_settings
 from users.models import User
 import datetime
 import pytz
@@ -49,7 +46,7 @@ class IsInPastOrCancelledTest(BaseTestWithDB):
         )
         event.save()
         self.assertTrue(is_in_past_or_cancelled(event))
- 
+
     def test_is_in_past_or_cancelled_and_in_future_and_cancelled(self):
         event = Event.objects.create(
             name="Security in CS",
@@ -63,7 +60,6 @@ class IsInPastOrCancelledTest(BaseTestWithDB):
         )
         event.save()
         self.assertTrue(is_in_past_or_cancelled(event))
-
 
     def test_is_in_past_or_cancelled_and_in_future_and_not_cancelled(self):
         event = Event.objects.create(

@@ -7,6 +7,7 @@ from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
 
+
 class CancelEventViewTest(BaseTestWithDB):
 
     @classmethod
@@ -15,7 +16,7 @@ class CancelEventViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
     def test_cancel_event_view_returns_200_when_event_exists_and_logged_in(self):
         '''Redirect to manage event page.'''
         event = Event.objects.create(
@@ -131,4 +132,4 @@ class CancelEventViewTest(BaseTestWithDB):
         url = reverse('events:cancel_event', kwargs=kwargs)
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/events/manage/')
+        self.assertEqual(response['Location'], '/events/manage/')

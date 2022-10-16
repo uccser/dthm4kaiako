@@ -59,7 +59,7 @@ class DeleteRegistrationViaEventPageURLTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -94,7 +94,7 @@ class DeleteRegistrationViaEventPageURLTest(BaseTestWithDB):
         )
         user.save()
         self.client.force_login(user)
-        
+
         participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
 
         billing_address = Address.objects.create(
@@ -108,7 +108,7 @@ class DeleteRegistrationViaEventPageURLTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,

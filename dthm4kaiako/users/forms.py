@@ -104,7 +104,6 @@ class UserUpdateDetailsForm(ModelForm):
             'educational_entities',
         ]
 
-
     def __init__(self, *args, **kwargs):
         """Initialise method for user update details form.
 

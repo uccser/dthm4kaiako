@@ -2,22 +2,7 @@
 
 import pytz
 from django.urls import reverse, resolve
-from http import HTTPStatus
-from events.models import Event
-from users.models import User
-from tests.dthm4kaiako_test_data_generator import (
-    generate_locations,
-    generate_users,
-    generate_events,
-    generate_addresses,
-    generate_event_registrations,
-    generate_serieses,
-)
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
-from django.test.utils import override_settings
-from users.models import User
-from django.contrib.gis.geos import Point
 import datetime
 from events.models import (
     Location,

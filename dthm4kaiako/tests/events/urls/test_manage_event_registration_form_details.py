@@ -7,7 +7,6 @@ from events.models import (
 )
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
@@ -55,4 +54,3 @@ class ManageEventRegistrationFormDetailsURLTest(BaseTestWithDB):
             f"/events/manage-event-registration-form-details/{event.pk}/").view_name,
             "events:manage_event_registration_form_details"
         )
-

@@ -1,7 +1,6 @@
 """Unit tests for manage_event_registration url"""
 
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import (
     Event,
     EventRegistration,
@@ -10,8 +9,6 @@ from events.models import (
 )
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
-from django.test.utils import override_settings
 import datetime
 
 
@@ -61,7 +58,7 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -111,7 +108,7 @@ class ManageEventRegistrationURLTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,

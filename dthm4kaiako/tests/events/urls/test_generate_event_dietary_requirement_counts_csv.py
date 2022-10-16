@@ -11,6 +11,7 @@ import datetime
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
 
+
 class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
 
     @classmethod
@@ -56,7 +57,7 @@ class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -103,7 +104,7 @@ class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -148,7 +149,7 @@ class GenerateEventDietaryRequirementCountsCSVURLTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()

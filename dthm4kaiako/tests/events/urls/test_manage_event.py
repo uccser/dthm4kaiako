@@ -1,11 +1,9 @@
 """Unit tests for manage_event url"""
 
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import Event
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
-from django.test.utils import override_settings
 import datetime
 
 

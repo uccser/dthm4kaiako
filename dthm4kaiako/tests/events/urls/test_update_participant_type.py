@@ -1,10 +1,8 @@
 """Unit tests for upcoming_participant_type url"""
 
 from django.urls import reverse, resolve
-from http import HTTPStatus
 from events.models import Event, ParticipantType
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
 import datetime
 
 

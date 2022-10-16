@@ -13,6 +13,7 @@ import pytz
 from django.contrib.gis.geos import Point
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
+
 class LocationDetailViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):

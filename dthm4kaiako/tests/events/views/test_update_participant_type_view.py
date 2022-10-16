@@ -8,6 +8,7 @@ from users.models import User
 import datetime
 from django.test.client import RequestFactory
 
+
 class UpdateParticipantTypeViewTest(BaseTestWithDB):
 
     @classmethod
@@ -50,7 +51,7 @@ class UpdateParticipantTypeViewTest(BaseTestWithDB):
             'participant_type_pk': participant_type.pk
             }
         url = reverse('events:update_participant_type', kwargs=kwargs)
-        response = self.client.post(url, {'name':"teacher", 'price': "15.0"})
+        response = self.client.post(url, {'name': "teacher", 'price': "15.0"})
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
@@ -87,7 +88,7 @@ class UpdateParticipantTypeViewTest(BaseTestWithDB):
             'participant_type_pk': participant_type.pk
             }
         url = reverse('events:update_participant_type', kwargs=kwargs)
-        self.client.post(url, {'name':"teacher", 'price': "15.0"})
+        self.client.post(url, {'name': "teacher", 'price': "15.0"})
         self.assertEqual(ParticipantType.objects.last().name, "teacher")
 
     def test_update_participant_type_view_and_not_logged_in_and_staff_then_redirect(self):
@@ -123,7 +124,10 @@ class UpdateParticipantTypeViewTest(BaseTestWithDB):
         url = reverse('events:update_participant_type', kwargs=kwargs)
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/manage/{event.pk}/update_participant_type/{participant_type.pk}/')
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/manage/{event.pk}/update_participant_type/{participant_type.pk}/'
+        )
 
     def test_update_participant_type_view_and_logged_in_and_not_staff_then_redirect(self):
         user = User.objects.create_user(

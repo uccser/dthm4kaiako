@@ -11,7 +11,7 @@ from events.models import (
 from django.contrib.gis.geos import Point
 import datetime
 import pytz
-from users.models import User
+from users.models import User as model_user
 from tests.BaseTestWithDB import BaseTestWithDB
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
@@ -78,8 +78,8 @@ class EventRegistrationTests(BaseTestWithDB):
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
-            participant_type= participant_type,
-            user=User.objects.get(id=1),
+            participant_type=participant_type,
+            user=model_user.objects.get(id=1),
             event=Event.objects.get(id=1),
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
@@ -144,8 +144,8 @@ class EventRegistrationTests(BaseTestWithDB):
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
-            participant_type= participant_type,
-            user=User.objects.get(id=1),
+            participant_type=participant_type,
+            user=model_user.objects.get(id=1),
             event=Event.objects.get(id=1),
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
@@ -207,8 +207,8 @@ class EventRegistrationTests(BaseTestWithDB):
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
-            participant_type= participant_type,
-            user=User.objects.get(id=1),
+            participant_type=participant_type,
+            user=model_user.objects.get(id=1),
             event=Event.objects.get(id=1),
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"
@@ -270,8 +270,8 @@ class EventRegistrationTests(BaseTestWithDB):
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
-            participant_type= participant_type,
-            user=User.objects.get(id=1),
+            participant_type=participant_type,
+            user=model_user.objects.get(id=1),
             event=Event.objects.get(id=1),
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz"

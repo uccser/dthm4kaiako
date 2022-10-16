@@ -8,7 +8,7 @@ class UpcomingEventsURLTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
     def test_valid_upcoming_url(self):
         url = reverse("events:upcoming")
         self.assertEqual(url, "/events/upcoming/")

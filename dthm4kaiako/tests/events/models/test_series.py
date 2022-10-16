@@ -10,7 +10,7 @@ NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 class SeriesTests(BaseTestWithDB):
 
     # ------------------------------- tests for __str__ ----------------------------
-    
+
     def test_str_representation(self):
         series = Series.objects.create(
             id=1,

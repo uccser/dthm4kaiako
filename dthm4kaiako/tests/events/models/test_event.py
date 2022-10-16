@@ -450,7 +450,7 @@ class EventModelTests(BaseTestWithDB):
             coords=Point(-43, 172)
         )
         location_1.save()
-        event =  Event.objects.create(
+        event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
@@ -663,7 +663,7 @@ class EventModelTests(BaseTestWithDB):
         )
         event.save()
         self.assertEqual(event.get_event_type_short, "Invite only")
-    
+
     def test_get_event_type_short__external_link(self):
         event = Event.objects.create(
             name="Intro to logic gates - part 2",
@@ -726,7 +726,7 @@ class EventModelTests(BaseTestWithDB):
         )
         event.save()
         self.assertEqual(event.get_event_type_short_updating, "")
-    
+
     def test_get_event_type_short_updating__external_link(self):
         event = Event.objects.create(
             id=9,
@@ -915,7 +915,6 @@ class EventModelTests(BaseTestWithDB):
             mock_date.today.return_value = current_date
             self.assertTrue(event.is_less_than_one_week_prior_event)
 
-
     # ----------------------------- tests for registration_status_counts ------------------------------
 
     def test_registration_status_counts__one_of_each(self):
@@ -999,7 +998,7 @@ class EventModelTests(BaseTestWithDB):
             event=event,
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz",
-            participant_type = registration_type_event_staff
+            participant_type=registration_type_event_staff
         )
         event_registration_1_pending.status = 1
         event_registration_1_pending.save()
@@ -1009,7 +1008,7 @@ class EventModelTests(BaseTestWithDB):
             event=event,
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz",
-            participant_type = registration_type_event_staff
+            participant_type=registration_type_event_staff
         )
         event_registration_2_approved.status = 2
         event_registration_2_approved.save()
@@ -1019,7 +1018,7 @@ class EventModelTests(BaseTestWithDB):
             event=event,
             billing_physical_address=billing_address_1,
             billing_email_address="test@test.co.nz",
-            participant_type = registration_type_event_staff
+            participant_type=registration_type_event_staff
         )
         event_registration_3_declined.status = 3
         event_registration_3_declined.save()
@@ -1031,8 +1030,7 @@ class EventModelTests(BaseTestWithDB):
             'withdrawn': 0
         }
         self.assertEqual(expected_status_counts, event.registration_status_counts)
-    
-    
+
     def test_registration_status_counts__no_registrations(self):
         event = Event.objects.create(
             name="DTHM for Kaiako Conference 2023",
@@ -1051,14 +1049,11 @@ class EventModelTests(BaseTestWithDB):
             'withdrawn': 0
         }
         self.assertEqual(expected_status_counts, event.registration_status_counts)
-    
-    # ----------------------------- tests for participant_type_counts ------------------------------
-    
-    # ----------------------------- tests for reasons_for_withdrawing_counts ------------------------------
-    
-    # ----------------------------- tests for other_reasons_for_withdrawing ------------------------------
 
-    # ----------------------------- tests for __str__ ------------------------------
+    # ----------------------------- tests for participant_type_counts ------------------------------
+    # ----------------------------- tests for reasons_for_withdrawing_counts -----------------------
+    # ----------------------------- tests for other_reasons_for_withdrawing ------------------------
+    # ----------------------------- tests for __str__ ----------------------------------------------
 
     def test_str_representation(self):
         event = event_physical_register_1 = Event.objects.create(
@@ -1076,8 +1071,8 @@ class EventModelTests(BaseTestWithDB):
 
     # --------------------------- tests for registration_status_counts ------------
 
-
     # ----------------------------- tests for capacity_percentage ------------------------------
+
     def test_capacity_percentage_capacity(self):
         user_kate = User.objects.create(
             id=1,
@@ -1116,7 +1111,7 @@ class EventModelTests(BaseTestWithDB):
 
         event_registration_1_pending = EventRegistration.objects.create(
             id=1,
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user_kate,
             event=event_physical_register_1,
             billing_physical_address=billing_address_1,

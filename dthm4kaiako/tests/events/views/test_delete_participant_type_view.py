@@ -13,7 +13,6 @@ class DeleteParticipantTypeViewTest(BaseTestWithDB):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    
     def test_delete_participant_type_view_returns_200_when_event_exists_and_logged_in_and_staff(self):
         event = Event.objects.create(
             name="Security in CS",
@@ -43,10 +42,12 @@ class DeleteParticipantTypeViewTest(BaseTestWithDB):
             }
         url = reverse('events:delete_participant_type', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
-    def test_delete_participant_type_view_and_logged_in_and_staff_and_successfully_deletes_participant_type_when_it_only_belongs_to_this_event(self):
+    def test_delete_participant_type_view_and_logged_in_and_staff_and_successfully_deletes_type_globally(
+        self
+    ):
         event = Event.objects.create(
             name="Security in CS",
             description="description",
@@ -78,7 +79,9 @@ class DeleteParticipantTypeViewTest(BaseTestWithDB):
         self.client.post(url)
         self.assertEqual(ParticipantType.objects.filter(name="Teacher", price="10.00").count(), 0)
 
-    def test_delete_participant_type_view_and_logged_in_and_staff_and_successfully_removes_participant_from_event_when_belongs_to_other_events_too(self):
+    def test_delete_participant_type_view_and_logged_in_and_staff_and_successfully_removes_participant_from_event(
+        self
+    ):
         event = Event.objects.create(
             name="Security in CS",
             description="description",
@@ -143,8 +146,11 @@ class DeleteParticipantTypeViewTest(BaseTestWithDB):
             }
         url = reverse('events:delete_participant_type', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/manage/{event.pk}/delete_participant_type/{participant_type.pk}/')
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/manage/{event.pk}/delete_participant_type/{participant_type.pk}/'
+        )
 
     def test_delete_participant_type_view_and_logged_in_and_not_staff(self):
         event = Event.objects.create(
@@ -175,5 +181,5 @@ class DeleteParticipantTypeViewTest(BaseTestWithDB):
             }
         url = reverse('events:delete_participant_type', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
-        self.assertEqual(response['Location'], f'/events/manage/')
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
+        self.assertEqual(response['Location'], '/events/manage/')

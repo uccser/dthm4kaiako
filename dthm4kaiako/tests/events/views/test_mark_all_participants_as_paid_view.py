@@ -10,7 +10,6 @@ from events.models import (
 )
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
 import datetime
 
 
@@ -59,7 +58,7 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -76,7 +75,7 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
             }
         url = reverse('events:mark_all_participants_as_paid', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
     # TODO
@@ -112,7 +111,7 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -135,7 +134,6 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         updated_event_registration = EventRegistration.objects.get(pk=event_registration.pk)
         self.assertTrue(updated_event_registration.paid)
 
-    
     def test_mark_all_participants_as_paid_view_and_not_logged_in_and_staff_and_redirects(self):
         event = Event.objects.create(
             name="Security in CS",
@@ -169,7 +167,7 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -185,8 +183,11 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
             }
         url = reverse('events:mark_all_participants_as_paid', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/manage/mark_all_participants_as_paid/{event.pk}/')
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/manage/mark_all_participants_as_paid/{event.pk}/'
+        )
 
     def test_mark_all_participants_as_paid_view_and_logged_in_and_not_staff_and_redirects(self):
         event = Event.objects.create(
@@ -221,7 +222,7 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -236,5 +237,5 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
             }
         url = reverse('events:mark_all_participants_as_paid', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
-        self.assertEqual(response['Location'], f'/events/manage/')
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
+        self.assertEqual(response['Location'], '/events/manage/')

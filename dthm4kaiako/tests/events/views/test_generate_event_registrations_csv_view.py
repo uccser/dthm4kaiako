@@ -62,7 +62,7 @@ class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
         )
         event_physical_register_1.locations.set([location_1])
         event_physical_register_1.save()
-        
+
         event = Event.objects.get(pk=event_physical_register_1.pk)
         event.event_staff.set([user_kate])
         event.save()
@@ -77,29 +77,29 @@ class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):
         mock_form_class.return_value.cleaned_data = {
             'file_name': "Some random name",
             'event_name': True,
-            'submitted_datetime':True,
-            'updated_datetime':True,
-            'status':True,
-            'participant_type':True,
-            'staff_comments':True,
-            'participant_first_name':True,
-            'participant_last_name':True,
-            'dietary_requirements':True,
-            'educational_entities':True,
-            'region':True,
-            'mobile_phone_number':True,
-            'email_address':True,
-            'how_we_can_best_accommodate_them':True,
-            'emergency_contact_first_name':True,
-            'emergency_contact_last_name':True,
-            'emergency_contact_relationship':True,
-            'emergency_contact_phone_number':True,
-            'paid':True,
-            'billing_email_address':True,
-            'admin_billing_comments':True,
-            'representing':True,
-            'bill_to':True,
-            'billing_physical_address':True
+            'submitted_datetime': True,
+            'updated_datetime': True,
+            'status': True,
+            'participant_type': True,
+            'staff_comments': True,
+            'participant_first_name': True,
+            'participant_last_name': True,
+            'dietary_requirements': True,
+            'educational_entities': True,
+            'region': True,
+            'mobile_phone_number': True,
+            'email_address': True,
+            'how_we_can_best_accommodate_them': True,
+            'emergency_contact_first_name': True,
+            'emergency_contact_last_name': True,
+            'emergency_contact_relationship': True,
+            'emergency_contact_phone_number': True,
+            'paid': True,
+            'billing_email_address': True,
+            'admin_billing_comments': True,
+            'representing': True,
+            'bill_to': True,
+            'billing_physical_address': True
 
         }
         response = generate_event_registrations_csv_view(request, event.pk)

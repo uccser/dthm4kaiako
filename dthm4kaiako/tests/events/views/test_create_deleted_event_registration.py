@@ -1,7 +1,6 @@
 """Unit tests for delete_registration_via_event_page_view"""
 
-from django.urls import reverse, resolve
-from http import HTTPStatus
+from django.urls import reverse
 from events.models import (
     EventRegistration,
     Event,
@@ -60,7 +59,7 @@ class CreateDeletedEventRegistrationTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -79,9 +78,13 @@ class CreateDeletedEventRegistrationTest(BaseTestWithDB):
         self.factory = RequestFactory()
         request = self.factory.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": ""})
         create_deleted_event_registration(event, request)
-        self.assertEqual(DeletedEventRegistration.objects.filter(event=event, withdraw_reason="1").count(), count_prior + 1)
+        self.assertEqual(DeletedEventRegistration.objects.filter(
+            event=event,
+            withdraw_reason="1").count(),
+            count_prior + 1
+        )
 
-    def test_created_deleted_registration_successfully_and_no_other_reason(self):
+    def test_created_deleted_registration_successfully_and_has_other_reason(self):
         event = Event.objects.create(
             name="Security in CS",
             description="description",
@@ -115,7 +118,7 @@ class CreateDeletedEventRegistrationTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -124,7 +127,11 @@ class CreateDeletedEventRegistrationTest(BaseTestWithDB):
         event_registration.status = 1
         event_registration.save()
 
-        count_prior = DeletedEventRegistration.objects.filter(event=event, withdraw_reason="1", other_reason_for_withdrawing="Another reason").count()
+        count_prior = DeletedEventRegistration.objects.filter(
+                event=event,
+                withdraw_reason="1",
+                other_reason_for_withdrawing="Another reason"
+            ).count()
 
         kwargs = {
             'pk': event_registration.pk,
@@ -134,4 +141,9 @@ class CreateDeletedEventRegistrationTest(BaseTestWithDB):
         self.factory = RequestFactory()
         request = self.factory.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": "Another reason"})
         create_deleted_event_registration(event, request)
-        self.assertEqual(DeletedEventRegistration.objects.filter(event=event, withdraw_reason="1", other_reason_for_withdrawing="Another reason").count(), count_prior + 1)
+        self.assertEqual(DeletedEventRegistration.objects.filter(
+                event=event,
+                withdraw_reason="1",
+                other_reason_for_withdrawing="Another reason"
+            )
+            .count(), count_prior + 1)

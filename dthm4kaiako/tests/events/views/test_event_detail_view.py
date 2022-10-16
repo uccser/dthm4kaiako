@@ -6,20 +6,18 @@ from http import HTTPStatus
 from django.test.utils import override_settings
 import datetime
 import pytz
-from django.urls import reverse
-from http import HTTPStatus
 from events.models import (
     EventRegistration,
     Event,
     ParticipantType,
     Address
 )
-from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
 from events.views import EventDetailView
 from django.test import RequestFactory
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
+
 
 def setup_view(view, request, *args, **kwargs):
     """
@@ -33,6 +31,7 @@ def setup_view(view, request, *args, **kwargs):
     view.kwargs = kwargs
     return view
 
+
 class EventDetailViewTest(BaseTestWithDB):
 
     @classmethod
@@ -44,7 +43,6 @@ class EventDetailViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_event_detail_view_success_response(self):
@@ -88,7 +86,7 @@ class EventDetailViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -101,7 +99,6 @@ class EventDetailViewTest(BaseTestWithDB):
         request = factory.get(f'/events/event/{event.pk}/')
         view = setup_view(EventDetailView(), request)
         self.assertTrue(view.does_registration_exist(user))
-
 
     def test_does_registration_exist_when_exists_and_not_logged_in_returns_false(self):
         event = Event.objects.create(
@@ -136,7 +133,7 @@ class EventDetailViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,

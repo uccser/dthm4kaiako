@@ -144,7 +144,10 @@ class WithdrawEventRegistrationForm(ModelForm):
 # ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventRegistrationForm(ModelForm):
-    """Simple form to allow an event organiser to manage the registration form that the event participant submitted to attend an event."""
+    """
+    Simple form to allow an event organiser to manage the registration form
+    that the event participant submitted to attend an event.
+    """
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())
 
@@ -160,7 +163,7 @@ class ManageEventRegistrationForm(ModelForm):
             choices += [(participant_type.pk, str(participant_type))]
         self.fields['participant_type'].choices = choices
 
-        if not show_paid: 
+        if not show_paid:
             del self.fields['paid']
 
     def clean(self):

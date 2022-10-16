@@ -12,10 +12,6 @@ from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.test.utils import override_settings
 import datetime
-from events.models import (
-    Event,
-    EventRegistration
-)
 from events.views import manage_event_registration_view
 from unittest import mock
 from django.test.client import RequestFactory
@@ -67,7 +63,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -132,7 +128,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -157,7 +153,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         mock_form_class.return_value.cleaned_data = {
             "terms_and_conditions": updated_staff_comments
         }
-        response = manage_event_registration_view(request, event.pk, event_registration.pk)
+        manage_event_registration_view(request, event.pk, event_registration.pk)
         updated_registration = EventRegistration.objects.filter(event=event.pk)
         self.assertEqual(updated_registration.staff_comments, updated_staff_comments)
 
@@ -196,7 +192,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -261,7 +257,7 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,

@@ -5,7 +5,6 @@ from http import HTTPStatus
 from events.models import Event
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
-from users.models import User
 import datetime
 
 
@@ -95,4 +94,4 @@ class MarkAllParticipantsAsPaidURLTest(BaseTestWithDB):
             }
         url = reverse('events:mark_all_participants_as_paid', kwargs=kwargs)
         response = self.client.post(url)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code) # redirect to event management page
+        self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page

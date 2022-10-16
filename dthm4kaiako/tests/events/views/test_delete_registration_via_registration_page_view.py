@@ -59,7 +59,7 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -73,7 +73,7 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         response = self.client.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": ""})
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/events/registrations/')
+        self.assertEqual(response['Location'], '/events/registrations/')
 
     def test_delete_registration_via_registration_page_and_logged_in_and_mine_then_successfully_deleted(self):
         event = Event.objects.create(
@@ -109,7 +109,7 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -122,7 +122,10 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
             }
         url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         self.client.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": ""})
-        self.assertQuerysetEqual(EventRegistration.objects.filter(event=event, user=user), EventRegistration.objects.none())
+        self.assertQuerysetEqual(
+            EventRegistration.objects.filter(event=event, user=user),
+            EventRegistration.objects.none()
+        )
 
     def test_delete_registration_via_registration_page_and_not_logged_in_and_mine_then_redirected(self):
         event = Event.objects.create(
@@ -157,7 +160,7 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -171,7 +174,10 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         response = self.client.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": ""})
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/accounts/login/?next=/events/delete-via-registrations/{event_registration.pk}/')
+        self.assertEqual(
+            response['Location'],
+            f'/accounts/login/?next=/events/delete-via-registrations/{event_registration.pk}/'
+        )
 
     def test_delete_registration_via_registration_page_and_logged_in_and_not_mine_then_redirected(self):
         event = Event.objects.create(
@@ -215,7 +221,7 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         billing_address.save()
 
         event_registration = EventRegistration.objects.create(
-            participant_type= participant_type,
+            participant_type=participant_type,
             user=user,
             event=event,
             billing_physical_address=billing_address,
@@ -229,4 +235,4 @@ class DeletingRegistrationViaRegistrationsViewTest(BaseTestWithDB):
         url = reverse('events:delete_registration_via_registration_page_view', kwargs=kwargs)
         response = self.client.post(url, {"withdraw_reason": "1", "other_reason_for_withdrawing": ""})
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], f'/events/registrations/')
+        self.assertEqual(response['Location'], '/events/registrations/')

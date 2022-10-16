@@ -170,7 +170,7 @@ class ParticipantType(models.Model):
             raise ValidationError(
                 {
                     'price':
-                    _('Price must be be in the form of $1.23 or $1.' )
+                    _('Price must be be in the form of $1.23 or $1.')
                 }
             )
 
