@@ -3,7 +3,6 @@
 import pytz
 from django.urls import reverse
 from http import HTTPStatus
-from events.models import Event
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.test.utils import override_settings
@@ -12,6 +11,7 @@ import datetime
 from events.models import (
     Location,
     Event,
+    RegistrationForm
 )
 from events.views import manage_event_details_view
 from unittest import mock
@@ -26,6 +26,7 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
     def tearDownTestData(cls):
         Event.objects.all().delete()
         Location.objects.all().delete()
+        RegistrationForm.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -78,9 +79,9 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
-    # TODO
+    @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_manage_event_registration_form_details_view_and_logged_in_and_staff_then_successfully_update(self):
+    def test_manage_event_registration_form_details_view_and_logged_in_and_staff_then_successfully_update(self, mock_form_class):
         user_kate = User.objects.create_user(
             id=1,
             username='kate',
@@ -123,10 +124,19 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         kwargs = {
             'pk': event.pk,
             }
-        event.event_staff.set([user_kate])
-        event.save()
+        self.factory = RequestFactory()
         url = reverse('events:manage_event_registration_form_details', kwargs=kwargs)
-        response = self.client.post(url)
+        request = self.factory.post(url)
+        request.user = user_kate
+        updated_terms_and_conditions = "New Ts and Cs here"
+
+        mock_form_class.is_valid = True
+        mock_form_class.return_value.cleaned_data = {
+            "terms_and_conditions": updated_terms_and_conditions
+        }
+        response = manage_event_details_view(request, event.pk)
+        updated_event = RegistrationForm.objects.filter(event=event.pk)
+        self.assertEqual(updated_event.terms_and_conditions, updated_terms_and_conditions)
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
