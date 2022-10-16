@@ -50,7 +50,6 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
 
         billing_address = Address.objects.create(
-            id=1,
             street_number='12',
             street_name='High Street',
             suburb='Riccarton',
@@ -104,7 +103,6 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
 
         billing_address = Address.objects.create(
-            id=1,
             street_number='12',
             street_name='High Street',
             suburb='Riccarton',
