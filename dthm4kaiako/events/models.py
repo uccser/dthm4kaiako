@@ -379,7 +379,8 @@ class Event(models.Model):
         Returns:
             Boolean if event has ended.
         """
-        return now() > self.end
+        if self.end is not None:
+            return now() > self.end
 
     @property
     def get_event_type_short(self):
@@ -1099,7 +1100,7 @@ class RegistrationForm(models.Model):
                 }
             )
 
-        if self.close_datetime and self.close_datetime.date() >= self.event.start:
+        if self.close_datetime and self.close_datetime >= self.event.start:
             raise ValidationError(
                 {
                     'close_datetime':
