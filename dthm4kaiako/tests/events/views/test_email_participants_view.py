@@ -91,9 +91,6 @@ class EmailParticipantsURLTest(BaseTestWithDB):
         url = reverse('events:email_participants', kwargs=kwargs)
         response = self.client.post(url)
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        print("CABBAGE")
-        print(response)
-        # self.assertEqual(response['Location'], '/events/registrations/')
 
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_email_participants_view_and_logged_in_and_not_staff_then_redirected(self):

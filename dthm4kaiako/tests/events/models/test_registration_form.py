@@ -37,8 +37,8 @@ class RegistrationFormTests(BaseTestWithDB):
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
-            start=datetime.date(2023, 6, 24),
-            end=datetime.date(2023, 6, 26),
+            start=datetime.datetime(2023, 6, 24, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 6, 26, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )
@@ -75,8 +75,8 @@ class RegistrationFormTests(BaseTestWithDB):
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
-            start=datetime.date(2023, 6, 24),
-            end=datetime.date(2023, 6, 26),
+            start=datetime.datetime(2023, 6, 24, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 6, 26, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )
@@ -89,8 +89,8 @@ class RegistrationFormTests(BaseTestWithDB):
 
         try:
             RegistrationForm.objects.create(
-                open_datetime=datetime.date(2022, 1, 1),
-                close_datetime=datetime.date(2023, 6, 1),
+                open_datetime=datetime.datetime(2022, 1, 1, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+                close_datetime=datetime.datetime(2023, 6, 1, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
                 terms_and_conditions="Some terms and conditions.",
                 event=event_physical_register_1,
             )
@@ -116,8 +116,8 @@ class RegistrationFormTests(BaseTestWithDB):
             name="DTHM for Kaiako Conference 2023",
             description="description",
             registration_type=1,
-            start=datetime.date(2023, 6, 24),
-            end=datetime.date(2023, 6, 26),
+            start=datetime.datetime(2023, 6, 24, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
+            end=datetime.datetime(2023, 6, 26, 0, 0, 0, 00, NEW_ZEALAND_TIME_ZONE),
             accessible_online=False,
             published=True
         )

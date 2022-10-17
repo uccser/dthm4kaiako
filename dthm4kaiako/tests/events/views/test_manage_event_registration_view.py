@@ -228,7 +228,6 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         }
         response = manage_event_registration_view(request, event.pk, event_registration.pk)
         self.assertEqual(HTTPStatus.FOUND, response.status_code)
-        self.assertEqual(response['Location'], '/manage/')
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")

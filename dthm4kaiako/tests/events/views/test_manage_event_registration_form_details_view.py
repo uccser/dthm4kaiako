@@ -129,19 +129,19 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
             'pk': event.pk,
             }
         self.factory = RequestFactory()
+        updated_terms_and_conditions = "New Ts and Cs here"
         url = reverse('events:manage_event_registration_form_details', kwargs=kwargs)
-        request = self.factory.post(url)
+        request = self.factory.post(url, {"terms_and_conditions": updated_terms_and_conditions})
         request.user = user_kate
         # Add support  django messaging framework
         request._messages = messages.storage.default_storage(request)
-        updated_terms_and_conditions = "New Ts and Cs here"
 
         mock_form_class.is_valid = True
         mock_form_class.return_value.cleaned_data = {
             "terms_and_conditions": updated_terms_and_conditions
         }
         response = manage_event_details_view(request, event.pk)
-        updated_event = RegistrationForm.objects.filter(event=event.pk)
+        updated_event = RegistrationForm.objects.get(event=event.pk)
         self.assertEqual(updated_event.terms_and_conditions, updated_terms_and_conditions)
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
