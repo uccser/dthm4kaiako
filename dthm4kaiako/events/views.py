@@ -51,7 +51,7 @@ from datetime import datetime
 from django.core.mail import send_mail
 from events.utils import can_view_event_management_content, convert_string_list_to_one_string
 import re
-import math 
+import math
 
 NON_EVENT_STAFF_ACCESS_MESSAGE = "Sorry, you are not a staff member of that event."
 
@@ -687,11 +687,13 @@ def is_in_past_or_cancelled(event):
     if event.end is not None:
         return event.end < now() or event.is_cancelled
 
+
 def event_capacity_percentage(event):
     """Return percentage of capacity that the event is at e.g. at 60% capacity."""
     if event.capacity is not None:
         registration_counts = event.registration_status_counts
         return math.floor(registration_counts['approved'] / event.capacity * 100)
+
 
 @login_required
 def manage_event_view(request, pk):
@@ -1008,7 +1010,6 @@ def manage_event_registration_form_details_view(request, pk):
 @login_required
 def generate_event_csv_view(request):
     """Generate a custom CSV of events' data."""
-
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
         if builderFormForEventsCSV.is_valid():

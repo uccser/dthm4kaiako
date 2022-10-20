@@ -10,9 +10,9 @@ from events.models import (
 )
 import datetime
 import pytz
-from events.views import register_for_event_view
-from unittest import mock
-from django.test.client import RequestFactory
+# from events.views import register_for_event_view
+# from unittest import mock
+# from django.test.client import RequestFactory
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 

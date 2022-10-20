@@ -17,7 +17,6 @@ from events.models import (
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
 from django.utils.html import format_html_join
-import datetime
 
 datetime_str = '2016-05-18T15:37:36.993048Z'
 old_format = '%Y-%m-%dT%H:%M:%S.%fZ'

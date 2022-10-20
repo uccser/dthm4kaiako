@@ -1,20 +1,20 @@
 """Unit tests for generate_event_csv_view """
 
-from django.urls import reverse
-from http import HTTPStatus
+# from django.urls import reverse
+# from http import HTTPStatus
 from tests.BaseTestWithDB import BaseTestWithDB
 from users.models import User
-from django.contrib.gis.geos import Point
-import datetime
+# from django.contrib.gis.geos import Point
+# import datetime
 from events.models import (
     Location,
     Event,
 )
-from django.test import RequestFactory
-from events.views import generate_event_registrations_csv_view
-from unittest import mock
-from django.contrib import messages
-from django.test.utils import override_settings
+# from django.test import RequestFactory
+# from events.views import generate_event_registrations_csv_view
+# from unittest import mock
+# from django.contrib import messages
+# from django.test.utils import override_settings
 
 
 class GenerateEventRegistrationsCSVViewTest(BaseTestWithDB):

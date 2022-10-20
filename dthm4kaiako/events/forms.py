@@ -319,7 +319,11 @@ class BuilderFormForEventRegistrationsCSV(forms.Form):
     # this is a user-facing string
     how_we_can_best_accommodate_them = forms.BooleanField(initial=False, required=False)
 
-    representing = forms.BooleanField(initial=False, help_text="Who the participant is representing at this event", required=False)
+    representing = forms.BooleanField(
+        initial=False,
+        help_text="Who the participant is representing at this event",
+        required=False
+    )
     emergency_contact_first_name = forms.BooleanField(initial=False, required=False)
     emergency_contact_last_name = forms.BooleanField(initial=False, required=False)
     emergency_contact_relationship = forms.BooleanField(initial=False, required=False)

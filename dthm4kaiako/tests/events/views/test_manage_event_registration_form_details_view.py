@@ -13,10 +13,10 @@ from events.models import (
     Event,
     RegistrationForm
 )
-from events.views import manage_event_details_view
-from unittest import mock
-from django.test.client import RequestFactory
-from django.contrib import messages
+# from events.views import manage_event_details_view
+# from unittest import mock
+# from django.test.client import RequestFactory
+# from django.contrib import messages
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
