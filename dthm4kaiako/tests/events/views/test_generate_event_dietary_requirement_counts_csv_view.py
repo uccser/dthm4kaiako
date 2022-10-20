@@ -12,7 +12,6 @@ from events.models import (
 )
 from django.test import RequestFactory
 from events.views import generate_event_dietary_requirement_counts_csv_view
-from unittest import mock
 
 
 class GenerateEventDietaryRequirementCountsCSVViewTest(BaseTestWithDB):

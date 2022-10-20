@@ -15,7 +15,6 @@ from events.models import (
 from users.models import User
 from events.views import EventDetailView
 from django.test import RequestFactory
-from django.contrib.auth import logout
 
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 

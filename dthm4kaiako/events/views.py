@@ -161,7 +161,7 @@ class EventDetailView(RedirectToCosmeticURLMixin, generic.DetailView):
         Returns:
             True if the user has an registration and is logged in, otherwise False.
         """
-        return user.is_authenticated and EventRegistration.objects.filter(event=self.object.pk, user=user).exists() 
+        return user.is_authenticated and EventRegistration.objects.filter(event=self.object.pk, user=user).exists()
 
     def get_registration_pk(self, user):
         """Return the primary key of the user's event registration of the event."""
@@ -542,8 +542,12 @@ def register_for_event_view(request, pk):
             if not event.accessible_online:
                 new_emergency_contact_first_name = event_registration_form.cleaned_data['emergency_contact_first_name']
                 new_emergency_contact_last_name = event_registration_form.cleaned_data['emergency_contact_last_name']
-                new_emergency_contact_relationship = event_registration_form.cleaned_data['emergency_contact_relationship']
-                new_emergency_contact_phone_number = event_registration_form.cleaned_data['emergency_contact_phone_number']
+                new_emergency_contact_relationship = event_registration_form.cleaned_data[
+                    'emergency_contact_relationship'
+                    ]
+                new_emergency_contact_phone_number = event_registration_form.cleaned_data[
+                    'emergency_contact_phone_number'
+                    ]
 
             if billing_required:
                 new_bill_to = billing_details_form.cleaned_data['bill_to']

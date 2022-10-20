@@ -127,7 +127,7 @@ class Command(management.base.BaseCommand):
         print('Admin created.')
 
         # Create user account
-        user=User.objects.create_user(
+        user = User.objects.create_user(
             'user',
             'user@dthm4kaiako.ac.nz',
             password=settings.SAMPLE_DATA_USER_PASSWORD,
@@ -151,7 +151,7 @@ class Command(management.base.BaseCommand):
         Language.objects.create(name='Māori', css_class='language-mi')
         print('Languages created.')
 
-        curriculum_learning_areas={
+        curriculum_learning_areas = {
             'English': 'english',
             'Arts': 'arts',
             'Health and physical education': 'health-pe',
@@ -168,7 +168,7 @@ class Command(management.base.BaseCommand):
             )
         print('Curriculum learning areas created.')
 
-        ta_ct=TechnologicalArea.objects.create(
+        ta_ct = TechnologicalArea.objects.create(
             name='Computational thinking',
             abbreviation='CT',
             css_class='ta-ct',
@@ -180,7 +180,7 @@ class Command(management.base.BaseCommand):
                 technological_area=ta_ct,
                 css_class='po-ct',
             )
-        ta_dddo=TechnologicalArea.objects.create(
+        ta_dddo = TechnologicalArea.objects.create(
             name='Designing and developing digital outcomes',
             abbreviation='DDDO',
             css_class='ta-dddo',
@@ -206,7 +206,7 @@ class Command(management.base.BaseCommand):
         print('Resources created.')
 
         # Events
-        event_series={
+        event_series = {
             (
                 'Computer Science for High Schools',
                 'CS4HS',
@@ -278,7 +278,7 @@ class Command(management.base.BaseCommand):
         print('POET submissions created.')
 
         # Event staff
-        events=Event.objects.all()
+        events = Event.objects.all()
         for event in events:
             event.event_staff.add(admin)
             event.save()
