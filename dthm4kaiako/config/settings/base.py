@@ -128,7 +128,6 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'modelclone',
     'svg',
-
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',

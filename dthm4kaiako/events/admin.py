@@ -1,4 +1,4 @@
-"""Module for admin configuration for the events registration."""
+"""Module for admin configuration for the events application."""
 import logging
 from django.contrib import admin
 from django.utils.timezone import now
@@ -17,6 +17,7 @@ from events.models import (
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
 from django.utils.html import format_html_join
+import datetime
 
 datetime_str = '2016-05-18T15:37:36.993048Z'
 old_format = '%Y-%m-%dT%H:%M:%S.%fZ'
@@ -292,15 +293,12 @@ class EventRegistrationAdmin(admin.ModelAdmin):
             registration.user.dietary_requirements.values_list('name'),
         )
 
-    # TODO: fix display!
     @admin.display
     def event_start_end(self, registration):
         """Return the event's start and end dates."""
-        # formatted_start = datetime.datetime.strptime(str(registration.event.start), old_format).strftime(new_format)
-        # formatted_end = datetime.datetime.strptime(str(registration.event.end), old_format).strftime(new_format)
-        # return f'{formatted_start} to {formatted_end}'
-
-        return f'{registration.event.start} to {registration.event.end}'
+        date_time_start_str = registration.event.start.strftime("%d %b %Y, %I:%M %p")
+        date_time_end_str = registration.event.end.strftime("%d %b %Y, %I:%M %p")
+        return f'{date_time_start_str} to {date_time_end_str}'
 
     @admin.display
     def event_location(self, registration):
