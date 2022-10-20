@@ -180,13 +180,15 @@ class Event(models.Model):
 
     name = models.CharField(max_length=200)
     description = RichTextUploadingField(
-        help_text="This is the description that will appear on this event's page that participants will view.")
+        help_text="This is the description that will appear on this event's page that participants will view."
+        )
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
     show_schedule = models.BooleanField(
         default=False,
-        help_text="Select if you would like to show this event's schedule to prospective event participants.")
+        help_text="Select if you would like to show this event's schedule to prospective event participants."
+        )
     featured = models.BooleanField(default=False, help_text="Select if this event is a featured event.")
     REGISTRATION_TYPE_REGISTER = 1
     REGISTRATION_TYPE_APPLY = 2
@@ -282,7 +284,6 @@ class Event(models.Model):
         null=False,
         help_text='This event has been cancelled'
     )
-    # TODO: add defaults that are free upon creation
     participant_types = models.ManyToManyField(
         ParticipantType,
         related_name='events',
@@ -341,14 +342,6 @@ class Event(models.Model):
         """Save the event."""
         return super().save(*args, **kwargs)
 
-    @property
-    def capacity_percentage(self):
-        """Return percentage of capacity that the event is at e.g. at 60% capacity."""
-        if self.capacity is not None:
-            registration_counts = self.registration_status_counts
-            return float(registration_counts['approved']) / self.capacity * 100
-
-    # TODO: use this function instead of including logic in template to improve tidiness
     @property
     def is_register_or_apply(self):
         """Return True if the event is an event which users can register or apply to attend.
