@@ -293,7 +293,7 @@ class BuilderFormForEventsCSV(forms.Form):
 
 # TODO: allow for selecting all boxes at once
 # TODO: add multi select for choosing subset of event registrations OR based on type e.g. approved
-class BuilderFormForEventRegistrationsCSV(ModelForm):
+class BuilderFormForEventRegistrationsCSV(forms.Form):
     """Simple form for selecting which Event Registration model fields will be included the generated CSV."""
 
     file_name = forms.CharField(max_length=200, initial="event_registration_data")
@@ -319,7 +319,7 @@ class BuilderFormForEventRegistrationsCSV(ModelForm):
     # this is a user-facing string
     how_we_can_best_accommodate_them = forms.BooleanField(initial=False, required=False)
 
-    representing = forms.BooleanField(initial=False, help_text="Who the participant is representing at this event")
+    representing = forms.BooleanField(initial=False, help_text="Who the participant is representing at this event", required=False)
     emergency_contact_first_name = forms.BooleanField(initial=False, required=False)
     emergency_contact_last_name = forms.BooleanField(initial=False, required=False)
     emergency_contact_relationship = forms.BooleanField(initial=False, required=False)
@@ -338,7 +338,7 @@ class BuilderFormForEventRegistrationsCSV(ModelForm):
         """
         file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
 
-        cleaned_data = super(BuilderFormForEventsCSV, self).clean()
+        cleaned_data = super(BuilderFormForEventRegistrationsCSV, self).clean()
         file_name = cleaned_data['file_name']
 
         if not file_name_pattern.match(str(file_name)):
