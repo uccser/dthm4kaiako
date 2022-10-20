@@ -1005,18 +1005,9 @@ def manage_event_registration_form_details_view(request, pk):
 
 # TODO: fix UI bug where the validation error message only disappears
 # if go back out and back to events management hub page
-# TODO: add staff and admin permissions
 @login_required
 def generate_event_csv_view(request):
     """Generate a custom CSV of events' data."""
-    event = Event.objects.get(pk=request.event.pk)
-
-    if not can_view_event_management_content(request, event):
-        messages.warning(
-            request,
-            NON_EVENT_STAFF_ACCESS_MESSAGE
-        )
-        return HttpResponseRedirect(reverse("events:events_management"))
 
     if request.method == 'POST':
         builderFormForEventsCSV = BuilderFormForEventsCSV(request.POST)
@@ -1161,7 +1152,6 @@ def generate_event_csv_view(request):
 
 
 # TODO: fix UI bug where the validation error message only disappears if go back out and back to event management page
-# TODO: add staff and admin permissions
 @login_required
 def generate_event_registrations_csv_view(request, pk):
     """Generate a custom CSV of event registrations' data."""

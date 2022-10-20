@@ -6,8 +6,6 @@ from events.models import (
     DeletedEventRegistration,
     Event,
     EventRegistration,
-    EventRegistrationsCSV,
-    EventCSV,
     Location,
     RegistrationForm,
     ParticipantType,
@@ -19,6 +17,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
+import re
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -236,15 +236,52 @@ class ManageEventLocationForm(ModelForm):
 
 # TODO: allow for selecting all boxes at once
 # TODO: add multi select for choosing subset of events
-class BuilderFormForEventsCSV(ModelForm):
+class BuilderFormForEventsCSV(forms.Form):
     """Simple form for selecting which Event model fields will be included the generated CSV."""
 
-    class Meta:
-        """Metadata for CSVBuilderFormForEvent class."""
+    file_name = forms.CharField(max_length=200, initial="events_data")
+    event_name = forms.BooleanField(initial=True, required=False)
+    description = forms.BooleanField(initial=False, required=False)
+    published_status = forms.BooleanField(initial=False, required=False)
+    show_schedule = forms.BooleanField(initial=False, required=False)
+    featured_status = forms.BooleanField(initial=False, required=False)
+    registration_type = forms.BooleanField(initial=False, required=False)
+    external_event_registration_link = forms.BooleanField(initial=False, required=False)
+    start_datetime = forms.BooleanField(initial=False, required=False)
+    end_datetime = forms.BooleanField(initial=False, required=False)
+    accessible_online = forms.BooleanField(initial=False, required=False)
+    is_free = forms.BooleanField(initial=False, required=False)
+    locations = forms.BooleanField(initial=False, required=False)
+    sponsors = forms.BooleanField(initial=False, required=False)
+    organisers = forms.BooleanField(initial=False, required=False)
+    series = forms.BooleanField(initial=False, required=False)
+    is_catered = forms.BooleanField(initial=False, required=False)
+    contact_email_address = forms.BooleanField(initial=False, required=False)
+    event_staff = forms.BooleanField(initial=False, required=False)
+    is_cancelled = forms.BooleanField(initial=False, required=False)
+    approved_registrations_count = forms.BooleanField(initial=False, required=False)
+    pending_registrations_count = forms.BooleanField(initial=False, required=False)
+    declined_registrations_count = forms.BooleanField(initial=False, required=False)
+    withdrawn_registrations_count = forms.BooleanField(initial=False, required=False)
 
-        model = EventCSV
-        fields = '__all__'
-        exclude = ['event']
+    def clean(self):
+        """Validate EventCSV model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
+
+        cleaned_data = super(BuilderFormForEventsCSV, self).clean()
+        file_name = cleaned_data['file_name']
+
+        if not file_name_pattern.match(str(file_name)):
+            raise ValidationError(
+                {
+                    'file_name':
+                    _('Filename can only contain letters, numbers, dashes and underscores.')
+                }
+            )
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
@@ -259,12 +296,58 @@ class BuilderFormForEventsCSV(ModelForm):
 class BuilderFormForEventRegistrationsCSV(ModelForm):
     """Simple form for selecting which Event Registration model fields will be included the generated CSV."""
 
-    class Meta:
-        """Metadata for BuilderFormForEventRegistrationsCSV class."""
+    file_name = forms.CharField(max_length=200, initial="event_registration_data")
+    event_name = forms.BooleanField(initial=True, required=False)
+    submitted_datetime = forms.BooleanField(initial=False, required=False)
+    updated_datetime = forms.BooleanField(initial=False, required=False)
+    status = forms.BooleanField(initial=False, required=False)
+    participant_type = forms.BooleanField(initial=False, required=False)
+    staff_comments = forms.BooleanField(initial=False, required=False)
+    participant_first_name = forms.BooleanField(initial=False, required=False)
+    participant_last_name = forms.BooleanField(initial=False, required=False)
 
-        model = EventRegistrationsCSV
-        fields = '__all__'
-        exclude = ['event']
+    dietary_requirements = forms.BooleanField(initial=False, required=False)
+    educational_entities = forms.BooleanField(
+        initial=False,
+        help_text="School and/or educational organisations participants belongs to",
+        required=False
+    )
+    region = forms.BooleanField(initial=False, required=False)
+    mobile_phone_number = forms.BooleanField(initial=False, required=False)
+    email_address = forms.BooleanField(initial=False, required=False)
+    # NOTE: called medical notes elsewhere but called this for user-friendliness since
+    # this is a user-facing string
+    how_we_can_best_accommodate_them = forms.BooleanField(initial=False, required=False)
+
+    representing = forms.BooleanField(initial=False, help_text="Who the participant is representing at this event")
+    emergency_contact_first_name = forms.BooleanField(initial=False, required=False)
+    emergency_contact_last_name = forms.BooleanField(initial=False, required=False)
+    emergency_contact_relationship = forms.BooleanField(initial=False, required=False)
+    emergency_contact_phone_number = forms.BooleanField(initial=False, required=False)
+    paid = forms.BooleanField(initial=False, help_text="Has the participant paid?", required=False)
+    bill_to = forms.BooleanField(initial=False, required=False)
+    billing_physical_address = forms.BooleanField(initial=False, required=False)
+    billing_email_address = forms.BooleanField(initial=False, required=False)
+    admin_billing_comments = forms.BooleanField(initial=False, required=False)
+
+    def clean(self):
+        """Validate EventRegistrationsCSV model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        file_name_pattern = re.compile(r"^([a-zA-Z0-9_\- ]+)$")
+
+        cleaned_data = super(BuilderFormForEventsCSV, self).clean()
+        file_name = cleaned_data['file_name']
+
+        if not file_name_pattern.match(str(file_name)):
+            raise ValidationError(
+                {
+                    'file_name':
+                    _('Filename can only contain letters, numbers, dashes and underscores.')
+                }
+            )
 
     def __init__(self, *args, **kwargs):
         """Add crispyform helper to form."""
