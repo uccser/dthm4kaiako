@@ -685,7 +685,6 @@ class EventsManagementView(LoginRequiredMixin, generic.ListView):
 
 def is_in_past_or_cancelled(event):
     """Return True if event is in the past or it has been cancelled."""
-
     if event.end is not None:
         return event.end < now() or event.is_cancelled
 

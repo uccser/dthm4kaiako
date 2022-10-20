@@ -144,9 +144,9 @@ class WithdrawEventRegistrationForm(ModelForm):
 # ---------------------------- Forms for event management ----------------------------------
 
 class ManageEventRegistrationForm(ModelForm):
-    """
-    Simple form to allow an event organiser to manage the registration form
-    that the event participant submitted to attend an event.
+    """Simple form to allow an event organiser to manage the registration form.
+
+    The event participant submitted this registration form to attend the associated event.
     """
 
     participant_type = forms.ChoiceField(required=True, choices=[], widget=forms.Select())

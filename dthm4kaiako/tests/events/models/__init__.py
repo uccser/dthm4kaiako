@@ -1,1 +1,1 @@
-"""Module for testing the event related models"""
+"""Module for testing the event related models."""
