@@ -878,6 +878,7 @@ def manage_event_details_view(request, pk):
     context = {
         'event': event,
     }
+    context['new_participant_form'] = ParticipantTypeCreationForm()
     context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
@@ -970,6 +971,7 @@ def manage_event_registration_form_details_view(request, pk):
     context = {
         'registration_form': registration_form,
     }
+    context['new_participant_form'] = ParticipantTypeCreationForm()
     context['update_participant_form'] = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
@@ -1303,6 +1305,7 @@ def generate_event_registrations_csv_view(request, pk):
         'registrations_csv_builder_form': builderFormForEventRegistrationsCSV,
         'update_participant_form': ParticipantTypeCreationForm()
     }
+    context['new_participant_form'] = ParticipantTypeCreationForm()
 
     return render(request, 'events/event_management.html', context)
 
@@ -1463,6 +1466,9 @@ def create_new_participant_type_view(request, pk):
     if request.method == 'POST':
         participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
 
+        messages.warning(request, participant_type_creation_form)
+        messages.warning(request, participant_type_creation_form.is_valid())
+
         if participant_type_creation_form.is_valid():
             name = participant_type_creation_form.cleaned_data['name']
             price = participant_type_creation_form.cleaned_data['price']
@@ -1497,17 +1503,26 @@ def create_new_participant_type_view(request, pk):
                     "The participant type " + str(new_participant_type) + " has been created."
                 )
 
-        else:
-            messages.error(
-                request,
-                "The participant type was unable to be created since the price was not in the format of $1.23."
-            )
+    event = Event.objects.get(pk=event.pk)
+    context = {
+        'event': event,
+        'event_pk': event.pk,
+        'new_participant_form': participant_type_creation_form
+    }
+    registration_form = event.registration_form
+    event_registrations = EventRegistration.objects.filter(event=event)
+    context['manage_event_details_form'] = ManageEventDetailsForm(instance=event)
+    context['manage_registration_form_details_form'] = ManageEventRegistrationFormDetailsForm(
+        instance=registration_form
+        )
+    context['registrations_csv_builder_form'] = BuilderFormForEventRegistrationsCSV()
+    context['event_registrations'] = event_registrations
+    context['registration_form_pk'] = registration_form.pk
+    context['is_free'] = event.is_free
+    context['participant_types'] = ParticipantType.objects.filter(events=event).order_by('-price', 'name')
+    context['update_participant_form'] = ParticipantTypeCreationForm()
 
-        context = {
-            'new_participant_form': participant_type_creation_form
-            }
-
-    return redirect(reverse('events:event_management', kwargs={'pk': pk}), context)
+    return render(request, 'events/event_management.html', context)
 
 
 @login_required
