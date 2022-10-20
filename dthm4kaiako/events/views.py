@@ -1462,6 +1462,8 @@ def create_new_participant_type_view(request, pk):
             NON_EVENT_STAFF_ACCESS_MESSAGE
         )
         return HttpResponseRedirect(reverse("events:events_management"))
+    
+    participant_type_creation_form = ParticipantTypeCreationForm()
 
     if request.method == 'POST':
         participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
@@ -1499,6 +1501,11 @@ def create_new_participant_type_view(request, pk):
                     request,
                     "The participant type " + str(new_participant_type) + " has been created."
                 )
+        else:
+            messages.warning(
+                request,
+                f'Please resolve the invalid fields to create a new event participant type.'
+            )
 
     event = Event.objects.get(pk=event.pk)
     context = {
