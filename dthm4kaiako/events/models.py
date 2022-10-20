@@ -164,7 +164,8 @@ class ParticipantType(models.Model):
         Raises:
             ValidationError if invalid attributes.
         """
-        price_pattern_with_decimal_places = re.compile(r"^\d+(\.\d{2})?$")
+
+        price_pattern_with_decimal_places = re.compile(r"[^\d+(\.\d{2})?]$") # TODO: requires refinement
 
         if price_pattern_with_decimal_places.match(f'{0:.2f}'.format(str(self.price))):
             raise ValidationError(

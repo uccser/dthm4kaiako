@@ -1466,9 +1466,6 @@ def create_new_participant_type_view(request, pk):
     if request.method == 'POST':
         participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
 
-        messages.warning(request, participant_type_creation_form)
-        messages.warning(request, participant_type_creation_form.is_valid())
-
         if participant_type_creation_form.is_valid():
             name = participant_type_creation_form.cleaned_data['name']
             price = participant_type_creation_form.cleaned_data['price']
