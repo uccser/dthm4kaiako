@@ -117,6 +117,7 @@ class UserUpdateDetailsForm(ModelForm):
         self.fields['how_we_can_best_look_after_you'].widget.attrs['rows'] = 5
         self.fields['dietary_requirements'].help_text = 'We will try out best to cater for you.'
 
+        # Delete the dietary requirements and medical notes fields if the event is an online event.
         if 'initial' in kwargs:
             initial_data_dict = kwargs.get('initial')
             if 'show_dietary_requirements' in initial_data_dict:

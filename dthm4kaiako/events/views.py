@@ -1,7 +1,5 @@
 """Views for events registration."""
 
-# from turtle import heading
-# from multiprocessing import context
 from django.views import generic
 from django.utils.timezone import now
 from django_filters.views import FilterView
@@ -51,7 +49,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import csv
 from datetime import datetime
 from django.core.mail import send_mail
-from events.utils import can_view_event_management_content
+from events.utils import can_view_event_management_content, convert_string_list_to_one_string
 import re
 import math 
 
@@ -1005,25 +1003,6 @@ def manage_event_registration_form_details_view(request, pk):
     return render(request, 'events/event_management.html', context)
 
 
-def convert_string_list_to_one_string(listToConvert):
-    """Convert list to string.
-
-    Returns:
-        A string of values separated by &'s.
-    """
-    if len(listToConvert) == 1:
-        return listToConvert[0]
-    else:
-        newBigString = ""
-        for i in range(0, len(listToConvert)):
-            currentString = listToConvert[i]
-            if i == len(listToConvert) - 1:
-                newBigString += currentString
-            else:
-                newBigString += currentString + " & "
-        return newBigString
-
-
 # TODO: fix UI bug where the validation error message only disappears
 # if go back out and back to events management hub page
 # TODO: add staff and admin permissions
@@ -1045,54 +1024,54 @@ def generate_event_csv_view(request):
 
             file_name = builderFormForEventsCSV.cleaned_data['file_name']
 
-            first_wrote_titles = []
+            first_row_titles = []
 
             if builderFormForEventsCSV.cleaned_data['event_name']:
-                first_wrote_titles.append('event_name')
+                first_row_titles.append('event_name')
             if builderFormForEventsCSV.cleaned_data['description']:
-                first_wrote_titles.append('description')
+                first_row_titles.append('description')
             if builderFormForEventsCSV.cleaned_data['published_status']:
-                first_wrote_titles.append('published_status')
+                first_row_titles.append('published_status')
             if builderFormForEventsCSV.cleaned_data['show_schedule']:
-                first_wrote_titles.append('show_schedule')
+                first_row_titles.append('show_schedule')
             if builderFormForEventsCSV.cleaned_data['featured_status']:
-                first_wrote_titles.append('featured_status')
+                first_row_titles.append('featured_status')
             if builderFormForEventsCSV.cleaned_data['registration_type']:
-                first_wrote_titles.append('registration_type')
+                first_row_titles.append('registration_type')
             if builderFormForEventsCSV.cleaned_data['external_event_registration_link']:
-                first_wrote_titles.append('external_event_registration_link')
+                first_row_titles.append('external_event_registration_link')
             if builderFormForEventsCSV.cleaned_data['start_datetime']:
-                first_wrote_titles.append('start_datetime')
+                first_row_titles.append('start_datetime')
             if builderFormForEventsCSV.cleaned_data['end_datetime']:
-                first_wrote_titles.append('end_datetime')
+                first_row_titles.append('end_datetime')
             if builderFormForEventsCSV.cleaned_data['accessible_online']:
-                first_wrote_titles.append('accessible_online')
+                first_row_titles.append('accessible_online')
             if builderFormForEventsCSV.cleaned_data['is_free']:
-                first_wrote_titles.append('is_free')
+                first_row_titles.append('is_free')
             if builderFormForEventsCSV.cleaned_data['locations']:
-                first_wrote_titles.append('locations')
+                first_row_titles.append('locations')
             if builderFormForEventsCSV.cleaned_data['sponsors']:
-                first_wrote_titles.append('sponsors')
+                first_row_titles.append('sponsors')
             if builderFormForEventsCSV.cleaned_data['organisers']:
-                first_wrote_titles.append('organisers')
+                first_row_titles.append('organisers')
             if builderFormForEventsCSV.cleaned_data['series']:
-                first_wrote_titles.append('series')
+                first_row_titles.append('series')
             if builderFormForEventsCSV.cleaned_data['is_catered']:
-                first_wrote_titles.append('is_catered')
+                first_row_titles.append('is_catered')
             if builderFormForEventsCSV.cleaned_data['contact_email_address']:
-                first_wrote_titles.append('contact_email_address')
+                first_row_titles.append('contact_email_address')
             if builderFormForEventsCSV.cleaned_data['event_staff']:
-                first_wrote_titles.append('event_staff')
+                first_row_titles.append('event_staff')
             if builderFormForEventsCSV.cleaned_data['is_cancelled']:
-                first_wrote_titles.append('is_cancelled')
+                first_row_titles.append('is_cancelled')
             if builderFormForEventsCSV.cleaned_data['approved_registrations_count']:
-                first_wrote_titles.append('approved_registrations_count')
+                first_row_titles.append('approved_registrations_count')
             if builderFormForEventsCSV.cleaned_data['pending_registrations_count']:
-                first_wrote_titles.append('pending_registrations_count')
+                first_row_titles.append('pending_registrations_count')
             if builderFormForEventsCSV.cleaned_data['declined_registrations_count']:
-                first_wrote_titles.append('declined_registrations_count')
+                first_row_titles.append('declined_registrations_count')
             if builderFormForEventsCSV.cleaned_data['withdrawn_registrations_count']:
-                first_wrote_titles.append('withdrawn_registrations_count')
+                first_row_titles.append('withdrawn_registrations_count')
 
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename= "{}.csv"'.format(file_name)
@@ -1104,7 +1083,7 @@ def generate_event_csv_view(request):
             events = Event.objects.all()
 
             # Add column headings to the csv file
-            writer.writerow(first_wrote_titles)
+            writer.writerow(first_row_titles)
 
             for event in events:
                 row = []
@@ -1201,56 +1180,56 @@ def generate_event_registrations_csv_view(request, pk):
 
             file_name = builderFormForEventRegistrationsCSV.cleaned_data['file_name']
 
-            first_wrote_titles = []
+            first_row_titles = []
 
             if builderFormForEventRegistrationsCSV.cleaned_data['event_name']:
-                first_wrote_titles.append('event_name')
+                first_row_titles.append('event_name')
             if builderFormForEventRegistrationsCSV.cleaned_data['submitted_datetime']:
-                first_wrote_titles.append('submitted_datetime')
+                first_row_titles.append('submitted_datetime')
             if builderFormForEventRegistrationsCSV.cleaned_data['updated_datetime']:
-                first_wrote_titles.append('updated_datetime')
+                first_row_titles.append('updated_datetime')
             if builderFormForEventRegistrationsCSV.cleaned_data['status']:
-                first_wrote_titles.append('status')
+                first_row_titles.append('status')
             if builderFormForEventRegistrationsCSV.cleaned_data['participant_type']:
-                first_wrote_titles.append('participant_type')
+                first_row_titles.append('participant_type')
             if builderFormForEventRegistrationsCSV.cleaned_data['staff_comments']:
-                first_wrote_titles.append('staff_comments')
+                first_row_titles.append('staff_comments')
             if builderFormForEventRegistrationsCSV.cleaned_data['participant_first_name']:
-                first_wrote_titles.append('participant_first_name')
+                first_row_titles.append('participant_first_name')
             if builderFormForEventRegistrationsCSV.cleaned_data['participant_last_name']:
-                first_wrote_titles.append('participant_last_name')
+                first_row_titles.append('participant_last_name')
             if builderFormForEventRegistrationsCSV.cleaned_data['dietary_requirements']:
-                first_wrote_titles.append('dietary_requirements')
+                first_row_titles.append('dietary_requirements')
             if builderFormForEventRegistrationsCSV.cleaned_data['educational_entities']:
-                first_wrote_titles.append('educational_entities')
+                first_row_titles.append('educational_entities')
             if builderFormForEventRegistrationsCSV.cleaned_data['region']:
-                first_wrote_titles.append('region')
+                first_row_titles.append('region')
             if builderFormForEventRegistrationsCSV.cleaned_data['mobile_phone_number']:
-                first_wrote_titles.append('mobile_phone_number')
+                first_row_titles.append('mobile_phone_number')
             if builderFormForEventRegistrationsCSV.cleaned_data['email_address']:
-                first_wrote_titles.append('email_address')
+                first_row_titles.append('email_address')
             if builderFormForEventRegistrationsCSV.cleaned_data['how_we_can_best_accommodate_them']:
-                first_wrote_titles.append('how_we_can_best_accommodate_them')
+                first_row_titles.append('how_we_can_best_accommodate_them')
             if builderFormForEventRegistrationsCSV.cleaned_data['representing']:
-                first_wrote_titles.append('representing')
+                first_row_titles.append('representing')
             if builderFormForEventRegistrationsCSV.cleaned_data['emergency_contact_first_name']:
-                first_wrote_titles.append('emergency_contact_first_name')
+                first_row_titles.append('emergency_contact_first_name')
             if builderFormForEventRegistrationsCSV.cleaned_data['emergency_contact_last_name']:
-                first_wrote_titles.append('emergency_contact_last_name')
+                first_row_titles.append('emergency_contact_last_name')
             if builderFormForEventRegistrationsCSV.cleaned_data['emergency_contact_relationship']:
-                first_wrote_titles.append('emergency_contact_relationship')
+                first_row_titles.append('emergency_contact_relationship')
             if builderFormForEventRegistrationsCSV.cleaned_data['emergency_contact_phone_number']:
-                first_wrote_titles.append('emergency_contact_phone_number')
+                first_row_titles.append('emergency_contact_phone_number')
             if builderFormForEventRegistrationsCSV.cleaned_data['paid']:
-                first_wrote_titles.append('paid')
+                first_row_titles.append('paid')
             if builderFormForEventRegistrationsCSV.cleaned_data['bill_to']:
-                first_wrote_titles.append('bill_to')
+                first_row_titles.append('bill_to')
             if builderFormForEventRegistrationsCSV.cleaned_data['billing_physical_address']:
-                first_wrote_titles.append('billing_physical_address')
+                first_row_titles.append('billing_physical_address')
             if builderFormForEventRegistrationsCSV.cleaned_data['billing_email_address']:
-                first_wrote_titles.append('billing_email_address')
+                first_row_titles.append('billing_email_address')
             if builderFormForEventRegistrationsCSV.cleaned_data['admin_billing_comments']:
-                first_wrote_titles.append('admin_billing_comments')
+                first_row_titles.append('admin_billing_comments')
 
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename= "{}.csv"'.format(file_name)
@@ -1262,7 +1241,7 @@ def generate_event_registrations_csv_view(request, pk):
             event_registrations = EventRegistration.objects.filter(event=event)
 
             # Add column headings to the csv file
-            writer.writerow(first_wrote_titles)
+            writer.writerow(first_row_titles)
 
             for event_registration in event_registrations:
                 user = event_registration.user

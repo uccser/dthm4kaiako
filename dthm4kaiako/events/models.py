@@ -607,7 +607,7 @@ class Event(models.Model):
         free = True
         for participant_type in self.participant_types.all():
             if participant_type.price != 0.0:
-                free = False
+                return False
         return free
 
 
