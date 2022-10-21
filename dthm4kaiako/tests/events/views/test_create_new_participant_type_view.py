@@ -10,17 +10,23 @@ from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
 from unittest import mock
-
+from django.test.utils import override_settings
+from events.views import create_new_participant_type_view
+from django.test.client import RequestFactory
+from django.contrib import messages
 
 class CreateNewParticipantTypeViewTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):
         Event.objects.all().delete()
+        ParticipantType.objects.all().delete()
+        User.objects.all().delete()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_logged_in(self):
         '''Redirect to manage event page.'''
         event = Event.objects.create(
@@ -50,13 +56,14 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
         url = reverse('events:create_new_participant_type', kwargs=kwargs)
         body = b'{"name": "Teacher", "price": "10.00"}'
         response = self.client.generic('POST', url, body)
-        self.assertEqual(HTTPStatus.FOUND, response.status_code)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
-    @mock.patch('events.views.ParticipantTypeCreationForm')
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
+    # @mock.patch('events.views.ParticipantTypeCreationForm')
     def test_create_new_participant_type_view_and_logged_in_then_creates_new_participant_type_successfully(
         self,
-        mock_form_class
+        # mock_form_class
     ):
         '''Redirect to manage event page.'''
         event = Event.objects.create(
@@ -85,13 +92,26 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
             }
         url = reverse('events:create_new_participant_type', kwargs=kwargs)
 
-        mock_form_class.is_valid = True
-        mock_form_class.return_value.cleaned_data = {
-            'name': "Teacher",
-            'price': "10.0"
-        }
-        self.client.post(url, {'name': "Teacher", 'price': "10.0"})
-        self.assertEqual(ParticipantType.objects.last().name, "Teacher")
+        with mock.patch('events.views.ParticipantTypeCreationForm') as mock_form:
+            mock_form.is_valid = True
+            mock_form.return_value.cleaned_data = {
+                'name': "Teacher",
+                'price': "10.0"
+            }
+            factory = RequestFactory()
+            request = factory.post(url, data={})
+            request.user = user
+            request.event = event
+            # Add support  django messaging framework
+            request._messages = messages.storage.default_storage(request)
+
+            response = create_new_participant_type_view(request, event.pk)
+
+
+        # self.client.post(url, {'name': "Teacher", 'price': "10.0"})
+        # self.assertEqual(ParticipantType.objects.last().name, "Teacher")
+
+            self.assertEqual(ParticipantType.objects.filter(name="Teacher").count(), 1)
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_not_logged_in(self):
         '''Redirect to login page.'''
