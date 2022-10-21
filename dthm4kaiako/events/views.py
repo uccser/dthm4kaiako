@@ -974,9 +974,9 @@ def manage_event_registration_form_details_view(request, pk):
     context['new_participant_form'] = ParticipantTypeCreationForm()
     context['update_participant_form'] = ParticipantTypeCreationForm()
 
-    # manage_registration_form_details_form = manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
-    #         instance=registration_form
-    #         )
+    manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
+            instance=registration_form
+            )
 
     if request.method == 'POST':
         manage_registration_form_details_form = ManageEventRegistrationFormDetailsForm(
