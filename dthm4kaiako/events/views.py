@@ -1385,9 +1385,11 @@ def mark_all_participants_as_paid_view(request, pk):
     for event_registration in event_registrations:
 
         registration_to_update = EventRegistration.objects.filter(pk=event_registration.pk)
-        registration_to_update.update(paid=True)
-        registration_to_update = EventRegistration.objects.get(pk=event_registration.pk)
-        registration_to_update.save()
+        approved_status = 2
+        if registration_to_update.status == approved_status:
+            registration_to_update.update(paid=True)
+            registration_to_update = EventRegistration.objects.get(pk=event_registration.pk)
+            registration_to_update.save()
 
     messages.success(
         request,
