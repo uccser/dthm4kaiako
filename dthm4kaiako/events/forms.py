@@ -23,7 +23,6 @@ from django.core.exceptions import ValidationError
 User = get_user_model()
 
 
-# TODO: move into main form?
 class ParticipantTypeForm(forms.Form):
     """Simple form to allow a user to select their participant type that is specific to the event."""
 
@@ -196,7 +195,9 @@ class ManageEventDetailsForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-
+        self.fields['sponsors'].help_text = "To select multiple event sponsors, hold CONTROL and click to select the sponsors."
+        self.fields['organisers'].help_text = "To select multiple event organisers, hold CONTROL and click to select the organisers."
+        self.fields['locations'].help_text = "To select multiple event locations, hold CONTROL and click to select the locations."
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
     """Simple form for updating the event registration form information as an event organiser."""

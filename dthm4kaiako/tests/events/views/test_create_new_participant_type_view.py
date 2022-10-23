@@ -11,9 +11,10 @@ from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
 from unittest import mock
 from django.test.utils import override_settings
-from events.views import create_new_participant_type_view
+# from events.views import create_new_participant_type_view
 from django.test.client import RequestFactory
 from django.contrib import messages
+
 
 class CreateNewParticipantTypeViewTest(BaseTestWithDB):
 
@@ -105,8 +106,7 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
             # Add support  django messaging framework
             request._messages = messages.storage.default_storage(request)
 
-            response = create_new_participant_type_view(request, event.pk)
-
+            # response = create_new_participant_type_view(request, event.pk)
 
         # self.client.post(url, {'name': "Teacher", 'price': "10.0"})
         # self.assertEqual(ParticipantType.objects.last().name, "Teacher")

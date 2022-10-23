@@ -237,19 +237,16 @@ class Event(models.Model):
         Location,
         related_name='events',
         blank=True,
-        help_text="To select multiple event locations, hold CONTROL and click to select the locations."
     )
     sponsors = models.ManyToManyField(
         Entity,
         related_name='sponsored_events',
         blank=True,
-        help_text="To select multiple event sponsors, hold CONTROL and click to select the sponsors."
     )
     organisers = models.ManyToManyField(
         Entity,
         related_name='events',
         blank=True,
-        help_text="To select multiple event organisers, hold CONTROL and click to select the sponsors."
     )
     series = models.ForeignKey(
         Series,
