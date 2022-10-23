@@ -97,72 +97,72 @@ class ManageEventRegistrationViewTest(BaseTestWithDB):
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
     # TODO: fix mocking
-    # @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
-    # @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    # def test_manage_event_registration_view_and_logged_in_and_staff_then_successfully_update(self, mock_form_class):
-    #     event = Event.objects.create(
-    #         name="Security in CS",
-    #         description="description",
-    #         registration_type=2,
-    #         start=datetime.datetime(2023, 2, 13),
-    #         end=datetime.datetime(2023, 2, 14),
-    #         accessible_online=False,
-    #         published=True
-    #     )
-    #     event.save()
-    #     user = User.objects.create_user(
-    #         username='kate',
-    #         first_name='Kate',
-    #         last_name='Bush',
-    #         email='kate@uclive.ac.nz',
-    #         password='potato',
-    #     )
-    #     user.save()
-    #     self.client.force_login(user)
+    @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
+    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
+    def test_manage_event_registration_view_and_logged_in_and_staff_then_successfully_update(self, mock_form_class):
+        event = Event.objects.create(
+            name="Security in CS",
+            description="description",
+            registration_type=2,
+            start=datetime.datetime(2023, 2, 13),
+            end=datetime.datetime(2023, 2, 14),
+            accessible_online=False,
+            published=True
+        )
+        event.save()
+        user = User.objects.create_user(
+            username='kate',
+            first_name='Kate',
+            last_name='Bush',
+            email='kate@uclive.ac.nz',
+            password='potato',
+        )
+        user.save()
+        self.client.force_login(user)
 
-    #     participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
+        participant_type = ParticipantType.objects.create(name="Teacher", price="10.00")
 
-    #     billing_address = Address.objects.create(
-    #         id=1,
-    #         street_number='12',
-    #         street_name='High Street',
-    #         suburb='Riccarton',
-    #         city='Chrirstchurch',
-    #         region=14
-    #     )
-    #     billing_address.save()
+        billing_address = Address.objects.create(
+            id=1,
+            street_number='12',
+            street_name='High Street',
+            suburb='Riccarton',
+            city='Chrirstchurch',
+            region=14
+        )
+        billing_address.save()
 
-    #     event_registration = EventRegistration.objects.create(
-    #         participant_type=participant_type,
-    #         user=user,
-    #         event=event,
-    #         billing_physical_address=billing_address,
-    #         billing_email_address="test@test.co.nz"
-    #     )
-    #     event_registration.status = 1
-    #     event_registration.save()
-    #     kwargs = {
-    #         'pk_event': event.pk,
-    #         'pk_registration': event_registration.pk
-    #         }
-    #     event.event_staff.set([user])
-    #     event.save()
-    #     url = reverse('events:manage_event_registration', kwargs=kwargs)
-    #     updated_staff_comments = "staff comments"
+        event_registration = EventRegistration.objects.create(
+            participant_type=participant_type,
+            user=user,
+            event=event,
+            billing_physical_address=billing_address,
+            billing_email_address="test@test.co.nz"
+        )
+        event_registration.status = 1
+        event_registration.save()
+        kwargs = {
+            'pk_event': event.pk,
+            'pk_registration': event_registration.pk
+            }
+        event.event_staff.set([user])
+        event.save()
+        url = reverse('events:manage_event_registration', kwargs=kwargs)
+        updated_staff_comments = "staff comments"
 
-    #     self.factory = RequestFactory()
-    #     request = self.factory.post(url, {"staff_comments": updated_staff_comments})
-    #     request.user = user
-    #     # Add support  django messaging framework
-    #     request._messages = messages.storage.default_storage(request)
+        self.factory = RequestFactory()
+        request = self.factory.post(url, {"staff_comments": updated_staff_comments})
+        request.user = user
+        # Add support  django messaging framework
+        request._messages = messages.storage.default_storage(request)
 
-    #     mock_form_class.is_valid = True
-    #     mock_form_class.return_value.cleaned_data = {
-    #         "staff_comments": updated_staff_comments
-    #     }
-    #     manage_event_registration_view(request, event.pk, event_registration.pk)
-    #     updated_registration = EventRegistration.objects.get(event=event.pk)
-    #     self.assertEqual(updated_registration.staff_comments, updated_staff_comments)
+        mock_form_class.is_valid = True
+        mock_form_class.return_value.cleaned_data = {
+            "staff_comments": updated_staff_comments
+        }
+        manage_event_registration_view(request, event.pk, event_registration.pk)
+        updated_registration = EventRegistration.objects.get(event=event.pk)
+        self.assertEqual(updated_registration.staff_comments, updated_staff_comments)
 
     @mock.patch('events.views.ManageEventRegistrationFormDetailsForm')
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")

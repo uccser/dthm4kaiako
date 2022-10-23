@@ -78,7 +78,6 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
         self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to event management page
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
-    # TODO
     def test_mark_all_participants_as_paid_view_and_logged_in_and_staff_and_successfully_updates(self):
         event = Event.objects.create(
             name="Security in CS",
@@ -118,7 +117,8 @@ class MarkAllParticipantsAsPaidViewTest(BaseTestWithDB):
             billing_email_address="test@test.co.nz",
             paid=False
         )
-        event_registration.status = 1
+        approved = 2
+        event_registration.status = approved
         event_registration.save()
 
         self.client.force_login(user)

@@ -76,7 +76,6 @@ class PublishEventURLTest(BaseTestWithDB):
             "events:publish_event"
         )
 
-    # TODO: fix - giving 302 instead of 200
     def test_publish_event_url_returns_200_when_event_exists(self):
         event = Event.objects.create(
             name="Security in CS",

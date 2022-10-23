@@ -1,3 +1,5 @@
+"""Unit tests for event_registrations_view."""
+
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.urls import reverse
 from http import HTTPStatus
@@ -13,7 +15,7 @@ import datetime
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
-class EventRegistrationsViewTest(BaseTestWithDB):
+class EventsManagementViewTest(BaseTestWithDB):
 
     @classmethod
     def tearDownTestData(cls):

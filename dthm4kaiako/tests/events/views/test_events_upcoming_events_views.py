@@ -1,3 +1,5 @@
+"""Unit tests for events_upcoming_views"""
+
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.urls import reverse
 from http import HTTPStatus
@@ -6,7 +8,7 @@ import pytz
 NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
-class EventUpcomingViewTest(BaseTestWithDB):
+class EventsUpcomingViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

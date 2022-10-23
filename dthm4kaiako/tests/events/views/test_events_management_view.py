@@ -1,3 +1,5 @@
+"""Unit tests for events_management_view"""
+
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.urls import reverse
 from http import HTTPStatus

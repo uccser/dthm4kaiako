@@ -1,3 +1,5 @@
+"""Unit tests for home_view """
+
 from tests.BaseTestWithDB import BaseTestWithDB
 from django.urls import reverse
 from http import HTTPStatus

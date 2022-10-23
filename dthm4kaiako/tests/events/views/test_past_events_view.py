@@ -1,3 +1,5 @@
+"""Unit tests for past_events_view"""
+
 from http import HTTPStatus
 from django.urls import reverse
 from django.test.utils import override_settings

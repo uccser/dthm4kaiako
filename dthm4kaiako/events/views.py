@@ -1383,10 +1383,11 @@ def mark_all_participants_as_paid_view(request, pk):
 
     for event_registration in event_registrations:
 
-        registration_to_update = EventRegistration.objects.filter(pk=event_registration.pk)
+        registration_to_update_queryset = EventRegistration.objects.filter(pk=event_registration.pk)
+        registration_to_update = EventRegistration.objects.get(pk=event_registration.pk)
         approved_status = 2
         if registration_to_update.status == approved_status:
-            registration_to_update.update(paid=True)
+            registration_to_update_queryset.update(paid=True)
             registration_to_update = EventRegistration.objects.get(pk=event_registration.pk)
             registration_to_update.save()
 
@@ -1473,6 +1474,7 @@ def create_new_participant_type_view(request, pk):
         if participant_type_creation_form.is_valid():
             name = participant_type_creation_form.cleaned_data['name']
             price = participant_type_creation_form.cleaned_data['price']
+            price = float(price)
 
             if ParticipantType.objects.filter(name=name, price=price).exists():
                 # participant type exists in general
