@@ -130,7 +130,7 @@ details {
 }
 
 // Approved registration badges
-$approved-light: rgb(180, 255, 177);
+$approved-light: #b4ffb1;
 $approved-dark: #14863a;
 .approved-badge {
   @extend .badge;
@@ -141,7 +141,7 @@ $approved-dark: #14863a;
 
 // Pending registration badges
 $pending-light: #ffd4ac;
-$pending-dark: rgb(255, 123, 0);
+$pending-dark: #ff7b00;
 .pending-badge {
   @extend .badge;
   display: inline-block;
@@ -150,8 +150,8 @@ $pending-dark: rgb(255, 123, 0);
 }
 
 // Declined registration badges
-$declined-light: rgb(255, 198, 198);
-$declined-dark: rgb(255, 67, 67);
+$declined-light: #ffc6c6;
+$declined-dark: #ff4343;
 .declined-badge {
   @extend .badge;
   display: inline-block;
@@ -161,7 +161,7 @@ $declined-dark: rgb(255, 67, 67);
 
 // Catered event badge
 $catered-light: #e1acff;
-$catered-dark: rgb(119, 0, 255);
+$catered-dark: #7700ff;
 .catered-badge {
   @extend .badge;
   display: inline-block;
@@ -171,8 +171,8 @@ $catered-dark: rgb(119, 0, 255);
 
 
 //Colours for Event Details, Manage Event and Manage Event Registration templates
-$closed-registrations-or-ended: rgb(209, 209, 209);
-$cancelled-event-or-declined-registration: rgb(255, 198, 198);
+$closed-registrations-or-ended: #d1d1d1;
+$cancelled-event-or-declined-registration: #ffc6c6;
 $published-event-or-approved-registration: rgb(180, 255, 177);
 $not-published-event-or-pending-registration: rgb(253, 197, 145);
 
