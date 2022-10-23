@@ -146,11 +146,12 @@
                     </a>
                     <hr>
                     
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#event-details-withdraw-modal-{{registration_pk}}">
-                        Withdraw
-                    </button>
-
+                    {% if not event_registration.status == 3 %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#event-details-withdraw-modal-{{registration_pk}}">
+                            Withdraw
+                        </button>
+                    {% endif %}
                 {% else %}
 
                     {% if event.is_less_than_one_week_prior_event and event.is_catered %}

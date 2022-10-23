@@ -58,10 +58,12 @@
                         Update my details
                     </a>
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-registrations-withdraw-modal-{{event_registration.pk}}">
-                        Withdraw
-                    </button>
+                    {% if not event_registration.status == 3 %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-registrations-withdraw-modal-{{event_registration.pk}}">
+                            Withdraw
+                        </button>
+                    {% endif %}
                 {% endif %}
 
                 {% if user.is_authenticated %}
