@@ -183,7 +183,6 @@ class Event(models.Model):
         help_text="This is the description that will appear on this event's page that participants will view."
         )
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
-    # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
     show_schedule = models.BooleanField(
         default=False,
@@ -217,13 +216,11 @@ class Event(models.Model):
             "will gather event registrations' information e.g. Google Form"
         )
     )
-    # TODO: Cannot be null if published or event registrations exist
     start = models.DateTimeField(
         blank=True,
         null=True,
         help_text=DATETIME_HELP_TEXT
     )
-    # TODO: Cannot be null if published or event registrations exist
     end = models.DateTimeField(
         blank=True,
         null=True,
@@ -724,9 +721,6 @@ class Address(models.Model):
             )
 
 
-# TODO: consider pulling out emergency contact details into separate model
-# TODO: make emergency contact details only mandatory for events that are in
-# person i.e. don't show them for online events and allow them to be empty
 class EventRegistration(models.Model):
     """Model for an event registration."""
 
@@ -1057,7 +1051,6 @@ class RegistrationForm(models.Model):
         """Text representation of an event registration form."""
         return f'{self.event.name}'
 
-    # TODO: test these
     def clean(self):
         """Validate event registration form model attributes.
 

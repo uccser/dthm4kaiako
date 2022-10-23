@@ -195,9 +195,10 @@ class ManageEventDetailsForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-        self.fields['sponsors'].help_text = "To select multiple event sponsors, hold CONTROL and click to select the sponsors."
-        self.fields['organisers'].help_text = "To select multiple event organisers, hold CONTROL and click to select the organisers."
-        self.fields['locations'].help_text = "To select multiple event locations, hold CONTROL and click to select the locations."
+        self.fields['sponsors'].help_text = "Hold CONTROL and click to select multiple sponsors."
+        self.fields['organisers'].help_text = "Hold CONTROL and click to select multiple organisers."
+        self.fields['locations'].help_text = "Hold CONTROL and click to select multiple locations."
+
 
 class ManageEventRegistrationFormDetailsForm(ModelForm):
     """Simple form for updating the event registration form information as an event organiser."""

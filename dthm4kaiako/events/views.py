@@ -448,7 +448,7 @@ def register_for_event_view(request, pk):
             initial_billing_data = {'billing_email_address': billing_email_address, 'bill_to': bill_to}
             billing_details_form = BillingDetailsForm(
                 instance=billing_physical_address,
-                initial=initial_billing_data  # TODO: figure out how to autoload billing info
+                initial=initial_billing_data
             )
         terms_and_conditions_form = TermsAndConditionsForm(
                 # User must re-agree each time they update the form
@@ -659,7 +659,6 @@ class EventsManagementView(LoginRequiredMixin, generic.ListView):
 
         if user.is_authenticated:
             if Event.objects.filter(event_staff__pk=user.pk).exists():
-                # TODO: order these
                 today = datetime.today()
                 context['events_user_is_staff_for_future'] = Event.objects.filter(
                     event_staff__pk=user.pk,
@@ -1398,9 +1397,6 @@ def mark_all_participants_as_paid_view(request, pk):
     return redirect(reverse('events:event_management', kwargs={'pk': pk}))
 
 
-# TODO: consider - add logic for checking if has close datetime for registrations
-# make sure closing date for registration is on details page
-# TODO: add logic for event detail page saying event registrations opening soon!
 @login_required
 def publish_event(request, pk):
     """Publish event as event staff."""
