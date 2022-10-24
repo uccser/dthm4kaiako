@@ -118,11 +118,11 @@
         {% crispy terms_and_conditions_form %}
 
         {% if not registration_exists %}
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-success">
                 {{ event.get_event_type_short }}
             </button>
         {% else %}
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-success">
                 {{ event.get_event_type_short_updating}}
             </button>
         {% endif %}

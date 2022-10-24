@@ -1503,7 +1503,7 @@ def create_new_participant_type_view(request, pk):
                 new_participant_type.save()
                 messages.success(
                     request,
-                    "The participant type " + str(new_participant_type) + " has been created."
+                    f"The participant type {new_participant_type} has been created."
                 )
         else:
             messages.warning(
@@ -1549,37 +1549,53 @@ def update_participant_type_view(request, event_pk, participant_type_pk):
         )
         return HttpResponseRedirect(reverse("events:events_management"))
 
-    # check if participant used by other events
-    if Event.objects.filter(participant_types=participant_type_pk).count() > 1:
-        # participant used by other events so just remove this event from the list
-        old_participant_type.events.remove(event)
-        old_participant_type.save()
-    else:
-        old_participant_type.delete()
+    participant_type_creation_form = ParticipantTypeCreationForm()
 
-    # check if new participant type already exists
-    if ParticipantType.objects.filter(name=request.POST.get('name'), price=request.POST.get('price')).exists():
-        # add the event to the list of events that use the existing "new" participant type
-        new_participant_type = ParticipantType.objects.get(
-            name=request.POST.get('name'),
-            price=request.POST.get('price')
-        )
-        new_participant_type.events.add(event)
-        new_participant_type.save()
-    else:
-        # "update" participant by creating new participant type
-        new_participant_type = ParticipantType.objects.create(
-            name=request.POST.get('name'),
-            price=request.POST.get('price')
-        )
-        new_participant_type.events.add(event)
-        new_participant_type.save()
+    if request.method == 'POST':
+        participant_type_creation_form = ParticipantTypeCreationForm(request.POST)
 
-    messages.success(
-        request,
-        f"You have updated the participant type of {old_participant_type} " +
-        f"to {new_participant_type}."
-    )
+        if participant_type_creation_form.is_valid():
+            name = participant_type_creation_form.cleaned_data['name']
+            price = participant_type_creation_form.cleaned_data['price']
+            price = float(price)
+
+            # check if participant used by other events
+            if Event.objects.filter(participant_types=participant_type_pk).count() > 1:
+                # participant used by other events so just remove this event from the list
+                old_participant_type.events.remove(event)
+                old_participant_type.save()
+            else:
+                old_participant_type.delete()
+
+            # check if new participant type already exists
+            if ParticipantType.objects.filter(name=name, price=price).exists():
+                # add the event to the list of events that use the existing "new" participant type
+                new_participant_type = ParticipantType.objects.get(
+                    name=name,
+                    price=price
+                )
+                new_participant_type.events.add(event)
+                new_participant_type.save()
+            else:
+                # "update" participant by creating new participant type
+                new_participant_type = ParticipantType.objects.create(
+                    name=name,
+                    price=price
+                )
+                new_participant_type.events.add(event)
+                new_participant_type.save()
+
+            messages.success(
+                request,
+                f"You have updated the participant type of {old_participant_type} " +
+                f"to {new_participant_type}."
+            )
+
+        else:
+            messages.error(
+                request,
+                "A participant type's price must positive (in the form of 0 or 1.23), and it must not already exist"
+            )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
