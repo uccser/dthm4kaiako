@@ -106,7 +106,6 @@ class ManageEventDetailsURLTest(BaseTestWithDB):
         self.assertEqual(HTTPStatus.FOUND, response.status_code)  # redirect to mange event page
         self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
-
     @override_settings(GOOGLE_MAPS_API_KEY="mocked")
     def test_manage_event_details_view_and_not_logged_in_and_staff_member_then_redirect(self):
         user_kate = User.objects.create_user(

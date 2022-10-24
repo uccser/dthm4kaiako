@@ -9,12 +9,7 @@ from events.models import (
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
-from unittest import mock
 from django.test.utils import override_settings
-from events.views import create_new_participant_type_view
-from django.test.client import RequestFactory
-from django.contrib import messages
-from crispy_forms.helper import FormHelper
 
 
 class CreateNewParticipantTypeViewTest(BaseTestWithDB):
@@ -59,7 +54,6 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
         body = b'{"name": "Teacher", "price": "10.00"}'
         response = self.client.generic('POST', url, body)
         self.assertEqual(HTTPStatus.OK, response.status_code)
-        self.assertEqual(response['Location'], f'/events/manage/{event.pk}/')
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_not_logged_in(self):
         '''Redirect to login page.'''
