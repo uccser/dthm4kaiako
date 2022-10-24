@@ -174,7 +174,7 @@ class ParticipantType(models.Model):
                 }
             )
 
-        if not self.is_free() is not "0.00" and not price_pattern_with_decimal_places.match(str(self.price)):
+        if not self.is_free() != "0.00" and not price_pattern_with_decimal_places.match(str(self.price)):
             raise ValidationError(
                 {
                     'price':

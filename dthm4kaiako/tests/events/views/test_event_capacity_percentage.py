@@ -9,7 +9,6 @@ from events.models import (
 )
 import pytz
 from tests.BaseTestWithDB import BaseTestWithDB
-from django.core.exceptions import ValidationError
 import datetime
 from events.views import event_capacity_percentage
 
@@ -17,7 +16,6 @@ NEW_ZEALAND_TIME_ZONE = pytz.timezone('Pacific/Auckland')
 
 
 class EventCapacityPercentageTests(BaseTestWithDB):
-
 
     def test_capacity_percentage_capacity(self):
         user_kate = User.objects.create(
@@ -68,4 +66,4 @@ class EventCapacityPercentageTests(BaseTestWithDB):
         event_registration_1_pending.save()
 
         expected_result = float(10)
-        self.assertEqual(event_capacity_percentage(event_registration_1_pending), expected_result)
+        self.assertEqual(event_capacity_percentage(event_physical_register_1), expected_result)

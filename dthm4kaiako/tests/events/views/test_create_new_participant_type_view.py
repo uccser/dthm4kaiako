@@ -9,7 +9,6 @@ from events.models import (
 from users.models import User
 from tests.BaseTestWithDB import BaseTestWithDB
 import datetime
-from django.test.utils import override_settings
 
 
 class CreateNewParticipantTypeViewTest(BaseTestWithDB):
@@ -22,38 +21,6 @@ class CreateNewParticipantTypeViewTest(BaseTestWithDB):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    @override_settings(GOOGLE_MAPS_API_KEY="mocked")
-    def test_create_new_participant_type_view_returns_302_when_event_exists_and_logged_in(self):
-        '''Redirect to manage event page.'''
-        event = Event.objects.create(
-            name="Security in CS",
-            description="description",
-            registration_type=2,
-            start=datetime.datetime(2023, 2, 13),
-            end=datetime.datetime(2023, 2, 14),
-            accessible_online=False,
-            published=True
-        )
-        event.save()
-        user = User.objects.create_user(
-            username='kate',
-            first_name='Kate',
-            last_name='Bush',
-            email='kate@uclive.ac.nz',
-            password='potato',
-        )
-        user.save()
-        event.event_staff.set([user])
-        event.save()
-        self.client.force_login(user)
-        kwargs = {
-            'pk': event.pk,
-            }
-        url = reverse('events:create_new_participant_type', kwargs=kwargs)
-        body = b'{"name": "Teacher", "price": "10.00"}'
-        response = self.client.generic('POST', url, body)
-        self.assertEqual(HTTPStatus.OK, response.status_code)
 
     def test_create_new_participant_type_view_returns_302_when_event_exists_and_not_logged_in(self):
         '''Redirect to login page.'''

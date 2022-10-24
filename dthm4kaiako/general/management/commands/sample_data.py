@@ -622,6 +622,7 @@ class Command(management.base.BaseCommand):
             registration_type=2,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_1_apply_online_free_future.participant_types.set(
             [
@@ -649,6 +650,7 @@ class Command(management.base.BaseCommand):
             registration_type=2,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_2_register_online_free_future.participant_types.set(
             [
@@ -678,6 +680,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_3_register_physical_costs_future.locations.set([sample_location_2])
         event_3_register_physical_costs_future.participant_types.set(
@@ -708,6 +711,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_4_invite_physical_free_future.locations.set([sample_location_3])
         event_4_invite_physical_free_future.participant_types.set(
@@ -743,6 +747,7 @@ class Command(management.base.BaseCommand):
             external_event_registration_link='www.google.com',
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_5_external_online_free_future.participant_types.set(
             [
@@ -784,6 +789,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_6_apply_online_free_past.participant_types.set(
             [
@@ -819,6 +825,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_7_apply_online_free_past.participant_types.set(
             [
@@ -848,6 +855,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_8_register_online_free_future.participant_types.set(
             [
@@ -882,6 +890,7 @@ class Command(management.base.BaseCommand):
             is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_9_apply_online_free_past_cancelled.participant_types.set(
             [
@@ -918,6 +927,7 @@ class Command(management.base.BaseCommand):
             is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_10_apply_online_free_past_cancelled.participant_types.set(
             [
@@ -956,6 +966,7 @@ class Command(management.base.BaseCommand):
             is_cancelled=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_11_register_online_free_future_cancelled.participant_types.set(
             [
@@ -986,6 +997,7 @@ class Command(management.base.BaseCommand):
             featured=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_12_register_online_free_future.participant_types.set(
             [
@@ -1017,6 +1029,7 @@ class Command(management.base.BaseCommand):
             featured=True,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_13_register_online_free_future.participant_types.set(
             [
@@ -1052,6 +1065,7 @@ class Command(management.base.BaseCommand):
             featured=True,
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_14_register_physical_costs_future.locations.set([sample_location_1])
         event_14_register_physical_costs_future.participant_types.set(
@@ -1086,6 +1100,7 @@ class Command(management.base.BaseCommand):
             featured=True,
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_15_register_physical_costs_past.locations.set([sample_location_1])
         event_15_register_physical_costs_past.participant_types.set(
@@ -1138,6 +1153,7 @@ class Command(management.base.BaseCommand):
             featured=True,
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
             )
         event_16_register_physical_costs_future.locations.set([sample_location_2])
         event_16_register_physical_costs_future.participant_types.set(
@@ -1655,6 +1671,7 @@ class Command(management.base.BaseCommand):
             registration_type=2,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_17_apply_online_free_future.participant_types.set(
             [
@@ -1685,6 +1702,7 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=True,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_18_register_physical_costs_future.locations.set([sample_location_2])
         event_18_register_physical_costs_future.participant_types.set(
@@ -1700,7 +1718,8 @@ class Command(management.base.BaseCommand):
         event_19 = Event.objects.create(
             name="Binary Counting for Beginners",
             description=(
-                'This is open for all experience levels for learning about counting binary numbers or refeshing on how to count them.'
+                'This is open for all experience levels for learning about ,'
+                'counting binary numbers or refeshing on how to count them.'
             ),
             registration_type=1,
             start=datetime.datetime(2023, 3, 15),
@@ -1710,9 +1729,10 @@ class Command(management.base.BaseCommand):
             featured=False,
             is_catered=False,
             contact_email_address="eventstaff@event.co.nz",
+            capacity=50
         )
         event_19.save()
-        
+
         # Showing that user cannot withdraw from future event if declined
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,

@@ -1590,9 +1590,12 @@ def update_participant_type_view(request, event_pk, participant_type_pk):
                 f"You have updated the participant type of {old_participant_type} " +
                 f"to {new_participant_type}."
             )
-       
+
         else:
-            messages.error(request, f"A participant type's price must positive (in the form of 0 or 1.23), and it must not already exist")
+            messages.error(
+                request,
+                "A participant type's price must positive (in the form of 0 or 1.23), and it must not already exist"
+            )
 
     return HttpResponseRedirect(reverse("events:event_management", kwargs={'pk': event.pk}))
 
