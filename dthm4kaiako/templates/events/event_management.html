@@ -542,7 +542,7 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                                 <div class="column" style="padding-left: 50px; padding-right: 50px;">
-                                    <input class="btn btn-warning" type="submit" value="Update">
+                                    <input class="btn btn-warning" type="submit" value="Update" onClick="checkValidPrice(this)">
                                 </div>
                             </div>
                         </form>
@@ -619,5 +619,6 @@
             );
         });
     </script>
+
     {% include "generic/map-javascript.html" %}
 {% endblock scripts %}
