@@ -18,10 +18,11 @@ from tests.resources.factories import (
     ResourceFactory,
     NZQAStandardFactory,
 )
-# Users
+# User_Models
 from users.models import (
     DietaryRequirement,
     Entity,
+    User
 )
 # Events
 from events.models import (
@@ -108,10 +109,10 @@ class Command(management.base.BaseCommand):
         entity_14 = Entity.objects.create(name="Ministry of Education")
         print('Random selection of educational entities created.')
 
-        User = get_user_model()
+        User_Model = get_user_model()
 
         # Create admin account
-        admin = User.objects.create_superuser(
+        admin = User_Model.objects.create_superuser(
             'admin',
             'admin@dthm4kaiako.ac.nz',
             password=settings.SAMPLE_DATA_ADMIN_PASSWORD,
@@ -127,7 +128,7 @@ class Command(management.base.BaseCommand):
         print('Admin created.')
 
         # Create user account
-        user = User.objects.create_user(
+        user = User_Model.objects.create_user(
             'user',
             'user@dthm4kaiako.ac.nz',
             password=settings.SAMPLE_DATA_USER_PASSWORD,
@@ -140,7 +141,7 @@ class Command(management.base.BaseCommand):
             primary=True,
             verified=True
         )
-        print('User created.')
+        print('User_Model created.')
 
         # Create entities
         EntityFactory.create_batch(size=10)
@@ -294,8 +295,8 @@ class Command(management.base.BaseCommand):
 # ------------------- SAMPLE DATA FOR USER STUDY -------------------------
 
         # Create user accounts
-        user_1 = User()
-        user_1 = User.objects.create_user(
+        user_1 = User_Model()
+        user_1 = User_Model.objects.create_user(
             'user',
             'user_1@dthm4kaiako.ac.nz',
             password="password",
@@ -317,10 +318,10 @@ class Command(management.base.BaseCommand):
         user_1.educational_entities.set(user_1_entities)
         user_1.save()
 
-        print('User 1 created.')
+        print('User_Model 1 created.')
 
-        user_2 = User()
-        user_2 = User.objects.create_user(
+        user_2 = User_Model()
+        user_2 = User_Model.objects.create_user(
             'user',
             'user_2@dthm4kaiako.ac.nz',
             password="password",
@@ -338,10 +339,10 @@ class Command(management.base.BaseCommand):
         user_2.dietary_requirements.set([dietary_requirement_coffee])
         user_2.educational_entities.set([entity_2])
         user_2.save()
-        print('User 2 created.')
+        print('User_Model 2 created.')
 
-        user_3 = User()
-        user_3 = User.objects.create_user(
+        user_3 = User_Model()
+        user_3 = User_Model.objects.create_user(
             'user',
             'user_3@dthm4kaiako.ac.nz',
             password="password",
@@ -359,10 +360,10 @@ class Command(management.base.BaseCommand):
         user_3.dietary_requirements.set([dietary_requirement_coffee])
         user_3.educational_entities.set([entity_3])
         user_3.save()
-        print('User 3 created.')
+        print('User_Model 3 created.')
 
-        user_4 = User()
-        user_4 = User.objects.create_user(
+        user_4 = User_Model()
+        user_4 = User_Model.objects.create_user(
             'user',
             'user_4@dthm4kaiako.ac.nz',
             password="password",
@@ -380,10 +381,10 @@ class Command(management.base.BaseCommand):
         user_4.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_vegan])
         user_4.educational_entities.set([entity_4])
         user_4.save()
-        print('User 4 created.')
+        print('User_Model 4 created.')
 
-        user_5 = User()
-        user_5 = User.objects.create_user(
+        user_5 = User_Model()
+        user_5 = User_Model.objects.create_user(
             'user',
             'user_5@dthm4kaiako.ac.nz',
             password="password",
@@ -401,10 +402,10 @@ class Command(management.base.BaseCommand):
         user_5.dietary_requirements.set([dietary_requirement_halal])
         user_5.educational_entities.set([entity_5])
         user_5.save()
-        print('User 5 created.')
+        print('User_Model 5 created.')
 
-        user_6 = User()
-        user_6 = User.objects.create_user(
+        user_6 = User_Model()
+        user_6 = User_Model.objects.create_user(
             'user',
             'user_6@dthm4kaiako.ac.nz',
             password="password",
@@ -422,10 +423,10 @@ class Command(management.base.BaseCommand):
         user_6.dietary_requirements.set([dietary_requirement_halal])
         user_6.educational_entities.set([entity_6])
         user_6.save()
-        print('User 6 created.')
+        print('User_Model 6 created.')
 
-        user_7 = User()
-        user_7 = User.objects.create_user(
+        user_7 = User_Model()
+        user_7 = User_Model.objects.create_user(
             'user',
             'user_7@dthm4kaiako.ac.nz',
             password="password",
@@ -443,10 +444,10 @@ class Command(management.base.BaseCommand):
         user_7.dietary_requirements.set([dietary_requirement_dairy_free])
         user_7.educational_entities.set([entity_7])
         user_7.save()
-        print('User 7 created.')
+        print('User_Model 7 created.')
 
-        user_8 = User()
-        user_8 = User.objects.create_user(
+        user_8 = User_Model()
+        user_8 = User_Model.objects.create_user(
             'user',
             'user_8@dthm4kaiako.ac.nz',
             password="password",
@@ -464,10 +465,10 @@ class Command(management.base.BaseCommand):
         user_8.dietary_requirements.set([dietary_requirement_gluten_free])
         user_8.educational_entities.set([entity_8])
         user_8.save()
-        print('User 8 created.')
+        print('User_Model 8 created.')
 
-        user_9 = User()
-        user_9 = User.objects.create_user(
+        user_9 = User_Model()
+        user_9 = User_Model.objects.create_user(
             'user',
             'user_9@dthm4kaiako.ac.nz',
             password="password",
@@ -485,10 +486,10 @@ class Command(management.base.BaseCommand):
         user_9.dietary_requirements.set([dietary_requirement_dairy_free])
         user_9.educational_entities.set([entity_9])
         user_9.save()
-        print('User 9 created.')
+        print('User_Model 9 created.')
 
-        user_10 = User()
-        user_10 = User.objects.create_user(
+        user_10 = User_Model()
+        user_10 = User_Model.objects.create_user(
             'user',
             'user_10@dthm4kaiako.ac.nz',
             password="password",
@@ -506,10 +507,10 @@ class Command(management.base.BaseCommand):
         user_10.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_dairy_free])
         user_10.educational_entities.set([entity_7])
         user_10.save()
-        print('User 10 created.')
+        print('User_Model 10 created.')
 
-        user_11 = User()
-        user_11 = User.objects.create_user(
+        user_11 = User_Model()
+        user_11 = User_Model.objects.create_user(
             'user',
             'user_11@dthm4kaiako.ac.nz',
             password="password",
@@ -527,10 +528,10 @@ class Command(management.base.BaseCommand):
         user_11.dietary_requirements.set([dietary_requirement_coffee, dietary_requirement_vegetarian])
         user_11.educational_entities.set([entity_10])
         user_11.save()
-        print('User 11 created.')
+        print('User_Model 11 created.')
 
-        user_12 = User()
-        user_12 = User.objects.create_user(
+        user_12 = User_Model()
+        user_12 = User_Model.objects.create_user(
             'user',
             'user_12@dthm4kaiako.ac.nz',
             password="password",
@@ -548,25 +549,27 @@ class Command(management.base.BaseCommand):
         user_12.dietary_requirements.set([dietary_requirement_dairy_free])
         user_12.educational_entities.set([entity_12, entity_13, entity_14])
         user_12.save()
-        print('User 12 created.')
+        print('User_Model 12 created.')
 
-        user_study_participant = User()
-        user_study_participant = User.objects.create_user(
+        demo_user = User_Model()
+        demo_user = User_Model.objects.create_user(
             'user',
-            'user_study_participant@dthm4kaiako.ac.nz',
+            'demo_user@dthm4kaiako.ac.nz',
             password="password",
-            first_name='Study',
-            last_name='Participant',
+            first_name='Hayley',
+            last_name='Krippner',
             user_region=REGION_CANTERBURY,
             mobile_phone_number='+64 21 545 878'
         )
         EmailAddress.objects.create(
-            user=user_study_participant,
-            email=user_study_participant.email,
+            user=demo_user,
+            email=demo_user.email,
             primary=True,
             verified=True
         )
-        print('User 13 created - user study participant.')
+        print('User_Model 13 created - user study participant.')
+
+        User.objects.filter(first_name="Hayley").update(email="demo@demo.co.nz")
 
         # Physical locations
         sample_location_1 = Location.objects.create(
@@ -1532,16 +1535,16 @@ class Command(management.base.BaseCommand):
         print('Admin account set as event staff for all events')
 
         # ADD EVENT STAFF TO THESE THREE EVENTS THAT HAVE EVENT registration
-        event_1_apply_online_free_future.event_staff.set([admin, user_study_participant])
+        event_1_apply_online_free_future.event_staff.set([admin, demo_user])
         event_1_apply_online_free_future.save()
-        event_2_register_online_free_future.event_staff.set([admin, user_study_participant])
+        event_2_register_online_free_future.event_staff.set([admin, demo_user])
         event_2_register_online_free_future.save()
-        event_3_register_physical_costs_future.event_staff.set([admin, user_study_participant])
+        event_3_register_physical_costs_future.event_staff.set([admin, demo_user])
         event_3_register_physical_costs_future.save()
-        event_16_register_physical_costs_future.event_staff.set([admin, user_study_participant])
+        event_16_register_physical_costs_future.event_staff.set([admin, demo_user])
         event_16_register_physical_costs_future.save()
-        user_study_participant.save()
-        print('User study participant set as event staff for three events')
+        demo_user.save()
+        print('User_Model study participant set as event staff for three events')
 
         event_1_reg_form_pk = event_1_apply_online_free_future.registration_form
         event_1_reg_form = RegistrationForm.objects.filter(pk=event_1_reg_form_pk)
@@ -1573,7 +1576,7 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_1
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_8_register_online_free_future,
             status=APPROVED
@@ -1581,7 +1584,7 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_2
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_12_register_online_free_future,
             status=APPROVED
@@ -1589,17 +1592,16 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_3
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_13_register_online_free_future,
-            status=APPROVED
         )
 
         # 2) 1 that costs and is in person and in future - so can update this (MAKE SURE DOESN'T GET WITHDRAWN!)
         # study_user_event_registration_4
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_14_register_physical_costs_future,
             status=APPROVED
@@ -1609,7 +1611,7 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_5
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_9_apply_online_free_past_cancelled,
             status=APPROVED
@@ -1617,7 +1619,7 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_6
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_6_apply_online_free_past,
             status=APPROVED
@@ -1627,7 +1629,7 @@ class Command(management.base.BaseCommand):
         # study_user_event_registration_7
         EventRegistration.objects.create(
             participant_type=participant_type_free_event_staff,
-            user=user_study_participant,
+            user=demo_user,
             representing="My school",
             event=event_15_register_physical_costs_past,
             status=declined
@@ -1693,3 +1695,29 @@ class Command(management.base.BaseCommand):
             ]
         )
         event_18_register_physical_costs_future.save()
+
+        # Event - register - in person and costs
+        event_19 = Event.objects.create(
+            name="Binary Counting for Beginners",
+            description=(
+                'This is open for all experience levels for learning about counting binary numbers or refeshing on how to count them.'
+            ),
+            registration_type=1,
+            start=datetime.datetime(2023, 3, 15),
+            end=datetime.datetime(2023, 3, 21),
+            accessible_online=True,
+            published=True,
+            featured=False,
+            is_catered=False,
+            contact_email_address="eventstaff@event.co.nz",
+        )
+        event_19.save()
+        
+        # Showing that user cannot withdraw from future event if declined
+        EventRegistration.objects.create(
+            participant_type=participant_type_free_event_staff,
+            user=demo_user,
+            representing="My school",
+            event=event_19,
+            status=declined
+        )

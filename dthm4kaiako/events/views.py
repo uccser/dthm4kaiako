@@ -1503,7 +1503,7 @@ def create_new_participant_type_view(request, pk):
                 new_participant_type.save()
                 messages.success(
                     request,
-                    "The participant type " + str(new_participant_type) + " has been created."
+                    f"The participant type {new_participant_type} has been created."
                 )
         else:
             messages.warning(

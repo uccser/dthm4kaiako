@@ -166,11 +166,19 @@ class ParticipantType(models.Model):
         """
         price_pattern_with_decimal_places = re.compile(r"^\d+(\.\d{2})?$")
 
-        if not price_pattern_with_decimal_places.match(str(self.price)):
+        if self.price < 0:
             raise ValidationError(
                 {
                     'price':
-                    _('Price must be be in the form of $1.23.')
+                    _('Price must be 0 or positive.')
+                }
+            )
+
+        if not self.is_free() is not "0.00" and not price_pattern_with_decimal_places.match(str(self.price)):
+            raise ValidationError(
+                {
+                    'price':
+                    _('Price must be in the form of 1.23. For free attendance, enter 0.')
                 }
             )
 
