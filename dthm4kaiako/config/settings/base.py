@@ -241,7 +241,9 @@ TEMPLATES = [
     {
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+
         'APP_DIRS': True,
+
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
             str(ROOT_DIR.path('templates')),

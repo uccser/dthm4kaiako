@@ -1,0 +1,73 @@
+{% load static humanize %}
+
+<div class="event card mb-3 w-100">
+    <div class="card-header title-header align-middle">
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                {% if event.organisers.all or event.series %}
+                    <div class="mb-2">
+                        {% if event.series.logo %}
+                            <img src="{{ event.series.logo.url }}" class="img-inline" alt="{{ event.series.name }}">
+                        {% elif event.series.abbreviation %}
+                            <small class="text-muted">
+                                Part of {{ event.series.abbreviation }} series
+                            </small>
+                        {% endif %}
+                        {% for organiser in event.organisers.all %}
+                            <a href="{% url 'events:upcoming' %}?organisers={{ organiser.pk}}">
+                                {% if organiser.logo %}
+                                    <img src="{{ organiser.logo.url }}" class="event-card-sponsor mr-3" alt="{{ organiser.name }}">
+                                {% else %}
+                                    <small class="mr-4">
+                                        {{ organiser.name }}
+                                    </small>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h4 class="mb-0">
+                    <div>
+                        {{ event.name }}
+                    </div>
+                    <hr>
+                    <div>
+                        <a href="{% url 'events:event_management' event.pk %}" class="btn btn-primary float-left" style="margin-right: 20px">
+                            Manage 
+                        </a>
+                    </div>
+                    {% if event.published%}
+                        <div>
+                            <a href="{{ event.get_absolute_url }}" class="btn btn-primary float-left">
+                                View public page 
+                            </a>
+                        </div>
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="col text-left text-lg-right align-self-center">
+                {% if event.start|date:"j" != event.end|date:"j" %}
+                    {% if event.start|date:"F" == event.end|date:"F" %}
+                        {{ event.start|date:"j" }}
+                    {% else %}
+                        {{ event.start|date:"j F" }}
+                    {% endif %}
+                    to
+                {% endif %}
+                {{ event.end|date:" j F Y" }}<br>
+                <small class="text-muted">{{ event.start|naturaltime }}</small>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-2">
+        {% if event.accessible_online %}
+            {% include "events/badges/online.html" %}
+        {% endif %}
+        {% for location in event.locations.all %}
+            {% include "events/badges/location.html" %}
+        {% endfor %}
+        {% if event.is_catered %}
+            {% include "events/badges/catered.html" %}
+        {% endif %}
+    </div>
+</div>

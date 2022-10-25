@@ -98,3 +98,165 @@ $location-dark: #148086;
         padding-bottom: 0.2rem;
     }
 }
+
+details {
+  &[open] summary:before {
+    content: '⊖';
+  }
+
+  summary {
+    &::-webkit-details-marker {
+        display: none;
+    }
+    &:before {
+        content: '⊕';
+        margin-right: 0.5rem;
+        padding-bottom: 0.15rem;
+        opacity: .6;
+    }
+  }
+}
+
+.events-time-period-blue {
+  background-color: #68c6fd;
+  border: none;
+}
+
+.events-time-period-button {
+ border-radius: 10px;
+ padding: 10px;
+ width: 100px;
+ border: gray;
+}
+
+// Approved registration badges
+$approved-light: #b4ffb1;
+$approved-dark: #14863a;
+.approved-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $approved-light;
+  color: $approved-dark;
+}
+
+// Pending registration badges
+$pending-light: #ffd4ac;
+$pending-dark: #ff7b00;
+.pending-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $pending-light;
+  color: $pending-dark;
+}
+
+// Declined registration badges
+$declined-light: #ffc6c6;
+$declined-dark: #ff4343;
+.declined-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $declined-light;
+  color: $declined-dark;
+}
+
+// Catered event badge
+$catered-light: #e1acff;
+$catered-dark: #7700ff;
+.catered-badge {
+  @extend .badge;
+  display: inline-block;
+  background-color: $catered-light;
+  color: $catered-dark;
+}
+
+
+//Colours for Event Details, Manage Event and Manage Event Registration templates
+$closed-registrations-or-ended: #d1d1d1;
+$cancelled-event-or-declined-registration: #ffc6c6;
+$published-event-or-approved-registration: rgb(180, 255, 177);
+$not-published-event-or-pending-registration: rgb(253, 197, 145);
+
+// Abstract classes
+%event-label {
+  font-size: medium;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+%event-button {
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+// For Event Details template
+.closed-registrations-label,
+.event-ended-label {
+justify-content: center;
+display: flex;
+background-color:$closed-registrations-or-ended;
+color:black;
+@extend %event-label;
+}
+
+.event-cancelled-label {
+justify-content: center;
+display: flex;
+background-color:$cancelled-event-or-declined-registration;
+color:black;
+@extend %event-label;
+}
+
+// For Manage Event Details template
+.not-published-event-status-label {
+background-color:$not-published-event-or-pending-registration;
+color:black;
+@extend %event-label;
+}
+
+// For Manage Event template
+.published-event-status-label {
+background-color:$published-event-or-approved-registration;
+color:black;
+@extend %event-label;
+}
+
+// For Manage Event template
+.cancelled-event-status-label {
+background-color:$cancelled-event-or-declined-registration;
+color:black;
+@extend %event-label;
+}
+
+// For Manage Event template
+.publish-event-btn, 
+.cancel-event-btn, 
+.view-public-page-btn {
+color:white;
+@extend %event-button;
+}
+
+// For Manage Event Registration template
+.approved-status-label,
+.pending-status-label, 
+.declined-status-label {
+@extend %event-label;
+}
+
+.approved-status-label {
+background-color:$published-event-or-approved-registration;
+color:black;
+}
+
+.pending-status-label {
+background-color:$not-published-event-or-pending-registration;
+}
+
+.declined-status-label {
+background-color:$cancelled-event-or-declined-registration;
+}

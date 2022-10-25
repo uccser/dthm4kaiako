@@ -1,4 +1,4 @@
-"""Module for factories for tesing user application."""
+"""Module for factories for testing user application."""
 
 from typing import Any, Sequence
 from django.contrib.auth import get_user_model

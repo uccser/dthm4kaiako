@@ -138,3 +138,28 @@ def create_filter_helper(reset_url_pattern):
         )
     )
     return filter_formatter
+
+
+def can_view_event_management_content(request, event):
+    """Return True if the user is event staff for the event management page."""
+    user = request.user
+    return user in event.event_staff.all()
+
+
+def convert_string_list_to_one_string(listToConvert):
+    """Convert list to string.
+
+    Returns:
+        A string of values separated by &'s.
+    """
+    if len(listToConvert) == 1:
+        return listToConvert[0]
+    else:
+        newBigString = ""
+        for i in range(0, len(listToConvert)):
+            currentString = listToConvert[i]
+            if i == len(listToConvert) - 1:
+                newBigString += currentString
+            else:
+                newBigString += currentString + " & "
+        return newBigString

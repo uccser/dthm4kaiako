@@ -33,12 +33,15 @@ class EventFactory(DjangoModelFactory):
 
     name = Faker('sentence', nb_words=3)
     description = Faker('paragraph', nb_sentences=50)
-    registration_link = Faker('url')
+    # TODO: turn off while testing register button
+    # registration_link = Faker('url')
     published = True
     show_schedule = True
     start = Faker('date_time_between', start_date='-1y', end_date='+3y', tzinfo=pytz.timezone('Pacific/Auckland'))
     end = LazyAttribute(lambda obj: obj.start)
     accessible_online = LazyFunction(random_boolean)
+    is_catered = LazyFunction(random_boolean)
+    contact_email_address = 'contactus@event.co.nz'
 
     class Meta:
         """Metadata for class."""

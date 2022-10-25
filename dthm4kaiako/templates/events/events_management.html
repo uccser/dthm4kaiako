@@ -1,0 +1,108 @@
+{% extends "events/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+{% block page_heading %}
+    <h1>Events management</h1>
+{% endblock page_heading %}
+
+{% block content %}
+
+    <!-- TODO: add filter (see past and upcoming eventings pages )-->
+
+    {% if events_user_is_staff_for_future or events_user_is_staff_for_past %}
+
+        <!-- Generate Event CSVs -->        
+        <details>
+            <summary>Generate Custom Events Data Spreadsheet</summary>
+            {% if event_csv_builder_form %}
+                <div style="margin-left: 50px; margin-right: 50px; margin-top: 20px; margin-bottom: 20px;">
+                    <p style="font-style: italic">
+                        <b>Select the fields you wish to include in the spreadsheet</b>
+                    </p>
+                    <p style="font-style: italic">
+                        Examples of spreadsheets to generate are:
+                        <ul>
+                            <li>Upcoming event dates</li>
+                            <li>Online events</li>
+                            <li>Catered events</li>
+                          </ul>
+                    </p>
+                    <form method="post" action="{% url 'events:generate_event_csv' %}">
+                        {% csrf_token %}
+                        {% crispy event_csv_builder_form %}
+                        <input class="btn btn-primary" type="submit" value="Generate spreadsheet">
+                    </form>
+                    <br>
+                </div>
+            {% endif %}        
+        </details>
+
+        <br>
+
+        <div class="events-container">
+            <h4>Events you are staff for</h4>
+        </div>
+
+        <div class="tabs">
+            <button class="events-time-period-button tablink" onclick="openEvents(event, 'Past')" style="margin-bottom: 20px;">
+                <b>Past</b>
+            </button>
+            <button class="events-time-period-button tablink events-time-period-blue" onclick="openEvents(event, 'Future')" style="margin-bottom: 20px;">
+                <b>Upcoming</b>
+            </button>
+        </div>
+        
+        <div id="Past" class="time" style="display:none">
+            {% if events_user_is_staff_for_past.count > 1 %}
+                {% for event in events_user_is_staff_for_past %}
+                    {% include 'events/event_card_event_staff.html' %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center">
+                    There are no past events that you were event staff for
+                </p>            
+            {% endif %}
+        </div>
+        
+        <div id="Future" class="time">
+            {% if events_user_is_staff_for_future.count > 1 %}
+                {% for event in events_user_is_staff_for_future %}
+                    {% include 'events/event_card_event_staff.html' %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center">
+                    There are no upcoming events you are event staff for
+                </p>                 
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p class="text-center">
+            You are not staffing any events.
+        </p>
+    {% endif %}
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        function openEvents(evt, time) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("time");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" events-time-period-blue", "");
+        }
+        document.getElementById(time).style.display = "block";
+        evt.currentTarget.className += " events-time-period-blue";
+        }
+    </script>
+    {% include "generic/map-javascript.html" %}
+{% endblock scripts %}
+

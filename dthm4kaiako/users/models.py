@@ -4,25 +4,26 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from utils.get_upload_filepath import get_entity_upload_path
+from utils.new_zealand_regions import REGION_CHOICES, REGION_CANTERBURY
+import re
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
-class User(AbstractUser):
-    """User of website."""
+class DietaryRequirement(models.Model):
+    """Model for a dietary requirement e.g. vegetarian."""
 
-    username = models.CharField(max_length=50, default='user')
-    first_name = models.CharField(max_length=50, verbose_name='first name')
-    last_name = models.CharField(max_length=150, verbose_name='last name')
-
-    USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['first_name']
-
-    def get_absolute_url(self):
-        """Return URL for user's webpage."""
-        return reverse('users:detail', kwargs={'pk': self.pk})
+    name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
-        """Name of the user."""
-        return f'{self.first_name} {self.last_name}'
+        """Text representation of a dietary requirement."""
+        return self.name
+
+    class Meta:
+        """Meta options for class."""
+
+        ordering = ['name', ]
+        verbose_name_plural = 'dietary requirements'
 
 
 class Entity(models.Model):
@@ -63,3 +64,69 @@ class Entity(models.Model):
 
         ordering = ['name', ]
         verbose_name_plural = 'entities'
+
+
+class User(AbstractUser):
+    """User of website."""
+
+    username = models.CharField(max_length=50, default='user')
+    first_name = models.CharField(max_length=50, verbose_name='first name')
+    last_name = models.CharField(max_length=150, verbose_name='last name')
+    dietary_requirements = models.ManyToManyField(
+        DietaryRequirement,
+        related_name='users',
+        blank=True,
+        default='None'
+    )
+    educational_entities = models.ManyToManyField(
+        Entity,
+        related_name='users',
+        max_length=200,
+        verbose_name='School(s) and/or educational organisation or association participiant is from'
+    )
+    user_region = models.PositiveSmallIntegerField(
+        choices=REGION_CHOICES,
+        default=REGION_CANTERBURY,
+        help_text="Region that your school, organisation or association is located in",
+    )
+    mobile_phone_number = models.CharField(max_length=30, verbose_name='mobile phone number', default='')
+    email_address = models.EmailField(
+        max_length=150,
+        blank=False,
+        null=False,
+        default='',
+    )
+    medical_notes = models.TextField(
+        default='',
+        help_text="How can we better look after you? e.g. accessibility, allergies",
+        blank=True
+    )
+
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['first_name']
+
+    def get_absolute_url(self):
+        """Return URL for user's webpage."""
+        return reverse('users:detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        """Name of the user."""
+        return f'{self.first_name} {self.last_name}'
+
+    def clean(self):
+        """Validate user model attributes.
+
+        Raises:
+            ValidationError if invalid attributes.
+        """
+        mobile_phone_number_pattern = re.compile(r"^[-\(\)\+\s\./0-9]*$")
+        if not mobile_phone_number_pattern.match(str(self.mobile_phone_number)):
+            raise ValidationError(
+                {
+                    'mobile_phone_number':
+                    _(
+                        'Invalid phone number. Phone number can include the area code, follow by any number of '
+                        'numbers, - and spaces. E.g. (+64) 123 45 678, 123-45-678, 12345678'
+                    )
+                }
+            )

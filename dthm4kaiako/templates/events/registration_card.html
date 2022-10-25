@@ -1,0 +1,110 @@
+{% load static humanize %}
+
+{% load crispy_forms_tags %}
+
+<div class="event card mb-3 w-100">
+    <div class="card-header title-header align-middle">
+        <div class="row">
+            <div class="col-sm-8">
+                <h4 class="mb-2">
+                    <a href="{{ event_registration.event.get_absolute_url }}" style="text-decoration: none;">
+                        {{ event_registration.event.name }}
+                    </a>
+                </h4>
+                <div>
+                    {% if event_registration.event.accessible_online %}
+                        {% include "events/badges/online.html" %}
+                    {% endif %}
+                    {% for location in event_registration.event.locations.all %}
+                        {% include "events/badges/location.html" %}
+                    {% endfor %}
+                    {% if event_registration.event.is_catered %}
+                        {% include "events/badges/catered.html" %}
+                    {% endif %}
+                </div>
+                <br>
+                <h6>
+                    <b>Contact email:</b> {{ event_registration.event.contact_email_address }}
+                </h6>
+                <h6>
+                    <b>Starts:</b> {{event_registration.event.start|date:"l j F, Y, g:i a" }}
+                </h6>
+                <h6>
+                    <b>Ends:</b> {{event_registration.event.end|date:"l j F, Y, g:i a" }}
+                </h6>
+                <h6>
+                    <b>Status:</b>
+                    {% if event_registration.status_string_for_user == "Pending" %}
+                        {% include "events/badges/pending.html" %}
+                    {% elif event_registration.status_string_for_user == "Approved" %}
+                        {% include "events/badges/approved.html" %}
+                    {% elif event_registration.status_string_for_user == "Declined" %}
+                        {% include "events/badges/declined.html" %}
+                    {% endif %}
+                </h6>
+                <br>
+                {% if event_registration.event.is_cancelled %}
+                <label style="background-color:rgb(255, 198, 198); color:black; font-size: medium; border-radius: 8px; padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px;">
+                    <b>Cancelled</b>
+                </label>
+            {% endif %}
+            </div>
+            <div class="col-sm-4">
+
+                {% if event_registration.event.is_cancelled or event_registration.event.has_ended %}
+
+                {% else %}
+                    <a class="btn btn-success m-2" href="{% url 'events:register' event_registration.event.pk %}" role="button">
+                        Update my details
+                    </a>
+
+                    {% if not event_registration.status == 3 %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#event-registrations-withdraw-modal-{{event_registration.pk}}">
+                            Withdraw
+                        </button>
+                    {% endif %}
+                {% endif %}
+
+                {% if user.is_authenticated %}
+
+                    <!-- TODO: show dynamically (e.g. Javascript) when "other" selected -->
+                
+                    <!-- Modal -->
+                    {% if withdraw_event_registration_form %}
+                        <div class="modal fade" id="event-registrations-withdraw-modal-{{event_registration.pk}}" tabindex="-1" role="dialog" aria-labelledby="event-registration-withdraw-confirmation" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Withdraw from Event</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you no longer want to attend <b>{{event_registration.event.name}}</b>?
+                                </div>
+                                <div class="modal-footer" style="justify-content:center">
+                                    <form action="{% url 'events:delete_registration_via_registration_page_view' event_registration.pk %}" method="post">
+                                        {% csrf_token %}
+                                        {% crispy withdraw_event_registration_form %}
+                                        <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
+                                            <div class="column">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                            <div class="column">
+                                                <input class="btn btn-warning" type="submit" value="Confirm withdrawing">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>    
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -65,3 +65,5 @@ INSTALLED_APPS += [  # noqa: F405
     "test_without_migrations",
 ]
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+# required for running tests that test views using django.contrib.messages and these tests use RequestFactory
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

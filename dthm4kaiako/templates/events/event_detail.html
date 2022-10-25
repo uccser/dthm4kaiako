@@ -2,17 +2,22 @@
 
 {% load static %}
 
+{% load crispy_forms_tags %}
+
 {% block body_element %}
     <body class="position-relative" data-spy="scroll" data-target="#event-navigation" data-offset="100">
 {% endblock body_element %}
 
 {% block page_heading %}
     <div id="event-details" class="my-3">
-        {% if perms.events %}
-            <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-secondary float-right">
+
+        <div id="event-details-admin-staff-btns">
+            {% if perms.events %}
+            <a href="{% url 'admin:events_event_change' event.pk %}" class="btn btn-sm btn-secondary float-right" style="margin-left: 10px">
                 Edit event
             </a>
         {% endif %}
+        </div>
 
         {% for organiser in organisers %}
             {% if organiser.logo %}
@@ -35,23 +40,38 @@
 
 {% block content_container %}
     <div class="col-12 col-md-8 order-2 order-md-1">
+        {% if is_event_staff %}
+            <div style="padding-bottom: 40px;">
+                <a href="{% url 'events:event_management' event.pk %}" class="btn btn-primary float-left">
+                    Manage event 
+                </a>
+            </div>
+            <br>
+        {% endif %}
+        {% if event.is_catered %}
+            {% include "events/badges/catered.html" %}
+        {% endif %}
         {% if event.accessible_online %}
             {% include "events/badges/online.html" %}
         {% endif %}
-        <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"g:i a l j F, Y" }}</p>
-        <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"g:i a l j F, Y" }}</p>
+        <p class="mb-0"><strong>Starts:</strong> {{ event.start|date:"l j F, Y, g:i a" }}</p>
+        <p class="mb-0"><strong>Ends:</strong> {{ event.end|date:"l j F, Y, g:i a" }}</p>
         <p class="mb-0">
-            <strong>Cost:</strong>
-            {% if event.price == 0 %}
-                Free!
-            {% else %}
-                {{ event.price }}
-            {% endif %}
+            <strong>Cost: </strong>
+                {% if event.is_free %}
+                    Free!
+                {% else %}
+                    Attendance fee applies
+                {% endif %}
         </p>
 
         <div class="d-flex flex-row">
+
             <div class="pr-1"><strong>Location{{ locations|pluralize }}:</strong></div>
             <div class="d-flex flex-wrap">
+                {% if locations.count == 0 %}
+                    No in-person locations 
+                {% endif %}
                 {% for location in locations %}
                     <div class="mr-5 mb-3">
                         <a href="{{ location.get_absolute_url }}">
@@ -105,11 +125,56 @@
                 {% endif %}
             </nav>
 
-            {% if event.registration_link and not event.has_ended %}
+        {% if event.is_cancelled %} 
+            <div style="padding-top: 20px;">
+                <label class="event-cancelled-label">
+                    <h5><b>Cancelled</b></h5>
+                </label>
+            </div>
+        {% else %}
+            {% if event.external_event_registration_link and not event.has_ended %}
                 <hr>
-                <a class="btn btn-success btn-block btn-lg" href="{{ event.registration_link }} " role="button">
+                <a class="btn btn-success btn-block btn-lg" href="{{ event.external_event_registration_link }} " role="button">
                     {{ event.get_registration_type_display }}
-                </a>
+                </a>                
+            {% elif not event.has_ended and event.is_register_or_apply %}
+
+                {% if has_user_applied %}
+                    <hr>
+                    <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                        Update my details
+                    </a>
+                    <hr>
+                    
+                    {% if not event_registration.status == 3 %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#event-details-withdraw-modal-{{registration_pk}}">
+                            Withdraw
+                        </button>
+                    {% endif %}
+                {% else %}
+
+                    {% if event.is_less_than_one_week_prior_event and event.is_catered %}
+                    <div style="padding-top: 20px;">
+                        <label class="closed-registrations-label">
+                            <h5><b>Registrations have closed</b></h5>
+                        </label>
+                    </div>
+                    {% else %}
+                        <hr>
+                        <a class="btn btn-success btn-block btn-lg" href="{% url 'events:register' event.pk %}" role="button">
+                            {{ event.get_registration_button_text }}
+                        </a>
+                    {% endif %}
+
+                {% endif %}
+
+            {% else %}
+            <div style="padding-top: 20px;">
+                <label class="event-ended-label">
+                    <h5><b>This event has ended</b></h5>
+                </label>
+            </div>
             {% endif %}
 
             {% if event.registration_type == event.REGISTRATION_TYPE_INVITE_ONLY %}
@@ -152,9 +217,55 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+        {% endif %}
+
         </div>
     </div>
 {% endblock content_container %}
+
+{% block modal %}
+
+    {% if user.is_authenticated %}
+
+        <!-- TODO: show dynamically (e.g. Javascript) when "other" selected -->
+
+        <!-- Modal -->
+        {% if withdraw_event_registration_form %}
+
+            <div class="modal fade" id="event-details-withdraw-modal-{{registration_pk}}" tabindex="-1" role="dialog" aria-labelledby="event-details-withdraw-confirmation" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title">Withdraw from Event</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you no longer want to attend <b>{{event_registration.event.name}}</b>?
+                        </div>
+                        <div class="modal-footer" style="justify-content:center">
+                            <form action="{% url 'events:delete_registration_via_event_page_view' event_registration.id %}" method="post">
+                                {% csrf_token %}
+                                {% crispy withdraw_event_registration_form %}
+                                <div class="row" style="margin-left: 0; margin-right: 0; display: flex; justify-content: space-between">
+                                    <div class="column">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="column">
+                                        <input class="btn btn-warning" type="submit" value="Confirm withdrawing">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock modal %}
+
 
 {% block scripts %}
     <script>

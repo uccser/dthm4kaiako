@@ -17,12 +17,18 @@
 
       <div class="collapse navbar-collapse" id="navbarSecondaryContent">
         <ul class="navbar-nav w-100">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'events:upcoming' %}">Upcoming events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'events:past' %}">Past events</a>
-            </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'events:upcoming' %}">Upcoming events</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'events:past' %}">Past events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'events:event_registrations' %}">My event registrations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'events:events_management' %}">Events management</a>
+          </li>
         </ul>
       </div>
     </div>

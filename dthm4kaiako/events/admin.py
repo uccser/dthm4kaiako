@@ -5,13 +5,22 @@ from django.utils.timezone import now
 from django.contrib.gis.db import models as geomodels
 from django.utils.translation import gettext_lazy as _
 from events.models import (
+    DeletedEventRegistration,
     Event,
     Session,
     Location,
     Series,
+    EventRegistration,
+    RegistrationForm,
+    ParticipantType,
 )
 from mapwidgets.widgets import GooglePointFieldWidget
 from modelclone import ClonableModelAdmin
+from django.utils.html import format_html_join
+
+datetime_str = '2016-05-18T15:37:36.993048Z'
+old_format = '%Y-%m-%dT%H:%M:%S.%fZ'
+new_format = '%d-%m-%Y %H:%M:%S'
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +59,15 @@ class SessionInline(admin.StackedInline):
     min_num = 1
     ordering = ('start', 'end', 'name')
     autocomplete_fields = ('locations', )
+
+
+class RegistrationFormInline(admin.StackedInline):
+    """Inline view for event registration form."""
+
+    model = RegistrationForm
+    fk_name = 'event'
+    extra = 0
+    min_num = 1
 
 
 class EventUpcomingListFilter(admin.SimpleListFilter):
@@ -104,7 +122,7 @@ class EventAdmin(ClonableModelAdmin):
     """Admin view for an event."""
 
     model = Event
-    inlines = [SessionInline]
+    inlines = [SessionInline, RegistrationFormInline]
     fieldsets = (
         (
             None,
@@ -112,10 +130,15 @@ class EventAdmin(ClonableModelAdmin):
                 'fields': (
                     'name',
                     'description',
+                    'start',
+                    'end',
                     'series',
                     'organisers',
                     'sponsors',
-                    'price',
+                    'participant_types',
+                    'is_catered',
+                    'contact_email_address',
+                    'capacity',
                 )
             }
         ),
@@ -125,7 +148,7 @@ class EventAdmin(ClonableModelAdmin):
         ('Registration', {
             'description': 'Currently only registration via URL is available.',
             'fields': (
-                'registration_link',
+                'external_event_registration_link',
                 'registration_type',
             ),
         }),
@@ -134,12 +157,17 @@ class EventAdmin(ClonableModelAdmin):
                 'published',
                 'featured',
                 'show_schedule',
+                'is_cancelled'
             ),
+        }),
+        ('Permissions', {
+            'fields': ('event_staff',),
         }),
     )
     filter_horizontal = (
         'organisers',
         'sponsors',
+        'participant_types'
     )
     list_display = ('name', 'location_summary', 'series', 'start', 'end', 'published', 'featured')
     list_filter = (EventUpcomingListFilter, 'organisers', )
@@ -161,6 +189,172 @@ class EventAdmin(ClonableModelAdmin):
         }
 
 
+class EventRegistrationAdmin(admin.ModelAdmin):
+    """Admin view for an event registration."""
+
+    model = EventRegistration
+    readonly_fields = [
+        'user',
+        'user_education_entities',
+        'user_region',
+        'mobile_phone_number',
+        'medical_notes',
+        'user_dietary_requirements',
+        'event',
+        'event_start_end',
+        'event_location',
+        'submitted',
+        'updated',
+        'billing_physical_address',
+        'billing_email_address',
+        'email_address',
+        'emergency_contact_first_name',
+        'emergency_contact_last_name',
+        'emergency_contact_relationship',
+        'emergency_contact_phone_number',
+        'bill_to',
+    ]
+    fieldsets = (
+        (
+            'User',
+            {
+                'fields': (
+                    'user',
+                    'user_education_entities',
+                    'user_region',
+                    'mobile_phone_number',
+                    'email_address',
+                    'user_dietary_requirements',
+                )
+            },
+        ),
+        (
+            'Event',
+            {
+                'fields': (
+                    'event',
+                    'event_start_end',
+                    'event_location',
+                )
+            },
+        ),
+        (
+            'Registration',
+            {
+                'fields': (
+                    'submitted',
+                    'updated',
+                    'status',
+                    'participant_type',
+                    'representing',
+                    'medical_notes',
+                    'staff_comments',
+                    'emergency_contact_first_name',
+                    'emergency_contact_last_name',
+                    'emergency_contact_relationship',
+                    'emergency_contact_phone_number',
+                )
+            },
+        ),
+        (
+            'Billing',
+            {
+                'fields': (
+                    'paid',
+                    'bill_to',
+                    'billing_physical_address',
+                    'billing_email_address',
+                )
+            },
+        ),
+    )
+
+    @admin.display(description="Educational entities participant belongs to")
+    def user_education_entities(self, registration):
+        """Return the education entities that the user is associated with."""
+        return format_html_join(
+            '\n',
+            '<li>{}</li>',
+            registration.user.educational_entities.values_list('name'),
+        )
+
+    @admin.display(description="User's region")
+    def user_region(self, registration):
+        """Return the user's region."""
+        return registration.user.region
+
+    @admin.display(description="User's dietary requirements")
+    def user_dietary_requirements(self, registration):
+        """Return the user's dietary requirements as a bullet point list."""
+        return format_html_join(
+            '\n',
+            '<li>{}</li>',
+            registration.user.dietary_requirements.values_list('name'),
+        )
+
+    @admin.display
+    def event_start_end(self, registration):
+        """Return the event's start and end dates."""
+        date_time_start_str = registration.event.start.strftime("%d %b %Y, %I:%M %p")
+        date_time_end_str = registration.event.end.strftime("%d %b %Y, %I:%M %p")
+        return f'{date_time_start_str} to {date_time_end_str}'
+
+    @admin.display
+    def event_location(self, registration):
+        """Return the event's location."""
+        return registration.event.location_summary()
+
+    @admin.display
+    def mobile_phone_number(self, registration):
+        """Return the event participant's mobile number."""
+        return registration.user.mobile_phone_number
+
+    @admin.display
+    def medical_notes(self, registration):
+        """Return the event participant's medical notes."""
+        return registration.user.medical_notes
+
+    @admin.display
+    def participant_email_address(self, registration):
+        """Return participant's email address."""
+        return registration.event_registration.participant_email_address
+
+    @admin.display
+    def emergency_contact_first_name(self, registration):
+        """Return the event participant's emergency contact's first name."""
+        return registration.event_registration.emergency_contact_first_name
+
+    @admin.display
+    def emergency_contact_last_name(self, registration):
+        """Return the event participant's emergency contact's last name."""
+        return registration.event_registration.emergency_contact_last_name
+
+    @admin.display
+    def emergency_contact_relationship(self, registration):
+        """Return the emergency contact's relationship with the event participant."""
+        return registration.event_registration.emergency_contact_relationship
+
+    @admin.display
+    def emergency_contact_phone_number(self, registration):
+        """Return the emergency contact's phone number of the event participant."""
+        return registration.event_registration.emergency_contact_phone_number
+
+    @admin.display
+    def bill_to(self, registration):
+        """Return the name of the entity who will pay for the event participant to attend."""
+        return registration.event_registration.bill_to
+
+    @admin.display
+    def email_address(self, registration):
+        """Return user's email address."""
+        return registration.user.email_address
+
+
 admin.site.register(Event, EventAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Series)
+admin.site.register(Location, LocationAdmin),
+admin.site.register(Series),
+admin.site.register(Session),
+admin.site.register(EventRegistration, EventRegistrationAdmin),
+admin.site.register(RegistrationForm),
+admin.site.register(DeletedEventRegistration)
+admin.site.register(ParticipantType)
