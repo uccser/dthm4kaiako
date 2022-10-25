@@ -176,12 +176,8 @@ $cancelled-event-or-declined-registration: #ffc6c6;
 $published-event-or-approved-registration: rgb(180, 255, 177);
 $not-published-event-or-pending-registration: rgb(253, 197, 145);
 
-// For Event Details template
-.closed-registrations-label {
-  justify-content: center;
-  display: flex;
-  background-color:$closed-registrations-or-ended;
-  color:black;
+// Abstract classes
+%event-label {
   font-size: medium;
   border-radius: 8px;
   padding-left: 12px;
@@ -190,133 +186,77 @@ $not-published-event-or-pending-registration: rgb(253, 197, 145);
   padding-bottom: 12px;
 }
 
+%event-button {
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 // For Event Details template
+.closed-registrations-label,
 .event-ended-label {
-  justify-content: center;
-  display: flex;
-  background-color:$closed-registrations-or-ended;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+justify-content: center;
+display: flex;
+background-color:$closed-registrations-or-ended;
+color:black;
+@extend %event-label;
 }
 
-// For Event Details template
 .event-cancelled-label {
-  justify-content: center;
-  display: flex;
-  background-color:$cancelled-event-or-declined-registration;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+justify-content: center;
+display: flex;
+background-color:$cancelled-event-or-declined-registration;
+color:black;
+@extend %event-label;
 }
 
 // For Manage Event Details template
 .not-published-event-status-label {
-  background-color:$not-published-event-or-pending-registration;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+background-color:$not-published-event-or-pending-registration;
+color:black;
+@extend %event-label;
 }
 
 // For Manage Event template
 .published-event-status-label {
-  background-color:$published-event-or-approved-registration;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+background-color:$published-event-or-approved-registration;
+color:black;
+@extend %event-label;
 }
 
 // For Manage Event template
 .cancelled-event-status-label {
-  background-color:$cancelled-event-or-declined-registration;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+background-color:$cancelled-event-or-declined-registration;
+color:black;
+@extend %event-label;
 }
 
 // For Manage Event template
-.publish-event-btn {
-  color:white;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-// For Manage Event template
-.cancel-event-btn {
-  color:white;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-// For Manage Event template
+.publish-event-btn, 
+.cancel-event-btn, 
 .view-public-page-btn {
-  color:white;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+color:white;
+@extend %event-button;
 }
 
 // For Manage Event Registration template
-.approved-status-label {
-  background-color:$published-event-or-approved-registration;
-  color:black;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-// For Manage Event Registration template
-.pending-status-label {
-  background-color:$not-published-event-or-pending-registration;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-// For Manage Event Registration template
+.approved-status-label,
+.pending-status-label, 
 .declined-status-label {
-  background-color:$cancelled-event-or-declined-registration;
-  font-size: medium;
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+@extend %event-label;
+}
+
+.approved-status-label {
+background-color:$published-event-or-approved-registration;
+color:black;
+}
+
+.pending-status-label {
+background-color:$not-published-event-or-pending-registration;
+}
+
+.declined-status-label {
+background-color:$cancelled-event-or-declined-registration;
 }
