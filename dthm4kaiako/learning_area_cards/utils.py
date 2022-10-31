@@ -1,13 +1,12 @@
 """Utility functions for learning area cards application."""
 
-from urllib.parse import quote as urlquote
 from django.conf import settings
 
 ACHIEVEMENT_OBJECTIVE_TITLE_TEMPLATE = 'Achievement Objectives - Level {}'
 PROGRESS_OUTCOME_TITLE_TEMPLATE = 'Progress Outcomes - {}'
 
 
-def get_card_set_metadata(card_type, print_type, level=None, learning_area=None, quote=False):
+def get_card_set_metadata(card_type, print_type, level=None, learning_area=None):
     """Get metadata for card set.
 
     Args:
@@ -16,7 +15,6 @@ def get_card_set_metadata(card_type, print_type, level=None, learning_area=None,
         print_type (str): Either single or double sided cards.
         level (int): Level of achievement objective.
         learning_area (str): Name of learning area for progress outcome.
-        quote (bool): True if filename should be encoded for URLs.
 
     Returns:
         Tuple of string of card set title, and string of filname.
@@ -30,6 +28,4 @@ def get_card_set_metadata(card_type, print_type, level=None, learning_area=None,
         card_set_title=title,
         print_type=print_type,
     )
-    if quote:
-        filename = urlquote(filename)
     return (title, filename)

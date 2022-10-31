@@ -49,9 +49,9 @@ class HomeView(generic.base.TemplateView):
                     card_type=card_set_type,
                     print_type=print_type,
                     level=card_set['level'],
-                    quote=True,
                 )
-                card_set['{}_filename'.format(print_type.lower())] = filename
+                filepath = f'learning_area_cards/{filename}'
+                card_set['{}_filepath'.format(print_type.lower())] = filepath
             card_set['type'] = card_set_type
             card_set['title'] = title
 
@@ -65,9 +65,9 @@ class HomeView(generic.base.TemplateView):
                     card_type=card_set_type,
                     print_type=print_type,
                     learning_area=card_set['learning_area'],
-                    quote=True,
                 )
-                card_set['{}_filename'.format(print_type.lower())] = filename
+                filepath = f'learning_area_cards/{filename}'
+                card_set['{}_filepath'.format(print_type.lower())] = filepath
             card_set['type'] = card_set_type
             card_set['title'] = title
 
