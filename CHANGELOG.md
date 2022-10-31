@@ -1,5 +1,52 @@
 # Changelog
 
+## 0.20.0
+
+- Update project to use uccser-development-stack v3.
+- Update to Plausible analytics.
+- Auto-merge minor dependency updates (this includes minor and patch updates).
+- Allow all dependency update pull requests to be created (remove open limit on Dependabot).
+- Fix bug where learning area cards weren't served.
+- Disable healthcheck on Docker task service to prevent deletion while running.
+- Show full Git SHA on development website.
+- Add OCI labels to Django Docker image.
+- Set testing settings to use PostGIS DB
+- Add tests for search utility functions.
+- Update test coverage to codecov.
+- Dependency changes:
+    - Update ansi-colours from 4.1.1 to 4.1.3.
+    - Update argon2-cffi from 20.1.0 to 21.3.0.
+    - Update autoprefixer from 10.4.6 to 10.4.13.
+    - Update coverage from 6.2 to 6.5.0.
+    - Update cssnano from 5.0.12 to 5.1.13.
+    - Update dayjs from 1.10.7 to 1.11.6.
+    - Update django from 3.2.13 to 3.2.16.
+    - Update django-allauth from 0.50.0 to 0.51.0.
+    - Update django-anymail[mailgun] from 8.5 to 8.6.
+    - Update django-ckeditor from 6.2.0 to 6.5.1.
+    - Update django-cors-headers from 3.11.0 to 3.13.0.
+    - Update django-debug-toolbar from 3.3.0 to 3.7.0.
+    - Update django-environ from 0.8.1 to 0.9.0.
+    - Update django-extensions from 3.1.2 to 3.2.1.
+    - Update django-map-widgets from 0.3.3 to 0.4.0.
+    - Update django-storages[google] from 1.12.3 to 1.13.1.
+    - Update djangorestframework from 3.13.1 to 3.14.0.
+    - Update docker/build-push-action from v2.7.0 to v3.2.0.
+    - Update docker/login-action from v1.10.0 to v2.0.0.
+    - Update docker/metadata-action from v3 to v4.
+    - Update factory-boy from 3.2.0 to 3.2.1.
+    - Update filetype from 1.0.10 to 1.1.0.
+    - Update fuse.js from 6.5.3 to 6.6.2.
+    - Update google-api-python-client from 2.46.0 to 2.64.0.
+    - Update gulp-sass from 5.0.0 to 5.1.0.
+    - Update jquery from 3.6.0 to 3.6.1.
+    - Update postcss from 8.4.13 to 8.4.18.
+    - Update psycopg2 from 2.9.3 to 2.9.5.
+    - Update pytz from 2022.1 to 2022.5.
+    - Update sass from 1.45.0 to 1.55.0.
+    - Update whitenoise from 6.0.0 to 6.2.0.
+    - Update yargs from 17.3.0 to 17.6.0.
+
 ## 0.19.2
 
 - Add management command for rebuilding search indexes.
