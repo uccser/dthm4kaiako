@@ -181,10 +181,10 @@ function svg() {
 
 // Watch
 function watchPaths() {
-    watch([`${paths.js_source}/**/*.js`], js).on("change", reload)
-    watch([`${paths.css_source}/**/*.css`], css).on("change", reload)
-    watch([`${paths.scss_source}/**/*.scss`], scss).on("change", reload)
-    watch([`${paths.images_source}/**/*`], img).on("change", reload)
+    watch([`${paths.js_source}/**/*.js`], js)
+    watch([`${paths.css_source}/**/*.css`], css)
+    watch([`${paths.scss_source}/**/*.scss`], scss)
+    watch([`${paths.images_source}/**/*`], img)
 }
 
 // Generate all assets
