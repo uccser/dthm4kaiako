@@ -26,7 +26,7 @@ whitenoise==6.2.0
 psycopg2==2.9.5
 
 pytz==2022.6
-python-slugify==4.0.1
+python-slugify==6.1.2
 argon2-cffi==21.3.0
 
 # Resources
