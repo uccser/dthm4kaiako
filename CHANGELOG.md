@@ -2,6 +2,10 @@
 
 ## 0.20.1
 
+- Dependency updates:
+    - Updated cssnano from 5.1.13 to 5.1.14.
+    - Updated pytz from 2022.5 to 2022.6.
+
 ## 0.20.0
 
 - Update project to use uccser-development-stack v3.
