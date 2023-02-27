@@ -20,7 +20,7 @@ djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
 
 # Web serving
 gunicorn==20.1.0
-whitenoise==6.3.0
+whitenoise==6.4.0
 
 # Database APIs
 psycopg2==2.9.5
