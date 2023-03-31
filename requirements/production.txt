@@ -5,5 +5,5 @@
 
 # Django
 # ------------------------------------------------------------------------------
-google-auth==1.28.1  # https://github.com/googleapis/google-auth-library-python
+google-auth==2.17.1  # https://github.com/googleapis/google-auth-library-python
 django-storages[google]==1.13.2
