@@ -2,7 +2,7 @@
 django==3.2.18
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
 django-allauth==0.54.0
-django-anymail[mailgun]==8.6
+django-anymail[mailgun]==9.1
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
 django-ckeditor==6.5.1
 django-cors-headers==3.14.0
