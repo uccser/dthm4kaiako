@@ -3,4 +3,4 @@
 -r test.txt
 
 django-debug-toolbar==3.8.1
-django-extensions==3.2.1
+django-extensions==3.2.3
