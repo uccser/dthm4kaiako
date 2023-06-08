@@ -222,7 +222,7 @@ jobs:
           tar -xz --file artifacts/learning-area-cards/learning-area-cards.tar.gz --directory dthm4kaiako/staticfiles/learning_area_cards
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v2.0.0
+        uses: docker/login-action@v2.2.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
