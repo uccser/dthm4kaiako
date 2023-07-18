@@ -19,7 +19,7 @@ django-recaptcha==3.0.0
 djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
 
 # Web serving
-gunicorn==20.1.0
+gunicorn==21.0.1
 whitenoise==6.5.0
 
 # Database APIs
