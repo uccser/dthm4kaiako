@@ -4,5 +4,5 @@ coverage==6.5.0
 django-coverage-plugin==1.8.0  # https://github.com/nedbat/django_coverage_plugin
 django-test-without-migrations==0.6
 
-flake8==3.9.2
+flake8==6.1.0
 pydocstyle==6.3.0
