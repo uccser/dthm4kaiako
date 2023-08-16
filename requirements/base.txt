@@ -35,7 +35,7 @@ Pillow==8.2.0
 filetype==1.2.0  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
-google-api-python-client==2.96.0
+google-api-python-client==2.97.0
 
 # Sample data generation
 # ----------------------
