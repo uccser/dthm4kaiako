@@ -27,7 +27,7 @@ psycopg2==2.9.7
 
 pytz==2022.7.1
 python-slugify==4.0.1
-argon2-cffi==21.3.0
+argon2-cffi==23.1.0
 
 # Resources
 WeasyPrint==52.4
