@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Start systems
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Start systems
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Start systems
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run general tests
         run: ./dev ci test_general
       - name: Create coverage file
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run management tests
         run: ./dev ci test_management
       - name: Create coverage file
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run style tests
         run: ./dev ci style
 
@@ -126,7 +126,7 @@ jobs:
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Create Docker network
         run: docker network create uccser-development-stack
@@ -167,7 +167,7 @@ jobs:
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create Docker network
         run: docker network create uccser-development-stack
       - name: Start system
@@ -204,7 +204,7 @@ jobs:
     ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
