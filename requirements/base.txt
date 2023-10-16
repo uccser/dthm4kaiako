@@ -6,7 +6,7 @@ django-anymail[mailgun]==8.6
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
 django-ckeditor==6.7.0
 django-cors-headers==3.14.0
-django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-crispy-forms
+django-crispy-forms==2.1  # https://github.com/django-crispy-forms/django-crispy-forms
 django-environ==0.11.2
 django-filter==21.1  # https://github.com/carltongibson/django-filter/
 django-inline-svg==0.1.1
