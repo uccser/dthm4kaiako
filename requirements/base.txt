@@ -1,5 +1,5 @@
 # Django
-django==3.2.24
+django==5.0.2
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
 django-allauth==0.61.0
 django-anymail[mailgun]==8.6
