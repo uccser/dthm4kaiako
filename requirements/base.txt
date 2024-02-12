@@ -10,7 +10,7 @@ django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-cri
 django-environ==0.11.2
 django-filter==21.1  # https://github.com/carltongibson/django-filter/
 django-inline-svg==0.1.1
-django-ipware==4.0.2
+django-ipware==6.0.4
 django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
 django-map-widgets==0.4.2  # https://github.com/erdem/django-map-widgets
 django-model-utils==4.4.0  # https://github.com/jazzband/django-model-utils
