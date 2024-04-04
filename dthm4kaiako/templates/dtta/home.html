@@ -3,7 +3,7 @@
 {% load static humanize %}
 
 {% block page_heading %}
-    <img class="logo-header img-fluid mx-auto d-block m-3" src="{% static 'img/logos/dtta-logo.svg' %}">
+    <img class="logo-header img-fluid mx-auto d-block p-3" src="{% static 'img/logos/dtta-logo.svg' %}">
 {% endblock page_heading %}
 
 {% block content %}
@@ -14,12 +14,12 @@
 
     <div class="row">
         <div class="col-12 col-md-6 my-4">
-            <a href="{% url 'dtta:about' %}" class="btn btn-block btn-lg btn-dtta">
+            <a href="{% url 'dtta:about' %}" class="btn btn-block btn-lg btn-dtta-primary">
                 Find out more about DTTA
             </a>
         </div>
         <div class="col-12 col-md-6 my-4">
-            <a href="{% url 'dtta:membership' %}" class="btn btn-block btn-lg btn-dtta">
+            <a href="{% url 'dtta:membership' %}" class="btn btn-block btn-lg btn-dtta-secondary">
                 Read about joining DTTA
             </a>
         </div>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             {% endfor %}
-            <a href="{% url 'dtta:news_article_list' %}" class="btn btn-dtta my-3">View all news articles</a>
+            <a href="{% url 'dtta:news_article_list' %}" class="btn btn-dtta-primary my-3">View all news articles</a>
         </div>
         <div class="col-12 col-md-6 my-4">
             <h3>Related links</h3>

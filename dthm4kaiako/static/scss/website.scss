@@ -58,9 +58,19 @@ body {
   width: 12rem;
   vertical-align: 3px;
 }
-.btn-dtta {
+.btn-dtta-primary {
+  @extend .btn-primary;
+  background-color: #2c8887;
+  border-color: #2c8887;
+}
+.btn-dtta-secondary {
   @extend .btn-danger;
-  background-color: $dtta-brand-colour;
+  background-color: #a0309c;
+  border-color: #a0309c;
+}
+.container-dtta {
+  background-color: #e6e6e6;
+  color: #353535;
 }
 
 // Create badge CSS rules off colour names
