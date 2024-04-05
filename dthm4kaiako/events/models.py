@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from utils.get_upload_filepath import get_event_series_upload_path
 from autoslug import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 from django.utils.translation import gettext_lazy as _
 from users.models import Entity
 
@@ -80,7 +80,7 @@ class Location(models.Model):
         choices=REGION_CHOICES,
         default=REGION_CANTERBURY,
     )
-    description = RichTextUploadingField(blank=True)
+    description = HTMLField(blank=True)
     coords = geomodels.PointField()
 
     def __str__(self):
@@ -120,7 +120,7 @@ class Series(models.Model):
 
     name = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=30)
-    description = RichTextUploadingField()
+    description = HTMLField()
     logo = models.ImageField(
         null=True,
         blank=True,
@@ -159,7 +159,7 @@ class Event(models.Model):
     """Model for an event."""
 
     name = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    description = HTMLField()
     slug = AutoSlugField(populate_from='get_short_name', always_update=True, null=True)
     # TODO: Only allow publishing if start and end are not null
     published = models.BooleanField(default=False)
@@ -296,7 +296,7 @@ class Session(models.Model):
     """Model for an event session."""
 
     name = models.CharField(max_length=200)
-    description = RichTextUploadingField(blank=True)
+    description = HTMLField(blank=True)
     url = models.URLField(blank=True)
     url_label = models.CharField(max_length=200, blank=True)
     start = models.DateTimeField()

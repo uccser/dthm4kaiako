@@ -95,6 +95,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    'filebrowser',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -120,14 +121,13 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'markdownx',
-    'ckeditor',
-    'ckeditor_uploader',
     'django_activeurl',
     'mapwidgets',
     'captcha',
     'django_filters',
     'modelclone',
     'svg',
+    'tinymce',
 ]
 LOCAL_APPS = [
     'general.apps.GeneralAppConfig',
@@ -336,31 +336,32 @@ ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
 
 
-# ckeditor
+# tinymce (for uploading images in news postings)
 # ------------------------------------------------------------------------------
-CKEDITOR_UPLOAD_PATH = 'text-editor'
-CKEDITOR_ALLOW_NONIMAGE_FILES = False
-CKEDITOR_CONFIGS = {
-    'default': {
-        'width': '100%',
-        'clipboard_defaultContentType': 'text',
-        'tabSpaces': 4,
-        'extraPlugins': ','.join([
-            # 'devtools',  # Used for development
-            'a11yhelp',
-            'uploadimage',
-            'image2',
-            'div',
-            'autolink',
-            'autogrow',
-            'clipboard',
-            'codesnippet',
-            'pastefromword',
-            'widget',
-            'dialog',
-            'dialogui',
-        ]),
-    }
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | image | help",
+}
+
+TINYMCE_FILEBROWSER = True
+
+FILEBROWSER_DIRECTORY = 'text-editor/'
+
+FILEBROWSER_SELECT_FORMATS = {
+    'file': ['Image'],
+    'image': ['Image']
+}
+
+FILEBROWSER_EXTENSIONS = {
+    'Image': ['.jpg','.jpeg','.gif','.png','.tif','.tiff']
 }
 
 # django-activeurl

@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.urls import reverse
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 
 
 class ProgressOutcome(models.Model):
@@ -67,7 +67,7 @@ class Resource(models.Model):
         on_delete=models.CASCADE,
         related_name='resources',
     )
-    content = RichTextUploadingField()
+    content = HTMLField()
 
     def __str__(self):
         """Text representation of object.

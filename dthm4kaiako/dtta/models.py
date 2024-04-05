@@ -3,7 +3,7 @@
 from django.db import models
 from django.urls import reverse
 from autoslug import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 from utils.get_upload_filepath import get_dtta_news_article_source_upload_path
 
 
@@ -30,7 +30,7 @@ class Page(models.Model):
     )
     order_number = models.PositiveSmallIntegerField(default=1)
     published = models.BooleanField(default=False)
-    content = RichTextUploadingField()
+    content = HTMLField()
 
     def get_absolute_url(self):
         """Return URL of object on website.
@@ -60,7 +60,7 @@ class Project(models.Model):
     date = models.DateField()
     order_number = models.PositiveSmallIntegerField(default=1)
     published = models.BooleanField(default=False)
-    content = RichTextUploadingField()
+    content = HTMLField()
 
     def get_absolute_url(self):
         """Return URL of object on website.
@@ -151,7 +151,7 @@ class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', always_update=True, null=True)
     datetime = models.DateTimeField()
-    content = RichTextUploadingField()
+    content = HTMLField()
     source = models.ForeignKey(
         NewsArticleSource,
         on_delete=models.CASCADE,

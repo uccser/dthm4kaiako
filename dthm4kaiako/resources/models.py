@@ -15,7 +15,7 @@ import filetype
 from utils.get_upload_filepath import get_resource_upload_path
 from utils.google_drive_api import get_google_drive_mimetype
 from utils.search_utils import concat_field_values
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 from users.models import Entity
 
 ICON_PATH = 'img/icons/'
@@ -158,7 +158,7 @@ class Resource(models.Model):
 
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', always_update=True, null=True)
-    description = RichTextUploadingField()
+    description = HTMLField()
     datetime_added = models.DateTimeField(auto_now_add=True)
     datetime_updated = models.DateTimeField(auto_now=True)
     search_vector = SearchVectorField(null=True)
