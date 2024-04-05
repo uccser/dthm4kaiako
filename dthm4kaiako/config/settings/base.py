@@ -361,7 +361,7 @@ FILEBROWSER_SELECT_FORMATS = {
 }
 
 FILEBROWSER_EXTENSIONS = {
-    'Image': ['.jpg','.jpeg','.gif','.png','.tif','.tiff']
+    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff']
 }
 
 # django-activeurl
