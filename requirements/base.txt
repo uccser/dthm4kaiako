@@ -31,7 +31,7 @@ argon2-cffi==21.3.0
 
 # Resources
 WeasyPrint==52.4
-Pillow==8.2.0
+Pillow==10.3.0
 filetype==1.2.0  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
