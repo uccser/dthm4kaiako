@@ -17,7 +17,7 @@ django-map-widgets==0.4.2  # https://github.com/erdem/django-map-widgets
 django-model-utils==4.5.0  # https://github.com/jazzband/django-model-utils
 django-modelclone==0.7.1
 django-recaptcha==3.0.0
-django-tinymce==3.6.1 # https://github.com/jazzband/django-tinymce
+django-tinymce==4.0.0 # https://github.com/jazzband/django-tinymce
 djangorestframework==3.15.1  # https://github.com/encode/django-rest-framework
 
 # Web serving
