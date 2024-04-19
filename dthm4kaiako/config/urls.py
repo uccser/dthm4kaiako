@@ -9,6 +9,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import defaults as default_views
 from config.views import get_release_and_commit
+from filebrowser.sites import site
 admin.site.login = login_required(admin.site.login)
 admin.site.site_header = 'dthm4kaiako.ac.nz'
 admin.site.site_title = admin.site.site_header
@@ -28,12 +29,13 @@ urlpatterns = [
     # Accounts application
     path('accounts/', include('allauth.urls')),
     # Admin application
+    path('admin/filebrowser/', site.urls),
     path(settings.ADMIN_URL, admin.site.urls),
     # Utility applications
     path('healthcheck/', HttpResponse),
     path('status/', view=get_release_and_commit, name="get-release-and-commit"),
     path('markdownx/', include('markdownx.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('tinymce/', include('tinymce.urls')),
     # path('api/', include('rest_framework.urls')),
     # Redirects
     path('authentic-context-cards/', RedirectView.as_view(pattern_name='learning_area_cards:home', permanent=True)),

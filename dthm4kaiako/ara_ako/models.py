@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.urls import reverse
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 from events.models import Event
 from resources.models import Resource
 
@@ -41,7 +41,7 @@ class AraAkoTeam(models.Model):
     """Model for an Ara Ako team."""
 
     number = models.PositiveSmallIntegerField()
-    description = RichTextUploadingField()
+    description = HTMLField()
     resource = models.OneToOneField(
         Resource,
         verbose_name='Ara Ako team resource',
