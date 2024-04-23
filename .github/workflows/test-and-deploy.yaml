@@ -88,7 +88,7 @@ jobs:
       - name: Create coverage file
         run: docker compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
       - name: Upload coverage file
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./dthm4kaiako/coverage.xml
           verbose: true
@@ -104,7 +104,7 @@ jobs:
       - name: Create coverage file
         run: docker compose -f docker-compose.local.yml run --rm --user="root" django coverage xml -i
       - name: Upload coverage file
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./dthm4kaiako/coverage.xml
           verbose: true
