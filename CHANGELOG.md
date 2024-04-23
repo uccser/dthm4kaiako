@@ -1,5 +1,56 @@
 # Changelog
 
+## 0.21.0
+
+- Fix node UID issue when developing locally
+- Add allauth middleware
+- Update DTTA's logo and use their new colour scheme
+- Hide DTTA news from DTTA page
+- Replace ckeditor with TinyMCE and django-filebrowser-no-grappelli
+- Github Action dependency updates:
+    - Update dependabot/fetch-metadata from 1.3.4 to 2.0.0
+    - Update actions/checkout from 3 to 4
+    - Update codecov/codecov-action from 3 to 4
+    - Update actions/upload-artifact from 3 to 4
+    - Update actions/download-artifact from 3 to 4
+    - Update docker/login-action from 2.0.0 to 3.1.0
+    - Update docker/metadata-action from 4 to 5
+    - Update docker/build-push-action from 3.2.0 to 5.3.0
+- Python dependency updates:
+    - Update django from 3.2.16 to 3.2.25
+    - Update django-allauth from 0.51.0 to 0.62.0
+    - Update jango-autoslug from 1.9.8  to 1.9.9
+    - Update django-ckeditor from 6.5.1 to 6.7.1
+    - Update django-cors-headers from 3.13.0 to 3.14.0
+    - Update django-environ from 0.9.0 to 0.11.2
+    - Update django-map-widgets from 0.4.0 to 0.4.2
+    - Update django-model-utils from 4.2.0 to 4.5.0
+    - Update djangorestframework from 3.14.0 to 3.15.1
+    - Update gunicorn from 20.1.0 to 22.0.0
+    - Update whitenoise from 6.2.0 to 6.6.0
+    - Update psycopg2 from 2.9.5 to 2.9.9
+    - Update pytz from 2022.6 to 2022.7.1
+    - Update Pillow from 8.2.0 to 10.3.0
+    - Update filetype from 1.1.0 to 1.2.0
+    - Update google-api-python-client from 2.64.0 to 2.126.0
+    - Update factory-boy from 3.2.1 to 3.3.0
+    - Update django-debug-toolbar from 3.7.0 to 3.8.1
+    - Update django-extensions from 3.2.1 to 3.2.3
+    - Update google-auth from 1.28.1 to 2.29.0
+    - Update django-storages[google] from 1.13.1 to 1.14.2
+    - Update pydocstyle from 6.1.1 to 6.3.0
+    - Add django-tinymce 4.0.0
+    - Add django-filebrowser-no-grappelli 4.0.2
+- JS dependency updates
+    - Update autoprefixer from 10.4.13 to 10.4.19
+    - Update cssnano from 5.1.14 to 5.1.15
+    - Update dayjs from 1.11.6 to 1.11.10
+    - Update gulp-postcss from 9.0.1 to 9.1.0
+    - Update jquery from 3.6.1 to 3.7.1
+    - Update postcss from 8.4.18 to 8.4.38
+    - Update sass from 1.55.0 to 1.75.0
+    - Update yargs from 17.6.0 to 17.7.2
+
 ## 0.20.1
 
 - Dependency updates:
