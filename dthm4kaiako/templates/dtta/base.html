@@ -11,7 +11,7 @@
         </button>
 
         <a class="navbar-brand" href="{% url 'dtta:home' %}">
-          <img class="d-inline-block align-top navbar-logo" src="{% static 'img/logos/dtta-logo-white-text-without-subtitle.png' %}">
+          <img class="d-inline-block align-top navbar-logo" src="{% static 'img/logos/dtta-logo-white-text-without-subtitle.svg' %}">
         </a>
 
         <div class="collapse navbar-collapse" id="navbarSecondaryContent">
@@ -22,9 +22,10 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'dtta:membership' %}">Membership</a>
             </li>
-            <li class="nav-item">
+            <!--  Uncomment to show news.
+              <li class="nav-item">
               <a class="nav-link" href="{% url 'dtta:news_article_list' %}">News</a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dttaCurriculumLinks" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">

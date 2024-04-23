@@ -1,41 +1,43 @@
 # Django
-django==3.2.16
+django==3.2.25
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
-django-allauth==0.51.0
+django-allauth==0.62.0
 django-anymail[mailgun]==8.6
-django-autoslug==1.9.8  # https://github.com/justinmayer/django-autoslug
-django-ckeditor==6.5.1
-django-cors-headers==3.13.0
+django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
+django-ckeditor==6.7.1 # Todo: Unused, remove.
+django-cors-headers==3.14.0
 django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-crispy-forms
-django-environ==0.9.0
+django-environ==0.11.2
+django-filebrowser-no-grappelli==4.0.2
 django-filter==21.1  # https://github.com/carltongibson/django-filter/
 django-inline-svg==0.1.1
 django-ipware==4.0.2
 django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
-django-map-widgets==0.4.0  # https://github.com/erdem/django-map-widgets
-django-model-utils==4.2.0  # https://github.com/jazzband/django-model-utils
+django-map-widgets==0.4.2  # https://github.com/erdem/django-map-widgets
+django-model-utils==4.5.0  # https://github.com/jazzband/django-model-utils
 django-modelclone==0.7.1
 django-recaptcha==3.0.0
-djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
+django-tinymce==4.0.0 # https://github.com/jazzband/django-tinymce
+djangorestframework==3.15.1  # https://github.com/encode/django-rest-framework
 
 # Web serving
-gunicorn==20.1.0
-whitenoise==6.2.0
+gunicorn==22.0.0
+whitenoise==6.6.0
 
 # Database APIs
-psycopg2==2.9.5
+psycopg2==2.9.9
 
-pytz==2022.6
+pytz==2022.7.1
 python-slugify==4.0.1
 argon2-cffi==21.3.0
 
 # Resources
 WeasyPrint==52.4
-Pillow==8.2.0
-filetype==1.1.0  # https://github.com/h2non/filetype.py
+Pillow==10.3.0
+filetype==1.2.0  # https://github.com/h2non/filetype.py
 
 # Google Cloud Platform
-google-api-python-client==2.64.0
+google-api-python-client==2.126.0
 
 # Sample data generation
 # ----------------------
@@ -45,4 +47,4 @@ google-api-python-client==2.64.0
 # data from existing in the production environment.
 # Including the dependencies in all versions allows for a much simplier system for
 # contributors to understand.
-factory-boy==3.2.1
+factory-boy==3.3.0

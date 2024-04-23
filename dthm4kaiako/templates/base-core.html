@@ -35,7 +35,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
       <![endif]-->
   </head>
-  {% block body_element %}<body>{% endblock body_element %}
+  {% block body_element %}<body {% if request.resolver_match.app_name == 'dtta' %}class="container-dtta"{% endif %}>{% endblock body_element %}
     {% block body %}{% endblock body %}
 
     {% block modal %}{% endblock modal %}

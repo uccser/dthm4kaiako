@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from autoslug import AutoSlugField
-from ckeditor_uploader.fields import RichTextUploadingField
+from tinymce.models import HTMLField
 from resources.models import Resource
 
 
@@ -14,9 +14,9 @@ class Component(models.Model):
     order_number = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', always_update=True, null=True)
-    description = RichTextUploadingField()
+    description = HTMLField()
     video_url = models.URLField(blank=True)
-    video_transcript = RichTextUploadingField(blank=True)
+    video_transcript = HTMLField(blank=True)
     # Visibility
     VISIBILITY_HIDDEN = 1
     VISIBILITY_COMING_SOON = 2
