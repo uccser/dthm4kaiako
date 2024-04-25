@@ -1,7 +1,7 @@
 # Django
 django==3.2.25
 django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
-django-allauth==0.62.0
+django-allauth==0.62.1
 django-anymail[mailgun]==8.6
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
 django-ckeditor==6.7.1 # Todo: Unused, remove.
