@@ -1,4 +1,4 @@
-FROM python:3.9.9-slim-buster as python
+FROM python:3.9.19-bookworm as python
 
 # Python build stage ----------------------------------------------------------
 FROM python as python-build-stage
