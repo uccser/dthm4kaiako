@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.22.0
+
+- Show DTTA news on navbar and homepage
+- Github Action dependency updates:
+    - Update dependabot/fetch-metadata from 2.0.0 to 2.1.0
+- JS dependency updates:
+    - Update cssnano from 5.1.15 to 7.0.1
+    - Update dayjs from 1.11.10 to 1.11.11
+    - Update sass from 1.75.0 to 1.76.0
+- Python dependency updates:
+    - Update django-allauth from 0.62.0 to 0.62.1
+    - Update django-ipware from 4.0.2 to 7.0.1
+    - Update django-model-utils from 4.5.0 to 4.5.1
+    - Update WeasyPrint from 52.4 to 62.0
+    - Update google-api-python-client from 2.126.0 to 2.127.0
+    - Update django-debug-toolbar from 3.8.1 to 4.3.0
+    - Update coverage from 6.5.0 to 7.5.0
+    - Update flake8 from 3.9.2 to 7.0.0
+
 ## 0.21.0
 
 - Fix node UID issue when developing locally
@@ -19,7 +38,7 @@
 - Python dependency updates:
     - Update django from 3.2.16 to 3.2.25
     - Update django-allauth from 0.51.0 to 0.62.0
-    - Update jango-autoslug from 1.9.8  to 1.9.9
+    - Update django-autoslug from 1.9.8  to 1.9.9
     - Update django-ckeditor from 6.5.1 to 6.7.1
     - Update django-cors-headers from 3.13.0 to 3.14.0
     - Update django-environ from 0.9.0 to 0.11.2
