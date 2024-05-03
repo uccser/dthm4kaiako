@@ -14,7 +14,7 @@ django-inline-svg==0.1.1
 django-ipware==7.0.1
 django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
 django-map-widgets==0.4.2  # https://github.com/erdem/django-map-widgets
-django-model-utils==4.5.0  # https://github.com/jazzband/django-model-utils
+django-model-utils==4.5.1  # https://github.com/jazzband/django-model-utils
 django-modelclone==0.7.1
 django-recaptcha==3.0.0
 django-tinymce==4.0.0 # https://github.com/jazzband/django-tinymce
