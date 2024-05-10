@@ -121,7 +121,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'markdownx',
-    'django_activeurl',
     'mapwidgets',
     'captcha',
     'django_filters',
@@ -362,15 +361,6 @@ FILEBROWSER_SELECT_FORMATS = {
 
 FILEBROWSER_EXTENSIONS = {
     'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff']
-}
-
-# django-activeurl
-# ------------------------------------------------------------------------------
-ACTIVE_URL_KWARGS = {
-    'css_class': 'active',
-    'parent_tag': 'li',
-    'menu': 'yes',
-    'ignore_params': 'no'
 }
 
 # django-rest-framework
