@@ -1,6 +1,6 @@
 # Django
 django==4.2.13
-django-activeurl==0.2.0  # https://github.com/hellysmile/django-activeurl
+django-active-link==0.1.8
 django-allauth==0.62.1
 django-anymail[mailgun]==8.6
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
@@ -15,7 +15,7 @@ django-ipware==7.0.1
 django-markdownx==3.0.1  # https://github.com/neutronX/django-markdownx
 django-map-widgets==0.4.2  # https://github.com/erdem/django-map-widgets
 django-model-utils==4.5.1  # https://github.com/jazzband/django-model-utils
-django-modelclone==0.7.1
+django-modelclone-next==0.8.2
 django-recaptcha==3.0.0
 django-tinymce==4.0.0 # https://github.com/jazzband/django-tinymce
 djangorestframework==3.15.1  # https://github.com/encode/django-rest-framework

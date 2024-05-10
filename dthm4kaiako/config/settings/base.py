@@ -121,7 +121,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'markdownx',
-    'django_activeurl',
+    'active_link',
     'mapwidgets',
     'captcha',
     'django_filters',
@@ -364,7 +364,7 @@ FILEBROWSER_EXTENSIONS = {
     'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff']
 }
 
-# django-activeurl
+# django-activeurl TODO: REMOVE
 # ------------------------------------------------------------------------------
 ACTIVE_URL_KWARGS = {
     'css_class': 'active',
