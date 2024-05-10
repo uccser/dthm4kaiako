@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.23.0
+
+- Update to newest django LTS 4.2.x
+- Github Action dependency updates:
+    - Update dependabot/fetch-metadata from 2.0.0 to 2.1.0
+- JS dependency updates:
+    - Update sass from 1.76.0 to 1.77.0
+- Python dependency updates:
+    - Add django-modelclone-next 0.8.2
+    - Remove django_activeurl
+    - Remove django-modelclone
+    - Update django django from 3.2.25 to 4.2.13
+    - Update django-filter from 21.1 to 24.2
+    - Update django-markdownx from 3.0.1 to 4.0.7
+    - Update python-slugify from 4.0.1 to 8.0.4
+    - Update WeasyPrint from 62.0 to 62.1
+    - Update google-api-python-client from 2.127.0 to 2.128.0
+    - Update django-storages[google] from 1.14.2 to 1.14.3
+    - Update coverage from 7.5.0 to 7.5.1
+
 ## 0.22.0
 
 - Show DTTA news on navbar and homepage
