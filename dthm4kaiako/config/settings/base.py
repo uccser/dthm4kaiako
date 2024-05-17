@@ -456,3 +456,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "https://canterbury.ac.nz"
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://dthm4kaiako-dev.csse.canterbury.ac.nz',
+    'https://dthm4kaiako.ac.nz/',
+]
