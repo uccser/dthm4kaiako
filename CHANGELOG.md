@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.23.0
+## 0.24.1
+
+- Fix bad CSRF trusted origin
+
+## 0.24.0
 
 - Fix admin login by adding CSRF trusted origins
 - Update docker images to use debian bookworm
