@@ -2,6 +2,18 @@
 
 ## 0.23.0
 
+- Fix admin login by adding CSRF trusted origins
+- Update docker images to use debian bookworm
+- Update Python to 3.11
+- Update Nodejs to 20
+- JS dependency updates:
+    - Update sass from 1.77.0 to 1.77.2
+- Python dependency updates:
+    - Update django-allauth from 0.62.1 to 0.63.1
+    - Update google-api-python-client from 2.128.0 to 2.129.0
+
+## 0.23.0
+
 - Update to newest django LTS 4.2.x
 - Github Action dependency updates:
     - Update dependabot/fetch-metadata from 2.0.0 to 2.1.0
