@@ -458,5 +458,5 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CSRF_TRUSTED_ORIGINS = [
     'https://dthm4kaiako-dev.csse.canterbury.ac.nz',
-    'https://dthm4kaiako.ac.nz/',
+    'https://dthm4kaiako.ac.nz',
 ]
