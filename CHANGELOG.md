@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.2
+
+- Fix bad CSRF trusted origin
+
 ## 0.24.1
 
 - Fix bad CSRF trusted origin
