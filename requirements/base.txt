@@ -1,6 +1,6 @@
 # Django
 django==4.2.13
-django-allauth==0.63.1
+django-allauth==0.63.2
 django-anymail[mailgun]==8.6
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
 django-ckeditor==6.7.1 # Todo: Unused, remove.
