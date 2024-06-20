@@ -17,7 +17,7 @@ django-model-utils==4.5.1  # https://github.com/jazzband/django-model-utils
 django-modelclone-next==0.8.2
 django-recaptcha==3.0.0
 django-tinymce==4.0.0 # https://github.com/jazzband/django-tinymce
-djangorestframework==3.15.1  # https://github.com/encode/django-rest-framework
+djangorestframework==3.15.2  # https://github.com/encode/django-rest-framework
 
 # Web serving
 gunicorn==22.0.0
