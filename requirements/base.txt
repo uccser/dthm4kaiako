@@ -31,7 +31,7 @@ python-slugify==8.0.4
 argon2-cffi==21.3.0
 
 # Resources
-WeasyPrint==62.2
+WeasyPrint==62.3
 Pillow==10.3.0
 filetype==1.2.0  # https://github.com/h2non/filetype.py
 
