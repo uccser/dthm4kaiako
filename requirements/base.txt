@@ -24,7 +24,7 @@ gunicorn==22.0.0
 whitenoise==6.7.0
 
 # Database APIs
-psycopg2==2.9.9
+psycopg2==2.9.10
 
 pytz==2022.7.1
 python-slugify==8.0.4
