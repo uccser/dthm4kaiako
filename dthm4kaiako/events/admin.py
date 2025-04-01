@@ -10,7 +10,7 @@ from events.models import (
     Location,
     Series,
 )
-from mapwidgets.widgets import GooglePointFieldWidget
+from mapwidgets.widgets import GoogleMapPointFieldWidget
 from modelclone import ClonableModelAdmin
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class LocationAdmin(admin.ModelAdmin):
     """Inline view for event locations."""
 
     formfield_overrides = {
-        geomodels.PointField: {"widget": GooglePointFieldWidget}
+        geomodels.PointField: {"widget": GoogleMapPointFieldWidget}
     }
     list_display = (
         'name',
