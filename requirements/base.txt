@@ -20,7 +20,7 @@ django-tinymce==4.1.0 # https://github.com/jazzband/django-tinymce
 djangorestframework==3.16.1  # https://github.com/encode/django-rest-framework
 
 # Web serving
-gunicorn==22.0.0
+gunicorn==23.0.0
 whitenoise==6.9.0
 
 # Database APIs
