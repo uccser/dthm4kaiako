@@ -1,5 +1,5 @@
 # Django
-django==4.2.29
+django==6.0.3
 django-allauth==0.63.6
 django-anymail[mailgun]==8.6
 django-autoslug==1.9.9  # https://github.com/justinmayer/django-autoslug
